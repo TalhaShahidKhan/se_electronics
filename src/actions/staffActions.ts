@@ -514,17 +514,30 @@ export const updateStaff = async (staffId: string, data: FormData) => {
     const { photo, nidFrontPhoto, nidBackPhoto, ...restStaffData } =
       validatedStaffData;
 
+    // Build update payload and generate new media keys when new files are uploaded
+    const updatePayload: typeof staffs.$inferInsert = {
+      ...(restStaffData as any),
+      docs: validatedStaffData.docs
+        ? JSON.stringify(validatedStaffData.docs)
+        : undefined,
+      role: restStaffData.hasInstallationExperience
+        ? "electrician"
+        : "technician",
+    };
+
+    if (photo) {
+      updatePayload.photoKey = `media/staff/${staffId}/profile_${uuidv4()}.webp`;
+    }
+    if (nidFrontPhoto) {
+      updatePayload.nidFrontPhotoKey = `media/staff/${staffId}/nid-front_${uuidv4()}.webp`;
+    }
+    if (nidBackPhoto) {
+      updatePayload.nidBackPhotoKey = `media/staff/${staffId}/nid-back_${uuidv4()}.webp`;
+    }
+
     const staffData = await db
       .update(staffs)
-      .set({
-        ...restStaffData,
-        docs: validatedStaffData.docs
-          ? JSON.stringify(validatedStaffData.docs)
-          : undefined,
-        role: restStaffData.hasInstallationExperience
-          ? "electrician"
-          : "technician",
-      })
+      .set(updatePayload)
       .where(eq(staffs.staffId, staffId))
       .returning({
         photoKey: staffs.photoKey,
@@ -532,7 +545,7 @@ export const updateStaff = async (staffId: string, data: FormData) => {
         nidBackPhotoKey: staffs.nidBackPhotoKey,
       });
 
-    const promisesArray = [];
+    const promisesArray: Promise<unknown>[] = [];
 
     if (photo) {
       const photoBuffer = Buffer.from(await photo.arrayBuffer());
@@ -569,7 +582,9 @@ export const updateStaff = async (staffId: string, data: FormData) => {
       );
     }
 
-    await Promise.all(promisesArray);
+    if (promisesArray.length > 0) {
+      await Promise.all(promisesArray);
+    }
 
     revalidatePath("/staffs");
     return { success: true, message: "Updated successfully" };

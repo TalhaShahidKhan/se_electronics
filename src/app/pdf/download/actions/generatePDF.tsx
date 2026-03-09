@@ -8,7 +8,21 @@ import JsBarcode from "jsbarcode";
 import QRCode from "qrcode";
 import fs from "node:fs/promises"
 import path from "node:path"
+import { existsSync } from "node:fs"
 import { AppError } from "@/utils";
+
+/** Get system Chrome path for Windows (used when @sparticuz/chromium is Linux-only) */
+function getChromePathForWindows(): string | null {
+    const paths = [
+        path.join(process.env.LOCALAPPDATA || "", "Google", "Chrome", "Application", "chrome.exe"),
+        "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    ];
+    for (const p of paths) {
+        if (p && existsSync(p)) return p;
+    }
+    return null;
+}
 
 type ReturnType = Promise<{
     success: true,
@@ -183,20 +197,32 @@ export default async function generatePDF(args: { docType: DocType, id: string, 
         let browser;
 
         if (process.env.NODE_ENV === "production") {
+            // Production: use @sparticuz/chromium (Linux - Vercel/Lambda)
             const Chromium = (await import("@sparticuz/chromium")).default;
             const puppeteer = await import("puppeteer-core");
-
             browser = await puppeteer.launch({
                 args: Chromium.args,
                 executablePath: await Chromium.executablePath(),
                 headless: true,
             });
-        } else {
-            const puppeteer = await import("puppeteer");
-
+        } else if (process.platform === "win32") {
+            // Development on Windows: use system Chrome
+            const chromePath = getChromePathForWindows();
+            if (!chromePath) {
+                throw new Error(
+                    "Chrome not found. Install Google Chrome or run: npx puppeteer browsers install chrome"
+                );
+            }
+            const puppeteer = await import("puppeteer-core");
             browser = await puppeteer.launch({
+                executablePath: chromePath,
                 headless: true,
+                args: ["--no-sandbox", "--disable-setuid-sandbox"],
             });
+        } else {
+            // Development on Mac/Linux: use full puppeteer (downloads Chromium)
+            const puppeteer = await import("puppeteer");
+            browser = await puppeteer.launch({ headless: true });
         }
 
         const page = await browser.newPage();
