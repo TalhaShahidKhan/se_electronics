@@ -1,0 +1,154 @@
+'use server'
+
+import { db } from "@/db/drizzle"
+import { payments, staffs } from "@/db/schema"
+import { SearchParams } from "@/types"
+import { generateInvoiceNumber, generateRandomId } from "@/utils"
+import { PaymentDataSchema } from "@/validationSchemas"
+import { desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm"
+import { revalidatePath } from "next/cache"
+import z from "zod"
+
+export const getPayments = async ({ query, page = '1', limit = '20' }: SearchParams) => {
+    try {
+        const q = `%${query}%`
+        const offset = (page && limit) ? (Number(page) - 1) * Number(limit) : 0
+        const filters = query ? or(
+            ilike(payments.paymentId, q),
+            ilike(payments.invoiceNumber, q),
+            ilike(payments.transactionId, q),
+            ilike(staffs.staffId, q),
+            ilike(staffs.name, q),
+            ilike(staffs.phone, q),
+        ) : undefined
+        const paymentsColumns = getTableColumns(payments)
+        const paymentsData = await db.select({
+            ...paymentsColumns,
+            staff: {
+                staffId: staffs.staffId,
+                name: staffs.name,
+                phone: staffs.phone,
+                role: staffs.role,
+            }
+        })
+            .from(payments)
+            .where(filters)
+            .innerJoin(staffs, eq(staffs.staffId, payments.staffId))
+            .limit(Number(limit))
+            .offset(offset)
+            .orderBy(desc(payments.date))
+
+        return { success: true, data: paymentsData }
+    } catch (error) {
+        console.error(error)
+        return { success: false, message: 'Could not fetch payments' }
+    }
+}
+
+export const getPaymentsMetadata = async ({ query, page = '1', limit = '20' }: SearchParams) => {
+    const q = `%${query}%`
+    const filters = query ? or(
+        ilike(payments.paymentId, q),
+        ilike(payments.invoiceNumber, q),
+        ilike(payments.transactionId, q),
+        ilike(staffs.staffId, q),
+        ilike(staffs.name, q),
+        ilike(staffs.phone, q),
+    ) : undefined
+
+    const totalRecords = (await db.select({ count: sql<number>`count(*)` })
+        .from(payments)
+        .where(filters)
+        .leftJoin(staffs, eq(staffs.staffId, payments.staffId)))[0].count
+
+    const totalPages = limit ? Math.ceil(totalRecords / Number(limit)) : 1;
+
+    return {
+        currentPage: Number(page),
+        totalRecords: totalRecords,
+        totalPages: totalPages,
+        currentLimit: Number(limit)
+    }
+}
+
+export const getPaymentHistoryById = async (staffId: string) => {
+    try {
+        const feedbacksData = await db.query.payments.findMany({
+            where: eq(payments.staffId, staffId),
+            orderBy: (payments, { desc }) => [desc(payments.date)]
+        })
+        return { success: true, data: feedbacksData }
+    } catch (error) {
+        console.error(error)
+        return { success: false, message: 'Cannot fetch service history' }
+    }
+}
+
+export const getPaymentByNumber = async (invoiceNumber: string) => {
+    try {
+        const paymentData = await db.query.payments.findFirst({
+            where: eq(payments.invoiceNumber, invoiceNumber),
+            with: {
+                staff: {
+                    columns: {
+                        name: true,
+                    }
+                }
+            }
+        })
+        return { success: true, data: paymentData }
+    } catch (error) {
+        console.error(error)
+        return { success: false, message: 'Something went wrong' }
+    }
+}
+
+export const createPayment = async (paymentData: z.infer<typeof PaymentDataSchema>) => {
+    try {
+        const validatedPaymentInfo = PaymentDataSchema.parse(paymentData)
+        const paymentId = generateRandomId()
+        const invoiceNumber = generateInvoiceNumber()
+
+        await db.insert(payments).values({
+            paymentId,
+            invoiceNumber,
+            ...validatedPaymentInfo
+        })
+        revalidatePath('/payments')
+        return { success: true, message: 'Payment added successfully' }
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            console.error(z.flattenError(error).fieldErrors);
+            return { success: false, message: 'অনুগ্রহ করে সকল প্রয়োজনীয় তথ্য গুলো পূরণ করুন।' }
+        }
+        console.error(error)
+        return { success: false, message: 'Something went wrong' }
+    }
+}
+
+export const updatePayment = async (paymentId: string, updates: z.infer<typeof PaymentDataSchema>) => {
+    try {
+        const validatedUpdates = PaymentDataSchema.parse(updates)
+        await db.update(payments).set(validatedUpdates).where(eq(payments.paymentId, paymentId))
+        revalidatePath('/payments')
+        return { success: true, message: 'Payment updated successfully' }
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            console.error(z.flattenError(error).fieldErrors);
+            return { success: false, message: 'অনুগ্রহ করে সকল প্রয়োজনীয় তথ্য গুলো পূরণ করুন।' }
+        }
+        console.error(error)
+        return { success: false, message: 'Something went wrong' }
+    }
+}
+
+export const deletePayment = async (paymentId: string) => {
+    try {
+        await db.delete(payments).where(eq(payments.paymentId, paymentId))
+        revalidatePath('/payments')
+        return { success: true, message: 'Payment deleted successfully' }
+    } catch (error) {
+        console.error(error)
+        return { success: false, message: 'Something went wrong' }
+    }
+}

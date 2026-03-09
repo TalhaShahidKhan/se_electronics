@@ -1,0 +1,17 @@
+Firefox: 
+URL: http://localhost:3000/login
+Panel: Admin Panel
+Username: Technour
+Password: Bang@123
+
+Chrome: 
+URL: http://localhost:3000/staff/login 
+Panel: Staff Panel
+Username: technician
+Password: password123
+
+Opera:
+URL: http://localhost:3000/customer/login 
+Panel: Customer Panel
+Username: customer
+Password: password123

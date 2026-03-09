@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .__center {
+    @apply flex items-center justify-center;
+  }
+
+  .__input {
+    @apply w-full h-10 rounded-md p-4 outline-none border border-gray-400;
+  }
+
+  .__btn {
+    @apply bg-primary __center rounded-md font-medium text-white disabled:bg-opacity-50 py-1.5 px-4 gap-2;
+  }
+
+  input:read-only,
+  select:disabled,
+  textarea:disabled,
+  input:disabled {
+    background-color: #f3f3f3;
+  }
+
+  table,
+  th,
+  td {
+    @apply border
+  }
+}
+
+/* NProgress styles */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #3b82f6;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #3b82f6, 0 0 5px #3b82f6;
+  opacity: 1;
+  transform: rotate(3deg) translate(0px, -4px);
+}
