@@ -12,7 +12,7 @@ import { AppError } from "@/utils";
 
 type ReturnType = Promise<{
     success: true,
-    pdfBuffer: Uint8Array<ArrayBufferLike>,
+    pdfBuffer: Uint8Array,
     docType: DocType
 } | {
     success: false,
@@ -65,7 +65,7 @@ export default async function generatePDF(args: { docType: DocType, id: string, 
 
         switch (docType) {
             case 'invoice': {
-                const InvoiceTemplate = (await import("@/components/InvoiceTemplate")).default;
+                const InvoiceTemplate = (await import("@/components/features/invoices/InvoiceTemplate")).default;
 
                 const response = await getInvoiceByNumber(id)
                 if (!response.success || !response.data) {
@@ -82,7 +82,7 @@ export default async function generatePDF(args: { docType: DocType, id: string, 
                 break;
             };
             case 'payment': {
-                const PaymentReceiptTemplate = (await import("@/components/PaymentReceiptTemplate")).default;
+                const PaymentReceiptTemplate = (await import("@/components/features/payments/PaymentReceiptTemplate")).default;
 
                 const response = await getPaymentByNumber(id)
                 if (!response.success || !response.data) {
@@ -99,7 +99,7 @@ export default async function generatePDF(args: { docType: DocType, id: string, 
                 break;
             };
             case 'id-card': {
-                const IdCardTemplate = (await import("@/components/IdCardTemplate")).default;
+                const IdCardTemplate = (await import("@/components/features/staff/IdCardTemplate")).default;
 
                 const response = await getStaffById(id)
                 if (!response.success || !response.data) {
@@ -121,8 +121,11 @@ export default async function generatePDF(args: { docType: DocType, id: string, 
                 const qrcodeBase64 = await QRCode.toDataURL(baseUrl + '/team-members', { width: 80, margin: 2, color: { light: '#00000000' } })
                 const barcodeBase64 = canvas.toDataURL('image/png');
 
+                const staff = response.data!;
                 const data = {
-                    ...response.data,
+                    ...staff,
+                    currentPoliceStation: staff.currentPoliceStation ?? '',
+                    currentPostOffice: staff.currentPostOffice ?? '',
                     frontBgImage: frontBgImageBase64,
                     backBgImage: backBgImageBase64,
                     qrcode: qrcodeBase64,
@@ -134,7 +137,7 @@ export default async function generatePDF(args: { docType: DocType, id: string, 
                 break;
             };
             case 'certificate': {
-                const CertificateTemplate = (await import("@/components/CertificateTemplate")).default;
+                const CertificateTemplate = (await import("@/components/features/staff/CertificateTemplate")).default;
 
                 const staffProfileUrl = baseUrl + '/team-members?staffId=' + certificateData!.staffId
 

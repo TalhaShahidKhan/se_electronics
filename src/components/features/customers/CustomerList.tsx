@@ -19,7 +19,7 @@ export default async function CustomerList(params: SearchParams) {
     );
   }
 
-  if (response.data.length === 0) {
+  if (response.data!.length === 0) {
     return (
       <tr className="border-b">
         <td colSpan={8} className="text-center py-4 text-gray-600">
@@ -29,7 +29,7 @@ export default async function CustomerList(params: SearchParams) {
     );
   }
 
-  const customers = response.data;
+  const customers = response.data!;
 
   return customers.map((customer) => (
     <tr key={customer.id} className="border-b">
@@ -45,9 +45,7 @@ export default async function CustomerList(params: SearchParams) {
             <div className="flex items-center">
               <InvoicePreviewButton
                 invoiceData={customer.invoice}
-                rest={{
-                  className: "text-blue-500 hover:underline cursor-pointer",
-                }}
+                className="text-blue-500 hover:underline cursor-pointer"
               >
                 <span>#{customer.invoiceNumber}</span>
               </InvoicePreviewButton>

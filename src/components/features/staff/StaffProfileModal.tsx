@@ -30,15 +30,15 @@ export default function StaffProfileModal({
   staffDataPayload?: StaffsType;
   onClose: () => void;
 }) {
-  const [staffData, setStaffData] = useState({ ...staffDataPayload });
+  const [staffData, setStaffData] = useState<any>({ ...staffDataPayload });
   const [nidDocsImages, setNidDocsImages] = useState<{
     nidFrontPhoto: string;
     nidBackPhoto: string;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(staffId ? true : false);
-  const [serviceData, setServiceData] = useState([]);
+  const [serviceData, setServiceData] = useState<any[]>([]);
   const [isLoadingServiceHistory, setIsLoadingServiceHistory] = useState(false);
-  const [paymentData, setPaymentData] = useState([]);
+  const [paymentData, setPaymentData] = useState<any[]>([]);
   const [isLoadingPaymentHistory, setIsLoadingPaymentHistory] = useState(false);
   const [tosContent, setTosContent] = useState("");
 
@@ -65,8 +65,8 @@ export default function StaffProfileModal({
         return;
       }
       setNidDocsImages({
-        nidFrontPhoto: res.data[0],
-        nidBackPhoto: res.data[1],
+        nidFrontPhoto: res.data![0],
+        nidBackPhoto: res.data![1],
       });
     }
   };
@@ -77,9 +77,9 @@ export default function StaffProfileModal({
     const element = e.currentTarget;
     if (element.open && serviceData.length === 0) {
       setIsLoadingServiceHistory(true);
-      const res = await getServiceHistoryById(staffData.staffId);
+      const res = await getServiceHistoryById(staffData.staffId!);
       if (res.success) {
-        setServiceData([...res.data]);
+        setServiceData([...res.data!]);
       } else {
         toast.error(res.message);
       }
@@ -93,9 +93,9 @@ export default function StaffProfileModal({
     const element = e.currentTarget;
     if (element.open && serviceData.length === 0) {
       setIsLoadingPaymentHistory(true);
-      const res = await getPaymentHistoryById(staffData.staffId);
+      const res = await getPaymentHistoryById(staffData.staffId!);
       if (res.success) {
-        setPaymentData([...res.data]);
+        setPaymentData([...res.data!]);
       } else {
         toast.error(res.message);
       }
@@ -119,7 +119,7 @@ export default function StaffProfileModal({
     }
 
     getTOSContent("application_declaration")
-      .then((res) => setTosContent(res))
+      .then((res) => setTosContent(res || ""))
       .catch((err) => console.error(err));
   }, []);
   return (
@@ -238,13 +238,13 @@ export default function StaffProfileModal({
                     <span className="w-32 flex-shrink-0">মাধ্যম</span>
                     <span className="mr-4 flex-shrink-0">:</span>
                     <span className="font-semibold">
-                      {paymentPreferences[staffData.paymentPreference]}
+                      {paymentPreferences[staffData.paymentPreference as keyof typeof paymentPreferences]}
                     </span>
                   </div>
                   <div className="flex border-b py-1">
                     <span className="w-32 flex-shrink-0">
                       {staffData.paymentPreference !== "bank"
-                        ? `${paymentPreferences[staffData.paymentPreference]} নাম্বার`
+                        ? `${paymentPreferences[staffData.paymentPreference as keyof typeof paymentPreferences]} নাম্বার`
                         : "ব্যাংক নাম"}
                     </span>
                     <span className="mr-4 flex-shrink-0">:</span>

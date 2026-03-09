@@ -124,13 +124,15 @@ export default function MaintenancePlans() {
 
     const match = selectedPowerRating.match(/(\d+)\s*Volt/i);
     const volt = match ? match[1] : null;
-    const surcharge = voltSurcharges[volt]
-    const discount = discounts[selectedDuration]
+    const surcharge = volt ? voltSurcharges[volt as keyof typeof voltSurcharges] : null
+    const discount = discounts[selectedDuration as unknown as keyof typeof discounts] ?? null
     const monthlyTotalAmount = selectedPackage ? (selectedPackage.price + (surcharge || 0)) * selectedDuration : 0;
     const totalAmount = monthlyTotalAmount - (discount || 0);
 
     const proceedToPayment = () => {
-        const formData = new FormData(formRef.current)
+        const form = formRef.current
+        if (!form) return
+        const formData = new FormData(form)
         const result = validateFormData(formData)
         if (result.valid) {
             setShowPaymentModal(true)
@@ -375,7 +377,7 @@ export default function MaintenancePlans() {
                                                 {productPowerRatings.map((rating) => {
                                                     const match = rating.match(/(\d+)\s*Volt/i);
                                                     const volt = match ? match[1] : null;
-                                                    const surcharge = volt ? voltSurcharges[volt] : null;
+                                                    const surcharge = volt ? voltSurcharges[volt as keyof typeof voltSurcharges] : null;
                                                     const label = surcharge
                                                         ? `${rating}  + ৳${surcharge}`
                                                         : rating;
@@ -406,7 +408,7 @@ export default function MaintenancePlans() {
                                 >
                                     {subscriptionDurations.map((duration) => (
                                         <option key={duration} value={duration}>
-                                            {duration} মাস {duration !== 1 && `- ৳${discounts[duration as string]} ছাড়`}
+                                            {duration} মাস {duration !== 1 && `- ৳${discounts[duration as unknown as keyof typeof discounts]} ছাড়`}
                                         </option>
                                     ))}
                                 </select>

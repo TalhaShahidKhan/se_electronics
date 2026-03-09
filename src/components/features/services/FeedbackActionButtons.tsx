@@ -164,7 +164,7 @@ function FeedbackActionButtons({
               <div className="text-md font-semibold mb-2">
                 Customer Feedbacks:
               </div>
-              {feedbacksArray.map((feedback) => (
+              {(feedbacksArray ?? []).map((feedback) => (
                 <div key={feedback.question}>
                   <div className="mb-1">
                     <span className="font-medium">প্রশ্ন: </span>

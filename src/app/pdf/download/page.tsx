@@ -20,7 +20,11 @@ export default function DocDownloadPage() {
     }
 
     async function download() {
-        const response = await generatePDF({ docType, id, token })
+        const response = await generatePDF({
+            docType: docType ?? 'invoice',
+            id: id ?? '',
+            token: token ?? ''
+        })
 
         if (!response.success) {
             setError(response.message)

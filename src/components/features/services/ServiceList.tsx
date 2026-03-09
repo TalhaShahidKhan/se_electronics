@@ -20,7 +20,7 @@ export default async function ServiceList(
     );
   }
 
-  if (response.data.length === 0) {
+  if (response.data!.length === 0) {
     return (
       <tr className="border-b">
         <td colSpan={10} className="text-center py-4 text-gray-600">
@@ -30,9 +30,9 @@ export default async function ServiceList(
     );
   }
 
-  const services = response.data;
+  const services = response.data!;
 
-  return services.map((service) => (
+  return services.map((service: any) => (
     <tr key={service.id} className="border-b">
       <td className="py-4 px-2 whitespace-nowrap">
         <div className="flex items-center">

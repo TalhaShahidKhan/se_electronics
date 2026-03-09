@@ -12,10 +12,10 @@ export default async function TechniciansPage({
     const searchQuery = sp?.search as string | undefined;
 
     const response = await getAllTeamMembers();
-    let staffs = response.success ? response.data : [];
+    let staffs = response.success ? (response.data ?? []) : [];
 
     // Sort by rating (highest first) by default, but can be customized
-    staffs.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    staffs = [...staffs].sort((a, b) => ((b as { rating?: number }).rating || 0) - ((a as { rating?: number }).rating || 0));
 
     // Filter by role if specified
     if (roleFilter) {

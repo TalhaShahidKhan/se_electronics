@@ -1,6 +1,6 @@
 import { getApplicationById } from "@/actions"
 import { ImageWithLightbox } from "@/components"
-import StatusBadge from "@/components/StatusBadge"
+import StatusBadge from "@/components/ui/StatusBadge"
 import { contactDetails } from "@/constants"
 import { AppError, formatDate, renderText } from "@/utils"
 import { notFound } from "next/navigation"
@@ -65,7 +65,7 @@ export default async function ApplicationTrack({ searchParams }: { searchParams:
                 {application.staff &&
                     <div className="bg-gradient-to-b from-gray-50 to-white py-6 px-4">
                         <div className="size-36 lg:size-44 rounded-full overflow-hidden border-4 border-white shadow-md mx-auto">
-                            <ImageWithLightbox src={application?.staff.photoUrl} alt="" className="w-full h-full object-cover" />
+                            <ImageWithLightbox src={(application?.staff as { photoUrl?: string })?.photoUrl ?? ''} alt="" className="w-full h-full object-cover" />
                         </div>
                     </div>
                 }

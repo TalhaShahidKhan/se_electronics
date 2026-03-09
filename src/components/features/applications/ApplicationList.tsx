@@ -17,7 +17,7 @@ export default async function ApplicationList(params: SearchParams) {
     );
   }
 
-  if (response.data.length === 0) {
+  if (response.data!.length === 0) {
     return (
       <tr className="border-b">
         <td colSpan={8} className="text-center py-4 text-gray-600">

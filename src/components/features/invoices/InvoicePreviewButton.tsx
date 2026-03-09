@@ -19,8 +19,7 @@ export default function InvoicePreviewButton({
   invoiceData?: InvoicesType;
   paymentData?: PaymentDataType;
   children: React.ReactNode;
-  rest: React.HTMLAttributes<HTMLButtonElement>;
-}) {
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const [showInvoiceViewModal, setShowInvoiceViewModal] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -69,7 +68,7 @@ export default function InvoicePreviewButton({
           )}
           {paymentData && (
             <PaymentReceiptTemplate
-              data={{ ...paymentData, bgImage: PaymentReceiptBgImage.src }}
+              data={{ ...paymentData, bgImage: PaymentReceiptBgImage.src, staff: paymentData.staff ? { name: paymentData.staff.name } : { name: 'N/A' } }}
             />
           )}
         </Modal>

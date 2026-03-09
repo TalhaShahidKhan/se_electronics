@@ -14,7 +14,7 @@ export default async function Layout({
     throw new Error();
   }
 
-  const admin = response.data;
+  const admin = response.data!;
   return (
     <DashboardLayout username={admin.username} smsBalance={smsBalance}>
       {children}

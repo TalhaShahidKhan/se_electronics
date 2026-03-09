@@ -21,7 +21,7 @@ async function PaymentList(params: SearchParams) {
     );
   }
 
-  if (response.data.length === 0) {
+  if (response.data!.length === 0) {
     return (
       <tr className="border-b">
         <td colSpan={7} className="text-center py-4 text-gray-600">
@@ -31,9 +31,9 @@ async function PaymentList(params: SearchParams) {
     );
   }
 
-  const payments = response.data;
+  const payments = response.data!;
 
-  return payments.map((payment) => {
+  return payments.map((payment: any) => {
     return (
       <tr key={payment.paymentId} className="border-b">
         <td className="py-4 px-2 whitespace-nowrap">

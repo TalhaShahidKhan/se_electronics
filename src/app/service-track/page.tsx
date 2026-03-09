@@ -1,7 +1,7 @@
 import { getServiceById } from "@/actions"
 import { ImageWithLightbox } from "@/components"
-import ServiceTrackingPageThemeColor from "@/components/ServiceTrackingPageThemeColor"
-import Timestamp from "@/components/Timestamp"
+import ServiceTrackingPageThemeColor from "@/components/features/services/ServiceTrackingPageThemeColor"
+import Timestamp from "@/components/ui/Timestamp"
 import { contactDetails } from "@/constants"
 import { AppError, renderText } from "@/utils"
 import clsx from "clsx"
@@ -155,7 +155,7 @@ export default async function ServiceTrackPage({ searchParams }: { searchParams:
 
     const response = await getServiceById(params.trackingId)
 
-    if (!response.success) {
+    if (!response.success || !response.data) {
         throw new AppError("ট্র্যাকিং আইডিটি সঠিক নয় অথবা খুঁজে পাওয়া যায়নি।")
     }
     const serviceData = response.data
@@ -220,7 +220,7 @@ export default async function ServiceTrackPage({ searchParams }: { searchParams:
                                 <div className="flex-shrink-0 __center flex flex-col">
                                     <div className="size-16 rounded-full overflow-hidden border-2 border-slate-600">
                                         <ImageWithLightbox
-                                            src={serviceData.appointedStaff.photoUrl}
+                                            src={(serviceData.appointedStaff as { photoUrl?: string })?.photoUrl ?? ''}
                                             alt="Staff Photo"
                                             className="w-full h-full object-cover"
                                         />

@@ -3,12 +3,14 @@
 import { SideNavContext } from "@/components";
 import { use, useEffect, useState } from "react";
 
-export const useServerAction = <T>(serverAction: T): [] => {
+export const useServerAction = <T>(serverAction: T): any => {
   const [isPending, setIsPending] = useState(false);
   const callServerAction = async () => {
     setIsPending(true);
-    const res = await serverAction();
+    const res = await (serverAction as any)();
+    return res;
   };
+  return [callServerAction, isPending];
 };
 
 export const useSideNavContext = () => {

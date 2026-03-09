@@ -16,7 +16,7 @@ export default async function SubscriberList(params: SearchParams) {
     );
   }
 
-  if (response.data.length === 0) {
+  if (response.data!.length === 0) {
     return (
       <tr className="border-b">
         <td colSpan={6} className="text-center py-4 text-gray-600">
@@ -26,7 +26,7 @@ export default async function SubscriberList(params: SearchParams) {
     );
   }
 
-  const subscribers = response.data;
+  const subscribers = response.data!;
 
   return subscribers.map((subscriber) => (
     <tr key={subscriber.id} className="border-b">

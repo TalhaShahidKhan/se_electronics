@@ -49,9 +49,19 @@ export default function PaymentForm({
     setIsPending(true);
     let res;
     if (mode === "create") {
-      res = await createPayment(paymentData);
+      if (!paymentData.staffId || !paymentData.paymentMethod) {
+        toast.error("Staff and payment method are required");
+        setIsPending(false);
+        return;
+      }
+      res = await createPayment({ ...paymentData, staffId: paymentData.staffId, paymentMethod: paymentData.paymentMethod } as Parameters<typeof createPayment>[0]);
     } else if (mode === "update") {
-      res = await updatePayment(paymentData.paymentId!, paymentData);
+      if (!paymentData.staffId || !paymentData.paymentMethod) {
+        toast.error("Staff and payment method are required");
+        setIsPending(false);
+        return;
+      }
+      res = await updatePayment(paymentData.paymentId!, { ...paymentData, staffId: paymentData.staffId, paymentMethod: paymentData.paymentMethod } as Parameters<typeof updatePayment>[1]);
     }
     if (res) {
       toast(res.message, {
@@ -72,11 +82,11 @@ export default function PaymentForm({
     for (const key in tempPaymentInfo) {
       if (key === "paymentDate") {
         const newDate = new Date(tempPaymentInfo[key] as string);
-        if (newDate.getTime() !== paymentInfo.paymentDate.getTime()) {
+        if (paymentInfo.date && newDate.getTime() !== paymentInfo.date.getTime()) {
           setHasUpdates(true);
           return;
         }
-      } else if (tempPaymentInfo[key] !== paymentInfo[key]?.toString()) {
+      } else if (tempPaymentInfo[key] !== (paymentInfo as Record<string, unknown>)[key]?.toString()) {
         setHasUpdates(true);
         return;
       }

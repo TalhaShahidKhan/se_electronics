@@ -39,8 +39,12 @@ export default function TeamMembers({
 }) {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedThana, setSelectedThana] = useState("");
-  const [selectedProfile, setSelectedProfile] = useState<typeof staffs | null>(
-    staffId ? staffs.find((staff) => staff.staffId === staffId) : null,
+  const [selectedProfile, setSelectedProfile] = useState<
+    (typeof staffs)[number] | null
+  >(
+    staffId
+      ? (staffs.find((staff) => staff.staffId === staffId) ?? null)
+      : null,
   );
   const districts = Object.keys(geoData);
   const thanas = geoData[selectedDistrict as keyof typeof geoData] || [];
@@ -114,8 +118,9 @@ export default function TeamMembers({
                   <CheckSquare className="size-5 text-green-600" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">
-                  {staffStats[selectedProfile.role][selectedProfile.phone]
-                    ?.completedServices ?? 0}
+                  {(staffStats as any)[selectedProfile.role]?.[
+                    selectedProfile.phone
+                  ]?.completedServices ?? 0}
                 </span>
                 <span className="text-sm font-medium text-green-700 mb-1">
                   সফল সার্ভিস
@@ -138,8 +143,9 @@ export default function TeamMembers({
                   <XCircle className="size-5 text-amber-600" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">
-                  {staffStats[selectedProfile.role][selectedProfile.phone]
-                    ?.cancelledServices ?? 0}
+                  {(staffStats as any)[selectedProfile.role]?.[
+                    selectedProfile.phone
+                  ]?.cancelledServices ?? 0}
                 </span>
                 <span className="text-sm font-medium text-amber-700 mb-1">
                   বাতিল সার্ভিস

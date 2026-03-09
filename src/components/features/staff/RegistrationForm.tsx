@@ -37,7 +37,7 @@ export default function RegistrationForm({
     undefined,
   );
   const [updateResponse, updateStaffAction, isUpdating] = useActionState(
-    (_, formData: FormData) => updateStaff(staffData?.staffId!, formData),
+    (_prevState: unknown, formData: FormData) => updateStaff(staffData!.staffId, formData),
     undefined,
   );
   const [nidDocsImages, setNidDocsImages] = useState<{
@@ -73,16 +73,16 @@ export default function RegistrationForm({
     const element = e.currentTarget;
     if (element.open && !nidDocsImages) {
       const res = await getStaffMediaUrls([
-        staffData.nidFrontPhotoKey,
-        staffData.nidBackPhotoKey,
+        staffData!.nidFrontPhotoKey,
+        staffData!.nidBackPhotoKey,
       ]);
       if (!res.success) {
         toast.error(res.message);
         return;
       }
       setNidDocsImages({
-        nidFrontPhoto: res.data[0],
-        nidBackPhoto: res.data[1],
+        nidFrontPhoto: res.data![0],
+        nidBackPhoto: res.data![1],
       });
     }
   };
@@ -90,7 +90,7 @@ export default function RegistrationForm({
   useEffect(() => {
     if (token) {
       getTOSContent("application_declaration")
-        .then((res) => setTosContent(res))
+        .then((res) => setTosContent(res ?? ''))
         .catch((err) => console.error(err));
     }
   }, []);
@@ -98,7 +98,7 @@ export default function RegistrationForm({
   useEffect(() => {
     if (!isRegistering && createResponse) {
       if (createResponse.success) {
-        onRegistrationComplete?.(createResponse.data.name);
+        onRegistrationComplete?.(createResponse.data?.name ?? '');
       } else {
         toast.error(createResponse.message);
       }
@@ -423,7 +423,7 @@ export default function RegistrationForm({
                 label="আপনার ছবি"
                 name="photo"
                 type="file"
-                required={mode === "create"}
+                required={false}
               />
               <InputField
                 src={nidDocsImages.nidFrontPhoto}
@@ -431,7 +431,7 @@ export default function RegistrationForm({
                 placeholder="সামনের দিকের"
                 name="nidFrontPhoto"
                 type="file"
-                required={mode === "create"}
+                required={false}
               />
               <InputField
                 src={nidDocsImages.nidBackPhoto}
@@ -439,7 +439,7 @@ export default function RegistrationForm({
                 placeholder="পেছনের দিকের"
                 name="nidBackPhoto"
                 type="file"
-                required={mode === "create"}
+                required={false}
               />
             </div>
           ) : (

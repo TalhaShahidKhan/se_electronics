@@ -25,11 +25,11 @@ function CustomerViewModal({
   onClose: () => void;
 }) {
   const [isLoading, setIsLoading] = useState(customerId ? true : false);
-  const [customerData, setCustomerData] = useState({ ...customer });
+  const [customerData, setCustomerData] = useState<any>({ ...customer });
   const [isProductsLoading, setIsProductsLoading] = useState(true);
   const [productItems, setProductItems] = useState(products || []);
-  const [serviceData, setServiceData] = useState([]);
-  const [feedbacksData, setFeedbacksData] = useState([]);
+  const [serviceData, setServiceData] = useState<any[]>([]);
+  const [feedbacksData, setFeedbacksData] = useState<any[]>([]);
   const [isLoadingServiceHistory, setIsLoadingServiceHistory] = useState(false);
   const [isLoadingFeedbacksHistory, setIsLoadingFeedbacksHistory] =
     useState(false);
@@ -48,7 +48,7 @@ function CustomerViewModal({
       setIsLoadingServiceHistory(true);
       const res = await getServiceHistoryById(customerData.customerId);
       if (res.success) {
-        setServiceData([...res.data]);
+        setServiceData(res.data ? [...res.data] : []);
       } else {
         toast.error(res.message);
       }
@@ -64,7 +64,7 @@ function CustomerViewModal({
       setIsLoadingFeedbacksHistory(true);
       const res = await getFeedbackHistoryById(customerData.customerId);
       if (res.success) {
-        setFeedbacksData([...res.data]);
+        setFeedbacksData(res.data ? [...res.data] : []);
       } else {
         toast.error(res.message);
       }
@@ -82,7 +82,7 @@ function CustomerViewModal({
           setCustomerData({ ...res.data });
           setIsLoading(false);
 
-          const productResponse = await getProducts(res.data.invoice.id);
+          const productResponse = await getProducts(res.data?.invoice?.id ?? '');
           console.log({ productResponse });
 
           if (productResponse.success) {
@@ -265,7 +265,7 @@ function CustomerViewModal({
                 <div className="__center text-gray-400 h-32">No history</div>
               ) : (
                 <ul className="mt-4 overflow-auto max-h-80">
-                  {serviceData.map((service, i) => (
+                  {serviceData.map((service: any, i: number) => (
                     <li key={service.id} className="relative flex gap-3.5">
                       <span className="text-sm">
                         {formatDate(service.createdAt)}
@@ -355,7 +355,7 @@ function CustomerViewModal({
                 <div className="__center text-gray-400 h-32">No history</div>
               ) : (
                 <ul className="mt-4 overflow-auto max-h-80">
-                  {feedbacksData.map((feedback, i) => (
+                  {feedbacksData.map((feedback: any, i: number) => (
                     <li key={feedback.id} className="relative flex gap-3.5">
                       <span className="text-sm leading-none">
                         {formatDate(feedback.createdAt)}
@@ -408,39 +408,39 @@ function CustomerViewModal({
                               <summary className="text-sm font-semibold mb-2 cursor-pointer">
                                 Feedbacks
                               </summary>
-                              {feedback.feedbacks?.map((feedback) => (
-                                <div key={feedback.question}>
+                              {feedback.feedbacks?.map((f: any) => (
+                                <div key={f.question}>
                                   <div className="mb-1">
                                     <span className="font-medium">
                                       প্রশ্ন:{" "}
                                     </span>
                                     <span className="font-semibold text-gray-500">
-                                      {feedback.question}
+                                      {f.question}
                                     </span>
                                   </div>
                                   <div className="mb-1">
                                     <span className="font-medium">উত্তর: </span>
                                     <span className="font-semibold text-gray-500">
-                                      {feedback.answer}
+                                      {f.answer}
                                     </span>
                                   </div>
-                                  {feedback.amount && (
+                                  {f.amount && (
                                     <div className="mb-1">
                                       <span className="font-medium">
                                         টাকার পরিমান:{" "}
                                       </span>
                                       <span className="font-semibold text-gray-500">
-                                        {feedback.amount}
+                                        {f.amount}
                                       </span>
                                     </div>
                                   )}
-                                  {feedback.comment && (
+                                  {f.comment && (
                                     <div className="mb-1">
                                       <span className="font-medium">
                                         মন্তব্য:{" "}
                                       </span>
                                       <span className="font-semibold text-gray-500">
-                                        {feedback.comment}
+                                        {f.comment}
                                       </span>
                                     </div>
                                   )}

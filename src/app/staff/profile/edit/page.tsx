@@ -1,13 +1,13 @@
 'use client'
 
-import { updateMyProfile } from "@/actions/staffActions";
+import { updateMyProfileForm } from "@/actions/staffActions";
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function EditProfilePage() {
     const router = useRouter();
-    const [state, action, isPending] = useActionState(updateMyProfile, undefined);
+    const [state, action, isPending] = useActionState(updateMyProfileForm, undefined);
 
     return (
         <div className="p-6 max-w-2xl mx-auto">

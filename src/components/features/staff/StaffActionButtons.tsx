@@ -21,7 +21,7 @@ export default function StaffActionButtons({
   const [showViewProfileModal, setShowViewProfileModal] = useState(false);
   const [showCredentialsModal, setShowCredentialsModal] = useState(false);
   const [credentials, setCredentials] = useState({
-    username: staffData.username || "",
+    username: (staffData as { username?: string }).username || "",
     password: "",
   });
   const [isSending, setIsSending] = useState(false);
@@ -123,7 +123,7 @@ export default function StaffActionButtons({
                 required
               />
               <p className="text-xs text-gray-500 mt-1">
-                Current: {staffData.username || "Not set"}
+                Current: {(staffData as { username?: string }).username || "Not set"}
               </p>
             </div>
             <div>

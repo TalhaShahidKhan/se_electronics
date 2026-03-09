@@ -20,7 +20,7 @@ async function FeedbackList(params: SearchParams) {
     );
   }
 
-  if (response.data.length === 0) {
+  if (response.data!.length === 0) {
     return (
       <tr className="border-b">
         <td colSpan={9} className="text-center py-4 text-gray-600">
@@ -30,9 +30,9 @@ async function FeedbackList(params: SearchParams) {
     );
   }
 
-  const feedbacks = response.data;
+  const feedbacks = response.data!;
 
-  return feedbacks.map((feedback) => (
+  return feedbacks.map((feedback: any) => (
     <tr key={feedback.serviceId} className="border-b">
       <td className="py-4 px-2 whitespace-nowrap">
         <div className="flex items-center">

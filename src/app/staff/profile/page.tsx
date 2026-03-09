@@ -17,16 +17,17 @@ export default async function StaffProfilePage() {
         );
     }
 
+    const userId = session.userId as string;
     // Fetch all data server-side
     const [profileRes, statsRes, servicesRes] = await Promise.all([
-        getStaffById(session.userId),
-        getStaffProfileStats(session.userId),
-        getMyServices(session.userId)
+        getStaffById(userId),
+        getStaffProfileStats(userId),
+        getMyServices(userId)
     ]);
 
     const staffData = profileRes.success ? profileRes.data : null;
     const stats = statsRes.success ? statsRes.data : null;
-    const services = servicesRes.success ? servicesRes.data : [];
+    const services = servicesRes.success ? (servicesRes.data ?? []) : [];
 
     if (!staffData) {
         return (
@@ -68,7 +69,7 @@ export default async function StaffProfilePage() {
                             <h1 className="text-2xl font-bold">{staffData.name}</h1>
                             <p className="text-gray-600 capitalize">{staffData.role}</p>
                             <p className="text-sm text-gray-500">ID: {staffData.staffId}</p>
-                            <p className="text-sm text-gray-500">Username: {staffData.username || 'Not set'}</p>
+                            <p className="text-sm text-gray-500">Username: {(staffData as { username?: string }).username || 'Not set'}</p>
                             <div className="flex items-center gap-4 mt-2">
                                 <span className="text-yellow-500">
                                     {'★'.repeat(Math.floor(stats?.rating || 0))}

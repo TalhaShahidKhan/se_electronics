@@ -107,8 +107,10 @@ export default function CustomerForm({
       ...customerInfo,
       invoice: {
         ...customerInfo.invoice,
+        paymentType: (customerInfo.invoice.paymentType as "cash" | "bkash" | "nagad" | "rocket" | "bank") ?? "cash",
         subtotal: totalAmount,
         total: totalAmount,
+        dueAmount: customerInfo.invoice.dueAmount ?? 0,
       },
       products: productItems,
     };
@@ -117,10 +119,10 @@ export default function CustomerForm({
 
     const response =
       mode === "create"
-        ? await createCustomer(customerDataPayload, sendInvoiceLink)
+        ? await createCustomer(customerDataPayload as Parameters<typeof createCustomer>[0], sendInvoiceLink)
         : await updateCustomer(
             customerData!.customerId,
-            customerDataPayload,
+            customerDataPayload as Parameters<typeof updateCustomer>[1],
             sendInvoiceLink,
           );
 

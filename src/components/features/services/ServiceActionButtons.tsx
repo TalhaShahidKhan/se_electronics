@@ -454,7 +454,7 @@ const ServiceEditModal = ({
     ...serviceData,
     statusHistory: statusHistory,
   });
-  const [attachedMediaUrls, setAttachedMediaUrls] = useState([]);
+  const [attachedMediaUrls, setAttachedMediaUrls] = useState<string[]>([]);
   const [selectedProductType, setSelectedProductType] = useState(
     serviceData.productType,
   );
@@ -464,7 +464,7 @@ const ServiceEditModal = ({
   const districts = Object.keys(geoData);
   const thanas = geoData[selectedDistrict as keyof typeof geoData] || [];
   const [response, updateServiceAction, isUpdating] = useActionState(
-    (_, fd: FormData) =>
+    (_prevState: unknown, fd: FormData) =>
       updateService(
         fd,
         serviceData.serviceId,
@@ -494,7 +494,7 @@ const ServiceEditModal = ({
         toast.error(res.message);
         return;
       }
-      setAttachedMediaUrls(res.data);
+      setAttachedMediaUrls(res.data ?? []);
     }
   };
 
@@ -523,11 +523,13 @@ const ServiceEditModal = ({
   };
 
   const handleUpdate = () => {
-    const updates = {};
+    const updates: Record<string, unknown> = {};
+    const svcData = serviceData as Record<string, unknown>;
+    const tempData = tempServiceData as Record<string, unknown>;
 
-    for (const key in tempServiceData) {
-      if (tempServiceData[key] != serviceData[key]) {
-        updates[key] = tempServiceData[key];
+    for (const key in tempData) {
+      if (tempData[key] != svcData[key]) {
+        updates[key] = tempData[key];
       }
     }
   };
@@ -541,8 +543,9 @@ const ServiceEditModal = ({
     const tempServiceInfo = Object.fromEntries(formData);
     const updates: any = {};
 
+    const tempData = tempServiceData as Record<string, unknown>;
     for (const key in tempServiceInfo) {
-      if (tempServiceInfo[key] != tempServiceData[key]) {
+      if (tempServiceInfo[key] != tempData[key]) {
         updates[key] = tempServiceInfo[key];
       }
     }
@@ -552,14 +555,14 @@ const ServiceEditModal = ({
         updates.messageInfo = {
           customerName: updates.customerName || tempServiceData.customerName,
           customerPhoneNumber:
-            updates.customerPhoneNumber || tempServiceData.customerPhoneNumber,
-          messageType: tempServiceData.serviceType,
+            updates.customerPhoneNumber || tempServiceData.customerPhone,
+          messageType: tempServiceData.type,
         };
       }
 
       setIsLoading(true);
 
-      const res = await updateService(tempServiceData.serviceId, updates);
+      const res = await updateService(formData, tempServiceData.serviceId);
 
       setIsLoading(false);
       setHasUpdates(!res.success);
@@ -572,8 +575,9 @@ const ServiceEditModal = ({
   const checkEmptyField = (event: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const tempServiceInfo = Object.fromEntries(formData);
+    const tempData = tempServiceData as Record<string, unknown>;
     for (const key in tempServiceInfo) {
-      if (tempServiceInfo[key].toString().trim() != tempServiceData[key]) {
+      if (tempServiceInfo[key].toString().trim() != tempData[key]) {
         setHasUpdates(true);
         break;
       } else {
@@ -704,7 +708,7 @@ const ServiceEditModal = ({
                 </label>
               </div>
               <InputField
-                defaultValue={serviceData.customerAddressPostOffice}
+                defaultValue={serviceData.customerAddressPostOffice ?? ''}
                 label="পোস্ট অফিস"
                 name="customerAddressPostOffice"
                 required={false}
@@ -712,7 +716,7 @@ const ServiceEditModal = ({
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <InputField
-                defaultValue={serviceData.memoNumber}
+                defaultValue={serviceData.memoNumber ?? ''}
                 label="মেমো নং"
                 name="memoNumber"
                 required={false}
@@ -795,7 +799,7 @@ const ServiceEditModal = ({
                 <div className="flex-1 text-start">
                   {selectedProductType === "others" ? (
                     <InputField
-                      defaultValue={serviceData.powerRating}
+                      defaultValue={serviceData.powerRating ?? ''}
                       label="পণ্যের ওয়াট/ভিএ"
                       name="powerRating"
                       required={false}
@@ -828,7 +832,7 @@ const ServiceEditModal = ({
                 <label className="text-sm">
                   পণ্যের সমস্যা
                   <textarea
-                    defaultValue={serviceData.reportedIssue}
+                    defaultValue={serviceData.reportedIssue ?? ''}
                     name="reportedIssue"
                     placeholder="পণ্যের সমস্যা বিস্তারিত বর্ণনা করুন"
                     className="__input h-32 mt-1"

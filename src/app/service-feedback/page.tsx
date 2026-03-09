@@ -1,5 +1,5 @@
 import { getServiceById } from "@/actions"
-import FeedbackForm from "@/components/FeedbackForm"
+import FeedbackForm from "@/components/features/services/FeedbackForm"
 import { AppError } from "@/utils"
 import { notFound } from "next/navigation"
 
@@ -13,5 +13,5 @@ export default async function FeedbackPage({ searchParams }: { searchParams: Pro
     if (!service.success) {
         throw new AppError("সার্ভিস আইডিটি সঠিক নয়।")
     }
-    return <FeedbackForm serviceId={service.data!.serviceId} customerId={service.data!.customerId} />
+    return <FeedbackForm serviceId={service.data?.serviceId ?? ''} customerId={service.data?.customerId ?? ''} />
 }

@@ -1,5 +1,5 @@
 import { getServiceById } from "@/actions"
-import ServiceReport from "@/components/ServiceReport"
+import ServiceReport from "@/components/features/services/ServiceReport"
 import { AppError } from "@/utils"
 import clsx from "clsx"
 import { notFound } from "next/navigation"
@@ -12,11 +12,11 @@ export default async function ServiceReportPage({ searchParams }: { searchParams
     }
     const response = await getServiceById(params.serviceId)
 
-    if (!response.success) {
+    if (!response.success || !response.data) {
         throw new AppError("সার্ভিস আইডিটি সঠিক নয়।")
     }
     const serviceData = response.data
-    const statusHistory = serviceData.statusHistory[serviceData.statusHistory.length - 1]
+    const statusHistory = serviceData.statusHistory[serviceData.statusHistory.length - 1]!
     const statusArray = serviceData.statusHistory.map(status => status.status)
     if (statusHistory.status === 'completed' || statusHistory.status === 'canceled') {
         return <div className="absolute inset-0 flex flex-col gap-4 items-center text-center px-4 justify-start pt-32">
@@ -38,9 +38,9 @@ export default async function ServiceReportPage({ searchParams }: { searchParams
         return <ServiceReport
             serviceData={{
                 serviceId: serviceData.serviceId,
-                serviceType: serviceData.type,
-                serviceStatus: statusHistory.status,
-                statusArray: statusArray,
+                serviceType: serviceData.type ?? 'repair',
+                serviceStatus: statusHistory.status ?? 'pending',
+                statusArray: statusArray.map(s => s ?? '').filter(Boolean),
                 customerName: serviceData.customerName,
                 customerPhone: serviceData.customerPhone
             }}

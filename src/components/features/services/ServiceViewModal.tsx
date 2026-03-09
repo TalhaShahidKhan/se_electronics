@@ -18,7 +18,7 @@ export default function ServiceViewModal({
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [serviceData, setServiceData] = useState({ ...service });
-  const [attachedMediaUrls, setAttachedMediaUrls] = useState([]);
+  const [attachedMediaUrls, setAttachedMediaUrls] = useState<string[]>([]);
   let userAgentInfo;
 
   if (serviceData.userAgent) {
@@ -39,7 +39,7 @@ export default function ServiceViewModal({
         toast.error(res.message);
         return;
       }
-      setAttachedMediaUrls(res.data);
+      setAttachedMediaUrls(res.data ?? []);
     }
   };
 

@@ -17,7 +17,7 @@ export default async function InvoiceList(params: SearchParams) {
     );
   }
 
-  if (response.data.length === 0) {
+  if (response.data!.length === 0) {
     return (
       <tr className="border-b">
         <td colSpan={8} className="text-center py-4 text-gray-600">
@@ -27,7 +27,7 @@ export default async function InvoiceList(params: SearchParams) {
     );
   }
 
-  const invoices = response.data;
+  const invoices = response.data!;
 
   return invoices.map((invoice) => (
     <tr key={invoice.invoiceNumber} className="border-b">

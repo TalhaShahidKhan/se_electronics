@@ -55,7 +55,7 @@ export default function PaymentActionButtons({
 
   const updatePaymentHandler = async (updates: FormData) => {
     setIsUpdating(true);
-    const res = await updatePayment(paymentData.paymentId, updates);
+    const res = await updatePayment(paymentData.paymentId, Object.fromEntries(updates) as unknown as Parameters<typeof updatePayment>[1]);
     toast(res.message, {
       type: res.success ? "success" : "error",
     });

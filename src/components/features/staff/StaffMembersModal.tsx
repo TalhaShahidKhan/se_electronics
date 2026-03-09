@@ -19,7 +19,7 @@ export default function StaffMembersModal({
   const [isLoading, setIsLoading] = useState(true);
   const [staffs, setStaffs] = useState<StaffsType[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pagination, setPagination] = useState();
+  const [pagination, setPagination] = useState<any>(null);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +31,7 @@ export default function StaffMembersModal({
   useEffect(() => {
     (async () => {
       const res = await getStaffs({ role: role, page: String(pageNumber) });
-      setStaffs(res.data);
+      setStaffs(res.data || []);
       setIsLoading(false);
     })();
   }, [pageNumber]);

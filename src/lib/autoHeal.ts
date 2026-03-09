@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable } from "drizzle-orm/pg-core";
+import { getTableConfig } from "drizzle-orm/pg-core";
 import * as schema from "@/db/schema";
 
 /**
@@ -17,7 +17,8 @@ export async function autoHealDatabase(db: any) {
 
         for (const [tableName, tableObj] of tables) {
             const table = tableObj as any;
-            const actualTableName = table[pgTable.Symbol.Name];
+            const config = getTableConfig(table);
+            const actualTableName = config.name;
 
             // Get existing columns for this table from postgres system tables
             const columnsResult = await db.execute(sql`
@@ -26,17 +27,18 @@ export async function autoHealDatabase(db: any) {
                 WHERE table_name = ${actualTableName}
             `);
 
-            const existingColumns = new Set(columnsResult.map(r => r.column_name));
+            const rows = Array.isArray(columnsResult) ? columnsResult : (columnsResult as { rows?: { column_name: string }[] }).rows ?? [];
+            const existingColumns = new Set(rows.map((r: { column_name: string }) => r.column_name));
 
             // Get columns defined in Drizzle schema
-            const schemaColumns = Object.keys(table[pgTable.Symbol.Columns]);
+            const schemaColumns = Object.keys(config.columns);
 
             for (const colName of schemaColumns) {
                 if (!existingColumns.has(colName)) {
                     console.log(`Column ${colName} is missing in table ${actualTableName}. Healing...`);
 
-                    const columnDef = table[pgTable.Symbol.Columns][colName];
-                    const dataType = columnDef.getSQLType();
+                    const columnDef = config.columns[colName as keyof typeof config.columns] as { getSQLType?: () => string };
+                    const dataType = columnDef?.getSQLType?.() ?? 'text';
 
                     // Add the column
                     await db.execute(sql.raw(`ALTER TABLE "${actualTableName}" ADD COLUMN IF NOT EXISTS "${colName}" ${dataType}`));

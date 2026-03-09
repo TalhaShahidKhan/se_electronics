@@ -68,8 +68,8 @@ export default function SubscriberEditModal({
 
   const match = selectedPowerRating?.match(/(\d+)\s*Volt/i);
   const volt = match ? match[1] : null;
-  const surcharge = voltSurcharges[volt];
-  const discount = discounts[selectedDuration];
+  const surcharge = volt ? voltSurcharges[volt as keyof typeof voltSurcharges] : undefined;
+  const discount = discounts[selectedDuration as unknown as keyof typeof discounts];
   const monthlyTotalAmount = selectedPackage
     ? (prices[selectedPackage] + (surcharge || 0)) * selectedDuration
     : 0;
@@ -204,7 +204,7 @@ export default function SubscriberEditModal({
                   <option key={duration} value={duration}>
                     {duration} মাস{" "}
                     {duration !== 1 &&
-                      `- ৳${discounts[duration as string]} ছাড়`}
+                      `- ৳${discounts[duration as unknown as keyof typeof discounts]} ছাড়`}
                   </option>
                 ))}
               </select>
@@ -266,7 +266,7 @@ export default function SubscriberEditModal({
                     {productPowerRatings.map((rating) => {
                       const match = rating.match(/(\d+)\s*Volt/i);
                       const volt = match ? match[1] : null;
-                      const surcharge = volt ? voltSurcharges[volt] : null;
+                      const surcharge = volt ? voltSurcharges[volt as keyof typeof voltSurcharges] : null;
                       const label = surcharge
                         ? `${rating}  + ৳${surcharge}`
                         : rating;
