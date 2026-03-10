@@ -42,13 +42,7 @@ export default function Home() {
               icon={Users}
               color="text-purple-500 bg-purple-50"
             />
-            <ActionCard
-              href="/staffs"
-              title="Staff Management"
-              description="Manage technicians"
-              icon={Plus}
-              color="text-orange-500 bg-orange-50"
-            />
+           
           </div>
         </div>
 
