@@ -340,7 +340,7 @@ export default function DashboardLayout({
           <div className="flex gap-1 text-sm mb-5 bg-green-50 p-1 border border-green-500 rounded-md">
             {smsBalance ? (
               <>
-                <span>SMS Bal:</span>
+                <span>SMS Balence:</span>
                 <span className="text-green-600 font-bold">
                   ৳{smsBalance.toLocaleString()}
                 </span>

@@ -1,6 +1,6 @@
 import AdminStats from "@/components/features/admin/AdminStats";
 import DashboardHeader from "@/components/features/admin/DashboardHeader";
-import { ChevronRight, CreditCard, Plus, Users, Wrench } from "lucide-react";
+import { ChevronRight, CreditCard, Users, Wrench } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -41,13 +41,6 @@ export default function Home() {
               description="View customer profiles"
               icon={Users}
               color="text-purple-500 bg-purple-50"
-            />
-            <ActionCard
-              href="/staffs"
-              title="Staff Management"
-              description="Manage technicians"
-              icon={Plus}
-              color="text-orange-500 bg-orange-50"
             />
           </div>
         </div>
