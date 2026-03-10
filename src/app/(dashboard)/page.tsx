@@ -1,82 +1,108 @@
-'use client'
-
-import { createService } from "@/actions";
-import { contactDetails, productTypes } from "@/constants";
-import { useSideNavContext } from "@/hooks";
-import { useActionState, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import AdminStats from "@/components/features/admin/AdminStats";
+import DashboardHeader from "@/components/features/admin/DashboardHeader";
+import { ChevronRight, CreditCard, Plus, Users, Wrench } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
-  const [response, createServiceAction, isPending] = useActionState(createService, undefined)
-  const [hasEmptyField, setHasEmptyField] = useState(true)
-  const { openSideNav } = useSideNavContext()
-
-  const checkEmptyField = (event: React.FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(event.currentTarget)
-    const tempServiceInfo = Object.fromEntries(formData)
-    setHasEmptyField(Object.values(tempServiceInfo).some(value => value.toString().trim() === ''))
-  }
-
-  useEffect(() => {
-    if (!isPending && response) {
-      toast(response.message, {
-        type: response.success ? 'success' : 'error'
-      })
-    }
-  }, [isPending])
-
   return (
-    <div className="flex flex-col gap-4">
-      <header>
-        <div className="flex items-center gap-4">
-          <button title="Show Sidebar" onClick={openSideNav} className="xl:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          </button>
-          <div className="font-bold text-2xl">
-            <span>Add Service</span>
+    <div className="flex flex-col gap-6 max-w-7xl mx-auto py-4">
+      <DashboardHeader />
+
+      {/* Stats Section */}
+      <AdminStats />
+
+      {/* Quick Links / Recent Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold text-gray-900">
+              Recommended Actions
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ActionCard
+              href="/services/repairs"
+              title="Repair List"
+              description="Manage service requests"
+              icon={Wrench}
+              color="text-blue-500 bg-blue-50"
+            />
+            <ActionCard
+              href="/payments"
+              title="Payments"
+              description="Review payment requests"
+              icon={CreditCard}
+              color="text-green-500 bg-green-50"
+            />
+            <ActionCard
+              href="/customers"
+              title="Customers"
+              description="View customer profiles"
+              icon={Users}
+              color="text-purple-500 bg-purple-50"
+            />
+            <ActionCard
+              href="/staffs"
+              title="Staff Management"
+              description="Manage technicians"
+              icon={Plus}
+              color="text-orange-500 bg-orange-50"
+            />
           </div>
         </div>
-      </header>
-      <form action={createServiceAction} onChange={checkEmptyField} className="max-w-[700px]">
-        <div className="mb-6">
-          <label htmlFor="customerName" className="mb-2 block">Customer Name</label>
-          <input required className="__input" placeholder="Name" type="text" name="customerName" id="customerName" />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="customerPhone" className="mb-2 block">Phone Number</label>
-          <input required className="__input" placeholder="Number" type="text" name="customerPhone" id="customerPhone" />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="customerAddress" className="mb-2 block">Address</label>
-          <input required className="__input" placeholder="Address" type="text" name="customerAddress" id="customerAddress" />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="productType" className="mb-2 block">Product Type</label>
-          <select name="productType" id="productType" className="w-full bg-white border rounded-md outline-none h-10 px-2">
-            {productTypes.map(productType => <option key={productType} value={productType}>{productType.toUpperCase()}</option>)}
-          </select>
-        </div>
-        <div className="mb-6">
-          <label htmlFor="productModel" className="mb-2 block">Product Model</label>
-          <input required className="__input" placeholder="Model" type="text" name="productModel" id="productModel" />
-        </div>
-        <div className="mb-6">
-          <label className="mb-2 block">Message preview:</label>
-          <div className="max-w-96 text-gray-600">
-            <p>
-              প্রিয় গ্রাহক [Customer Name] SE ELECTRONICS আপনার সার্ভিসিং এর অনুরোধটি গ্রহণ করা হয়েছে সার্ভিস আই ডি নং [Service Id] ধন্যবাদ আমাদের সাথে থাকার জন্য যে কোন তথ্যের জন্য {contactDetails.customerCare}
+
+        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl flex flex-col justify-between">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Service Platform 6.0</h2>
+            <p className="text-blue-100 text-sm max-w-xs mb-8">
+              Efficiently manage your electronics servicing business from one
+              central dashboard.
             </p>
           </div>
+
+          <div className="flex flex-wrap gap-4">
+            <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl flex-1 min-w-[120px]">
+              <p className="text-[10px] uppercase font-bold text-blue-200 mb-1 tracking-widest">
+                Version
+              </p>
+              <p className="font-bold">v6.0.4 Enterprise</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl flex-1 min-w-[120px]">
+              <p className="text-[10px] uppercase font-bold text-blue-200 mb-1 tracking-widest">
+                Server Status
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <p className="font-bold">All services active</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <button
-          disabled={isPending}
-          className="__btn w-full disabled:bg-opacity-50"
-        >
-          {isPending ? 'Adding...' : 'Add Service'}
-        </button>
-      </form>
+      </div>
     </div>
+  );
+}
+
+function ActionCard({ href, title, description, icon: Icon, color }: any) {
+  return (
+    <Link
+      href={href}
+      className="group flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-transparent hover:border-gray-200 hover:bg-white transition-all"
+    >
+      <div className={`p-3 rounded-xl ${color}`}>
+        <Icon size={20} />
+      </div>
+      <div className="flex-1">
+        <h3 className="text-sm font-bold text-gray-900 flex items-center gap-1 group-hover:text-blue-600 transition-colors">
+          {title}
+          <ChevronRight
+            size={14}
+            className="opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all"
+          />
+        </h3>
+        <p className="text-[10px] text-gray-500 mt-0.5">{description}</p>
+      </div>
+    </Link>
   );
 }

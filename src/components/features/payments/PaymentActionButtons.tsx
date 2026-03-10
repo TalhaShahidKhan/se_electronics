@@ -4,10 +4,11 @@ import {
   deletePayment,
   sendInvoiceDownloadLink,
   updatePayment,
+  updatePaymentStatus,
 } from "@/actions";
 import { Modal } from "@/components/ui";
 import { paymentInvoiceDownloadLinkMessagePreview } from "@/constants";
-import { PaymentDataType } from "@/types";
+import { CheckCircle, Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
 import PaymentForm from "./PaymentForm";
@@ -16,11 +17,12 @@ import PaymentViewModal from "./PaymentViewModal";
 export default function PaymentActionButtons({
   paymentData,
 }: {
-  paymentData: PaymentDataType;
+  paymentData: any; // Using any for new fields compatibility
 }) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPaymentInfoModal, setShowPaymentInfoModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(paymentData.staff?.phone!);
   const [showSentLinkModal, setShowSentLinkModal] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -55,12 +57,26 @@ export default function PaymentActionButtons({
 
   const updatePaymentHandler = async (updates: FormData) => {
     setIsUpdating(true);
-    const res = await updatePayment(paymentData.paymentId, Object.fromEntries(updates) as unknown as Parameters<typeof updatePayment>[1]);
+    const res = await updatePayment(
+      paymentData.paymentId,
+      Object.fromEntries(updates) as unknown as Parameters<
+        typeof updatePayment
+      >[1],
+    );
     toast(res.message, {
       type: res.success ? "success" : "error",
     });
     setIsUpdating(!res.success);
     setShowEditModal(!res.success);
+  };
+
+  const handleStatusUpdate = async (
+    newStatus: "pending" | "processing" | "completed",
+  ) => {
+    setIsStatusUpdating(true);
+    const res = await updatePaymentStatus(paymentData.paymentId, newStatus);
+    toast(res.message, { type: res.success ? "success" : "error" });
+    setIsStatusUpdating(false);
   };
 
   const deletePaymentInfo = async () => {
@@ -78,6 +94,26 @@ export default function PaymentActionButtons({
 
   return (
     <div className="flex gap-4">
+      <button
+        onClick={() => handleStatusUpdate("completed")}
+        disabled={paymentData.status === "completed" || isStatusUpdating}
+        title={
+          paymentData.status === "completed"
+            ? "Payment Completed"
+            : "Mark as Completed"
+        }
+        className={
+          paymentData.status === "completed"
+            ? "text-green-500 cursor-default"
+            : "text-gray-400 hover:text-green-600"
+        }
+      >
+        {isStatusUpdating ? (
+          <Loader2 className="size-6 animate-spin" />
+        ) : (
+          <CheckCircle className="size-6" />
+        )}
+      </button>
       {showPaymentInfoModal && (
         <PaymentViewModal
           paymentData={paymentData}

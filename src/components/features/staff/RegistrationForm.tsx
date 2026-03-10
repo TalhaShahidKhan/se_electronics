@@ -51,21 +51,11 @@ export default function RegistrationForm({
   const [selectedPermanentDistrict, setSelectedPermanentDistrict] = useState(
     staffData?.permanentDistrict || "",
   );
-  const response = mode === "create" ? createResponse : updateResponse;
   const districts = Object.keys(geoData);
   const currentThanas =
     geoData[selectedCurrentDistrict as keyof typeof geoData] || [];
   const permanentThanas =
     geoData[selectedPermanentDistrict as keyof typeof geoData] || [];
-
-  if (response) {
-    if (mode === "update") {
-      toast(response.message, { type: response.success ? "success" : "error" });
-    }
-    if (response.success) {
-      onRegistrationComplete?.(staffData?.name || "");
-    }
-  }
 
   const fetchDocumentsUrl = async (
     e: React.ToggleEvent<HTMLDetailsElement>,
@@ -104,6 +94,18 @@ export default function RegistrationForm({
       }
     }
   }, [isRegistering]);
+
+  useEffect(() => {
+    if (!isUpdating || !updateResponse) return;
+
+    toast(updateResponse.message, {
+      type: updateResponse.success ? "success" : "error",
+    });
+
+    if (updateResponse.success) {
+      onRegistrationComplete?.(staffData?.name || "");
+    }
+  }, [isUpdating, updateResponse, onRegistrationComplete, staffData?.name]);
   return (
     <form
       action={mode === "create" ? createStaffAction : updateStaffAction}

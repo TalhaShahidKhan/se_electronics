@@ -63,6 +63,20 @@ export const agreementTypesEnum = pgEnum("agreementTypes", [
   "application_declaration",
 ]);
 
+export const paymentStatusEnum = pgEnum("paymentStatus", [
+  "pending",
+  "approved",
+  "rejected",
+  "completed",
+]);
+
+export const reportStatusEnum = pgEnum("reportStatus", [
+  "pending",
+  "processing",
+  "resolved",
+  "dismissed",
+]);
+
 export const statusTypesEnum = pgEnum("statusTypes", ["system", "custom"]);
 
 export const createdFromTypesEnum = pgEnum("serviceSourceTypes", [
@@ -500,6 +514,7 @@ export const payments = pgTable("payments", {
   receiverWalletNumber: varchar({ length: 255 }),
   receiverBankInfo: json().$type<BankInfo>(),
   amount: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
+  status: paymentStatusEnum().default("pending").notNull(),
   transactionId: varchar({ length: 255 }).unique(),
   description: text(),
   date: timestamp({ withTimezone: true }).defaultNow().notNull(),
@@ -516,6 +531,47 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
     references: [staffs.staffId],
   }),
 }));
+
+export const staffComplaints = pgTable("staffComplaints", {
+  id: uuid().defaultRandom().primaryKey(),
+  complaintId: varchar({ length: 255 }).unique().notNull(),
+  customerId: varchar({ length: 255 })
+    .references(() => customers.customerId, { onDelete: "cascade" })
+    .notNull(),
+  staffId: varchar({ length: 255 })
+    .references(() => staffs.staffId, { onDelete: "cascade" })
+    .notNull(),
+  serviceId: varchar({ length: 255 }).references(() => services.serviceId, {
+    onDelete: "set null",
+  }),
+  subject: varchar({ length: 255 }).notNull(),
+  description: text().notNull(),
+  status: reportStatusEnum().default("pending").notNull(),
+  adminNote: text(),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp({ withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const staffComplaintsRelations = relations(
+  staffComplaints,
+  ({ one }) => ({
+    customer: one(customers, {
+      fields: [staffComplaints.customerId],
+      references: [customers.customerId],
+    }),
+    staff: one(staffs, {
+      fields: [staffComplaints.staffId],
+      references: [staffs.staffId],
+    }),
+    service: one(services, {
+      fields: [staffComplaints.serviceId],
+      references: [services.serviceId],
+    }),
+  }),
+);
 
 export const feedbacks = pgTable("feedbacks", {
   id: uuid().defaultRandom().primaryKey(),
@@ -534,6 +590,33 @@ export const feedbacks = pgTable("feedbacks", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const contactMessages = pgTable("contactMessages", {
+  id: uuid().defaultRandom().primaryKey(),
+  messageId: varchar({ length: 255 }).unique().notNull(),
+  customerId: varchar({ length: 255 })
+    .references(() => customers.customerId, { onDelete: "cascade" })
+    .notNull(),
+  subject: varchar({ length: 255 }).notNull(),
+  message: text().notNull(),
+  isRead: boolean().default(false).notNull(),
+  adminReply: text(),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp({ withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const contactMessagesRelations = relations(
+  contactMessages,
+  ({ one }) => ({
+    customer: one(customers, {
+      fields: [contactMessages.customerId],
+      references: [customers.customerId],
+    }),
+  }),
+);
 
 export const feedbacksRelations = relations(feedbacks, ({ one }) => ({
   service: one(services, {

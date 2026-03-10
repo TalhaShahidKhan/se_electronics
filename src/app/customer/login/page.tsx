@@ -45,7 +45,7 @@ export default function CustomerLoginPage() {
         >
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Customer ID
+              Customer ID or Invoice Number
             </label>
             <input
               type="text"
@@ -53,7 +53,7 @@ export default function CustomerLoginPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="e.g., SE12345678"
+              placeholder="e.g., CUST-1234 or INV-2026-0001"
               required
             />
           </div>

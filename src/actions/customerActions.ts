@@ -46,12 +46,20 @@ export async function customerLogin(prevState: any, credentials: FormData) {
       Object.fromEntries(credentials),
     );
 
+    const identifier = customerId as string;
+
     const customer = await db.query.customers.findFirst({
-      where: eq(customers.customerId, customerId as string),
+      where: or(
+        eq(customers.customerId, identifier),
+        eq(customers.invoiceNumber, identifier),
+      ),
     });
 
     if (!customer) {
-      return { success: false, message: "Invalid Customer ID" };
+      return {
+        success: false,
+        message: "Invalid Customer ID or Invoice Number",
+      };
     }
 
     await createSession({

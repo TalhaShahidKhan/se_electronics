@@ -98,6 +98,22 @@ export const getSubscriberById = async (subscriptionId: string) => {
   }
 };
 
+export const getSubscriptionsByPhone = async (phone: string) => {
+  try {
+    const data = await db.query.subscriptions.findMany({
+      where: and(
+        eq(subscriptions.isActive, true),
+        ilike(subscriptions.phone, phone),
+      ),
+      orderBy: (subscriptions, { desc }) => [desc(subscriptions.createdAt)],
+    });
+    return { success: true, data };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Could not fetch subscriptions" };
+  }
+};
+
 export const createSubscriber = async (prevState: any, formData: FormData) => {
   try {
     const validatedSubscriptionData = SubscriptionDataSchema.parse(
