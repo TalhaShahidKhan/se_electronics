@@ -106,6 +106,15 @@ export type StaffsType = {
   createdFrom: "public_form" | "dashboard";
   ipAddress: string | null;
   userAgent: string | null;
+  docs: string | null;
+  skills: string | null;
+  bio: string | null;
+  profileCompleted: boolean;
+  rating: number | null;
+  totalServices: number | null;
+  successfulServices: number | null;
+  canceledServices: number | null;
+  isActiveStaff: boolean | null;
 };
 
 export type StaffServiveReport = {
@@ -126,7 +135,7 @@ export type ServicesType = {
   customerAddressPoliceStation: string | null;
   customerAddressPostOffice: string | null;
   staffId: string | null;
-  staffRole: "technician" | "electrician";
+  staffRole: "technician" | "electrician" | null;
   staffName: string | null;
   staffPhone: string | null;
   staffReport: StaffServiveReport | null;
@@ -150,6 +159,8 @@ export type ServicesType = {
   reportedIssue: string | null;
   createdFrom: "public_form" | "dashboard";
   isActive: boolean;
+  ipAddress: string | null;
+  userAgent: string | null;
   createdAt: Date;
   updatedAt: Date;
 };

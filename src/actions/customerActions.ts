@@ -95,28 +95,33 @@ export async function verifyCustomerSession() {
     return { isAuth: false };
   }
 
-  const customer = await db.query.customers.findFirst({
-    where: eq(customers.customerId, session.userId as string),
-    columns: {
-      id: true,
-      customerId: true,
-      name: true,
-      phone: true,
-      address: true,
-    },
-  });
+  try {
+    const customer = await db.query.customers.findFirst({
+      where: eq(customers.customerId, session.userId as string),
+      columns: {
+        id: true,
+        customerId: true,
+        name: true,
+        phone: true,
+        address: true,
+      },
+    });
 
-  if (!customer) {
+    if (!customer) {
+      return { isAuth: false };
+    }
+
+    return {
+      isAuth: true,
+      userId: session.userId,
+      username: session.username,
+      role: "customer",
+      customer,
+    };
+  } catch (error) {
+    console.error("verifyCustomerSession database error:", error);
     return { isAuth: false };
   }
-
-  return {
-    isAuth: true,
-    userId: session.userId,
-    username: session.username,
-    role: "customer",
-    customer,
-  };
 }
 
 // REMOVED: setCustomerCredentials is no longer needed in passwordless system
@@ -252,10 +257,15 @@ export const createCustomer = async (
     return { success: true, message: "Customer created" };
   } catch (error) {
     if (error instanceof ZodError) {
-      console.error(flattenError(error).fieldErrors);
+      const fieldErrors = flattenError(error).fieldErrors;
+      console.error(fieldErrors);
+      const firstErrorField = Object.keys(fieldErrors)[0];
+      const errorMessage = firstErrorField 
+        ? `অনুগ্রহ করে সঠিক ভাবে ${firstErrorField} প্রদান করুন।`
+        : "অনুগ্রহ করে সকল প্রয়োজনীয় তথ্য গুলো পূরণ করুন।";
       return {
         success: false,
-        message: "অনুগ্রহ করে সকল প্রয়োজনীয় তথ্য গুলো পূরণ করুন।",
+        message: errorMessage,
       };
     }
     console.error(error);

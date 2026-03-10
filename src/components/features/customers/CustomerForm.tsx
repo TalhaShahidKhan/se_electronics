@@ -317,7 +317,7 @@ export default function CustomerForm({
                           <InputField
                             name={`model-${item.id}`}
                             placeholder="Model"
-                            required={false}
+                            required={true}
                             value={item.model}
                             onChange={(e) =>
                               handleProductItemChange(
@@ -380,7 +380,7 @@ export default function CustomerForm({
                             min={1}
                             type="number"
                             placeholder="Quantity"
-                            required={false}
+                            required={true}
                             value={item.quantity}
                             onChange={(e) =>
                               handleProductItemChange(
@@ -398,7 +398,7 @@ export default function CustomerForm({
                               min={0}
                               type="number"
                               placeholder="Unit Price"
-                              required={false}
+                              required={true}
                               value={item.unitPrice}
                               onChange={(e) =>
                                 handleProductItemChange(

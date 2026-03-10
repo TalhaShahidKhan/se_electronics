@@ -14,7 +14,7 @@ const ComplaintSchema = z.object({
   description: z.string().min(1),
 });
 
-export async function submitComplaint(formData: FormData) {
+export async function submitComplaint(_prevState: any, formData: FormData) {
   try {
     const rawData = Object.fromEntries(formData);
     const validated = ComplaintSchema.parse(rawData);
@@ -31,6 +31,7 @@ export async function submitComplaint(formData: FormData) {
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.error(error.issues);
       return { success: false, message: "Please fill all required fields." };
     }
     console.error(error);

@@ -121,7 +121,7 @@ export const getPaymentByNumber = async (invoiceNumber: string) => {
 
 export const updatePaymentStatus = async (
   paymentId: string,
-  status: "pending" | "processing" | "completed",
+  status: "pending" | "processing" | "approved" | "rejected" | "completed",
 ) => {
   try {
     const paymentData = await db.query.payments.findFirst({

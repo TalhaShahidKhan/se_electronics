@@ -14,7 +14,7 @@ import {
   Spinner,
   StatusBadge,
 } from "@/components/ui";
-import { StaffsType } from "@/types";
+import { PaymentDataType, ServicesType, StaffsType } from "@/types";
 import { formatDate, parseUserAgent } from "@/utils";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -30,15 +30,15 @@ export default function StaffProfileModal({
   staffDataPayload?: StaffsType;
   onClose: () => void;
 }) {
-  const [staffData, setStaffData] = useState<any>({ ...staffDataPayload });
+  const [staffData, setStaffData] = useState<Partial<StaffsType>>({ ...staffDataPayload });
   const [nidDocsImages, setNidDocsImages] = useState<{
     nidFrontPhoto: string;
     nidBackPhoto: string;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(staffId ? true : false);
-  const [serviceData, setServiceData] = useState<any[]>([]);
+  const [serviceData, setServiceData] = useState<Partial<ServicesType>[]>([]);
   const [isLoadingServiceHistory, setIsLoadingServiceHistory] = useState(false);
-  const [paymentData, setPaymentData] = useState<any[]>([]);
+  const [paymentData, setPaymentData] = useState<Partial<PaymentDataType>[]>([]);
   const [isLoadingPaymentHistory, setIsLoadingPaymentHistory] = useState(false);
   const [tosContent, setTosContent] = useState("");
 
@@ -79,7 +79,7 @@ export default function StaffProfileModal({
       setIsLoadingServiceHistory(true);
       const res = await getServiceHistoryById(staffData.staffId!);
       if (res.success) {
-        setServiceData([...res.data!]);
+        setServiceData([...res.data as unknown as Partial<ServicesType>[]]);
       } else {
         toast.error(res.message);
       }
@@ -95,7 +95,7 @@ export default function StaffProfileModal({
       setIsLoadingPaymentHistory(true);
       const res = await getPaymentHistoryById(staffData.staffId!);
       if (res.success) {
-        setPaymentData([...res.data!]);
+        setPaymentData([...res.data as unknown as Partial<PaymentDataType>[]]);
       } else {
         toast.error(res.message);
       }
@@ -109,7 +109,7 @@ export default function StaffProfileModal({
         setIsLoading(true);
         const res = await getStaffById(staffId);
         if (res.success) {
-          setStaffData({ ...res.data });
+          setStaffData({ ...res.data as StaffsType });
           setIsLoading(false);
         } else {
           toast.error(res.message);
@@ -191,7 +191,7 @@ export default function StaffProfileModal({
                     <span className="w-32 flex-shrink-0">Join Date</span>
                     <span className="mr-4 flex-shrink-0">:</span>
                     <span className="font-semibold">
-                      {formatDate(staffData.createdAt!)}
+                      {staffData.createdAt ? formatDate(staffData.createdAt) : "N/A"}
                     </span>
                   </div>
                   <div className="flex border-b py-1">
@@ -425,7 +425,7 @@ export default function StaffProfileModal({
                   {serviceData.map((service, i) => (
                     <li key={service.id} className="relative flex gap-3.5">
                       <span className="text-sm">
-                        {formatDate(service.createdAt)}
+                        {service.createdAt ? formatDate(service.createdAt) : "N/A"}
                       </span>
                       <div className="flex gap-3.5">
                         <div className="w-3.5 flex flex-col h-full pt-1">
@@ -443,12 +443,14 @@ export default function StaffProfileModal({
                         <div className="flex flex-col text-start gap-2 pb-8">
                           <div className={clsx("font-bold space-x-2")}>
                             <span>
-                              {service.productType.toUpperCase()}-
+                              {service.productType?.toUpperCase()}-
                               {service.productModel}
                             </span>
                             <StatusBadge
                               status={
-                                service.statusHistory[0].status ?? "custom"
+                                (service.statusHistory?.[0]?.statusType === "system"
+                                  ? service.statusHistory[0].status
+                                  : "custom") || "custom"
                               }
                             />
                           </div>
@@ -512,7 +514,7 @@ export default function StaffProfileModal({
                   {paymentData.map((payment, i) => (
                     <li key={payment.id} className="relative flex gap-3.5">
                       <span className="min-w-24 text-sm text-end">
-                        {formatDate(payment.date)}
+                        {payment.date ? formatDate(payment.date) : "N/A"}
                       </span>
                       <div className="flex gap-3.5">
                         <div className="w-3.5 mt-1 flex flex-col h-full">
@@ -530,7 +532,7 @@ export default function StaffProfileModal({
                         <div className="flex flex-col text-start gap-2 pb-8">
                           <div className="space-x-2">
                             <span className="font-bold">
-                              {payment.amount.toLocaleString()} TK
+                              {payment.amount?.toLocaleString()} TK
                             </span>
                             <span className="text-green-500 bg-green-500 bg-opacity-10 px-2 text-sm rounded-md border border-green-500">
                               Paid
@@ -552,7 +554,7 @@ export default function StaffProfileModal({
                             <span className="text-sm">
                               Payment Method:{" "}
                               <span className="font-semibold text-sm">
-                                {payment.paymentMethod.toUpperCase()}
+                                {payment.paymentMethod?.toUpperCase()}
                               </span>
                             </span>
                             {payment.transactionId && (
@@ -566,7 +568,7 @@ export default function StaffProfileModal({
                             <span className="text-sm">
                               Payment Receipt:
                               <InvoicePreviewButton
-                                paymentData={payment}
+                                paymentData={payment as PaymentDataType}
                                 className="text-blue-500 hover:underline cursor-pointer"
                               >
                                 <span>#{payment.invoiceNumber}</span>

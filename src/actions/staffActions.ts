@@ -702,29 +702,34 @@ export async function verifyStaffSession() {
     return { isAuth: false };
   }
 
-  const staff = await db.query.staffs.findFirst({
-    where: eq(staffs.staffId, session.userId as string),
-    columns: {
-      id: true,
-      staffId: true,
-      name: true,
-      username: true,
-      role: true,
-      isActiveStaff: true,
-    },
-  });
+  try {
+    const staff = await db.query.staffs.findFirst({
+      where: eq(staffs.staffId, session.userId as string),
+      columns: {
+        id: true,
+        staffId: true,
+        name: true,
+        username: true,
+        role: true,
+        isActiveStaff: true,
+      },
+    });
 
-  if (!staff || !staff.isActiveStaff) {
+    if (!staff || !staff.isActiveStaff) {
+      return { isAuth: false };
+    }
+
+    return {
+      isAuth: true,
+      userId: session.userId,
+      username: session.username,
+      role: "staff",
+      staff,
+    };
+  } catch (error) {
+    console.error("verifyStaffSession database error:", error);
     return { isAuth: false };
   }
-
-  return {
-    isAuth: true,
-    userId: session.userId,
-    username: session.username,
-    role: "staff",
-    staff,
-  };
 }
 
 // ============================================

@@ -124,8 +124,9 @@ export default function MaintenancePlans() {
 
     const match = selectedPowerRating.match(/(\d+)\s*Volt/i);
     const volt = match ? match[1] : null;
-    const surcharge = volt ? voltSurcharges[volt as keyof typeof voltSurcharges] : null
-    const discount = discounts[selectedDuration as unknown as keyof typeof discounts] ?? null
+    const surcharge = (volt && volt in voltSurcharges) ? voltSurcharges[volt as keyof typeof voltSurcharges] : 0;
+    const durationKey = selectedDuration.toString();
+    const discount = (durationKey in discounts) ? (discounts as any)[durationKey] : 0;
     const monthlyTotalAmount = selectedPackage ? (selectedPackage.price + (surcharge || 0)) * selectedDuration : 0;
     const totalAmount = monthlyTotalAmount - (discount || 0);
 

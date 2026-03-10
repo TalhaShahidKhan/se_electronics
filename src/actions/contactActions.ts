@@ -12,7 +12,7 @@ const MessageSchema = z.object({
   message: z.string().min(1),
 });
 
-export async function sendContactMessage(formData: FormData) {
+export async function sendContactMessage(_prevState: any, formData: FormData) {
   try {
     const rawData = Object.fromEntries(formData);
     const validated = MessageSchema.parse(rawData);
@@ -26,6 +26,7 @@ export async function sendContactMessage(formData: FormData) {
     return { success: true, message: "Message sent! Admin will respond soon." };
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.error(error.issues);
       return { success: false, message: "Please fill all required fields." };
     }
     console.error(error);

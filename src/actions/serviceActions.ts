@@ -172,6 +172,7 @@ export const getServiceHistoryById = async (id: string) => {
         customerName: true,
         staffId: true,
         staffName: true,
+        staffPhone: true,
         customerAddress: true,
         customerAddressDistrict: true,
         type: true,

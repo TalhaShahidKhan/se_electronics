@@ -9,6 +9,7 @@ import { StatusBadge } from "@/components";
 import CustomerDashboardActions from "@/components/features/customers/CustomerDashboardActions";
 import ServiceStepper from "@/components/features/services/ServiceStepper";
 import {
+  CheckCircle2,
   ChevronRight,
   CreditCard,
   ExternalLink,
@@ -49,7 +50,7 @@ export default async function CustomerProfilePage() {
   const latestActiveService = services.find(
     (s) =>
       !["completed", "canceled"].includes(
-        s.statusHistory?.[s.statusHistory.length - 1]?.status,
+        s.statusHistory?.[s.statusHistory.length - 1]?.status ?? "",
       ),
   );
 
@@ -76,7 +77,7 @@ export default async function CustomerProfilePage() {
             </p>
           </div>
 
-          <div className="relative z-10 flex gap-4 w-full md:w-auto">
+          <div className="relative z-10 flex flex-col md:flex-row gap-4 w-full md:w-auto">
             <Link
               href="/get-service"
               className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white text-black px-10 py-5 rounded-2xl font-black text-sm hover:scale-[1.05] transition-all active:scale-[0.98] shadow-soft hover:bg-white/90"
@@ -177,10 +178,12 @@ export default async function CustomerProfilePage() {
                               {latestActiveService.staffName}
                             </h4>
                             <a
-                              href={`tel:${latestActiveService.staffPhone}`}
+                              href={`tel:${latestActiveService.staffPhone || latestActiveService.appointedStaff?.phone || ""}`}
                               className="text-xs text-white/60 font-medium hover:text-white transition-colors"
                             >
-                              {latestActiveService.staffPhone}
+                              {latestActiveService.staffPhone ||
+                                latestActiveService.appointedStaff?.phone ||
+                                "Contact Admin"}
                             </a>
                           </div>
                         </div>

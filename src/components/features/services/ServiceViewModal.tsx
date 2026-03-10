@@ -3,6 +3,7 @@
 import { getServiceById, getServiceMediaUrls } from "@/actions";
 import { ImageWithLightbox, Modal, Spinner, StatusBadge } from "@/components";
 import { generateUrl, parseUserAgent } from "@/utils";
+import { ServicesType } from "@/types";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -13,11 +14,13 @@ export default function ServiceViewModal({
   onClose,
 }: {
   serviceId?: string;
-  service?: any;
+  service?: ServicesType;
   onClose: () => void;
 }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [serviceData, setServiceData] = useState({ ...service });
+  const [serviceData, setServiceData] = useState<Partial<ServicesType>>({
+    ...service,
+  });
   const [attachedMediaUrls, setAttachedMediaUrls] = useState<string[]>([]);
   let userAgentInfo;
 
@@ -30,11 +33,13 @@ export default function ServiceViewModal({
   ) => {
     const element = e.currentTarget;
     if (element.open && attachedMediaUrls.length === 0) {
-      const res = await getServiceMediaUrls([
+      const keys = [
         serviceData.productFrontPhotoKey,
         serviceData.productBackPhotoKey,
         serviceData.warrantyCardPhotoKey,
-      ]);
+      ].filter((key): key is string => !!key);
+
+      const res = await getServiceMediaUrls(keys as string[]);
       if (!res.success) {
         toast.error(res.message);
         return;
@@ -48,10 +53,10 @@ export default function ServiceViewModal({
       (async () => {
         setIsLoading(true);
         const res = await getServiceById(serviceId);
-        if (res.success) {
-          setServiceData({ ...res.data });
+        if (res.success && res.data) {
+          setServiceData({ ...(res.data as ServicesType) });
           setIsLoading(false);
-        } else {
+        } else if (!res.success) {
           toast.error(res.message);
           onClose();
         }
@@ -287,7 +292,7 @@ export default function ServiceViewModal({
               )}
             </div>
           </div>
-          {service && (
+          {service && serviceData.statusHistory && serviceData.statusHistory.length > 0 && (
             <div className="mt-5">
               <div className="font-semibold mb-2 p-1 bg-blue-100">
                 Service Info
@@ -299,7 +304,7 @@ export default function ServiceViewModal({
                   <span className="font-semibold">
                     <StatusBadge
                       status={
-                        serviceData.statusHistory[0].statusType === "system"
+                        (serviceData.statusHistory && serviceData.statusHistory[0])?.statusType === "system"
                           ? serviceData.statusHistory[0].status!
                           : "custom"
                       }

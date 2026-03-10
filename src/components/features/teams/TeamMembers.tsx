@@ -62,7 +62,7 @@ export default function TeamMembers({
       })
     : staffs;
 
-  const handleProfileSelect = (staff: any) => {
+  const handleProfileSelect = (staff: (typeof staffs)[number]) => {
     const url = new URL(window.location.href);
     url.searchParams.set("staffId", staff.staffId);
     window.history.pushState({}, "", url);
@@ -118,7 +118,7 @@ export default function TeamMembers({
                   <CheckSquare className="size-5 text-green-600" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">
-                  {(staffStats as any)[selectedProfile.role]?.[
+                  {(staffStats as Record<string, any>)[selectedProfile.role]?.[
                     selectedProfile.phone
                   ]?.completedServices ?? 0}
                 </span>
@@ -143,7 +143,7 @@ export default function TeamMembers({
                   <XCircle className="size-5 text-amber-600" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">
-                  {(staffStats as any)[selectedProfile.role]?.[
+                  {(staffStats as Record<string, any>)[selectedProfile.role]?.[
                     selectedProfile.phone
                   ]?.cancelledServices ?? 0}
                 </span>

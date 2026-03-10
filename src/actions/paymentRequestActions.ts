@@ -16,7 +16,7 @@ const PaymentRequestSchema = z.object({
   description: z.string().optional(),
 });
 
-export async function requestPayment(formData: FormData) {
+export async function requestPayment(_prevState: any, formData: FormData) {
   try {
     const rawData = Object.fromEntries(formData);
     const validated = PaymentRequestSchema.parse(rawData);
@@ -57,7 +57,7 @@ export async function requestPayment(formData: FormData) {
     return { success: true, message: "Payment request sent successfully." };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error(error.errors);
+      console.error(error.issues);
       return {
         success: false,
         message: "Please fill all required fields correctly.",

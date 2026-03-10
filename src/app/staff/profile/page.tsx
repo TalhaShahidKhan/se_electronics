@@ -312,7 +312,7 @@ export default async function StaffProfilePage() {
                         )}
                       {service.statusHistory?.[0]?.status === "completed" && (
                         <StaffDashboardActions
-                          staffId={session.userId!}
+                          staffId={userId}
                           serviceId={service.serviceId}
                         />
                       )}
