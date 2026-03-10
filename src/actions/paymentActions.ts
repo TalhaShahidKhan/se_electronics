@@ -8,6 +8,7 @@ import { PaymentDataSchema } from "@/validationSchemas";
 import { desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import z from "zod";
+import { verifySession } from "@/lib";
 
 export const getPayments = async ({
   query,
@@ -15,6 +16,9 @@ export const getPayments = async ({
   limit = "20",
 }: SearchParams) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const q = `%${query}%`;
     const offset = page && limit ? (Number(page) - 1) * Number(limit) : 0;
     const filters = query
@@ -89,6 +93,13 @@ export const getPaymentsMetadata = async ({
 
 export const getPaymentHistoryById = async (staffId: string) => {
   try {
+    const session = await verifySession(false);
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    if (session.role === "staff" && session.userId !== staffId) {
+      return { success: false, message: "Unauthorized access" };
+    }
+
     const feedbacksData = await db.query.payments.findMany({
       where: eq(payments.staffId, staffId),
       orderBy: (payments, { desc }) => [desc(payments.date)],
@@ -124,6 +135,9 @@ export const updatePaymentStatus = async (
   status: "pending" | "processing" | "approved" | "rejected" | "completed",
 ) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const paymentData = await db.query.payments.findFirst({
       where: eq(payments.paymentId, paymentId),
       with: {
@@ -159,6 +173,9 @@ export const createPayment = async (
   paymentData: z.infer<typeof PaymentDataSchema>,
 ) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const validatedPaymentInfo = PaymentDataSchema.parse(paymentData);
     const paymentId = generateRandomId();
     const invoiceNumber = generateInvoiceNumber();
@@ -188,6 +205,9 @@ export const updatePayment = async (
   updates: z.infer<typeof PaymentDataSchema>,
 ) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const validatedUpdates = PaymentDataSchema.parse(updates);
     await db
       .update(payments)
@@ -210,6 +230,9 @@ export const updatePayment = async (
 
 export const deletePayment = async (paymentId: string) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     await db.delete(payments).where(eq(payments.paymentId, paymentId));
     revalidatePath("/payments");
     return { success: true, message: "Payment deleted successfully" };

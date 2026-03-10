@@ -2,7 +2,7 @@
 
 import { db } from "@/db/drizzle"
 import { feedbacks, services } from "@/db/schema"
-import { sendEmail } from "@/lib"
+import { sendEmail, verifySession } from "@/lib"
 import { ProductTypes, SearchParams } from "@/types"
 import { FeedbackDataSchema } from "@/validationSchemas"
 import { desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm"
@@ -90,6 +90,10 @@ export const getFeedbacksMetadata = async ({ query, page = '1', limit = '20' }: 
 
 export const getFeedbacks = async ({ query, page = '1', limit = '20' }: SearchParams) => {
     try {
+        const session = await verifySession(false)
+        if (!session || (session.role !== "admin" && session.role !== "staff")) {
+            return { success: false, message: "Unauthorized" };
+        }
         const q = `%${query}%`
         const offset = (page && limit) ? (Number(page) - 1) * Number(limit) : 0
         const filters = query ? or(
@@ -134,7 +138,15 @@ export const getFeedbacks = async ({ query, page = '1', limit = '20' }: SearchPa
 
 export async function createFeedback(feedbackInfo: z.infer<typeof FeedbackDataSchema>) {
     try {
+        const session = await verifySession(false)
+        if (!session) return { success: false, message: "Unauthorized" }
+
         const validatedFeedbackInfo = FeedbackDataSchema.parse(feedbackInfo)
+
+        // Ensure customer can only feedback their own service
+        if (session.role === "customer" && session.userId !== validatedFeedbackInfo.customerId) {
+            return { success: false, message: "Unauthorized access" }
+        }
         await db.insert(feedbacks).values(validatedFeedbackInfo).onConflictDoUpdate({
             target: feedbacks.serviceId,
             set: {
@@ -170,6 +182,9 @@ export async function createFeedback(feedbackInfo: z.infer<typeof FeedbackDataSc
 
 export async function deleteFeedback(serviceId: string) {
     try {
+        const session = await verifySession(false, "admin")
+        if (!session) return { success: false, message: "Unauthorized" }
+
         await db.delete(feedbacks).where(eq(feedbacks.serviceId, serviceId))
         revalidatePath('/feedbacks')
         return { success: true, message: 'Feedback deleted' }

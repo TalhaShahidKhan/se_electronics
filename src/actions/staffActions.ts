@@ -21,6 +21,7 @@ import {
   decrypt,
   deleteSession,
   sendSMS,
+  verifySession,
 } from "@/lib";
 import { deleteObject, getObjectUrl, putObject } from "@/lib/s3";
 import { compressImage } from "@/lib/sharp";
@@ -44,6 +45,9 @@ import { deleteAuthToken, saveAuthToken, verifyAuthToken } from "./authActions";
 
 export const sendRegistrationLink = async (phoneNumber: string) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     if (!phoneNumber) {
       return { success: false, message: "Phone number is required" };
     }
@@ -89,6 +93,9 @@ export const sendIdCardDownloadLink = async (staffData: {
   role: "technician" | "electrician";
 }) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const { phoneNumber, staffId, staffName, role } = staffData;
     const token = crypto.randomBytes(16).toString("hex");
     const expiresAt = new Date(
@@ -128,6 +135,9 @@ export const sendIdCardDownloadLink = async (staffData: {
 
 export const sendCertificateLink = async (formData: FormData) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const rawData = Object.fromEntries(formData);
     const {
       staffId,
@@ -181,6 +191,8 @@ export const sendCertificateLink = async (formData: FormData) => {
 
 export const getAllTeamMembers = async () => {
   try {
+    // Public action for team page? No session check here if it's meant for public view.
+    // However, it returns phone numbers. Careful.
     const staffsData = await db.query.staffs.findMany({
       where: eq(staffs.isVerified, true),
       columns: {
@@ -231,6 +243,11 @@ export const getStaffs = async ({
   role,
 }: SearchParams & { role?: "technician" | "electrician" }) => {
   try {
+    const session = await verifySession(false);
+    if (!session || (session.role !== "admin" && session.role !== "staff")) {
+      return { success: false, message: "Unauthorized" };
+    }
+
     const q = `%${query}%`;
     const offset = page && limit ? (Number(page) - 1) * Number(limit) : 0;
 
@@ -311,6 +328,11 @@ export const getStaffsMetadata = async ({
 
 export const getStaffById = async (staffId: string) => {
   try {
+    const session = await verifySession(false);
+    if (!session || (session.role !== "admin" && session.role !== "staff")) {
+      return { success: false, message: "Unauthorized" };
+    }
+
     const staffData = await db.query.staffs.findFirst({
       where: eq(staffs.staffId, staffId),
     });
@@ -335,6 +357,10 @@ export const getStaffById = async (staffId: string) => {
 
 export const getStaffMediaUrls = async (keys: string[]) => {
   try {
+    const session = await verifySession(false);
+    if (!session || (session.role !== "admin" && session.role !== "staff")) {
+      return { success: false, message: "Unauthorized" };
+    }
     const mediaData = await Promise.all(keys.map((key) => getObjectUrl(key)));
     return { success: true, data: mediaData };
   } catch (error) {
@@ -367,6 +393,13 @@ export const createStaff = async (prevState: any, formData: FormData) => {
       ...staffData
     } = validatedStaffData.data;
 
+    const originSource = token ? "public_form" : "dashboard";
+
+    if (originSource === "dashboard") {
+      const session = await verifySession(false, "admin");
+      if (!session) return { success: false, message: "Unauthorized" };
+    }
+
     if (token) {
       if (!agreed)
         return {
@@ -381,7 +414,6 @@ export const createStaff = async (prevState: any, formData: FormData) => {
 
     let applicationId;
     const staffId = generateRandomId();
-    const originSource = token ? "public_form" : "dashboard";
 
     const photoKey = `media/staff/${staffId}/profile_${uuidv4()}.webp`;
     const nidFrontPhotoKey = `media/staff/${staffId}/nid-front_${uuidv4()}.webp`;
@@ -509,6 +541,9 @@ export const createStaff = async (prevState: any, formData: FormData) => {
 
 export const updateStaff = async (staffId: string, data: FormData) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const formDataObject = Object.fromEntries(data);
     const validatedStaffData = UpdateStaffDataSchema.parse(formDataObject);
     const { photo, nidFrontPhoto, nidBackPhoto, ...restStaffData } =
@@ -606,6 +641,9 @@ export const updateStaff = async (staffId: string, data: FormData) => {
 
 export const deleteStaff = async (staffId: string) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     await db.transaction(async (tx) => {
       const serviceData = await tx
         .delete(staffs)

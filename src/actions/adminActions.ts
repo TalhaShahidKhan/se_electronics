@@ -21,6 +21,9 @@ export const getAdmin = async () => {
 
 export const getAdminStats = async () => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const { services, customers, staffs, payments, invoices, subscriptions } =
       await import("@/db/schema");
     const { count, eq, sql } = await import("drizzle-orm");

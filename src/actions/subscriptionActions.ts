@@ -8,7 +8,7 @@ import {
 } from "@/constants/subscription-plans";
 import { db } from "@/db/drizzle";
 import { applications, subscriptions } from "@/db/schema";
-import { sendSMS } from "@/lib";
+import { sendSMS, verifySession } from "@/lib";
 import { SearchParams } from "@/types";
 import { generateRandomId, generateUrl, renderText } from "@/utils";
 import { SubscriptionDataSchema } from "@/validationSchemas";
@@ -28,6 +28,9 @@ export const getSubscribers = async ({
   limit = "20",
 }: SearchParams) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const q = `%${query}%`;
     const offset = page && limit ? (Number(page) - 1) * Number(limit) : 0;
 
@@ -85,6 +88,9 @@ export const getSubscribersMetadata = async ({
 
 export const getSubscriberById = async (subscriptionId: string) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const subscriberData = await db.query.subscriptions.findFirst({
       where: eq(subscriptions.subscriptionId, subscriptionId),
     });
@@ -248,6 +254,9 @@ export const createSubscriber = async (prevState: any, formData: FormData) => {
 
 export const updateSubscriber = async (prevState: any, formData: FormData) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const subscriptionId = formData.get("subscriptionId");
     if (!subscriptionId) {
       return { success: false, message: "Subscription not found" };
@@ -346,6 +355,9 @@ export const updateSubscriber = async (prevState: any, formData: FormData) => {
 
 export const deleteSubscriber = async (subscriptionId: string) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     await db.transaction(async (tx) => {
       await tx
         .delete(subscriptions)

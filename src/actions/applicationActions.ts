@@ -167,6 +167,9 @@ export const createApplication = async (data: Omit<typeof applications.$inferIns
 
 export const updateApplicationStatus = async (applicationId: string, updates: { status?: typeof applications.$inferInsert.status, rejectReason?: string }) => {
     try {
+        const session = await verifySession(false, "admin")
+        if (!session) return { success: false, message: "Unauthorized" }
+
         const applicationData = await db.update(applications)
             .set({ ...updates })
             .where(eq(applications.applicationId, applicationId))
@@ -254,6 +257,9 @@ export const updateApplicationStatus = async (applicationId: string, updates: { 
 
 export const deleteApplication = async (applicationId: string) => {
     try {
+        const session = await verifySession(false, "admin")
+        if (!session) return { success: false, message: "Unauthorized" }
+
         const applicationData = await db.delete(applications)
             .where(eq(applications.applicationId, applicationId))
             .returning({ applicantId: applications.applicantId, type: applications.type })

@@ -8,7 +8,7 @@ import {
   serviceStatusHistory,
   services,
 } from "@/db/schema";
-import { SMSError, sendEmail, sendSMS } from "@/lib";
+import { SMSError, sendEmail, sendSMS, verifySession } from "@/lib";
 import { deleteObject, getObjectUrl, putObject } from "@/lib/s3";
 import { compressImage } from "@/lib/sharp";
 import { SearchParams } from "@/types";
@@ -35,6 +35,10 @@ export const getServices = async ({
   type,
 }: SearchParams & { type: "repair" | "install" }) => {
   try {
+    const session = await verifySession(false);
+    if (!session || (session.role !== "admin" && session.role !== "staff")) {
+      return { success: false, message: "Unauthorized" };
+    }
     const q = `%${query}%`;
     const offset = page && limit ? (Number(page) - 1) * Number(limit) : 0;
 
@@ -110,6 +114,9 @@ export const getServicesMetadata = async ({
 
 export const getServiceById = async (serviceId: string) => {
   try {
+    const session = await verifySession(false);
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const serviceData = await db.query.services.findFirst({
       where: eq(services.serviceId, serviceId),
       with: {
@@ -134,6 +141,14 @@ export const getServiceById = async (serviceId: string) => {
     });
 
     if (!serviceData) return { success: false, message: "Service not found" };
+
+    // Prevent customers from viewing others' services
+    if (
+      session.role === "customer" &&
+      serviceData.customerId !== session.userId
+    ) {
+      return { success: false, message: "Unauthorized access to service" };
+    }
 
     if (serviceData.appointedStaff) {
       const staffPhotoUrl = await getObjectUrl(
@@ -160,6 +175,13 @@ export const getServiceById = async (serviceId: string) => {
 
 export const getServiceHistoryById = async (id: string) => {
   try {
+    const session = await verifySession(false);
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    if (session.role === "customer" && session.userId !== id) {
+      return { success: false, message: "Unauthorized access" };
+    }
+
     const serviceData = await db.query.services.findMany({
       where: or(
         and(eq(services.staffId, id), eq(services.resolvedBy, "staff_member")),
@@ -252,6 +274,11 @@ export async function createService(prevState: any, formData: FormData) {
       warrantyCardPhoto
     );
     const originSource = includesMedia ? "public_form" : "dashboard";
+
+    if (originSource === "dashboard") {
+      const session = await verifySession(false, "admin");
+      if (!session) return { success: false, message: "Unauthorized" };
+    }
 
     if (includesMedia) {
       const mimeTypes = ["image/jpeg", "image/png", "image/webp"];
@@ -460,6 +487,9 @@ export const appointStaff = async (
   appointmentData: z.infer<typeof AppointmentDataSchema>,
 ) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const validatedData = AppointmentDataSchema.parse(appointmentData);
 
     await db.transaction(async (tx) => {
@@ -535,6 +565,9 @@ export const updateService = async (
   statusId?: string,
 ) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const validatedData = UpdateServiceDataSchema.parse(
       Object.fromEntries(formData),
     );
@@ -733,6 +766,9 @@ export const reportService = async ({
   messageData,
 }: z.infer<typeof ServiceReportDataSchema>) => {
   try {
+    const session = await verifySession(false, "staff");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     await db.insert(serviceStatusHistory).values(serviceStatus);
 
     if (serviceReport) {
@@ -780,6 +816,9 @@ export const reportService = async ({
 
 export async function deleteService(serviceId: string) {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     await db.transaction(async (tx) => {
       const serviceData = await tx
         .delete(services)

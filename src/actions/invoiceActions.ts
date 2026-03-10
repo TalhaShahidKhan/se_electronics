@@ -3,7 +3,7 @@
 import { MediaDownloadMessages } from "@/constants/messages";
 import { db } from "@/db/drizzle";
 import { customers, invoices } from "@/db/schema";
-import { SMSError, sendSMS } from "@/lib";
+import { SMSError, sendSMS, verifySession } from "@/lib";
 import { SearchParams } from "@/types";
 import { formatDate, generateUrl, renderText } from "@/utils";
 import { randomBytes } from "crypto";
@@ -28,6 +28,9 @@ export const sendInvoiceDownloadLink = async (
   },
 ) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const { name, phoneNumber } = userData;
     const { invoiceNumber, customerId, date, totalPrice, invoiceType } =
       invoiceData;
@@ -104,6 +107,9 @@ export const getInvoices = async ({
   limit = "20",
 }: SearchParams) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const q = `%${query}%`;
     const offset = page && limit ? (Number(page) - 1) * Number(limit) : 0;
 
@@ -131,6 +137,9 @@ export const getInvoices = async ({
 
 export const getInvoiceByNumber = async (invoiceNumber: string) => {
   try {
+    const session = await verifySession(false);
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const invoice = await db.query.invoices.findFirst({
       where: eq(invoices.invoiceNumber, invoiceNumber),
       with: {
@@ -145,6 +154,12 @@ export const getInvoiceByNumber = async (invoiceNumber: string) => {
     if (!invoice) {
       return { success: false, message: "Invoice not found" };
     }
+
+    // Prevent customers from viewing others' invoices
+    if (session.role === "customer" && invoice.customerId !== session.userId) {
+      return { success: false, message: "Unauthorized access to invoice" };
+    }
+
     return { success: true, data: invoice };
   } catch (error) {
     console.error(error);
@@ -154,6 +169,9 @@ export const getInvoiceByNumber = async (invoiceNumber: string) => {
 
 export const deleteInvoice = async (invoiceNumber: string) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     await db
       .delete(customers)
       .where(eq(customers.invoiceNumber, invoiceNumber));

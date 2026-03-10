@@ -2,7 +2,7 @@
 
 import { db } from "@/db/drizzle";
 import { customers, invoices, products } from "@/db/schema";
-import { createSession, decrypt, deleteSession } from "@/lib";
+import { createSession, decrypt, deleteSession, verifySession } from "@/lib";
 import { SearchParams } from "@/types";
 import { generateInvoiceNumber, generateRandomId } from "@/utils";
 import { CustomerDataSchema, CustomerLoginSchema } from "@/validationSchemas";
@@ -16,6 +16,14 @@ import { sendInvoiceDownloadLink } from "./invoiceActions";
 
 export const getCustomerById = async (customerId: string) => {
   try {
+    const session = await verifySession(false);
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    // Prevent customers from viewing other customers' data
+    if (session.role === "customer" && session.userId !== customerId) {
+      return { success: false, message: "Unauthorized access to profile" };
+    }
+
     const customerData = await db.query.customers.findFirst({
       where: eq(customers.customerId, customerId),
       with: {
@@ -199,6 +207,9 @@ export const createCustomer = async (
   sendInvoiceLink: boolean,
 ) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const validatedCustomerData = CustomerDataSchema.parse(customerData);
     const {
       invoice: invoiceInfo,
@@ -279,6 +290,9 @@ export const updateCustomer = async (
   sendInvoiceLink: boolean,
 ) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     const validatedCustomerData = CustomerDataSchema.parse(customerData);
     const {
       invoice: invoiceInfo,
@@ -347,6 +361,9 @@ export const updateCustomer = async (
 
 export const deleteCustomer = async (id: string) => {
   try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
     await db.delete(customers).where(eq(customers.id, id));
     revalidatePath("/customers");
     revalidatePath("/invoices");
