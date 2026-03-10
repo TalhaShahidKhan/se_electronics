@@ -60,6 +60,7 @@ export const sendInvoiceDownloadLink = async (
           date: formatDate(date),
           total_price: `${totalPrice.toLocaleString()} Tk`,
           download_link: generateUrl("invoice-download", { token }),
+          dashboard_link: generateUrl("customer-login", {}),
         },
       ),
     );

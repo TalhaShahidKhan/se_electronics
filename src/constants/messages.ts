@@ -19,13 +19,13 @@ export const ApplicationMessages = {
     ADMIN_NOTIF: `আইপিএস, ব্যাটারি রক্ষণাবেক্ষণের সাবস্ক্রিপশন এর জন্য অনুরোধ করেছে তথ্য ও পেমেন্ট যাচাই করুন`,
     SUBMISSION: `প্রিয় {applicant_name},\nআপনার পছন্দের সাবস্ক্রিপশন প্যাকেজটির আবেদন সফলভাবে সাবমিট করেছেন, সাবস্ক্রিপশন আইডি {subscription_id} আপনার দেওয়া তথ্য ও পেমেন্ট সংক্রান্ত বিষয় যাচাই করে পরে ধাপে এগিয়ে যাব। সকল তথ্য আপডেট পেতে ট্রেকিং লিংকটি ওপেন করুন। যেকোনো তথ্যের জন্য ${contactDetails.customerCare}\n{tracking_link}`,
     APPROVAL: `প্রিয় {applicant_name},\nঅভিনন্দন! আপনার পছন্দের সাবস্ক্রিপশন প্যাকেজটির আবেদন সফলভাবে যাচাই করা হয়েছে এবং সার্ভিস পয়েন্ট-এ অনুমোদিত হয়েছে৷ যেকোনো তথ্যের জন্য 0964935555`,
-    REJECTION: `আমরা দুঃখিত যে আপনার সাবস্ক্রিপশন অনুরোধটি বাতিল করা হয়েছে। এই মুহূর্তে আমরা আপনার অনুরোধটি এগিয়ে নিতে পারছি না। বাতিলের কারণ বা অন্য কোনো সহায়তার জন্য অনুগ্রহ করে আমাদের কাস্টমার সাপোর্টের সাথেযোগাযোগ করুন। ${contactDetails.customerCare}, ${contactDetails.customerCare2}`,
+    REJECTION: `আমরা দুঃখিত যে আপনার সাবস্ক্রিপশন অনুরোধটি বাতিল করা হয়েছে। এই মুহূর্তে আমরা আপনার অনুরোধটি এগিয়ে নিতে পারছি না। বাতিলের কারণ বা অন্য কোনো সহায়তার জন্য অনুগ্রহ করে আমাদের কাস্টমার সাপোর্টের সাথে যোগাযোগ করুন। ${contactDetails.customerCare}, ${contactDetails.customerCare2}`,
   },
 };
 
 export const MediaDownloadMessages = {
   CUSTOMER_INVOICE: `প্রিয় গ্রাহক {name}\nএস ই ইলেকট্রনিকস থেকে পন্য ক্রয় করার জন্য আপনাকে ধন্যবাদ আপনার ইনভয়েস ডাউনলোড করতে লিংকটি ক্লিক করুন। কাস্টমার কেয়ার ${contactDetails.customerCare}\n{download_link}`,
-  CUSTOMER_REGISTRATION: `প্রিয় গ্রাহক {name},\nএস ই ইলেকট্রনিকস এ আপনাকে স্বাগতম! আপনার কাস্টমার আইডি: {customer_id} এবং ইনভয়েস নম্বর: {invoice_number}। আপনার ইনভয়েস ডাউনলোড করতে: {download_link}। কাস্টমার কেয়ার ${contactDetails.customerCare}`,
+  CUSTOMER_REGISTRATION: `প্রিয় গ্রাহক {name},\nএস ই ইলেকট্রনিকস এ আপনাকে স্বাগতম! আপনার কাস্টমার আইডি: {customer_id} এবং ইনভয়েস নম্বর: {invoice_number}। লগইন করে ইনভয়েস ডাউনলোড করতে ভিজিট করুন: {dashboard_link}। কাস্টমার কেয়ার ${contactDetails.customerCare}`,
   INSTALL_PAYMENT_INVOICE: `প্রিয় {name},\nSE ELECTRONICS আপনার IPS ইনস্টল এর পেমেন্ট করা হয়েছে। নিচে ইনভয়েস সম্পর্কিত তথ্য দেওয়া হলো:\nইনভয়েস নম্বর: {invoice_number}\nতারিখ: {date}\nমোট পরিমাণ: {total_price}\nইনভয়েসটি দেখতে বা ডাউনলোড করতে এই লিঙ্কটি ব্যবহার করুন: {download_link}\nকাস্টমার কেয়ার ${contactDetails.customerCare}।`,
   REPAIR_PAYMENT_INVOICE: `প্রিয় {name},\nSE ELECTRONICS আপনার IPS সার্ভিসিং এর পেমেন্ট করা হয়েছে। নিচে ইনভয়েস সম্পর্কিত তথ্য দেওয়া হলো:\nইনভয়েস নম্বর: {invoice_number}\nতারিখ: {date}\nমোট পরিমাণ: {total_price}\nইনভয়েসটি দেখতে বা ডাউনলোড করতে এই লিঙ্কটি ব্যবহার করুন: {download_link}\nকাস্টমার কেয়ার ${contactDetails.customerCare}।`,
   TECHNICIAN_ID_CARD: `প্রিয় {staff_name},\nএস ই ইলেকট্রনিকস সার্ভিস পয়েন্ট আপনাকে স্বাগতম আপনার টেকনিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন।\n{download_link}\nকাস্টমার কেয়ার 0964935555`,

@@ -89,6 +89,9 @@ export const generateUrl = <T extends UrlConfig["type"]>(
       }
       return `${baseUrl}/service-feedback?serviceId=${p.serviceId}`;
 
+    case "customer-login":
+      return `${baseUrl}/customer/login`;
+
     default: {
       throw new Error("Invalid type");
     }

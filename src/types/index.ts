@@ -6,7 +6,8 @@ export type UrlConfig =
   | { type: "service-report"; params: { serviceId: string } }
   | { type: "invoice-download"; params: { token: string } }
   | { type: "id-card-download"; params: { token: string } }
-  | { type: "certificate-download"; params: { token: string } };
+  | { type: "certificate-download"; params: { token: string } }
+  | { type: "customer-login"; params?: {} };
 
 export type ProductTypes = "ips" | "battery" | "stabilizer" | "others";
 export type ApplicationTypes =
