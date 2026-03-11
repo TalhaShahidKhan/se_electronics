@@ -45,7 +45,7 @@ export default async function CustomerProfilePage() {
   const dashboardActions = [
     { label: "Online Service", icon: Monitor, href: "/get-service", color: "bg-blue-600" },
     { label: "Subscription", icon: Zap, href: "/maintenance-plans", color: "bg-amber-500" },
-    { label: "Product Service", icon: Settings, href: "/get-service", color: "bg-indigo-600" },
+    { label: "Product Service", icon: Settings, href: "/customer/services", color: "bg-indigo-600" },
     { label: "Tracking", icon: Activity, href: "/service-track", color: "bg-emerald-600" },
     { label: "Check Warranty", icon: ShieldCheck, href: "/check-warranty", color: "bg-purple-600" },
     { label: "Complain", icon: FileText, href: "/customer/complain", color: "bg-rose-600" },

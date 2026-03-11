@@ -23,7 +23,7 @@ export default function CustomerLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border border-gray-100">
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
+          <div className="flex flex-col justify-center mb-4">
             <Image
               src="/logo.jpg"
               alt="Logo"
@@ -31,6 +31,7 @@ export default function CustomerLoginPage() {
               height={100}
               className="rounded-lg"
             />
+            <p className="text-sm text-gray-500 mt-2">SE Electronics</p>
           </div>
           <h1 className="text-2xl font-bold text-gray-800">Customer Login</h1>
           <p className="text-sm text-gray-500 mt-2">
@@ -75,9 +76,6 @@ export default function CustomerLoginPage() {
 
         <div className="mt-8 text-center text-xs text-gray-400">
           <p>© 2026 SE Electronics Service Team</p>
-          <p className="mt-2 italic">
-            If you haven't set a password yet, please contact our support.
-          </p>
         </div>
       </div>
     </div>
