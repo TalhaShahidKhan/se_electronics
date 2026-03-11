@@ -1,5 +1,0 @@
-src/components/features/staff/StaffProfileModal.tsx(452,37): error TS18048: 'service.statusHistory' is possibly 'undefined'.
-src/components/features/staff/StaffProfileModal.tsx(571,33): error TS2322: Type 'Partial<PaymentDataType>' is not assignable to type 'PaymentDataType'.
-  Types of property 'createdAt' are incompatible.
-    Type 'Date | undefined' is not assignable to type 'Date'.
-      Type 'undefined' is not assignable to type 'Date'.
