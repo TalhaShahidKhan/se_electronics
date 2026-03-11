@@ -16,6 +16,9 @@ export default async function Payments({
   const params = await searchParams;
   const pagination = await getPaymentsMetadata({ ...params });
 
+  // console.log(pagination , 'pagenatuion');
+  // console.log(params);
+
   return (
     <div className="flex-1 overflow-hidden flex flex-col gap-4">
       <Toolbar

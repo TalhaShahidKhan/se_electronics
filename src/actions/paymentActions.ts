@@ -62,12 +62,12 @@ export const getPaymentsMetadata = async ({
   limit = "20",
 }: SearchParams) => {
   const q = `%${query}%`;
+
   const filters = query
     ? or(
         ilike(payments.paymentId, q),
         ilike(payments.invoiceNumber, q),
         ilike(payments.transactionId, q),
-        ilike(staffs.staffId, q),
         ilike(staffs.name, q),
         ilike(staffs.phone, q),
       )
@@ -77,16 +77,16 @@ export const getPaymentsMetadata = async ({
     await db
       .select({ count: sql<number>`count(*)` })
       .from(payments)
-      .where(filters)
       .leftJoin(staffs, eq(staffs.staffId, payments.staffId))
+      .where(filters)
   )[0].count;
 
-  const totalPages = limit ? Math.ceil(totalRecords / Number(limit)) : 1;
+  const totalPages = Math.ceil(totalRecords / Number(limit));
 
   return {
     currentPage: Number(page),
-    totalRecords: totalRecords,
-    totalPages: totalPages,
+    totalRecords,
+    totalPages,
     currentLimit: Number(limit),
   };
 };
@@ -199,6 +199,34 @@ export const createPayment = async (
     return { success: false, message: "Something went wrong" };
   }
 };
+
+export async function requestPayment(formData: FormData) {
+  try {
+    const data = Object.fromEntries(formData);
+
+    const validated = PaymentRequestSchema.parse(data);
+
+    const paymentId = generateRandomId();
+
+    await db.insert(payments).values({
+      paymentId,
+      invoiceNumber: `REQ-${Date.now()}`,
+      staffId: validated.staffId,
+      paymentMethod: validated.paymentMethod,
+      amount: validated.amount,
+      description: validated.description,
+      status: "pending",
+      date: new Date(),
+    });
+
+    revalidatePath("/staff/profile");
+
+    return { success: true, message: "Payment request sent" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Failed to request payment" };
+  }
+}
 
 export const updatePayment = async (
   paymentId: string,

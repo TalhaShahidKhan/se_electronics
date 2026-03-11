@@ -10,7 +10,7 @@ import { formatDate } from "@/utils";
 
 async function PaymentList(params: SearchParams) {
   const response = await getPayments(params);
-
+  // console.log(response);
   if (!response.success) {
     return (
       <tr>
