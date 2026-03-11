@@ -27,7 +27,7 @@ export default function ComplaintsPage() {
     }
     setLoading(false);
   }
-
+  console.log(complaints);
   async function handleResolve() {
     if (!selectedComplaint || !adminNotes.trim()) {
       toast.error("Please provide admin notes");
@@ -111,7 +111,7 @@ export default function ComplaintsPage() {
         <div className="flex justify-center p-20">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
         </div>
-      ) : filteredComplaints.length === 0 ? (
+      ) : filteredComplaints.length == 0 ? (
         <div className="bg-white rounded-3xl p-20 text-center border border-dashed border-gray-200">
           <Shield className="mx-auto text-gray-200 mb-4" size={64} />
           <p className="text-gray-500 font-bold">

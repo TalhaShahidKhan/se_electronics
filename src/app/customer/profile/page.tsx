@@ -5,6 +5,7 @@ import {
 } from "@/actions/customerActions";
 import { getServiceHistoryById } from "@/actions/serviceActions";
 import { getSubscriptionsByPhone } from "@/actions/subscriptionActions";
+import Banner from "@/components/ui/Banner";
 import {
   Activity,
   Crown,
@@ -42,18 +43,73 @@ export default async function CustomerProfilePage() {
   const adminPhone = process.env.ADMIN_PHONE_NUMBER || "017XX-XXXXXX";
 
   const dashboardActions = [
-    { label: "Online Service", icon: Monitor, href: "/get-service", color: "bg-brand" },
-    { label: "Subscription", icon: Zap, href: "/maintenance-plans", color: "bg-amber-500" },
-    { label: "Product Service", icon: Settings, href: "/customer/services", color: "bg-brand-700" },
-    { label: "Tracking", icon: Activity, href: "/service-track", color: "bg-emerald-600" },
-    { label: "Check Warranty", icon: ShieldCheck, href: "/check-warranty", color: "bg-purple-600" },
-    { label: "Complain", icon: FileText, href: "/customer/complain", color: "bg-rose-600" },
-    { label: "VIP card request", icon: Crown, href: "/customer/vip-card", color: "bg-yellow-600" },
-    { label: "Feedback Send", icon: Star, href: "/service-feedback", color: "bg-pink-600" },
-    { label: "Customer care", icon: PhoneCall, href: `tel:${adminPhone}`, color: "bg-teal-600" },
-    { label: "Coverage Area", icon: MapPin, href: "/coverage", color: "bg-cyan-600" },
+    {
+      label: "Online Service",
+      icon: Monitor,
+      href: "/get-service",
+      color: "bg-brand",
+    },
+    {
+      label: "Subscription",
+      icon: Zap,
+      href: "/maintenance-plans",
+      color: "bg-amber-500",
+    },
+    {
+      label: "Product Service",
+      icon: Settings,
+      href: "/customer/services",
+      color: "bg-brand-700",
+    },
+    {
+      label: "Tracking",
+      icon: Activity,
+      href: "/service-track",
+      color: "bg-emerald-600",
+    },
+    {
+      label: "Check Warranty",
+      icon: ShieldCheck,
+      href: "/check-warranty",
+      color: "bg-purple-600",
+    },
+    {
+      label: "Complain",
+      icon: FileText,
+      href: "/customer/complain",
+      color: "bg-rose-600",
+    },
+    {
+      label: "VIP card request",
+      icon: Crown,
+      href: "/customer/vip-card",
+      color: "bg-yellow-600",
+    },
+    {
+      label: "Feedback Send",
+      icon: Star,
+      href: "/service-feedback",
+      color: "bg-pink-600",
+    },
+    {
+      label: "Customer care",
+      icon: PhoneCall,
+      href: `tel:${adminPhone}`,
+      color: "bg-teal-600",
+    },
+    {
+      label: "Coverage Area",
+      icon: MapPin,
+      href: "/coverage",
+      color: "bg-cyan-600",
+    },
     { label: "Location", icon: Map, href: "/location", color: "bg-orange-600" },
-    { label: "Chat", icon: MessageSquare, href: `https://wa.me/8801310673600`, color: "bg-violet-600" },
+    {
+      label: "Chat",
+      icon: MessageSquare,
+      href: `https://wa.me/8801310673600`,
+      color: "bg-violet-600",
+    },
   ];
 
   return (
@@ -73,28 +129,33 @@ export default async function CustomerProfilePage() {
                 <p className="text-xs sm:text-sm font-medium text-blue-200">
                   ID: {customer.customerId}
                 </p>
+                <li className="flex items-center gap-2 text-xs sm:text-sm font-medium text-blue-200 mt-1">
+                  <PhoneCall size={16} className="text-blue-200 shrink-0" />
+                  <span className="font-semibold">{customer.phone}</span>
+                </li>
+
+                <li className="flex items-center gap-2 text-xs sm:text-sm font-medium text-blue-200 mt-1">
+                  <MapPin size={16} className="text-blue-200 shrink-0" />
+                  <span className="font-medium">
+                    {customer.address || "No address provided"}
+                  </span>
+                </li>
               </div>
             </div>
             <form action={customerLogout}>
-              <button className="p-2.5 sm:p-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors border border-white/10">
+              <button className="p-2.5 sm:p-3 rounded-md bg-white/10 text-white hover:bg-white/20 transition-colors border border-white/10">
                 <LogOut size={20} />
               </button>
             </form>
           </div>
 
-          <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-            <div className="flex items-center gap-2 text-blue-100 bg-white/10 p-2 rounded-lg border border-white/10">
-              <PhoneCall size={16} className="text-blue-200 shrink-0" />
-              <span className="font-semibold">{customer.phone}</span>
-            </div>
-            <div className="flex items-center gap-2 text-blue-100 bg-white/10 p-2 rounded-lg border border-white/10">
-              <MapPin size={16} className="text-blue-200 shrink-0" />
-              <span className="font-medium truncate">{customer.address || "No address provided"}</span>
-            </div>
-          </div>
+
         </div>
       </header>
-
+       {/* Banner content */}
+       <div className="w-full max-w-4xl mx-auto p-2 sm:p-4 py-4 sm:py-6 flex flex-col justify-center">
+        <Banner></Banner>
+       </div>
       {/* Main Content: Dashboard Grid */}
       <main className="flex-1 w-full max-w-4xl mx-auto p-2 sm:p-4 py-4 sm:py-8 flex flex-col justify-center">
         <div className="grid grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
@@ -104,9 +165,11 @@ export default async function CustomerProfilePage() {
               <Link
                 key={action.label}
                 href={action.href}
-                className="group relative flex flex-col items-center justify-center bg-white aspect-square rounded-[1.25rem] sm:rounded-2xl p-2 sm:p-4 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-xl hover:scale-[1.03] active:scale-95 overflow-hidden"
+                className="group relative flex flex-col items-center justify-center bg-white aspect-square rounded-[1.25rem] sm:rounded-md p-2 sm:p-4 shadow-sm border border-gray-200 transition-all duration-300 hover:shadow-xl hover:scale-[1.03] active:scale-95 overflow-hidden"
               >
-                <div className={`${action.color} p-2 sm:p-3 rounded-xl sm:rounded-2xl text-white mb-1.5 sm:mb-3 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <div
+                  className={`${action.color} p-2 sm:p-3 rounded-xl sm:rounded-2xl text-white mb-1.5 sm:mb-3 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                >
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <span className="text-[10px] sm:text-xs font-bold text-gray-700 text-center leading-tight px-0.5">
@@ -125,8 +188,18 @@ export default async function CustomerProfilePage() {
             SE Electronics Service Portal
           </p>
           <div className="flex justify-center gap-4 text-xs">
-            <Link href="/privacy-policy" className="hover:text-gray-600 transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-gray-600 transition-colors">Terms</Link>
+            <Link
+              href="/privacy-policy"
+              className="hover:text-gray-600 transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="hover:text-gray-600 transition-colors"
+            >
+              Terms
+            </Link>
           </div>
         </div>
       </main>

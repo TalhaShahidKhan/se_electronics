@@ -38,7 +38,7 @@ export default function LoginPage() {
         </div>
 
         {/* White Form Section with curved top */}
-        <div className="bg-white -mt-8 rounded-t-[2rem] relative z-10 px-6 pt-2 pb-8">
+        <div className="bg-white -mt-8 rounded-t-2xl relative z-10 px-6 pt-2 pb-8">
           {/* Light blue label bar */}
           <div className="bg-gradient-to-r from-sky-100 to-blue-100 rounded-xl py-3 px-4 mb-6 mt-4 border border-sky-200">
             <h2 className="text-center text-[13px] font-extrabold text-brand tracking-wider uppercase">
