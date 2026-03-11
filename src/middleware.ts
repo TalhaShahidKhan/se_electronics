@@ -16,7 +16,11 @@ const adminProtectedRoutes = [
 
 const staffProtectedRoutes = [
     '/staff/profile',
-    '/staff/services'
+    '/staff/services',
+    '/staff/details',
+    '/staff/payments',
+    '/staff/tracking',
+    '/staff/feedbacks',
 ];
 
 const customerProtectedRoutes = [

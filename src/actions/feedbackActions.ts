@@ -194,3 +194,30 @@ export async function deleteFeedback(serviceId: string) {
 
     }
 }
+
+export async function getStaffFeedbacks(staffId: string) {
+    try {
+        const feedbacksData = await db.select({
+            id: feedbacks.id,
+            serviceId: feedbacks.serviceId,
+            customerId: feedbacks.customerId,
+            rating: feedbacks.rating,
+            feedbacks: feedbacks.feedbacks,
+            createdAt: feedbacks.createdAt,
+            customerName: services.customerName,
+            productType: services.productType,
+            productModel: services.productModel,
+            serviceType: services.type,
+        })
+            .from(feedbacks)
+            .innerJoin(services, eq(services.serviceId, feedbacks.serviceId))
+            .where(eq(services.staffId, staffId))
+            .orderBy(desc(feedbacks.createdAt))
+            .limit(50)
+
+        return { success: true, data: feedbacksData }
+    } catch (error) {
+        console.error(error)
+        return { success: false, message: 'Could not fetch staff feedbacks' }
+    }
+}
