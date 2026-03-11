@@ -2,40 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   CUSTOM FONT FACES
+   ============================================ */
+@font-face {
+  font-family: "BrockScript";
+  src: url("../assets/fonts/brockScript.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EdwardianScript";
+  src: url("../assets/fonts/edwardianscriptitc.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OldEnglish";
+  src: url("../assets/fonts/oldenglishtextmt.ttf") format("truetype");
+  font-display: swap;
+}
+
+/* ============================================
+   CSS VARIABLES
+   ============================================ */
+:root {
+  --brand: #0a1a3a;
+  --brand-light: #1f386b;
+  --brand-lighter: #3b5ca3;
+  --brand-surface: #e8edf5;
+  --font-display: "OldEnglish", serif;
+  --font-script: "BrockScript", cursive;
+}
+
+/* ============================================
+   BASE LAYER
+   ============================================ */
+@layer base {
+  body {
+    @apply text-gray-800 antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply tracking-tight;
+  }
+}
+
+/* ============================================
+   COMPONENT LAYER
+   ============================================ */
 @layer components {
   .__center {
     @apply flex items-center justify-center;
   }
 
   .__input {
-    @apply w-full h-10 rounded-md p-4 outline-none border border-gray-400;
+    @apply w-full h-11 rounded-xl px-4 py-2.5 outline-none border border-gray-200 bg-gray-50 text-sm focus:border-brand focus:ring-1 focus:ring-brand transition-all;
   }
 
   .__btn {
-    @apply bg-primary __center rounded-md font-medium text-white disabled:bg-opacity-50 py-1.5 px-4 gap-2;
+    @apply bg-brand __center rounded-xl font-semibold text-white disabled:opacity-50 py-2.5 px-5 gap-2 text-sm transition-all hover:bg-brand-800 active:scale-[0.98];
+  }
+
+  .__card {
+    @apply bg-white rounded-2xl border border-gray-100 shadow-sm;
+  }
+
+  .__page-header {
+    @apply text-xl sm:text-2xl font-bold text-brand tracking-tight;
   }
 
   input:read-only,
   select:disabled,
   textarea:disabled,
   input:disabled {
-    background-color: #f3f3f3;
+    background-color: #f3f4f6;
   }
 
   table,
   th,
   td {
-    @apply border
+    @apply border border-gray-200;
+  }
+
+  th {
+    @apply bg-gray-50 text-xs uppercase font-bold text-gray-500 tracking-wider;
+  }
+
+  td {
+    @apply text-sm;
   }
 }
 
-/* NProgress styles */
+/* ============================================
+   NProgress styles
+   ============================================ */
 #nprogress {
   pointer-events: none;
 }
 
 #nprogress .bar {
-  background: #3b82f6;
+  background: var(--brand);
   position: fixed;
   z-index: 9999;
   top: 0;
@@ -50,7 +117,28 @@
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px #3b82f6, 0 0 5px #3b82f6;
+  box-shadow: 0 0 10px var(--brand), 0 0 5px var(--brand);
   opacity: 1;
   transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* ============================================
+   SCROLLBAR STYLES
+   ============================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c5d0e5;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9eafd2;
 }

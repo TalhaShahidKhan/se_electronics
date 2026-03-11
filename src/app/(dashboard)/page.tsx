@@ -13,60 +13,60 @@ export default function Home() {
 
       {/* Quick Links / Recent Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+        <div className="__card p-6 sm:p-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-lg sm:text-xl font-bold text-brand">
               Recommended Actions
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <ActionCard
               href="/services/repairs"
               title="Repair List"
               description="Manage service requests"
               icon={Wrench}
-              color="text-blue-500 bg-blue-50"
+              color="text-brand bg-brand-50"
             />
             <ActionCard
               href="/payments"
               title="Payments"
               description="Review payment requests"
               icon={CreditCard}
-              color="text-green-500 bg-green-50"
+              color="text-emerald-600 bg-emerald-50"
             />
             <ActionCard
               href="/customers"
               title="Customers"
               description="View customer profiles"
               icon={Users}
-              color="text-purple-500 bg-purple-50"
+              color="text-purple-600 bg-purple-50"
             />
             <ActionCard
               href="/staffs"
               title="Staff Management"
               description="Manage technicians"
               icon={Plus}
-              color="text-orange-500 bg-orange-50"
+              color="text-amber-600 bg-amber-50"
             />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-brand to-brand-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col justify-between">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Service Platform 6.0</h2>
-            <p className="text-blue-100 text-sm max-w-xs mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold mb-2">Service Platform 6.0</h2>
+            <p className="text-blue-200 text-sm max-w-xs mb-8">
               Efficiently manage your electronics servicing business from one
               central dashboard.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-3 sm:gap-4">
             <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl flex-1 min-w-[120px]">
               <p className="text-[10px] uppercase font-bold text-blue-200 mb-1 tracking-widest">
                 Version
               </p>
-              <p className="font-bold">v6.0.4 Enterprise</p>
+              <p className="font-bold text-sm">v6.0.4 Enterprise</p>
             </div>
             <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl flex-1 min-w-[120px]">
               <p className="text-[10px] uppercase font-bold text-blue-200 mb-1 tracking-widest">
@@ -74,7 +74,7 @@ export default function Home() {
               </p>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <p className="font-bold">All services active</p>
+                <p className="font-bold text-sm">All services active</p>
               </div>
             </div>
           </div>
@@ -88,13 +88,13 @@ function ActionCard({ href, title, description, icon: Icon, color }: any) {
   return (
     <Link
       href={href}
-      className="group flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-transparent hover:border-gray-200 hover:bg-white transition-all"
+      className="group flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gray-50 border border-transparent hover:border-gray-200 hover:bg-white transition-all"
     >
-      <div className={`p-3 rounded-xl ${color}`}>
-        <Icon size={20} />
+      <div className={`p-2.5 sm:p-3 rounded-xl ${color}`}>
+        <Icon size={18} />
       </div>
       <div className="flex-1">
-        <h3 className="text-sm font-bold text-gray-900 flex items-center gap-1 group-hover:text-blue-600 transition-colors">
+        <h3 className="text-sm font-bold text-gray-900 flex items-center gap-1 group-hover:text-brand transition-colors">
           {title}
           <ChevronRight
             size={14}

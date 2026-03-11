@@ -405,12 +405,12 @@ export default async function ServiceTrackPage({
                 name="trackingId"
                 placeholder="e.g. SRV-2026-XXXX"
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand transition-all"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition-all active:scale-95 shadow-lg shadow-emerald-200"
+              className="w-full bg-brand text-white font-bold py-3 rounded-xl hover:bg-brand-800 transition-all active:scale-95 shadow-lg shadow-brand-100"
             >
               Track Status
             </button>
@@ -418,7 +418,7 @@ export default async function ServiceTrackPage({
           <div className="mt-6 text-center">
             <Link
               href="/customer/profile"
-              className="text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors"
+              className="text-sm font-semibold text-gray-500 hover:text-brand transition-colors"
             >
               Back to Dashboard
             </Link>

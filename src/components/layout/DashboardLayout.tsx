@@ -4,258 +4,41 @@ import { logout } from "@/actions";
 import { ProgressBar } from "@/components";
 import { appVersion } from "@/constants";
 import clsx from "clsx";
-import { HomeIcon } from "lucide-react";
+import {
+  HomeIcon,
+  Users,
+  FileText,
+  Wrench,
+  Zap,
+  Star,
+  ClipboardList,
+  UserCog,
+  CreditCard,
+  MessageSquare,
+  AlertTriangle,
+  LogOut,
+  X,
+  Crown,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createContext, useState } from "react";
 
 const links = [
-  {
-    name: "Dashboard",
-    href: "/",
-    icon: <HomeIcon size={24} />,
-  },
-  {
-    name: "Customers",
-    href: "/customers",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Invoices",
-    href: "/invoices",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 8.25.22-.22a.75.75 0 0 1 1.28.53v6.441c0 .472.214.934.64 1.137a3.75 3.75 0 0 0 4.994-1.77c.205-.428-.152-.868-.627-.868h-.507m-6-2.25h7.5M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Service List",
-    href: "/services/repairs",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="m7.875 14.25 1.214 1.942a2.25 2.25 0 0 0 1.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 0 1 1.872 1.002l.164.246a2.25 2.25 0 0 0 1.872 1.002h2.092a2.25 2.25 0 0 0 1.872-1.002l.164-.246A2.25 2.25 0 0 1 16.954 9h4.636M2.41 9a2.25 2.25 0 0 0-.16.832V12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 0 1 .382-.632l3.285-3.832a2.25 2.25 0 0 1 1.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0 0 21.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 0 0 2.25 2.25Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Install List",
-    href: "/services/installations",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Feedbacks",
-    href: "/feedbacks",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Applications",
-    href: "/applications",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Technicians",
-    href: "/staffs/technicians",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Electricians",
-    href: "/staffs/electricians",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Payments",
-    href: "/payments",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="m8.25 7.5.415-.207a.75.75 0 0 1 1.085.67V10.5m0 0h6m-6 0h-1.5m1.5 0v5.438c0 .354.161.697.473.865a3.751 3.751 0 0 0 5.452-2.553c.083-.409-.263-.75-.68-.75h-.745M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Messages",
-    href: "/messages",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Staff Reports",
-    href: "/complaints",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6 font-bold"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Subscribers",
-    href: "/subscribers",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="m8.25 7.5.415-.207a.75.75 0 0 1 1.085.67V10.5m0 0h6m-6 0h-1.5m1.5 0v5.438c0 .354.161.697.473.865a3.751 3.751 0 0 0 5.452-2.553c.083-.409-.263-.75-.68-.75h-.745M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-        />
-      </svg>
-    ),
-  },
+  { name: "Dashboard", href: "/", icon: HomeIcon },
+  { name: "Customers", href: "/customers", icon: Users },
+  { name: "Invoices", href: "/invoices", icon: FileText },
+  { name: "Service List", href: "/services/repairs", icon: Wrench },
+  { name: "Install List", href: "/services/installations", icon: Zap },
+  { name: "Feedbacks", href: "/feedbacks", icon: Star },
+  { name: "Applications", href: "/applications", icon: ClipboardList },
+  { name: "Technicians", href: "/staffs/technicians", icon: UserCog },
+  { name: "Electricians", href: "/staffs/electricians", icon: UserCog },
+  { name: "Payments", href: "/payments", icon: CreditCard },
+  { name: "Messages", href: "/messages", icon: MessageSquare },
+  { name: "Staff Reports", href: "/complaints", icon: AlertTriangle },
+  { name: "Subscribers", href: "/subscribers", icon: Crown },
 ];
 
 type Pagination = {
@@ -287,120 +70,121 @@ export default function DashboardLayout({
     totalPages: 0,
     currentLimit: 20,
   });
+
   return (
     <>
       <ProgressBar />
-      <div className="flex">
+      <div className="flex h-screen bg-gray-50">
+        {/* Overlay for mobile */}
+        {showSideNav && (
+          <div
+            className="fixed inset-0 bg-black/30 z-40 xl:hidden"
+            onClick={() => setShowSideNav(false)}
+          />
+        )}
+
+        {/* Sidebar */}
         <div
           className={clsx(
-            "xl:flex flex-col h-[100vh] text-[#444444] min-w-[220px] p-4 border-r-[0.5px] border-r-borderColor bg-white",
-            showSideNav ? "flex absolute z-50 shadow-md" : "hidden",
+            "fixed xl:static z-50 flex flex-col h-screen w-[260px] bg-brand text-white transition-transform duration-300 ease-in-out",
+            showSideNav ? "translate-x-0" : "-translate-x-full xl:translate-x-0",
           )}
         >
-          <div className="flex __center gap-4 justify-normal mb-4">
-            <Image src="/logo.jpg" alt="" width={34} height={34} />
-            <h1 className="font-semibold text-lg">{username}</h1>
+          {/* Sidebar Header */}
+          <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
+            <Image
+              src="/logo.jpg"
+              alt="SE Electronics"
+              width={36}
+              height={36}
+              className="rounded-lg border border-white/20"
+            />
+            <div className="flex-1 min-w-0">
+              <h1 className="font-bold text-sm truncate">{username}</h1>
+              <p className="text-[10px] text-blue-200 font-medium tracking-wider uppercase">Admin Panel</p>
+            </div>
             {showSideNav && (
               <button
-                title="Show Sidebar"
+                title="Close Sidebar"
                 onClick={() => setShowSideNav(false)}
-                className="ml-auto"
+                className="p-1.5 rounded-lg hover:bg-white/10 transition-colors xl:hidden"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
+                <X size={18} />
               </button>
             )}
           </div>
-          <div className="flex gap-1 text-sm mb-5 bg-green-50 p-1 border border-green-500 rounded-md">
-            {smsBalance ? (
-              <>
-                <span>SMS Balence:</span>
-                <span className="text-green-600 font-bold">
-                  ৳{smsBalance.toLocaleString()}
+
+          {/* SMS Balance */}
+          <div className="mx-4 mt-4 mb-2">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-3 py-2.5 border border-white/10">
+              {smsBalance ? (
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] text-blue-200 font-medium">SMS Balance</span>
+                  <span className="text-sm text-emerald-400 font-bold">
+                    ৳{smsBalance.toLocaleString()}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-[10px] text-red-300 leading-tight block">
+                  Could not fetch balance. Refresh to try again.
                 </span>
-              </>
-            ) : (
-              <span className="text-red-600 text-xs">
-                Couldn't fetch balance. <br /> Please refresh the page to try
-                again
-              </span>
-            )}
+              )}
+            </div>
           </div>
-          <nav className="border-t">
-            <ul>
-              {links.map((link) => (
-                <li key={link.href + link.name}>
-                  <Link
-                    onClick={() => setShowSideNav(false)}
-                    href={link.href}
-                    className={clsx(
-                      "flex gap-4 px-4 py-2 my-2 rounded-lg hover:bg-gray-100",
-                      {
-                        "bg-gray-100": pathname === link.href,
-                      },
-                    )}
-                  >
-                    {link.icon}
-                    <h1 className="font-medium">{link.name}</h1>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+
+          {/* Navigation */}
+          <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-0.5">
+            {links.map((link) => {
+              const Icon = link.icon;
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href + link.name}
+                  onClick={() => setShowSideNav(false)}
+                  href={link.href}
+                  className={clsx(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200",
+                    isActive
+                      ? "bg-white text-brand shadow-sm"
+                      : "text-blue-100 hover:bg-white/10 hover:text-white",
+                  )}
+                >
+                  <Icon size={18} className={isActive ? "text-brand" : ""} />
+                  <span>{link.name}</span>
+                </Link>
+              );
+            })}
           </nav>
-          <div className="mt-auto text-center">
+
+          {/* Sidebar Footer */}
+          <div className="p-4 border-t border-white/10">
             <button
               onClick={() => {
                 setIsLogginOut(true);
                 logout();
               }}
               disabled={isLogginOut}
-              className="__btn bg-red-100 text-red-500 shadow-none w-full gap-2.5"
+              className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-red-500/80 text-white font-semibold text-sm py-2.5 rounded-xl transition-all disabled:opacity-50 border border-white/10"
             >
-              {!isLogginOut && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
-                  />
-                </svg>
-              )}
+              {!isLogginOut && <LogOut size={16} />}
               <span>{isLogginOut ? "Logging out..." : "Logout"}</span>
             </button>
-            <span className="text-xs text-gray-500 mt-3 block">
+            <span className="text-[10px] text-blue-300 mt-3 block text-center font-medium tracking-wider">
               v{appVersion}
             </span>
           </div>
         </div>
+
+        {/* Main Content */}
         <section
           className={clsx(
-            "w-full h-screen overflow-auto flex flex-col relative p-4 pb-0",
-            {
-              "pointer-events-none": showSideNav,
-            },
+            "flex-1 h-screen overflow-auto flex flex-col",
           )}
         >
           <SideNavContext value={{ openSideNav: () => setShowSideNav(true) }}>
-            {children}
+            <div className="flex-1 p-3 sm:p-5 pb-0">
+              {children}
+            </div>
           </SideNavContext>
         </section>
       </div>

@@ -85,7 +85,7 @@ export default async function StaffProfilePage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Top Navbar: Staff Details */}
-      <header className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-100">
+      <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
         <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4">
           <div className="flex items-center justify-between gap-3 sm:gap-4">
             <div className="flex items-center gap-3 sm:gap-4">
@@ -99,16 +99,16 @@ export default async function StaffProfilePage() {
                     className="rounded-full object-cover w-full h-full border-2 border-blue-100"
                   />
                 ) : (
-                  <div className="w-full h-full rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                  <div className="w-full h-full rounded-full bg-white/10 flex items-center justify-center text-blue-200 border border-white/20">
                     <User className="w-6 h-6 sm:w-8 sm:h-8" />
                   </div>
                 )}
               </div>
               <div className="overflow-hidden">
-                <h1 className="text-lg sm:text-lg font-bold text-gray-900 leading-tight truncate">
+                <h1 className="text-lg sm:text-lg font-bold leading-tight truncate">
                   {staffData.name}
                 </h1>
-                <p className="text-xs sm:text-sm font-medium text-gray-500 capitalize flex items-center gap-1">
+                <p className="text-xs sm:text-sm font-medium text-blue-200 capitalize flex items-center gap-1">
                   <Briefcase size={14} className="min-w-max" /> 
                   <span className="truncate">{staffData.role}</span> • ID: {staffData.staffId}
                 </p>
@@ -117,30 +117,30 @@ export default async function StaffProfilePage() {
                     {"★".repeat(Math.floor(stats?.rating || 0))}
                     {"☆".repeat(5 - Math.floor(stats?.rating || 0))}
                   </span>
-                  <span className="text-gray-500 text-[10px] sm:text-xs ml-1 font-medium">({stats?.rating || 0})</span>
+                  <span className="text-blue-200 text-[10px] sm:text-xs ml-1 font-medium">({stats?.rating || 0})</span>
                 </div>
               </div>
             </div>
             <form action={staffLogout}>
-              <button className="p-2 sm:p-3 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">
+              <button className="p-2 sm:p-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors border border-white/10">
                 <LogOut size={20} />
               </button>
             </form>
           </div>
 
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-            <div className="flex items-center gap-2 text-gray-600 bg-gray-50 p-2 rounded-lg border border-gray-100">
-              <PhoneCall size={16} className="text-blue-500 shrink-0" />
+          <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+            <div className="flex items-center gap-2 text-blue-100 bg-white/10 p-2 rounded-lg border border-white/10">
+              <PhoneCall size={16} className="text-blue-200 shrink-0" />
               <span className="font-semibold truncate">{staffData.phone}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-600 bg-gray-50 p-2 rounded-lg border border-gray-100">
-              <MapPin size={16} className="text-emerald-500 shrink-0" />
+            <div className="flex items-center gap-2 text-blue-100 bg-white/10 p-2 rounded-lg border border-white/10">
+              <MapPin size={16} className="text-blue-200 shrink-0" />
               <span className="font-medium truncate block">
                 {staffData.currentStreetAddress || "Location not specified"}
               </span>
             </div>
           </div>
-          <div className="mt-2 text-[10px] text-orange-600 font-medium bg-orange-50 px-3 py-1.5 rounded-lg border border-orange-100 flex items-center justify-center gap-1">
+          <div className="mt-2 text-[10px] text-yellow-200 font-medium bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center justify-center gap-1">
             <ShieldCheck size={14} /> Contact Admin to update your profile details
           </div>
         </div>
@@ -152,7 +152,7 @@ export default async function StaffProfilePage() {
         {/* Stats Grid - Inspired by Customer Actions Grid but for info */}
         <div className="grid grid-cols-4 gap-2 sm:gap-4">
           <div className="bg-white aspect-square rounded-[1.25rem] sm:rounded-3xl p-2 sm:p-4 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
-            <div className="bg-blue-600 p-2 sm:p-3 rounded-xl sm:rounded-2xl text-white mb-1 shadow-lg pointer-events-none">
+            <div className="bg-brand p-2 sm:p-3 rounded-xl text-white mb-1 shadow-lg pointer-events-none">
               <Briefcase className="w-4 h-4 sm:w-6 sm:h-6" />
             </div>
             <span className="text-lg sm:text-2xl font-bold text-gray-900 leading-none my-1">{stats?.totalServices || 0}</span>
@@ -366,7 +366,7 @@ export default async function StaffProfilePage() {
               <div className="space-y-4">
                 <div>
                   <h4 className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Payment Preference</h4>
-                  <p className="text-sm font-medium text-gray-800 uppercase tracking-wide bg-teal-50 text-teal-800 px-3 py-1.5 rounded-lg border border-teal-100 inline-block">
+                  <p className="text-sm font-medium uppercase tracking-wide bg-teal-50 text-teal-800 px-3 py-1.5 rounded-lg border border-teal-100 inline-block">
                     {staffData.paymentPreference || "N/A"}
                   </p>
                 </div>

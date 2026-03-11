@@ -42,11 +42,11 @@ export default function CheckWarrantyPage() {
 
   return (
     <div
-      className="mx-auto max-w-[1200px] min-h-screen p-3 flex flex-col gap-4"
+      className="mx-auto max-w-[1200px] min-h-screen p-3 sm:p-4 flex flex-col gap-4"
       style={{ backgroundColor: "rgb(239, 246, 255)" }}
     >
       {/* Header */}
-      <div className="font-bold flex flex-col gap-0.5 p-6 rounded-lg border-2 text-center bg-white">
+      <div className="font-bold flex flex-col gap-0.5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 text-center bg-white shadow-sm">
         <div className="text-lg">
           এস ই ইলেকট্রনিকস প্রডাক্ট ওয়ারেন্টি ট্রেকিং
         </div>
@@ -58,7 +58,7 @@ export default function CheckWarrantyPage() {
       </div>
 
       {/* Search Form */}
-      <div className="p-6 border-2 rounded-lg bg-white">
+      <div className="p-4 sm:p-6 border border-gray-200 rounded-xl sm:rounded-2xl bg-white shadow-sm">
         <h2 className="text-lg font-semibold mb-4">ওয়ারেন্টি চেক করুন</h2>
         <div className="flex gap-3">
           <input
@@ -66,19 +66,19 @@ export default function CheckWarrantyPage() {
             placeholder="ইনভয়েস নম্বর লিখুন"
             value={invoiceNumber}
             onChange={(e) => setInvoiceNumber(e.target.value)}
-            className="w-full px-4 py-2 border-2 rounded focus:outline-none focus:border-blue-500"
+            className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
             disabled={loading}
           />
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="px-6 py-2.5 bg-brand text-white rounded-xl font-semibold hover:bg-brand-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all text-sm"
           >
             {loading ? "Checking..." : "Check"}
           </button>
         </div>
         {error && (
-          <div className="mt-3 p-3 bg-red-100 text-red-700 rounded border border-red-300">
+          <div className="mt-3 p-3 bg-red-50 text-red-700 rounded-xl border border-red-200 text-sm">
             {error}
           </div>
         )}
@@ -88,7 +88,7 @@ export default function CheckWarrantyPage() {
       {warrantyData && (
         <div className="space-y-3 mb-10">
           {/* Customer Info */}
-          <div className="p-4 border-2 rounded-lg bg-white">
+          <div className="p-4 border border-gray-200 rounded-xl sm:rounded-2xl bg-white shadow-sm">
             <h3 className="text-lg font-semibold mb-6 text-gray-800 border-b-2 pb-2 inline-block">
               গ্রাহকের তথ্য
             </h3>
@@ -148,7 +148,7 @@ export default function CheckWarrantyPage() {
           </div>
 
           {/* Products Card Grid - REPLACING THE TABLE */}
-          <div className="border-2 rounded-lg p-4 bg-white">
+          <div className="border border-gray-200 rounded-xl sm:rounded-2xl p-4 bg-white shadow-sm">
             <h3 className="text-xl font-bold mb-4 border-b pb-2 text-gray-800">
               Purchased Products
             </h3>

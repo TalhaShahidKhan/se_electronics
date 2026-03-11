@@ -30,14 +30,14 @@ export default function DashboardHeader() {
             />
           </svg>
         </button>
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-brand tracking-tight">
           Admin Overview
         </h1>
       </div>
 
       <Link
         href="/services/add"
-        className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-2xl font-bold font-plus-jakarta hover:bg-blue-700 active:scale-95 transition-all shadow-md shadow-blue-200"
+        className="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-brand text-white rounded-xl sm:rounded-2xl font-bold text-sm hover:bg-brand-800 active:scale-95 transition-all shadow-md shadow-brand-100"
       >
         <Plus size={20} />
         <span>Add New Service</span>
