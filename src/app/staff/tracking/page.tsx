@@ -55,7 +55,10 @@ export default async function StaffTrackingPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
         <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4 flex items-center gap-3">
-          <Link href="/staff/profile" className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors border border-white/10">
+          <Link
+            href="/staff/profile"
+            className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
+          >
             <ArrowLeft size={20} />
           </Link>
           <div className="flex items-center gap-2">
@@ -68,34 +71,54 @@ export default async function StaffTrackingPage() {
       <main className="max-w-4xl mx-auto p-3 sm:p-4 py-4 sm:py-6 space-y-6">
         {/* Earnings Overview */}
         <div>
-          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">Earnings Overview</h2>
+          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">
+            Earnings Overview
+          </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
             <div className="__card p-4 text-center">
               <TrendingUp size={22} className="mx-auto text-emerald-600 mb-2" />
-              <p className="text-lg sm:text-xl font-bold text-gray-900">৳{totalEarnings.toLocaleString()}</p>
-              <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">Total Earned</p>
+              <p className="text-lg sm:text-xl font-bold text-gray-900">
+                ৳{totalEarnings.toLocaleString()}
+              </p>
+              <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">
+                Total Earned
+              </p>
             </div>
             <div className="__card p-4 text-center">
               <Clock size={22} className="mx-auto text-amber-500 mb-2" />
-              <p className="text-lg sm:text-xl font-bold text-gray-900">৳{pendingEarnings.toLocaleString()}</p>
-              <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">Pending</p>
+              <p className="text-lg sm:text-xl font-bold text-gray-900">
+                ৳{pendingEarnings.toLocaleString()}
+              </p>
+              <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">
+                Pending
+              </p>
             </div>
             <div className="__card p-4 text-center">
               <CheckCircle size={22} className="mx-auto text-brand mb-2" />
-              <p className="text-lg sm:text-xl font-bold text-gray-900">{stats?.successfulServices || 0}</p>
-              <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">Completed</p>
+              <p className="text-lg sm:text-xl font-bold text-gray-900">
+                {stats?.successfulServices || 0}
+              </p>
+              <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">
+                Completed
+              </p>
             </div>
             <div className="__card p-4 text-center">
               <XCircle size={22} className="mx-auto text-rose-500 mb-2" />
-              <p className="text-lg sm:text-xl font-bold text-gray-900">{stats?.canceledServices || 0}</p>
-              <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">Canceled</p>
+              <p className="text-lg sm:text-xl font-bold text-gray-900">
+                {stats?.canceledServices || 0}
+              </p>
+              <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase">
+                Canceled
+              </p>
             </div>
           </div>
         </div>
 
         {/* Service History */}
         <div>
-          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">Service History</h2>
+          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">
+            Service History
+          </h2>
           {services.length === 0 ? (
             <div className="__card p-6 text-center text-gray-500">
               <Wrench size={36} className="mx-auto mb-2 text-gray-300" />
@@ -116,11 +139,18 @@ export default async function StaffTrackingPage() {
                   </thead>
                   <tbody className="text-xs sm:text-sm divide-y divide-gray-100">
                     {services.slice(0, 20).map((service: any) => {
-                      const currentStatus = service.statusHistory?.[0]?.status || "pending";
+                      const currentStatus =
+                        service.statusHistory?.[0]?.status || "pending";
                       return (
-                        <tr key={service.serviceId} className="hover:bg-gray-50/50 transition-colors">
+                        <tr
+                          key={service.serviceId}
+                          className="hover:bg-gray-50/50 transition-colors"
+                        >
                           <td className="px-3 sm:px-4 py-3 font-mono text-gray-400 text-[10px] sm:text-xs font-semibold">
-                            <Link href={`/service-track?trackingId=${service.serviceId}`} className="hover:text-brand transition-colors">
+                            <Link
+                              href={`/service-track?trackingId=${service.serviceId}`}
+                              className="hover:text-brand transition-colors"
+                            >
                               #{service.serviceId.substring(0, 8)}
                             </Link>
                           </td>
@@ -128,11 +158,20 @@ export default async function StaffTrackingPage() {
                             {service.customerName}
                           </td>
                           <td className="px-3 sm:px-4 py-3 text-gray-600">
-                            <span className="capitalize">{service.productType}</span>
-                            <div className="text-[10px] text-gray-400">{service.productModel}</div>
+                            <span className="capitalize">
+                              {service.productType}
+                            </span>
+                            <div className="text-[10px] text-gray-400">
+                              {service.productModel}
+                            </div>
                           </td>
                           <td className="px-3 sm:px-4 py-3">
-                            <span className={clsx("px-2 py-0.5 rounded-full text-[10px] font-bold uppercase", getStatusColor(currentStatus))}>
+                            <span
+                              className={clsx(
+                                "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase",
+                                getStatusColor(currentStatus),
+                              )}
+                            >
                               {currentStatus.replace("_", " ")}
                             </span>
                           </td>
@@ -151,7 +190,9 @@ export default async function StaffTrackingPage() {
 
         {/* Payment History */}
         <div>
-          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">Payment History</h2>
+          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">
+            Payment History
+          </h2>
           {paymentsList.length === 0 ? (
             <div className="__card p-6 text-center text-gray-500">
               <CreditCard size={36} className="mx-auto mb-2 text-gray-300" />
@@ -172,9 +213,14 @@ export default async function StaffTrackingPage() {
                   </thead>
                   <tbody className="text-xs sm:text-sm divide-y divide-gray-100">
                     {paymentsList.map((payment: any) => (
-                      <tr key={payment.paymentId} className="hover:bg-gray-50/50 transition-colors">
+                      <tr
+                        key={payment.paymentId}
+                        className="hover:bg-gray-50/50 transition-colors"
+                      >
                         <td className="px-3 sm:px-4 py-3 text-gray-600 text-xs">
-                          {new Date(payment.date || payment.createdAt).toLocaleDateString()}
+                          {new Date(
+                            payment.date || payment.createdAt,
+                          ).toLocaleDateString()}
                         </td>
                         <td className="px-3 sm:px-4 py-3 font-mono text-gray-400 text-[10px] sm:text-xs">
                           {payment.paymentId?.substring(0, 8)}
@@ -186,13 +232,18 @@ export default async function StaffTrackingPage() {
                           {payment.paymentMethod}
                         </td>
                         <td className="px-3 sm:px-4 py-3">
-                          <span className={clsx(
-                            "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase",
-                            payment.status === "completed" ? "bg-green-100 text-green-700" :
-                            payment.status === "processing" ? "bg-blue-100 text-blue-700" :
-                            payment.status === "rejected" ? "bg-red-100 text-red-700" :
-                            "bg-yellow-100 text-yellow-700"
-                          )}>
+                          <span
+                            className={clsx(
+                              "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase",
+                              payment.status === "completed"
+                                ? "bg-green-100 text-green-700"
+                                : payment.status === "processing"
+                                  ? "bg-blue-100 text-blue-700"
+                                  : payment.status === "rejected"
+                                    ? "bg-red-100 text-red-700"
+                                    : "bg-yellow-100 text-yellow-700",
+                            )}
+                          >
                             {payment.status}
                           </span>
                         </td>

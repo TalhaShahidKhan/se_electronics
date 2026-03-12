@@ -1,11 +1,12 @@
 import { getServiceById } from "@/actions";
 import { ImageWithLightbox } from "@/components";
-import ServiceTrackingPageThemeColor from "@/components/features/services/ServiceTrackingPageThemeColor";
-import Timestamp from "@/components/ui/Timestamp";
+import { ServiceTrackingPageThemeColor, Timestamp } from "@/components";
 import { contactDetails } from "@/constants";
+import { verifySession } from "@/lib";
 import { AppError, renderText } from "@/utils";
 import clsx from "clsx";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 const technicianStatuses = {
   pending: {
@@ -217,7 +218,7 @@ const electricianStatuses = {
   pending: {
     title: "আপনার হোম ইনস্টল অনুরোধটি গ্রহন করা হয়েছে।",
     description: `প্রিয় গ্রাহক {customer_name}, আপনার IPS হোম ইনস্টল অনুরোধটি গ্রহন করা হয়েছে।
-ইনস্টল আই ডি: {serviceId} হোম ইনস্টল এর জন্য অতি শ্রীগ্রই অফিসিয়াল ইলেকট্রিশিয়ান টিমকে নযুক্ত করা হবে। সময় দিয়ে আমাদের সহযোগিতা করবেন ধন্যাবাদ।`,
+ইনস্টল আই ডি: {serviceId} হোম ইনস্টল এর জন্য অতি শ্রীগ্রই অফিসিয়াল ইলেকট্রিশিয়ান টিমকে নিযুক্ত করা হবে। সময় দিয়ে আমাদের সহযোগিতা করবেন ধন্যাবাদ।`,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -261,7 +262,7 @@ const electricianStatuses = {
   appointment_retry: {
     title: "নিযুক্ত হোম ইনস্টল টিম অনুরোধটি  কেন্সেল করেছে।",
     description: `দুঃখীত। আপনার পন্যটি হাউস ওয়ারিং ইনস্টল করার জন্য যে ইনস্টল টিম নিয়োগ করা হয়েছিল,
-অনাকাঙ্ক্ষিত সমস্যার কারনে হাউস ওয়ারিং ইনস্টল টিমটি অনুরোধটি কেন্সেল করেছে। আমরা পুনরায় আপনার জন্য নতুন সার্ভিস টিম নিয়োগ দিচ্ছি আশা করি অতি দ্রুত সার্ভিস টিম নিযুক্ত করা হবে।`,
+অনাকাঙ্ক্ষিত সমস্যার কারনে হাউস ওয়ারিং ইনস্টল টিমটি অনুরোধটি কেন্সেল করেছে। আমরা পুনরায় আপনার জন্য নতুন সার্ভিস টিম নিয়োগ দিচ্ছি আশা করি অতি দ্রুত হাউস ওয়ারিং ইনস্টল টিম নিযুক্ত করা হবে।`,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -382,50 +383,7 @@ export default async function ServiceTrackPage({
 }) {
   const params = await searchParams;
   if (!params.trackingId) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 max-w-md w-full">
-          <h1 className="text-2xl font-bold mb-6 text-gray-900">
-            Track Your Service
-          </h1>
-          <p className="text-gray-500 mb-6 text-sm">
-            Enter your service ID that we have sent you through SMS
-          </p>
-          <form
-            action="/service-track"
-            method="get"
-            className="flex flex-col gap-4"
-          >
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Service Tracking ID
-              </label>
-              <input
-                type="text"
-                name="trackingId"
-                placeholder="e.g. SRV-2026-XXXX"
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand transition-all"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-brand text-white font-bold py-3 rounded-xl hover:bg-brand-800 transition-all active:scale-95 shadow-lg shadow-brand-100"
-            >
-              Track Status
-            </button>
-          </form>
-          <div className="mt-6 text-center">
-            <Link
-              href="/customer/profile"
-              className="text-sm font-semibold text-gray-500 hover:text-brand transition-colors"
-            >
-              Back to Dashboard
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
   const response = await getServiceById(params.trackingId);
@@ -436,58 +394,81 @@ export default async function ServiceTrackPage({
   const serviceData = response.data;
   const statusHistory = serviceData.statusHistory;
   const currentStatus = statusHistory[statusHistory.length - 1].status;
-  return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 selection:bg-emerald-200">
-      <div className="mx-auto max-w-2xl text-center pb-8">
-        {/* Navigation Header */}
-        <div className="flex items-center gap-4 mb-6 text-left">
-            <Link href="/customer/profile" className="p-3 bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 hover:shadow-md transition-all active:scale-95 flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6 text-gray-600">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>
-            </Link>
-            <h1 className="text-2xl font-extrabold text-gray-900 flex items-center gap-3">
-                <div className="p-2 bg-emerald-100 rounded-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6 text-emerald-600">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22M2.25 18v-1.5M2.25 18H3.75" />
-                    </svg>
-                </div>
-                Service Tracking
-            </h1>
-        </div>
+  const appointedStaffPhotoUrl =
+    serviceData.appointedStaff &&
+    "photoUrl" in serviceData.appointedStaff &&
+    serviceData.appointedStaff.photoUrl
+      ? serviceData.appointedStaff.photoUrl
+      : "";
 
+  const session = await verifySession(false);
+  const profileHref =
+    session?.role === "customer"
+      ? "/customer/profile"
+      : session?.role === "staff"
+        ? "/staff/profile"
+        : null;
+  return (
+    <div className="bg-black h-screen overflow-y-auto">
+      <ServiceTrackingPageThemeColor />
+      <div className="mx-auto max-w-[600px] text-center pb-4">
+        <div className="flex justify-end px-4 pt-4">
+          {profileHref ? (
+            <Link
+              href={profileHref}
+              className="text-xs font-semibold bg-white/10 hover:bg-white/15 text-white border border-white/15 px-3 py-2 rounded-lg transition-colors"
+            >
+              Back to Profile
+            </Link>
+          ) : (
+            <div className="flex gap-2">
+              <Link
+                href="/customer/login"
+                className="text-xs font-semibold bg-white/10 hover:bg-white/15 text-white border border-white/15 px-3 py-2 rounded-lg transition-colors"
+              >
+                Customer Login
+              </Link>
+              <Link
+                href="/login"
+                className="text-xs font-semibold bg-white/10 hover:bg-white/15 text-white border border-white/15 px-3 py-2 rounded-lg transition-colors"
+              >
+                Admin/Staff Login
+              </Link>
+            </div>
+          )}
+        </div>
         {/* Header */}
-        <div className="mb-6 bg-white border border-gray-100 shadow-sm p-6 rounded-3xl text-left">
+        <div className="mb-3 bg-slate-900 text-white p-4 sm:rounded-lg">
           <div className="flex items-start justify-between gap-4 mb-4">
             {/* Left Column - Service Info */}
             <div className="flex-1 min-w-0">
               <div
                 className={clsx(
-                  "text-lg font-black mb-4",
-                  serviceData?.type === "install" ? "text-amber-600" : "text-emerald-600",
+                  "text-md font-bold mb-3",
+                  serviceData?.type === "install" && "text-yellow-500",
                 )}
               >
                 এস ই ইলেকট্রনিকস গ্রাহক সেবা সার্ভিসিং তথ্য ট্রেকিং
               </div>
-              <div className="space-y-2 text-sm text-gray-600">
+              <div className="space-y-1 text-sm text-start mx-2">
                 <div className="flex">
-                  <span className="w-28 flex-shrink-0 font-medium text-gray-500">ট্রেকিং নম্বর</span>
+                  <span className="w-28 flex-shrink-0">ট্রেকিং নম্বর</span>
                   <span className="mr-2 flex-shrink-0">:</span>
-                  <span className="font-bold truncate text-gray-900">
+                  <span className="font-bold truncate">
                     {serviceData.serviceId}
                   </span>
                 </div>
                 <div className="flex">
-                  <span className="w-28 flex-shrink-0 font-medium text-gray-500">হেল্প নাম্বার</span>
+                  <span className="w-28 flex-shrink-0">হেল্প নাম্বার</span>
                   <span className="mr-2 flex-shrink-0">:</span>
-                  <span className="font-bold truncate text-gray-900">
+                  <span className="font-bold truncate">
                     {contactDetails.customerCare}
                   </span>
                 </div>
                 <div className="flex">
-                  <span className="w-28 flex-shrink-0 font-medium text-gray-500">হেড অফিস</span>
+                  <span className="w-28 flex-shrink-0">হেড অফিস</span>
                   <span className="mr-2 flex-shrink-0">:</span>
-                  <span className="font-bold truncate text-gray-900">
+                  <span className="font-bold truncate">
                     {contactDetails.headOffice}
                   </span>
                 </div>
@@ -498,11 +479,11 @@ export default async function ServiceTrackPage({
           {/* Staff Info Section */}
           {((serviceData?.staffName && serviceData?.staffPhone) ||
             serviceData?.appointedStaff) && (
-            <div className="border-t border-gray-100 pt-5 mt-2">
+            <div className="border-t border-slate-700 pt-3 mx-2">
               <div
                 className={clsx(
                   "font-bold text-md mb-4",
-                  serviceData?.type === "install" ? "text-amber-600" : "text-emerald-600",
+                  serviceData?.type === "install" && "text-yellow-500",
                 )}
               >
                 এস ই ইলেকট্রনিকস নিযুক্ত{" "}
@@ -512,47 +493,44 @@ export default async function ServiceTrackPage({
                 তথ্য
               </div>
               <div className="flex items-center justify-between gap-3">
-                <div className="text-sm space-y-2 text-gray-600 flex-1 min-w-0">
+                <div className="text-sm space-y-1 text-start flex-1 min-w-0">
                   <div className="flex items-start">
-                    <span className="w-24 flex-shrink-0 font-medium text-gray-500">নাম</span>
+                    <span className="w-20 flex-shrink-0">নাম</span>
                     <span className="mr-2 flex-shrink-0">:</span>
-                    <span className="font-bold truncate block text-gray-900">
+                    <span className="font-bold truncate block">
                       {serviceData.appointedStaff?.name ||
                         serviceData.staffName}
                     </span>
                   </div>
                   <div className="flex items-start">
-                    <span className="w-24 flex-shrink-0 font-medium text-gray-500">ফোন</span>
+                    <span className="w-20 flex-shrink-0">ফোন</span>
                     <span className="mr-2 flex-shrink-0">:</span>
-                    <span className="font-bold truncate block text-gray-900">
+                    <span className="font-bold truncate block">
                       {serviceData.appointedStaff?.phone ||
                         serviceData.staffPhone}
                     </span>
                   </div>
                   <div className="flex items-start">
-                    <span className="w-24 flex-shrink-0 font-medium text-gray-500">সার্ভিস এরিয়া</span>
+                    <span className="w-20 flex-shrink-0">সার্ভিস এরিয়া</span>
                     <span className="mr-2 flex-shrink-0">:</span>
-                    <span className="font-bold truncate block text-gray-900">
+                    <span className="font-bold truncate block">
                       {serviceData.customerAddress}
                     </span>
                   </div>
                 </div>
                 {serviceData.appointedStaff && (
                   <div className="flex-shrink-0 __center flex flex-col">
-                    <div className="size-16 rounded-full overflow-hidden border-2 border-emerald-100 shadow-sm bg-gray-50">
+                    <div className="size-16 rounded-full overflow-hidden border-2 border-slate-600">
                       <ImageWithLightbox
-                        src={
-                          (serviceData.appointedStaff as { photoUrl?: string })
-                            ?.photoUrl ?? ""
-                        }
+                        src={appointedStaffPhotoUrl}
                         alt="Staff Photo"
                         className="w-full h-full object-cover"
                       />
                     </div>
-                      <Link
+                    <Link
                       target="_blank"
                       href={`/team-members?staffId=${serviceData.appointedStaff.staffId}`}
-                      className="mt-2 text-emerald-600 text-xs font-bold hover:underline"
+                      className="mt-2 text-blue-500 hover:underline"
                     >
                       View Profile
                     </Link>
@@ -564,7 +542,7 @@ export default async function ServiceTrackPage({
         </div>
 
         {/* Event History */}
-        <div className="flex flex-col gap-6 bg-white border border-gray-100 shadow-sm p-6 sm:p-8 rounded-3xl text-gray-800">
+        <div className="flex flex-col gap-6 bg-slate-900 text-white p-4 sm:rounded-lg">
           <ul className="flex flex-col">
             {statusHistory.map(
               ({
@@ -593,19 +571,19 @@ export default async function ServiceTrackPage({
                 const isCustomStatus = statusType === "custom";
 
                 return (
-                  <li key={id} className="relative flex gap-5">
+                  <li key={id} className="relative flex gap-4">
                     {(!isLastOne ||
                       isFirstOne ||
                       (!isCanceled && !isCompleted)) && (
-                      <div className="absolute w-8 h-full">
-                        <div className="bg-emerald-200 w-0.5 m-auto h-full"></div>
+                      <div className="absolute w-7 h-full">
+                        <div className=" bg-blue-500 w-0.5 m-auto h-full"></div>
                       </div>
                     )}
                     <div
                       className={clsx(
-                        `size-8 min-w-8 rounded-full __center text-white relative shadow-sm`,
+                        `size-7 min-w-7 rounded-full __center text-white relative`,
                         isCustomStatus
-                          ? "bg-emerald-500"
+                          ? "bg-blue-500"
                           : `bg-${statusData?.color}-500`,
                       )}
                     >
@@ -628,20 +606,20 @@ export default async function ServiceTrackPage({
                         statusData?.icon
                       )}
                     </div>
-                    <div className="flex flex-col text-left gap-1 pb-6 w-full">
+                    <div className="flex flex-col text-start gap-1 pb-5">
                       <span
                         className={clsx(
-                          "font-bold text-[15px]",
+                          "font-bold",
                           serviceData?.type === "install"
-                            ? "text-amber-600"
+                            ? "text-yellow-500"
                             : isCustomStatus
-                              ? "text-emerald-600"
-                              : `text-${statusData?.color}-600`,
+                              ? "text-blue-500"
+                              : `text-${statusData?.color}-500`,
                         )}
                       >
                         {isCustomStatus ? customLabel : statusData?.title}
                       </span>
-                      <div className="text-[13px] text-gray-600 leading-relaxed bg-gray-50 border border-gray-100 p-3 rounded-xl mt-1 mb-1">
+                      <p className="text-sm">
                         {isCustomStatus
                           ? customNote
                           : isCanceled && cancelReason
@@ -650,10 +628,8 @@ export default async function ServiceTrackPage({
                                 serviceId: serviceData?.serviceId,
                                 customer_name: serviceData?.customerName,
                               })}
-                      </div>
-                      <div className="text-gray-400 text-xs font-semibold">
-                        <Timestamp timestamp={createdAt} />
-                      </div>
+                      </p>
+                      <Timestamp timestamp={createdAt} />
                     </div>
                   </li>
                 );
@@ -661,8 +637,8 @@ export default async function ServiceTrackPage({
             )}
 
             {currentStatus !== "completed" && currentStatus !== "canceled" && (
-              <li className="flex gap-5 opacity-50">
-                <div className="size-8 min-w-8 rounded-full bg-gray-300 __center text-white">
+              <li className="flex gap-4 opacity-60">
+                <div className="size-7 min-w-7 rounded-full bg-gray-500 __center text-white">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -680,23 +656,23 @@ export default async function ServiceTrackPage({
                 </div>
 
                 {serviceData.type === "install" ? (
-                  <div className="flex flex-col text-left gap-1 pb-8 w-full">
-                    <span className="text-gray-500 font-bold">
+                  <div className="flex flex-col text-start gap-1 pb-8">
+                    <span className="text-white font-bold">
                       আপনার IPS প্যাকেজ টি প্রদত্ত ঠিকানায় ইন্সটলের কাজ শেষ করা
                       হয়েছে।
                     </span>
-                    <p className="text-sm text-gray-400 leading-relaxed bg-gray-50 p-3 rounded-xl border border-gray-100 mt-1">
+                    <p className="text-sm text-gray-300">
                       প্রিয় গ্রাহক, আপনার IPS প্যাকেজ টি আমাদের ইন্সটল টিম
                       দক্ষতার সঙ্গে আপনার প্রদত্ত ঠিকানায় হাউস ওয়ারিং IPS
                       ইন্সটল করেছেন। আশা করি আমরা আপনাকে সন্তুষ্ট করতে পেরেছি।
                     </p>
                   </div>
                 ) : (
-                  <div className="flex flex-col text-left gap-1 pb-8 w-full">
-                    <span className="text-gray-500 font-bold">
+                  <div className="flex flex-col text-start gap-1 pb-8">
+                    <span className="text-white font-bold">
                       আপনার পণ্যের সমস্যা সমাধান করা হয়েছে।
                     </span>
-                    <p className="text-sm text-gray-400 leading-relaxed bg-gray-50 p-3 rounded-xl border border-gray-100 mt-1">
+                    <p className="text-sm text-gray-300">
                       প্রিয় গ্রাহক, আপনার পন্যটি আমাদের সার্ভিস টিম দক্ষতার
                       সঙ্গে সমস্যাগুলা সমাধান করেছেন। আশা করি আমরা আপনাকে
                       সন্তুষ্ট করতে পেরেছি।
