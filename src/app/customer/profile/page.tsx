@@ -23,6 +23,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
+import CustomerNotificationBell from "@/components/features/customers/CustomerNotificationBell";
 
 export default async function CustomerProfilePage() {
   const session = await verifyCustomerSession();
@@ -118,6 +119,9 @@ export default async function CustomerProfilePage() {
       {/* Top banner: WELCOME TO SE ELECTRONICS */}
       <header className="sticky top-0 z-50 bg-brand text-white shadow-md rounded-b-2xl">
         <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2">
+             <CustomerNotificationBell />
+          </div>
           <h1 className="text-base sm:text-lg font-bold tracking-wide w-full text-center">
             WELCOME TO SE ELECTRONICS
           </h1>

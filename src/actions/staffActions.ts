@@ -1084,3 +1084,44 @@ export async function getMyServices(staffId: string) {
     return { success: false, message: "Failed to fetch services" };
   }
 }
+
+export const getStaffNotifications = async () => {
+  try {
+    const session = await verifySession(false, "staff");
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    const { staffNotifications } = await import("@/db/schema");
+    const { desc } = await import("drizzle-orm");
+
+    const notifications = await db.query.staffNotifications.findMany({
+      where: eq(staffNotifications.staffId, session.userId as string),
+      orderBy: [desc(staffNotifications.createdAt)],
+      limit: 10,
+    });
+
+    return { success: true, data: notifications };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Could not fetch notifications" };
+  }
+};
+
+export const markStaffNotificationAsRead = async (id: string) => {
+  try {
+    const session = await verifySession(false, "staff");
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    const { staffNotifications } = await import("@/db/schema");
+    const { eq } = await import("drizzle-orm");
+
+    await db
+      .update(staffNotifications)
+      .set({ isRead: true })
+      .where(eq(staffNotifications.id, id));
+
+    return { success: true, message: "Notification marked as read" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong" };
+  }
+};

@@ -138,6 +138,7 @@ export const customersRelations = relations(customers, ({ many, one }) => ({
   }),
   services: many(services),
   feedbacks: many(feedbacks),
+  notifications: many(customerNotifications),
 }));
 
 export const invoices = pgTable(
@@ -417,6 +418,7 @@ export const staffsRelations = relations(staffs, ({ many, one }) => ({
   services: many(services),
   payments: many(payments),
   agreements: many(userAgreements),
+  notifications: many(staffNotifications),
   application: one(applications, {
     fields: [staffs.id],
     references: [applications.applicantId],
@@ -618,7 +620,49 @@ export const adminNotifications = pgTable("adminNotifications", {
   createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
 });
 
+export const staffNotifications = pgTable("staffNotifications", {
+  id: uuid().defaultRandom().primaryKey(),
+  staffId: varchar({ length: 255 })
+    .references(() => staffs.staffId, { onDelete: "cascade" })
+    .notNull(),
+  type: varchar({ length: 50 }).notNull(),
+  message: text().notNull(),
+  link: varchar({ length: 255 }),
+  isRead: boolean().default(false).notNull(),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+});
 
+export const customerNotifications = pgTable("customerNotifications", {
+  id: uuid().defaultRandom().primaryKey(),
+  customerId: varchar({ length: 255 })
+    .references(() => customers.customerId, { onDelete: "cascade" })
+    .notNull(),
+  type: varchar({ length: 50 }).notNull(),
+  message: text().notNull(),
+  link: varchar({ length: 255 }),
+  isRead: boolean().default(false).notNull(),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+});
+
+export const staffNotificationsRelations = relations(
+  staffNotifications,
+  ({ one }) => ({
+    staff: one(staffs, {
+      fields: [staffNotifications.staffId],
+      references: [staffs.staffId],
+    }),
+  })
+);
+
+export const customerNotificationsRelations = relations(
+  customerNotifications,
+  ({ one }) => ({
+    customer: one(customers, {
+      fields: [customerNotifications.customerId],
+      references: [customers.customerId],
+    }),
+  })
+);
 export const contactMessagesRelations = relations(
   contactMessages,
   ({ one }) => ({
