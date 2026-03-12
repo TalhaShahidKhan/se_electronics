@@ -18,6 +18,12 @@ const nextConfig: NextConfig = {
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'https://images.pexels.com',
+                port: '',
+                pathname: '/**',
+            },
         ]
     },
     serverExternalPackages: ['puppeteer-core', '@sparticuz/chromium'],

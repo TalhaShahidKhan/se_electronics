@@ -23,12 +23,12 @@ export async function submitComplaint(_prevState: any, formData: FormData) {
       complaintId: generateRandomId(),
       ...validated,
     });
-
     revalidatePath("/customer/profile");
     return {
       success: true,
       message: "Complaint submitted successfully. Admin will review it.",
     };
+
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error(error.issues);
@@ -38,6 +38,8 @@ export async function submitComplaint(_prevState: any, formData: FormData) {
     return { success: false, message: "Something went wrong" };
   }
 }
+
+
 
 export async function getComplaintsByCustomer(customerId: string) {
   try {
