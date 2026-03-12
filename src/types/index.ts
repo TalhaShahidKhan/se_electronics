@@ -197,6 +197,15 @@ export type PaymentDataType = {
   amount: number;
   description: string | null;
   staffId: string;
+  status: Statuses;
+  statusHistory?: {
+    customNote: string | null;
+    customLabel: string | null;
+    cancelReason: string | null;
+    id: string;
+    status: Statuses;
+    statusType: "system" | "custom";
+  }[];
   staff?: StaffsType;
   senderBankInfo: BankInfo | null;
   receiverBankInfo: BankInfo | null;

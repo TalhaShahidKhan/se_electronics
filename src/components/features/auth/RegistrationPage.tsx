@@ -63,25 +63,25 @@ export default function RegistrationPage({ token }: { token: string }) {
           <div className="w-16 h-16 bg-brand/5 rounded-2xl flex items-center justify-center mb-6 mx-auto">
              <FileText className="text-brand" size={32} />
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-brand mb-2 text-center">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-brand mb-2 text-center leading-tight">
             রেজিস্ট্রেশন নির্দেশিকা
           </h2>
-          <p className="text-sm text-gray-500 text-center mb-8">
+          <p className="text-base sm:text-lg text-gray-500 text-center mb-8 leading-relaxed">
              এস ই ইলেকট্রনিকস সার্ভিস এজেন্ট হিসেবে যোগ দিতে নিচের প্রয়োজনীয় তথ্য ও নথিগুলো সাথে রাখুন।
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {requirementsList.map((item) => (
-              <div key={item.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                <span className="bg-emerald-500 text-white rounded-lg flex items-center justify-center min-w-5 min-h-5 w-5 h-5 shrink-0 text-[10px] font-bold">
+              <div key={item.id} className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <span className="bg-emerald-500 text-white rounded-lg flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-xs sm:text-sm font-bold">
                   ✓
                 </span>
-                <span className="text-xs sm:text-sm font-medium text-gray-700 leading-tight">{item.text}</span>
+                <span className="text-sm sm:text-base font-bold text-gray-700 leading-tight">{item.text}</span>
               </div>
             ))}
           </div>
         </div>
         
-        <div className="mb-8 p-4 bg-brand/5 rounded-xl border border-brand/10">
+        <div className="mb-8 p-4 sm:p-6 bg-brand/5 rounded-xl border border-brand/10">
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
@@ -89,14 +89,14 @@ export default function RegistrationPage({ token }: { token: string }) {
               checked={isAgreed}
               onChange={(e) => setIsAgreed(e.target.checked)}
             />
-            <span className="text-sm font-medium text-gray-700 leading-snug">
+            <span className="text-sm sm:text-base font-bold text-gray-700 leading-snug">
               আমি সকল নিয়ম ও শর্তগুলোতে সম্মত আছি এবং সঠিক তথ্য প্রদানে অঙ্গীকার করছি।
             </span>
           </label>
         </div>
 
         <button
-          className="w-full py-4 bg-brand text-white rounded-2xl font-bold text-lg hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50"
+          className="w-full py-4 sm:py-5 bg-brand text-white rounded-2xl font-black text-lg sm:text-xl hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50"
           disabled={!isAgreed}
           onClick={() => setShowRequirements(false)}
         >
@@ -104,10 +104,10 @@ export default function RegistrationPage({ token }: { token: string }) {
         </button>
 
         <div className="mt-8 space-y-3">
-          <p className="text-xs text-gray-500 leading-relaxed text-center">
+          <p className="text-sm text-gray-500 leading-relaxed text-center font-medium">
             ইতিমধ্যে আবেদন করে থাকলে আবেদনের স্ট্যাটাস জানতে আপনার নাম্বারে এসএমএস এ পাঠানো লিঙ্কে ক্লিক করুন।
           </p>
-          <p className="text-[10px] text-gray-400 text-center font-medium">
+          <p className="text-xs text-gray-400 text-center font-bold">
             © SEIPSBD, All Rights Reserved.
           </p>
         </div>
@@ -125,11 +125,11 @@ export default function RegistrationPage({ token }: { token: string }) {
         >
           <CheckCircle size={48} />
         </motion.div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-brand mb-4">অভিনন্দন {name}!</h2>
-        <p className="text-lg text-gray-600 max-w-md leading-relaxed mb-8">
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-brand mb-4">অভিনন্দন {name}!</h2>
+        <p className="text-lg sm:text-xl text-gray-600 max-w-md leading-relaxed mb-8 font-medium">
           আপনার রেজিস্ট্রেশন আবেদন সফলভাবে গৃহীত হয়েছে। আমাদের টিম আপনার তথ্য যাচাই করে দ্রুতই যোগাযোগ করবে।
         </p>
-        <Link href="/" className="px-8 py-3 bg-brand text-white rounded-2xl font-bold hover:bg-brand-800 transition-all shadow-lg shadow-brand/20">
+        <Link href="/" className="px-10 py-4 bg-brand text-white rounded-2xl font-black text-lg hover:bg-brand-800 transition-all shadow-lg shadow-brand/20">
           হোম পেজে ফিরে যান
         </Link>
       </div>
@@ -139,16 +139,16 @@ export default function RegistrationPage({ token }: { token: string }) {
   return (
     <div className="p-4 sm:p-6">
       <div className="mx-auto max-w-[1000px]">
-        <div className="mb-6 flex flex-col gap-1 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
-          <h1 className="text-xl sm:text-2xl font-extrabold text-brand">
+        <div className="mb-6 flex flex-col gap-1 bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm text-center">
+          <h1 className="text-2xl sm:text-3xl font-black text-brand leading-tight">
             এস ই ইলেকট্রনিকস সার্ভিস এজেন্ট নিয়োগ আবেদন
           </h1>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-2 text-sm text-gray-500">
-            <span>হেল্পলাইন: <span className="text-brand font-bold">{contactDetails.customerCare}</span></span>
-            <span className="hidden sm:inline">|</span>
-            <span>Email: <span className="text-brand font-bold">{contactDetails.email}</span></span>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 mt-4 text-base sm:text-lg text-gray-500">
+            <span className="font-bold">হেল্পলাইন: <span className="text-brand font-black">{contactDetails.customerCare}</span></span>
+            <span className="hidden sm:inline text-gray-300">|</span>
+            <span className="font-bold">Email: <span className="text-brand font-black">{contactDetails.email}</span></span>
           </div>
-          <p className="text-xs text-gray-400 mt-1 uppercase tracking-wider font-medium">
+          <p className="text-sm sm:text-base text-gray-400 mt-2 uppercase tracking-wider font-bold">
             হেড অফিস: {contactDetails.headOffice}
           </p>
         </div>

@@ -20,6 +20,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ProfileLinkButton from "./ProfileLinkButton";
+import StaffActionButtons from "./StaffActionButtons";
 
 export default function StaffProfileModal({
   staffId,
@@ -352,6 +353,14 @@ export default function StaffProfileModal({
                     </span>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold mb-2 p-1 bg-brand/10 text-brand rounded-lg px-3">
+                Quick Actions
+              </div>
+              <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                <StaffActionButtons staffData={staffData as StaffsType} variant="details" />
               </div>
             </div>
             <div>

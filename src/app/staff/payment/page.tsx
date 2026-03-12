@@ -1,81 +1,154 @@
 import { verifyStaffSession } from "@/actions";
+import { getStaffPaymentHistory } from "@/actions/paymentRequestActions";
 import { getStaffProfileStats } from "@/actions/staffActions";
 import { StaffLayout } from "@/components/layout/StaffLayout";
-import { CreditCard, Settings, Wallet } from "lucide-react";
+import { CreditCard, Settings, Wallet, ChevronRight, Download, Eye } from "lucide-react";
 import Link from "next/link";
+import clsx from "clsx";
+import { InvoicePreviewButton } from "@/components/features/invoices";
+import { PaymentDataType } from "@/types";
 
 export default async function StaffPaymentHubPage() {
   const session = await verifyStaffSession();
   if (!session.isAuth) return null;
 
   const userId = session.userId as string;
-  const statsRes = await getStaffProfileStats(userId);
+  const [statsRes, paymentsRes] = await Promise.all([
+    getStaffProfileStats(userId),
+    getStaffPaymentHistory(userId),
+  ]);
+
   const stats = statsRes.success ? statsRes.data : null;
+  const paymentsList = (paymentsRes.success ? (paymentsRes.data ?? []) : []) as PaymentDataType[];
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <div className="p-4 space-y-6">
+      <div className="p-4 sm:p-6 space-y-8">
         {/* Page Title */}
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 bg-brand/10 rounded-xl text-brand">
-            <Wallet size={20} />
+        <div className="flex items-center gap-3 mb-2 px-1">
+          <div className="p-2.5 bg-brand/5 rounded-2xl text-brand">
+            <Wallet size={24} />
           </div>
-          <h1 className="text-xl font-bold text-gray-800">Payments & Payouts</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+            Payments & Payouts
+          </h1>
         </div>
 
-        <p className="text-sm font-medium text-gray-500 px-1 leading-relaxed">
-          Set how you receive payment, then request payout when needed. Admin gets an SMS for each request.
-        </p>
-
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link
             href="/staff/payment/settings"
-            className="block bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 group hover:shadow-md transition-all active:scale-[0.99]"
+            className="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-5 group hover:shadow-md transition-all active:scale-[0.98]"
           >
-            <div className="size-12 rounded-2xl bg-brand/5 text-brand flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Settings className="w-6 h-6" />
+            <div className="size-14 rounded-2xl bg-brand/5 text-brand flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Settings className="w-7 h-7" />
             </div>
-            <div className="flex-1">
-              <h2 className="font-bold text-gray-900">Payment Settings</h2>
-              <p className="text-xs font-medium text-gray-500 mt-1">
-                Withdrawal methods (bKash/Nagad/Rocket/Bank)
+            <div className="flex-1 min-w-0">
+              <h2 className="font-black text-gray-900 text-lg">Settings</h2>
+              <p className="text-xs sm:text-sm font-bold text-gray-400 mt-1 truncate">
+                Configure bKash, Nagad or Bank
               </p>
             </div>
-            <div className="size-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-brand/10 group-hover:text-brand transition-colors">
-              <span className="text-lg">→</span>
-            </div>
+            <ChevronRight className="text-gray-300 group-hover:text-brand transition-colors" size={20} />
           </Link>
 
           <Link
             href="/staff/payment/request"
-            className="block bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 group hover:shadow-md transition-all active:scale-[0.99]"
+            className="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-5 group hover:shadow-md transition-all active:scale-[0.98]"
           >
-            <div className="size-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <CreditCard className="w-6 h-6" />
+            <div className="size-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <CreditCard className="w-7 h-7" />
             </div>
-            <div className="flex-1">
-              <h2 className="font-bold text-gray-900">Request Payment</h2>
-              <p className="text-xs font-medium text-gray-500 mt-1">
-                Enter amount and notify admin for payout
+            <div className="flex-1 min-w-0">
+              <h2 className="font-black text-gray-900 text-lg">Withdraw</h2>
+              <p className="text-xs sm:text-sm font-bold text-gray-400 mt-1 truncate">
+                Request balance to your wallet
               </p>
             </div>
-            <div className="size-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-teal-50 group-hover:text-teal-600 transition-colors">
-              <span className="text-lg">→</span>
-            </div>
+            <ChevronRight className="text-gray-300 group-hover:text-teal-600 transition-colors" size={20} />
           </Link>
         </div>
 
-        {/* Info Card */}
-        <div className="bg-amber-50 rounded-2xl p-4 border border-amber-100">
-          <div className="flex gap-3">
-            <div className="size-5 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 text-[10px] font-bold">!</div>
-            <div>
-              <p className="text-xs font-bold text-amber-800 uppercase tracking-tight">Security Note</p>
-              <p className="text-xs font-medium text-amber-700/80 mt-1 leading-relaxed">
-                Requests are processed within 24-48 hours. Ensure your account details are correct before requesting payout.
+        {/* Payment History Section */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between px-1">
+            <h2 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em]">
+              Payout History
+            </h2>
+            <div className="h-px flex-1 bg-gray-100 ml-6"></div>
+          </div>
+
+          {paymentsList.length === 0 ? (
+            <div className="bg-white p-16 rounded-[2.5rem] border border-gray-100 text-center text-gray-500 shadow-sm">
+              <CreditCard size={64} className="mx-auto mb-6 text-gray-100" />
+              <p className="text-xl font-black text-gray-800">No History Yet</p>
+              <p className="text-sm mt-2 text-gray-400 font-bold max-w-xs mx-auto">
+                Your payout requests will appear here once you start withdrawing.
               </p>
             </div>
-          </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {paymentsList.map((payment: PaymentDataType) => (
+                <div key={payment.paymentId} className="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 hover:border-brand/20 transition-all group relative overflow-hidden">
+                  <div className="flex flex-col gap-4 relative z-10">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black font-mono text-gray-300 uppercase tracking-widest bg-gray-50 px-2 py-1 rounded-lg">
+                        #{payment.paymentId.substring(0, 8)}
+                      </span>
+                      <span
+                        className={clsx(
+                          "px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-sm border",
+                          payment.status === "completed"
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                            : payment.status === "processing"
+                              ? "bg-blue-50 text-blue-700 border-blue-100"
+                              : payment.status === "rejected"
+                                ? "bg-rose-50 text-rose-700 border-rose-100"
+                                : "bg-amber-50 text-amber-700 border-amber-100"
+                        )}
+                      >
+                        {payment.status}
+                      </span>
+                    </div>
+
+                    <div className="flex items-baseline gap-1.5">
+                       <span className="text-sm font-black text-gray-400">৳</span>
+                       <span className="text-3xl font-black text-gray-900">
+                         {payment.amount?.toLocaleString()}
+                       </span>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-50">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Method</span>
+                        <span className="text-xs font-black text-brand uppercase">{payment.paymentMethod}</span>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Date</span>
+                        <span className="text-xs font-bold text-gray-500">
+                          {new Date(payment.date || payment.createdAt!).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2 mt-2">
+                       <Link
+                          href={`/staff/payment/${payment.invoiceNumber}`}
+                          className="flex-1 flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 py-2.5 rounded-xl text-xs font-black transition-colors"
+                        >
+                          <Eye size={14} />
+                          <span>View Details</span>
+                       </Link>
+                       
+                       
+                    </div>
+                  </div>
+                  {/* Subtle background icon */}
+                  <Wallet className="absolute -right-4 -bottom-4 size-24 text-gray-50 group-hover:text-brand/5 transition-colors" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </StaffLayout>

@@ -35,13 +35,38 @@ export default async function StaffPaymentRequestPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <div className="p-4 space-y-6">
-        {/* Page Title */}
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 bg-teal-100/50 rounded-xl text-teal-600">
-            <ShoppingBag size={20} />
+      <div className="p-4 sm:p-6 space-y-8">
+        {/* Large Balance Display */}
+        <div className="bg-gradient-to-br from-brand via-brand-800 to-brand-700 rounded-[2.5rem] p-8 sm:p-12 text-white shadow-xl overflow-hidden relative group text-center">
+          <div className="relative z-10 flex flex-col items-center gap-2">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-white/10 text-white/90 text-xs font-black uppercase tracking-[0.25em] mb-4">
+              Available Balance
+            </div>
+            <div className="flex items-center gap-4">
+               <div className="size-12 sm:size-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl">
+                 <span className="text-2xl sm:text-3xl font-black text-white">৳</span>
+               </div>
+               <h1 className="text-5xl sm:text-7xl font-black tracking-tight">
+                 {(stats?.availableBalance || 0).toLocaleString()}
+               </h1>
+            </div>
+            <p className="text-sm sm:text-base text-white/60 font-bold mt-4 uppercase tracking-widest">
+              Ready for Withdrawal
+            </p>
           </div>
-          <h1 className="text-xl font-bold text-gray-800">Request Payout</h1>
+          {/* Abstract background shapes */}
+          <div className="absolute -right-12 -bottom-12 size-64 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute -left-12 -top-12 size-48 bg-brand-light/20 rounded-full blur-2xl" />
+        </div>
+
+        {/* Page Title & Form Section */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-3 px-2">
+            <div className="p-2.5 bg-brand/5 rounded-2xl text-brand">
+              <ShoppingBag size={24} />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">Request Payout</h2>
+          </div>
         </div>
 
         {!canRequest && (
@@ -102,65 +127,7 @@ export default async function StaffPaymentRequestPage() {
           </div>
         )}
 
-        <div className="space-y-4">
-          <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
-            Recent Payout Sessions
-          </h2>
-          {paymentsList.length === 0 ? (
-            <div className="bg-white p-12 rounded-2xl border border-gray-100 text-center text-gray-500">
-              <CreditCard size={48} className="mx-auto mb-4 text-gray-200" />
-              <p className="font-bold text-gray-700">No payout history</p>
-              <p className="text-xs mt-1 text-gray-400 font-medium">Your payout requests will appear here once submitted.</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {paymentsList.map((payment: any) => (
-                <div key={payment.paymentId} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:border-brand/20 transition-all group">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-tight">REQ ID: #{payment.paymentId.substring(0, 10)}</p>
-                      <div className="flex items-baseline gap-1 mt-1">
-                         <span className="text-[10px] font-bold text-gray-400">৳</span>
-                         <span className="text-xl font-bold text-gray-900">
-                           {payment.amount?.toLocaleString()}
-                         </span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-[10px] font-bold text-brand bg-brand/5 px-2 py-0.5 rounded-md uppercase">
-                          {payment.paymentMethod}
-                        </span>
-                        <span className="text-[10px] font-bold text-gray-400 uppercase">
-                          {new Date(payment.date || payment.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                        </span>
-                      </div>
-                    </div>
-                    <span
-                      className={clsx(
-                        "px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm",
-                        payment.status === "completed"
-                          ? "bg-green-100 text-green-700 border border-green-200/50"
-                          : payment.status === "processing"
-                            ? "bg-blue-100 text-blue-700 border border-blue-200/50"
-                            : payment.status === "rejected"
-                              ? "bg-red-100 text-red-700 border border-red-200/50"
-                              : "bg-yellow-100 text-yellow-700 border border-yellow-200/50"
-                      )}
-                    >
-                      {payment.status}
-                    </span>
-                  </div>
-                  {payment.description && (
-                    <div className="mt-4 p-3 bg-gray-50/50 rounded-xl border border-gray-100 relative group-hover:bg-brand/5 transition-colors">
-                      <p className="text-xs text-gray-600 font-medium leading-relaxed italic">
-                        &ldquo;{payment.description}&rdquo;
-                      </p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+
       </div>
     </StaffLayout>
   );

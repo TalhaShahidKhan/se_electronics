@@ -58,15 +58,15 @@ export default function Modal({ title, isVisible, onClose, width, children }: { 
                         )}
                     >
                         {/* Header */}
-                        <header className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0 bg-white sticky top-0 z-10">
-                            <h3 className="font-extrabold text-lg sm:text-xl text-brand truncate pr-4">
+                        <header className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0 bg-white sticky top-0 z-10">
+                            <h3 className="font-black text-xl sm:text-2xl text-brand truncate pr-4">
                                 {title || "Modal Title"}
                             </h3>
                             <button 
                                 onClick={onClose}
-                                className="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-500 hover:text-brand"
+                                className="p-2.5 hover:bg-gray-100 rounded-xl transition-colors text-gray-500 hover:text-brand"
                             >
-                                <X size={20} />
+                                <X size={24} />
                             </button>
                         </header>
 

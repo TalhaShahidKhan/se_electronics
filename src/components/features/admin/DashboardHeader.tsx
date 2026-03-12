@@ -32,7 +32,7 @@ export default function DashboardHeader() {
             />
           </svg>
         </button>
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-brand tracking-tight">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand tracking-tight">
           Admin Overview
         </h1>
       </div>
@@ -41,9 +41,9 @@ export default function DashboardHeader() {
         <NotificationBell />
         <Link
           href="/services/add"
-          className="flex items-center gap-2 px-3 sm:px-5 py-2 sm:py-2.5 bg-brand text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm hover:bg-brand-800 active:scale-95 transition-all shadow-md shadow-brand-100"
+          className="flex items-center gap-2 px-3 sm:px-5 py-2 sm:py-2.5 bg-brand text-white rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base hover:bg-brand-800 active:scale-95 transition-all shadow-md shadow-brand-100"
         >
-          <Plus size={18} className="sm:w-5 sm:h-5" />
+          <Plus size={20} className="sm:w-6 sm:h-6" />
           <span className="hidden sm:inline">Add New Service</span>
           <span className="sm:hidden">Add</span>
         </Link>

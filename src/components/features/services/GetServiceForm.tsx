@@ -90,15 +90,15 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
         return (
             <div className="max-w-3xl mx-auto bg-white p-4 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
                 <div className="mb-6">
-                    <h2 className="text-xl sm:text-2xl text-center font-extrabold text-brand mb-4">এস ই ইলেকট্রনিকস: অনলাইন সার্ভিসিং-এর শর্তাবলী ও নির্দেশিকা</h2>
-                    <p className="text-sm text-gray-500 text-center mb-8">
+                    <h2 className="text-2xl sm:text-3xl text-center font-extrabold text-brand mb-4 leading-tight">এস ই ইলেকট্রনিকস: অনলাইন সার্ভিসিং-এর শর্তাবলী ও নির্দেশিকা</h2>
+                    <p className="text-base sm:text-lg text-gray-500 text-center mb-8 leading-relaxed">
                         প্রিয় গ্রাহক, এস ই ইলেকট্রনিকস-এর আইপিএস, ব্যাটারি ও অন্যান্য ইলেকট্রনিক পণ্য অনলাইন সার্ভিসিং-এর জন্য আবেদন করার জন্য আপনাকে ধন্যবাদ। আপনার সমস্যার দ্রুত ও কার্যকর সমাধানের জন্য নিম্নলিখিত শর্তাবলী ও নির্দেশিকাগুলি অত্যন্ত মনোযোগ সহকারে পড়ুন এবং মেনে চলুন।
                     </p>
                     <div className="space-y-6 mt-4">
                         {requirementsList.map((item, index) => (
-                            <div key={index} className="text-sm bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <div key={index} className="text-sm sm:text-base bg-gray-50 p-4 sm:p-6 rounded-xl border border-gray-100">
                                 <div className="flex items-start gap-3 mb-2">
-                                    <span className="bg-brand text-white rounded-lg flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-xs font-bold">
+                                    <span className="bg-brand text-white rounded-lg flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-xs sm:text-sm font-bold">
                                         {index + 1}
                                     </span>
                                     <span className="font-bold text-gray-900">{item.title}</span>
@@ -108,7 +108,7 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                         ))}
                     </div>
                 </div>
-                <div className="mb-8 p-4 bg-brand/5 rounded-xl border border-brand/10">
+                <div className="mb-8 p-4 sm:p-6 bg-brand/5 rounded-xl border border-brand/10">
                     <label className="flex items-start gap-3 cursor-pointer">
                         <input
                             type="checkbox"
@@ -116,20 +116,20 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                             checked={agreed}
                             onChange={(e) => setAgreed(e.target.checked)}
                         />
-                        <span className="text-sm font-medium text-gray-700 leading-snug">
+                        <span className="text-sm sm:text-base font-bold text-gray-700 leading-snug">
                             উপরোক্ত "এস ই ইলেকট্রনিকস অনলাইন সার্ভিসিং-এর শর্তাবলী ও নির্দেশিকা" আমি মনোযোগ সহকারে পড়েছি এবং এতে সম্মত হয়ে, আমার সার্ভিসিং আবেদন প্রক্রিয়া শুরু করতে চাই।
                         </span>
                     </label>
                 </div>
 
                 <button
-                    className="w-full py-4 bg-brand text-white rounded-2xl font-bold text-lg hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50 disabled:grayscale"
+                    className="w-full py-4 sm:py-5 bg-brand text-white rounded-2xl font-black text-lg sm:text-xl hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50 disabled:grayscale"
                     disabled={!agreed}
                     onClick={() => setShowToC(false)}
                 >
                     এগিয়ে যান
                 </button>
-                <p className="mt-8 text-xs text-gray-400 text-center font-medium">
+                <p className="mt-8 text-sm text-gray-400 text-center font-bold">
                     © SEIPSBD, All Rights Reserved.
                 </p>
             </div>
@@ -137,27 +137,27 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
     }
     return (
         <div className="mx-auto max-w-[1000px] text-center p-2 sm:p-4">
-            <div className="font-bold mb-4 flex flex-col gap-1 bg-white p-4 sm:p-6 rounded-2xl border border-gray-100 shadow-sm">
-                <div className="text-xl sm:text-2xl text-brand">এস ই ইলেকট্রনিকস প্রডাক্ট অনলাইন সার্ভিসিং সেন্টার</div>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-2 text-sm text-gray-600">
-                    <span>হেল্পলাইন: <span className="text-brand">{contactDetails.customerCare}</span></span>
-                    <span className="hidden sm:inline">|</span>
-                    <span>Email: <span className="text-brand">{contactDetails.email}</span></span>
+            <div className="font-bold mb-4 flex flex-col gap-1 bg-white p-4 sm:p-8 rounded-2xl border border-gray-100 shadow-sm">
+                <div className="text-2xl sm:text-3xl text-brand font-black">এস ই ইলেকট্রনিকস প্রডাক্ট অনলাইন সার্ভিসিং সেন্টার</div>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 mt-4 text-base sm:text-lg text-gray-600">
+                    <span className="font-bold">হেল্পলাইন: <span className="text-brand">{contactDetails.customerCare}</span></span>
+                    <span className="hidden sm:inline text-gray-300">|</span>
+                    <span className="font-bold">Email: <span className="text-brand">{contactDetails.email}</span></span>
                 </div>
-                <div className="text-xs sm:text-sm text-gray-400 mt-1">হেড অফিস : {contactDetails.headOffice}</div>
+                <div className="text-sm sm:text-base text-gray-400 mt-2 font-medium">হেড অফিস : {contactDetails.headOffice}</div>
                 
-                <div className="border-2 border-brand/20 bg-brand/5 p-4 rounded-xl mt-4">
-                    <p className="font-semibold text-gray-700 mb-4 text-sm sm:text-base">যে কোন সহযোগীতা ও তথ্যের জন্য আমাদের সাথে আলাপ করুন</p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <Link className="flex items-center justify-center h-10 bg-white border border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm font-bold" href={`sms:${contactDetails.sms}`}>এস এম এস</Link>
-                        <Link className="flex items-center justify-center h-10 bg-white border border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm font-bold" href={`tel:${contactDetails.phone}`}>ফোন কল</Link>
-                        <Link className="flex items-center justify-center h-10 bg-white border border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm font-bold" href={`tel:${contactDetails.customerCare}`}>কাস্টমার কেয়ার</Link>
-                        <Link className="flex items-center justify-center h-10 bg-white border border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm font-bold" href={`https://wa.me/${contactDetails.whatsApp}`}>ওয়াসআপ</Link>
+                <div className="border-2 border-brand/20 bg-brand/5 p-4 sm:p-6 rounded-2xl mt-6">
+                    <p className="font-black text-gray-700 mb-4 text-base sm:text-lg">যে কোন সহযোগীতা ও তথ্যের জন্য আমাদের সাথে আলাপ করুন</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                        <Link className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black" href={`sms:${contactDetails.sms}`}>এস এম এস</Link>
+                        <Link className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black" href={`tel:${contactDetails.phone}`}>ফোন কল</Link>
+                        <Link className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black" href={`tel:${contactDetails.customerCare}`}>কাস্টমার কেয়ার</Link>
+                        <Link className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black" href={`https://wa.me/${contactDetails.whatsApp}`}>ওয়াসআপ</Link>
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col gap-6 bg-white p-4 sm:p-8 rounded-2xl border border-gray-100 shadow-sm">
-                <p className="text-center font-bold text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-100 text-sm sm:text-base">
+            <div className="flex flex-col gap-6 bg-white p-4 sm:p-10 rounded-2xl border border-gray-100 shadow-sm">
+                <p className="text-center font-black text-gray-800 bg-brand/5 p-4 sm:p-6 rounded-2xl border border-brand/10 text-base sm:text-lg leading-relaxed">
                     আপনার পণ্যের সার্ভিসং এর জন্য নিচের বক্স গুলা পূরণ করে আপনার পণ্যের সাভিসিং করার জন্য আমাদের SEIPSBD সার্ভিসং টিমকে সঠিক তথ্য দিয়ে সহযোগিতা করুন
                 </p>
                 <form

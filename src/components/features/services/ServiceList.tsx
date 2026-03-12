@@ -36,7 +36,7 @@ export default async function ServiceList(
     <tr key={service.id} className="hover:bg-gray-50/50 transition-colors group">
       <td className="py-4 px-4 whitespace-nowrap">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-gray-900">{service.serviceId}</span>
+          <span className="font-bold text-gray-900 text-sm sm:text-base">{service.serviceId}</span>
           <CopyButton content={service.serviceId} />
         </div>
       </td>
@@ -48,24 +48,24 @@ export default async function ServiceList(
               customerId={service.customerId}
             />
           ) : (
-            <span className="font-medium text-gray-700">{service.customerName}</span>
+            <span className="font-bold text-gray-800 text-sm sm:text-base">{service.customerName}</span>
           )}
         </div>
       </td>
-      <td className="py-4 px-4 whitespace-nowrap text-gray-600 font-medium">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-700 font-bold text-sm sm:text-base">
         {service.customerPhone}
       </td>
       <td className="py-4 px-4 whitespace-nowrap">
-        <p title={service.customerAddress} className="truncate max-w-[200px] text-gray-600 text-xs">
+        <p title={service.customerAddress} className="truncate max-w-[200px] text-gray-600 text-xs sm:text-sm font-medium">
           {service.customerAddress}
         </p>
       </td>
       <td className="py-4 px-4 whitespace-nowrap">
-        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-gray-100 text-gray-700 text-xs font-bold uppercase tracking-wider border border-gray-200">
+        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-gray-100 text-gray-800 text-xs sm:text-sm font-black uppercase tracking-wider border border-gray-200">
           {service.productType}-{service.productModel}
         </span>
       </td>
-      <td className="py-4 px-4 whitespace-nowrap text-gray-500 text-xs font-medium">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-500 text-xs sm:text-sm font-bold">
         {formatDate(service.createdAt!)}
       </td>
       <td className="py-4 px-4 whitespace-nowrap text-center">
@@ -85,11 +85,11 @@ export default async function ServiceList(
               staffId={service.staffId}
             />
           ) : (
-            <span className="text-gray-400 italic text-xs">{service.staffName || "Unassigned"}</span>
+            <span className="text-gray-400 italic text-xs sm:text-sm font-medium">{service.staffName || "Unassigned"}</span>
           )}
         </div>
       </td>
-      <td className="py-4 px-4 whitespace-nowrap text-gray-600 text-xs font-medium">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-600 text-xs sm:text-sm font-bold">
         {service.staffPhone || "--"}
       </td>
       <td className="py-4 px-4 whitespace-nowrap sticky right-0 bg-white group-hover:bg-gray-50 transition-colors shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">

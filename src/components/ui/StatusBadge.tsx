@@ -64,7 +64,7 @@ const STATUSES = {
 }
 
 export default function StatusBadge({ status }: { status: keyof typeof STATUSES }) {
-    return <span className={clsx("text-[10px] sm:text-xs font-bold uppercase tracking-wider", STATUSES[status].styles)}>
+    return <span className={clsx("text-xs sm:text-sm font-black uppercase tracking-wider px-2 py-0.5 rounded-md", STATUSES[status].styles)}>
         {STATUSES[status].name}
     </span>
 }

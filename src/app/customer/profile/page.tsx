@@ -118,59 +118,59 @@ export default async function CustomerProfilePage() {
     <div className="min-h-screen bg-gray-50 flex flex-col pb-10">
       {/* Top banner: WELCOME TO SE ELECTRONICS */}
       <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
-        <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between relative">
+        <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between relative">
           <div className="flex items-center gap-2">
              <CustomerNotificationBell />
           </div>
-          <h1 className="text-sm sm:text-lg font-extrabold tracking-widest uppercase flex-1 text-center truncate px-10">
+          <h1 className="text-base sm:text-xl font-black tracking-[0.2em] uppercase flex-1 text-center truncate px-10">
             SE ELECTRONICS
           </h1>
           <form action={customerLogout} className="flex items-center">
             <button
               type="submit"
-              className="p-2 rounded-xl bg-white/10 text-white hover:bg-red-500 transition-all border border-white/10 active:scale-95"
+              className="p-2.5 rounded-xl bg-white/10 text-white hover:bg-red-500 transition-all border border-white/10 active:scale-95"
               aria-label="Logout"
             >
-              <LogOut size={18} className="sm:w-5 sm:h-5" />
+              <LogOut size={20} className="sm:w-6 sm:h-6" />
             </button>
           </form>
         </div>
       </header>
 
       {/* White section: Customer details left, profile circle right */}
-      <div className="max-w-4xl mx-auto w-full px-3 sm:px-4 mt-4">
+      <div className="max-w-4xl mx-auto w-full px-3 sm:px-4 mt-6">
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden relative">
           {/* Abstract background accent */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-brand/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-brand/5 rounded-full -mr-24 -mt-24 blur-3xl" />
           
-          <div className="flex flex-row items-center gap-4 sm:gap-8 p-5 sm:p-8 relative z-10">
-            <div className="flex-1 min-w-0 flex flex-col justify-center gap-1.5 sm:gap-2">
-              <div className="inline-flex items-center px-2.5 py-1 rounded-lg bg-brand/5 text-brand text-[10px] font-bold uppercase tracking-wider w-fit mb-1">
+          <div className="flex flex-row items-center gap-6 sm:gap-10 p-6 sm:p-10 relative z-10">
+            <div className="flex-1 min-w-0 flex flex-col justify-center gap-2 sm:gap-3">
+              <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-brand/5 text-brand text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] w-fit mb-2">
                 Customer Account
               </div>
-              <h2 className="text-xl sm:text-2xl font-black text-gray-900 truncate">
+              <h2 className="text-2xl sm:text-4xl font-black text-gray-900 truncate">
                 {customer.name}
               </h2>
-              <div className="flex flex-col gap-1 sm:gap-2 mt-1">
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 font-medium">
-                  <span className="shrink-0 w-16">ID:</span>
-                  <span className="text-gray-900 font-bold">{customer.customerId}</span>
+              <div className="flex flex-col gap-2 sm:gap-3 mt-2">
+                <div className="flex items-center gap-3 text-sm sm:text-base text-gray-500 font-bold">
+                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">ID:</span>
+                  <span className="text-gray-900 font-black">{customer.customerId}</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 font-medium">
-                  <span className="shrink-0 w-16">Phone:</span>
-                  <span className="text-gray-900 font-bold">{customer.phone}</span>
+                <div className="flex items-center gap-3 text-sm sm:text-base text-gray-500 font-bold">
+                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">Phone:</span>
+                  <span className="text-gray-900 font-black">{customer.phone}</span>
                 </div>
-                <div className="flex items-start gap-2 text-xs sm:text-sm text-gray-500 font-medium">
-                  <span className="shrink-0 w-16">Address:</span>
-                  <span className="text-gray-900 font-bold leading-relaxed">
+                <div className="flex items-start gap-3 text-sm sm:text-base text-gray-500 font-bold">
+                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">Address:</span>
+                  <span className="text-gray-900 font-black leading-relaxed">
                     {customer.address || "No address provided"}
                   </span>
                 </div>
               </div>
             </div>
             <div className="shrink-0 flex items-center justify-center">
-              <div className="size-20 sm:size-32 rounded-3xl bg-gray-50 border-2 border-gray-100 flex items-center justify-center shadow-inner group overflow-hidden relative">
-                <User className="w-10 h-10 sm:w-16 sm:h-16 text-gray-300" />
+              <div className="size-24 sm:size-40 rounded-[2.5rem] bg-gray-50 border-2 border-gray-100 flex items-center justify-center shadow-inner group overflow-hidden relative">
+                <User className="w-12 h-12 sm:w-20 sm:h-20 text-gray-300" />
                 <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </div>
@@ -179,34 +179,34 @@ export default async function CustomerProfilePage() {
       </div>
 
       {/* Banner content */}
-      <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 mt-6">
-        <div className="rounded-3xl overflow-hidden shadow-md">
+      <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 mt-8">
+        <div className="rounded-[2.5rem] overflow-hidden shadow-lg border border-gray-100">
           <Banner />
         </div>
       </div>
 
       {/* Main Content: Dashboard Grid */}
-      <main className="flex-1 w-full max-w-4xl mx-auto px-3 sm:px-4 mt-8">
-        <div className="flex items-center justify-between mb-6">
-           <h3 className="text-lg font-black text-brand uppercase tracking-wider">Quick Actions</h3>
-           <div className="h-px flex-1 bg-gray-200 ml-4 hidden sm:block"></div>
+      <main className="flex-1 w-full max-w-4xl mx-auto px-3 sm:px-4 mt-10">
+        <div className="flex items-center justify-between mb-8">
+           <h3 className="text-sm sm:text-base font-black text-brand uppercase tracking-[0.25em]">Quick Actions</h3>
+           <div className="h-px flex-1 bg-gray-200 ml-8 hidden sm:block"></div>
         </div>
         
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 sm:gap-8">
           {dashboardActions.map((action) => {
             const Icon = action.icon;
             return (
               <Link
                 key={action.label}
                 href={action.href}
-                className="group relative flex flex-col items-center justify-center bg-white aspect-square rounded-[2rem] sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-xl hover:scale-[1.05] active:scale-95 overflow-hidden"
+                className="group relative flex flex-col items-center justify-center bg-white aspect-square rounded-[2.5rem] sm:rounded-[3rem] p-4 sm:p-6 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:scale-[1.05] active:scale-95 overflow-hidden"
               >
                 <div
-                  className={`${action.color} p-2.5 sm:p-4 rounded-2xl sm:rounded-3xl text-white mb-2 sm:mb-4 shadow-lg shadow-black/10 group-hover:rotate-6 transition-transform duration-300`}
+                  className={`${action.color} p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] text-white mb-3 sm:mb-6 shadow-xl shadow-black/5 group-hover:rotate-6 transition-transform duration-300`}
                 >
-                  <Icon className="w-5 h-5 sm:w-8 sm:h-8" />
+                  <Icon className="w-6 h-6 sm:w-10 sm:h-10" />
                 </div>
-                <span className="text-[10px] sm:text-xs font-extrabold text-gray-800 text-center leading-tight px-1 uppercase tracking-tight">
+                <span className="text-[11px] sm:text-sm font-black text-gray-800 text-center leading-tight px-1 uppercase tracking-tight">
                   {action.label}
                 </span>
 

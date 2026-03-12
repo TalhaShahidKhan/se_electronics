@@ -100,8 +100,8 @@ export default function DashboardLayout({
               className="rounded-lg border border-white/20 sm:w-9 sm:h-9"
             />
             <div className="flex-1 min-w-0">
-              <h1 className="font-bold text-xs sm:text-sm truncate">{username}</h1>
-              <p className="text-[9px] sm:text-[10px] text-blue-200 font-medium tracking-wider uppercase">Admin Panel</p>
+              <h1 className="font-bold text-sm sm:text-base truncate">{username}</h1>
+              <p className="text-[10px] sm:text-[11px] text-blue-200 font-medium tracking-wider uppercase">Admin Panel</p>
             </div>
             {showSideNav && (
               <button
@@ -109,7 +109,7 @@ export default function DashboardLayout({
                 onClick={() => setShowSideNav(false)}
                 className="p-1.5 rounded-lg hover:bg-white/10 transition-colors xl:hidden"
               >
-                <X size={18} />
+                <X size={20} />
               </button>
             )}
           </div>
@@ -119,13 +119,13 @@ export default function DashboardLayout({
             <div className="bg-white/10 backdrop-blur-sm rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 border border-white/10">
               {smsBalance ? (
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] sm:text-[11px] text-blue-200 font-medium">SMS Balance</span>
-                  <span className="text-xs sm:text-sm text-emerald-400 font-bold">
+                  <span className="text-[11px] sm:text-xs text-blue-200 font-medium">SMS Balance</span>
+                  <span className="text-sm sm:text-base text-emerald-400 font-bold">
                     ৳{smsBalance.toLocaleString()}
                   </span>
                 </div>
               ) : (
-                <span className="text-[9px] sm:text-[10px] text-red-300 leading-tight block">
+                <span className="text-[10px] sm:text-[11px] text-red-300 leading-tight block">
                   Could not fetch balance. Refresh to try again.
                 </span>
               )}
@@ -143,13 +143,13 @@ export default function DashboardLayout({
                   onClick={() => setShowSideNav(false)}
                   href={link.href}
                   className={clsx(
-                    "flex items-center gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl text-xs sm:text-[13px] font-medium transition-all duration-200",
+                    "flex items-center gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl text-[13px] sm:text-sm font-medium transition-all duration-200",
                     isActive
                       ? "bg-white text-brand shadow-sm"
                       : "text-blue-100 hover:bg-white/10 hover:text-white",
                   )}
                 >
-                  <Icon size={16} className={clsx("sm:w-[18px] sm:h-[18px]", isActive ? "text-brand" : "")} />
+                  <Icon size={18} className={clsx(isActive ? "text-brand" : "")} />
                   <span className="truncate">{link.name}</span>
                 </Link>
               );
@@ -164,12 +164,12 @@ export default function DashboardLayout({
                 logout();
               }}
               disabled={isLogginOut}
-              className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-red-500/80 text-white font-semibold text-xs sm:text-sm py-2 sm:py-2.5 rounded-xl transition-all disabled:opacity-50 border border-white/10"
+              className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-red-500/80 text-white font-semibold text-sm sm:text-base py-2 sm:py-2.5 rounded-xl transition-all disabled:opacity-50 border border-white/10"
             >
-              {!isLogginOut && <LogOut size={14} className="sm:w-4 sm:h-4" />}
+              {!isLogginOut && <LogOut size={16} />}
               <span>{isLogginOut ? "Logging out..." : "Logout"}</span>
             </button>
-            <span className="text-[9px] sm:text-[10px] text-blue-300 mt-2 sm:mt-3 block text-center font-medium tracking-wider">
+            <span className="text-[10px] sm:text-[11px] text-blue-300 mt-2 sm:mt-3 block text-center font-medium tracking-wider">
               v{appVersion}
             </span>
           </div>
