@@ -21,11 +21,7 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
         className="h-8 sm:h-9 px-3 rounded-full bg-white flex items-center gap-2 shadow-sm border border-white/20 select-none overflow-hidden min-w-[140px] sm:min-w-[160px]"
       >
         <div className="size-5 sm:size-6 rounded-full bg-brand/10 flex items-center justify-center shrink-0">
-          <img src="/bkash_logo_small.png" alt="৳" className="w-3 h-3 object-contain" onError={(e) => {
-            (e.target as any).src = ""; // Fallback to icon if logo not found
-            (e.target as any).style.display = 'none';
-          }} />
-          <span className="text-brand font-bold text-[10px] sm:text-xs">৳</span>
+          <Wallet className="w-3 h-3 text-brand" />
         </div>
         
         <div className="relative h-full flex-1 flex items-center overflow-hidden">
