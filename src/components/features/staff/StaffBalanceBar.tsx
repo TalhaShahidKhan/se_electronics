@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Wallet } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function StaffBalanceBar({ amount }: { amount: number }) {
   const [revealed, setRevealed] = useState(false);
@@ -15,36 +15,60 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
 
   return (
     <div className="flex items-center">
-      <button
-        type="button"
+      <motion.button
+        whileTap={{ scale: 0.97 }}
         onClick={() => setRevealed((v) => !v)}
-        className="relative h-9 sm:h-10 w-[210px] sm:w-[260px] rounded-full bg-brand/90 border border-brand-700/30 shadow-sm overflow-hidden flex items-center justify-between px-2.5 sm:px-3.5 transition-transform active:scale-[0.98]"
+        className="h-8 sm:h-9 px-3 rounded-full bg-white flex items-center gap-2 shadow-sm border border-white/20 select-none overflow-hidden min-w-[140px] sm:min-w-[160px]"
       >
-        <div className="flex items-center gap-2 min-w-0">
-          <div className="size-7 sm:size-8 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0">
-            <Wallet className="w-4 h-4" />
-          </div>
-          <span className="text-[11px] sm:text-xs font-semibold text-white/90 truncate">
-            {revealed ? amountText : "Tap for Balance"}
-          </span>
+        <div className="size-5 sm:size-6 rounded-full bg-brand/10 flex items-center justify-center shrink-0">
+          <img src="/bkash_logo_small.png" alt="৳" className="w-3 h-3 object-contain" onError={(e) => {
+            (e.target as any).src = ""; // Fallback to icon if logo not found
+            (e.target as any).style.display = 'none';
+          }} />
+          <span className="text-brand font-bold text-[10px] sm:text-xs">৳</span>
         </div>
-
-        <Link
-          href="/staff/payment"
-          onClick={(e) => e.stopPropagation()}
-          className="shrink-0 ml-2 px-3 py-1 rounded-full bg-white/15 border border-white/25 text-[11px] sm:text-xs font-semibold text-white hover:bg-white/20 transition-colors"
-        >
-          Details
-        </Link>
-
-        <div
-          className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
-            revealed ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent motion-safe:animate-pulse" />
+        
+        <div className="relative h-full flex-1 flex items-center overflow-hidden">
+          <AnimatePresence mode="wait">
+            {!revealed ? (
+              <motion.span
+                key="tap"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                className="text-[11px] sm:text-xs font-bold text-brand whitespace-nowrap"
+              >
+                Tap for Balance
+              </motion.span>
+            ) : (
+              <motion.span
+                key="amount"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                className="text-[11px] sm:text-xs font-bold text-brand whitespace-nowrap"
+              >
+                {amountText}
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
-      </button>
+        
+        {/* Shine animation when not revealed */}
+        {!revealed && (
+          <motion.div
+            animate={{
+              x: ["-100%", "200%"],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-brand/5 to-transparent skew-x-12"
+          />
+        )}
+      </motion.button>
     </div>
   );
 }

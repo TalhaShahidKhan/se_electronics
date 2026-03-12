@@ -1,9 +1,10 @@
 import { verifyStaffSession } from "@/actions";
 import { getStaffPaymentHistory } from "@/actions/paymentRequestActions";
-import { getStaffById } from "@/actions/staffActions";
+import { getStaffById, getStaffProfileStats } from "@/actions/staffActions";
 import { StaffPaymentRequestForm } from "@/components/features/staff/StaffPaymentRequestForm";
+import { StaffLayout } from "@/components/layout/StaffLayout";
 import clsx from "clsx";
-import { ArrowLeft, CreditCard, Wallet } from "lucide-react";
+import { CreditCard, Wallet, AlertCircle, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
 function maskNumber(value: string) {
@@ -16,13 +17,15 @@ export default async function StaffPaymentRequestPage() {
   if (!session.isAuth) return null;
 
   const userId = session.userId as string;
-  const [paymentsRes, profileRes] = await Promise.all([
+  const [paymentsRes, profileRes, statsRes] = await Promise.all([
     getStaffPaymentHistory(userId),
     getStaffById(userId),
+    getStaffProfileStats(userId),
   ]);
 
   const paymentsList = paymentsRes.success ? (paymentsRes.data ?? []) : [];
   const staffData = profileRes.success ? profileRes.data : null;
+  const stats = statsRes.success ? statsRes.data : null;
 
   const method = staffData?.paymentPreference ?? "";
   const hasWallet =
@@ -31,122 +34,134 @@ export default async function StaffPaymentRequestPage() {
   const canRequest = method === "cash" || hasWallet || hasBank;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
-        <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4 flex items-center gap-3">
-          <Link
-            href="/staff/payment"
-            className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
-          >
-            <ArrowLeft size={20} />
-          </Link>
-          <div className="flex items-center gap-2">
-            <Wallet size={20} className="text-blue-200" />
-            <h1 className="text-lg font-bold">Request payment</h1>
+    <StaffLayout balance={stats?.availableBalance || 0}>
+      <div className="p-4 space-y-6">
+        {/* Page Title */}
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 bg-teal-100/50 rounded-xl text-teal-600">
+            <ShoppingBag size={20} />
           </div>
+          <h1 className="text-xl font-bold text-gray-800">Request Payout</h1>
         </div>
-      </header>
 
-      <main className="max-w-4xl mx-auto p-3 sm:p-4 py-4 sm:py-6 space-y-6">
         {!canRequest && (
-          <div className="__card p-4 bg-amber-50 border-amber-200">
-            <p className="text-sm text-amber-800 font-medium">
-              Set your preferred payment method and account details first.
-            </p>
-            <Link
-              href="/staff/payment/settings"
-              className="inline-block mt-2 text-sm font-bold text-brand hover:underline"
-            >
-              Go to Payment settings →
-            </Link>
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-4">
+            <div className="shrink-0 p-2 bg-amber-100 rounded-full h-fit">
+               <AlertCircle size={20} className="text-amber-600" />
+            </div>
+            <div>
+              <p className="text-sm text-amber-800 font-bold leading-tight">Missing Withdrawal Information</p>
+              <p className="text-xs text-amber-700/80 mt-1 font-medium leading-relaxed">
+                You must configure your payout method (bKash, Nagad, or Bank) before you can request a payment.
+              </p>
+              <Link
+                href="/staff/payment/settings"
+                className="inline-flex items-center gap-2 mt-4 text-xs font-bold text-white bg-amber-600 px-4 py-2 rounded-xl hover:bg-amber-700 transition-colors shadow-sm"
+              >
+                Go to Settings
+              </Link>
+            </div>
           </div>
         )}
 
         {canRequest && (
-          <div className="__card p-5 sm:p-6">
-            <div className="flex items-center gap-2 mb-2">
-              <Wallet className="w-5 h-5 text-brand" />
-              <h2 className="text-sm font-bold text-gray-700 uppercase tracking-widest">
-                Payout to
-              </h2>
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-gray-50/50 border border-gray-100">
+               <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Wallet className="w-4 h-4 text-brand" />
+                    <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                      Payout Destination
+                    </h2>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-lg font-bold text-gray-900 uppercase">{method}</span>
+                    <span className="text-sm font-bold text-brand font-mono">
+                      {hasWallet && maskNumber(staffData!.walletNumber!)}
+                      {hasBank && staffData?.bankInfo && maskNumber(staffData.bankInfo.accountNumber)}
+                    </span>
+                  </div>
+                  {hasBank && staffData?.bankInfo && (
+                     <p className="text-[10px] font-bold text-gray-400 mt-1 uppercase">{staffData.bankInfo.bankName}</p>
+                  )}
+               </div>
+               <Link href="/staff/payment/settings" className="px-4 py-2 bg-white border border-gray-100 rounded-xl text-[10px] font-bold text-gray-500 hover:bg-gray-50 transition-colors text-center">
+                  CHANGE METHOD
+               </Link>
             </div>
-            <p className="text-xs text-gray-500 mb-4">
-              Payment will be sent to your saved {method.toUpperCase()} details.
-              {hasWallet && (
-                <span className="font-mono ml-1">
-                  {maskNumber(staffData!.walletNumber!)}
-                </span>
-              )}
-              {hasBank && staffData?.bankInfo && (
-                <span className="ml-1">
-                  {staffData.bankInfo.bankName} • {maskNumber(staffData.bankInfo.accountNumber)}
-                </span>
-              )}
-            </p>
-            <p className="text-xs text-gray-500 mb-4">
-              Submit the amount below. Admin will get an SMS and process your request.
-            </p>
-            <StaffPaymentRequestForm staffId={userId} />
+
+            <div className="space-y-4 pt-2">
+               <div className="px-1">
+                  <p className="text-xs font-bold text-gray-800">Enter Withdrawal Amount</p>
+                  <p className="text-[10px] font-medium text-gray-400 mt-1 leading-relaxed">
+                    Submit the amount you wish to withdraw. The administrator will be notified via SMS and your request will be processed.
+                  </p>
+               </div>
+               <StaffPaymentRequestForm staffId={userId} />
+            </div>
           </div>
         )}
 
-        <div>
-          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 px-1">
-            Payment history
+        <div className="space-y-4">
+          <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
+            Recent Payout Sessions
           </h2>
           {paymentsList.length === 0 ? (
-            <div className="__card p-8 text-center text-gray-500">
-              <CreditCard size={48} className="mx-auto mb-3 text-gray-300" />
-              <p className="font-semibold">No payment records yet.</p>
-              <p className="text-sm mt-1">Your requests will appear here.</p>
+            <div className="bg-white p-12 rounded-2xl border border-gray-100 text-center text-gray-500">
+              <CreditCard size={48} className="mx-auto mb-4 text-gray-200" />
+              <p className="font-bold text-gray-700">No payout history</p>
+              <p className="text-xs mt-1 text-gray-400 font-medium">Your payout requests will appear here once submitted.</p>
             </div>
           ) : (
             <div className="space-y-3">
               {paymentsList.map((payment: any) => (
-                <div key={payment.paymentId} className="__card p-4 sm:p-5">
-                  <div className="flex items-start justify-between gap-3 mb-2">
+                <div key={payment.paymentId} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:border-brand/20 transition-all group">
+                  <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-mono text-gray-400">
-                        #{payment.paymentId}
-                      </p>
-                      <p className="text-lg font-bold text-gray-900 mt-0.5">
-                        ৳{payment.amount?.toLocaleString()}
-                      </p>
-                      <p className="text-xs text-gray-500 capitalize mt-0.5">
-                        {payment.paymentMethod}
-                      </p>
+                      <p className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-tight">REQ ID: #{payment.paymentId.substring(0, 10)}</p>
+                      <div className="flex items-baseline gap-1 mt-1">
+                         <span className="text-[10px] font-bold text-gray-400">৳</span>
+                         <span className="text-xl font-bold text-gray-900">
+                           {payment.amount?.toLocaleString()}
+                         </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-[10px] font-bold text-brand bg-brand/5 px-2 py-0.5 rounded-md uppercase">
+                          {payment.paymentMethod}
+                        </span>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase">
+                          {new Date(payment.date || payment.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      </div>
                     </div>
                     <span
                       className={clsx(
-                        "px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wide whitespace-nowrap",
+                        "px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm",
                         payment.status === "completed"
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-green-700 border border-green-200/50"
                           : payment.status === "processing"
-                            ? "bg-blue-100 text-blue-700"
+                            ? "bg-blue-100 text-blue-700 border border-blue-200/50"
                             : payment.status === "rejected"
-                              ? "bg-red-100 text-red-700"
-                              : "bg-yellow-100 text-yellow-700"
+                              ? "bg-red-100 text-red-700 border border-red-200/50"
+                              : "bg-yellow-100 text-yellow-700 border border-yellow-200/50"
                       )}
                     >
                       {payment.status}
                     </span>
                   </div>
                   {payment.description && (
-                    <p className="text-xs text-gray-500 bg-gray-50 p-2 rounded-lg border border-gray-100 mt-2">
-                      {payment.description}
-                    </p>
+                    <div className="mt-4 p-3 bg-gray-50/50 rounded-xl border border-gray-100 relative group-hover:bg-brand/5 transition-colors">
+                      <p className="text-xs text-gray-600 font-medium leading-relaxed italic">
+                        &ldquo;{payment.description}&rdquo;
+                      </p>
+                    </div>
                   )}
-                  <p className="text-xs text-gray-400 mt-2">
-                    {new Date(
-                      payment.date || payment.createdAt
-                    ).toLocaleDateString()}
-                  </p>
                 </div>
               ))}
             </div>
           )}
         </div>
-      </main>
-    </div>
+      </div>
+    </StaffLayout>
   );
 }

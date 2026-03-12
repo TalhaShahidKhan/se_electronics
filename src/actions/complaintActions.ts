@@ -5,6 +5,7 @@ import { staffComplaints } from "@/db/schema";
 import { generateRandomId } from "@/utils";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { verifyCustomerSession } from "@/actions/customerActions";
 
 const ComplaintSchema = z.object({
   customerId: z.string().min(1),
@@ -16,16 +17,56 @@ const ComplaintSchema = z.object({
 
 export async function submitComplaint(_prevState: any, formData: FormData) {
   try {
+    const session = await verifyCustomerSession();
+    if (!session.isAuth || !session.customer) {
+      return { success: false, message: "Unauthorized" };
+    }
+
     const rawData = Object.fromEntries(formData);
     const validated = ComplaintSchema.parse(rawData);
+    if (validated.customerId !== session.customer.customerId) {
+      return { success: false, message: "Unauthorized" };
+    }
+    const complaintId = generateRandomId();
 
-    await db.insert(staffComplaints).values({
-      complaintId: generateRandomId(),
-      ...validated,
+    const { adminNotifications, customers, staffs } = await import("@/db/schema");
+    const { contactDetails } = await import("@/constants");
+    const { sendSMS } = await import("@/lib");
+
+    await db.transaction(async (tx) => {
+      // 1. Insert the complaint
+      await tx.insert(staffComplaints).values({
+        complaintId: complaintId,
+        ...validated,
+      });
+
+      // 2. Fetch customer and staff info for notification
+      const customer = await tx.query.customers.findFirst({
+        where: (c, { eq }) => eq(c.customerId, validated.customerId),
+      });
+      const staff = await tx.query.staffs.findFirst({
+        where: (s, { eq }) => eq(s.staffId, validated.staffId),
+      });
+
+      // 3. Create admin notification
+      await tx.insert(adminNotifications).values({
+        type: "complaint",
+        message: `New complaint (${complaintId}) filed by ${customer?.name} against ${staff?.name}.`,
+        link: `/complaints`,
+      });
+
+      // 4. Send SMS to admin
+      const adminSMS = `New Complaint Alert!\nID: ${complaintId}\nCustomer: ${customer?.name}\nStaff: ${staff?.name}\nSubject: ${validated.subject}\nCheck dashboard for details.`;
+      await sendSMS(contactDetails.sms, adminSMS);
     });
+
     revalidatePath("/customer/profile");
+    revalidatePath("/customer/complain/history");
+    revalidatePath("/complaints");
+    
     return {
       success: true,
+      data: complaintId,
       message: "Complaint submitted successfully. Admin will review it.",
     };
 
@@ -38,6 +79,7 @@ export async function submitComplaint(_prevState: any, formData: FormData) {
     return { success: false, message: "Something went wrong" };
   }
 }
+
 
 
 
@@ -94,3 +136,22 @@ export async function resolveComplaint(complaintId: string, adminNote: string) {
     return { success: false, message: "Could not resolve complaint" };
   }
 }
+
+export async function getComplaintById(complaintId: string) {
+  try {
+    const data = await db.query.staffComplaints.findFirst({
+      where: (complaints, { eq }) => eq(complaints.complaintId, complaintId),
+      with: {
+        customer: true,
+        staff: true,
+        service: true,
+      },
+    });
+    if (!data) return { success: false, message: "Complaint not found" };
+    return { success: true, data };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Could not fetch complaint" };
+  }
+}
+

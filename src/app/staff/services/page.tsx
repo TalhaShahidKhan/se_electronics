@@ -1,8 +1,9 @@
 import { verifyStaffSession } from "@/actions";
-import { getMyServices } from "@/actions/staffActions";
+import { getMyServices, getStaffProfileStats } from "@/actions/staffActions";
 import StaffDashboardActions from "@/components/features/staff/StaffDashboardActions";
+import { StaffLayout } from "@/components/layout/StaffLayout";
 import clsx from "clsx";
-import { ArrowLeft, Wrench } from "lucide-react";
+import { Wrench } from "lucide-react";
 import Link from "next/link";
 
 export default async function StaffServicesPage() {
@@ -10,7 +11,12 @@ export default async function StaffServicesPage() {
   if (!session.isAuth) return null;
 
   const userId = session.userId as string;
-  const servicesRes = await getMyServices(userId);
+  const [statsRes, servicesRes] = await Promise.all([
+    getStaffProfileStats(userId),
+    getMyServices(userId),
+  ]);
+
+  const stats = statsRes.success ? statsRes.data : null;
   const services = servicesRes.success ? (servicesRes.data ?? []) : [];
 
   const getStatusColor = (status: string) => {
@@ -28,57 +34,55 @@ export default async function StaffServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
-        <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4 flex items-center gap-3">
-          <Link href="/staff/profile" className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors border border-white/10">
-            <ArrowLeft size={20} />
-          </Link>
-          <div className="flex items-center gap-2">
-            <Wrench size={20} className="text-blue-200" />
-            <h1 className="text-lg font-bold">My Services</h1>
+    <StaffLayout balance={stats?.availableBalance || 0}>
+      <div className="p-4 space-y-6">
+        {/* Page Title */}
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 bg-brand/10 rounded-xl text-brand">
+            <Wrench size={20} />
           </div>
+          <h1 className="text-xl font-bold text-gray-800">My Assigned Services</h1>
         </div>
-      </header>
 
-      <main className="max-w-4xl mx-auto p-3 sm:p-4 py-4 sm:py-6">
         {services.length === 0 ? (
-          <div className="__card p-8 text-center text-gray-500">
-            <Wrench size={48} className="mx-auto mb-3 text-gray-300" />
-            <p className="font-semibold">No services assigned yet.</p>
-            <p className="text-sm mt-1">When you get assigned a service, it will appear here.</p>
+          <div className="bg-white p-12 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-500">
+            <Wrench size={48} className="mx-auto mb-4 text-gray-200" />
+            <p className="font-bold text-gray-700">No services assigned yet.</p>
+            <p className="text-sm mt-1 text-gray-400 font-medium">When you get assigned a service, it will appear here.</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {services.map((service: any) => {
               const currentStatus = service.statusHistory?.[0]?.status || "pending";
               return (
-                <div key={service.serviceId} className="__card p-4 sm:p-5">
-                  <div className="flex items-start justify-between gap-3 mb-3">
+                <div key={service.serviceId} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between gap-3 mb-4">
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-mono text-gray-400 mb-1">#{service.serviceId}</p>
-                      <h3 className="font-bold text-gray-900 truncate">{service.customerName}</h3>
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        {service.productModel} • <span className="capitalize">{service.type} - {service.productType}</span>
+                      <p className="text-[10px] font-bold font-mono text-gray-300 mb-1">SERVICE ID: #{service.serviceId.substring(0, 12)}...</p>
+                      <h3 className="text-lg font-bold text-gray-900 truncate">{service.customerName}</h3>
+                      <p className="text-xs font-semibold text-gray-500 mt-1 uppercase tracking-tight">
+                        {service.productType} • {service.productModel}
                       </p>
                     </div>
-                    <span className={clsx("px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wide whitespace-nowrap", getStatusColor(currentStatus))}>
+                    <span className={clsx("px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap shadow-sm", getStatusColor(currentStatus))}>
                       {currentStatus.replace("_", " ")}
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                    <span className="text-xs text-gray-400 font-medium">
-                      {new Date(service.createdAt).toLocaleDateString()}
-                    </span>
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-50">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-gray-400 font-bold uppercase">Created On</span>
+                      <span className="text-xs text-gray-600 font-bold">
+                        {new Date(service.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
                     <div className="flex items-center gap-2">
                       {currentStatus !== "completed" && currentStatus !== "canceled" && (
                         <Link
                           href={`/service-report?serviceId=${service.serviceId}`}
-                          className="text-xs font-bold bg-brand text-white px-3 py-1.5 rounded-lg hover:bg-brand-800 transition-colors"
+                          className="text-xs font-bold bg-brand text-white px-4 py-2 rounded-xl hover:bg-brand-800 transition-all active:scale-95 shadow-sm"
                         >
-                          Report
+                          Send Report
                         </Link>
                       )}
                       {currentStatus === "completed" && (
@@ -86,9 +90,9 @@ export default async function StaffServicesPage() {
                       )}
                       <Link
                         href={`/service-track?trackingId=${service.serviceId}`}
-                        className="text-xs font-bold text-brand bg-brand-50 px-3 py-1.5 rounded-lg hover:bg-brand-100 transition-colors"
+                        className="text-xs font-bold text-gray-600 bg-gray-100 px-4 py-2 rounded-xl hover:bg-gray-200 transition-all active:scale-95"
                       >
-                        Track
+                        Track Status
                       </Link>
                     </div>
                   </div>
@@ -97,7 +101,7 @@ export default async function StaffServicesPage() {
             })}
           </div>
         )}
-      </main>
-    </div>
+      </div>
+    </StaffLayout>
   );
 }

@@ -609,6 +609,16 @@ export const contactMessages = pgTable("contactMessages", {
     .notNull(),
 });
 
+export const adminNotifications = pgTable("adminNotifications", {
+  id: uuid().defaultRandom().primaryKey(),
+  type: varchar({ length: 50 }).notNull(), // 'complaint', 'service', etc.
+  message: text().notNull(),
+  link: varchar({ length: 255 }),
+  isRead: boolean().default(false).notNull(),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+});
+
+
 export const contactMessagesRelations = relations(
   contactMessages,
   ({ one }) => ({

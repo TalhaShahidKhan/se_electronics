@@ -1,60 +1,80 @@
 import { verifyStaffSession } from "@/actions";
-import { getStaffById } from "@/actions/staffActions";
+import { getStaffById, getStaffProfileStats } from "@/actions/staffActions";
 import { StaffPaymentSettingsForm } from "@/components/features/staff/StaffPaymentSettingsForm";
-import { ArrowLeft, Settings, Wallet } from "lucide-react";
-import Link from "next/link";
+import { StaffLayout } from "@/components/layout/StaffLayout";
+import { Settings, Wallet } from "lucide-react";
 
 export default async function StaffPaymentSettingsPage() {
   const session = await verifyStaffSession();
   if (!session.isAuth) return null;
 
   const userId = session.userId as string;
-  const profileRes = await getStaffById(userId);
+  const [profileRes, statsRes] = await Promise.all([
+    getStaffById(userId),
+    getStaffProfileStats(userId),
+  ]);
+
   const staffData = profileRes.success ? profileRes.data : null;
+  const stats = statsRes.success ? statsRes.data : null;
 
   if (!staffData) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <p className="text-gray-600">Profile not found.</p>
+        <p className="text-gray-600 font-bold">Staff profile data not available.</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
-        <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4 flex items-center gap-3">
-          <Link
-            href="/staff/payment"
-            className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
-          >
-            <ArrowLeft size={20} />
-          </Link>
-          <div className="flex items-center gap-2">
-            <Settings size={20} className="text-blue-200" />
-            <h1 className="text-lg font-bold">Payment settings</h1>
+    <StaffLayout balance={stats?.availableBalance || 0}>
+      <div className="p-4 space-y-6">
+        {/* Page Title */}
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 bg-brand/10 rounded-xl text-brand">
+            <Settings size={20} />
           </div>
+          <h1 className="text-xl font-bold text-gray-800">Payout Configuration</h1>
         </div>
-      </header>
 
-      <main className="max-w-4xl mx-auto p-3 sm:p-4 py-4 sm:py-6">
-        <div className="__card p-5 sm:p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Wallet className="w-5 h-5 text-brand" />
-            <h2 className="text-sm font-bold text-gray-700 uppercase tracking-widest">
-              Preferred method & account details
-            </h2>
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-3 mb-5 p-4 rounded-2xl bg-gray-50/50 border border-gray-100">
+            <div className="size-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand">
+               <Wallet className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                Preferred Withdrawal Gateway
+              </h2>
+              <p className="text-sm font-bold text-gray-800">Account & Identity Verification</p>
+            </div>
           </div>
-          <p className="text-xs text-gray-500 mb-4">
-            Choose how you want to receive payment and enter the number or account details. Admin will use this for payout.
+
+          <p className="text-xs font-medium text-gray-500 mb-6 leading-relaxed px-1">
+            Configure your preferred payout gateway. Ensure the account details (bKash/Nagad/Bank) are accurate to avoid processing delays.
           </p>
-          <StaffPaymentSettingsForm
-            initialPaymentPreference={staffData.paymentPreference}
-            initialWalletNumber={staffData.walletNumber}
-            initialBankInfo={staffData.bankInfo ?? null}
-          />
+
+          <div className="bg-gray-50/30 p-2 rounded-2xl border border-gray-100">
+            <StaffPaymentSettingsForm
+              initialPaymentPreference={staffData.paymentPreference}
+              initialWalletNumber={staffData.walletNumber}
+              initialBankInfo={staffData.bankInfo ?? null}
+            />
+          </div>
         </div>
-      </main>
-    </div>
+
+        {/* Info Card */}
+        <div className="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+           <div className="flex gap-3">
+              <div className="size-5 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 text-[10px] font-bold mt-0.5">i</div>
+              <div>
+                 <p className="text-xs font-bold text-blue-800 uppercase tracking-tight">Important Note</p>
+                 <p className="text-[11px] font-medium text-blue-700/80 mt-1 leading-relaxed">
+                    Changes to payment settings may require up to 24 hours for verification by our administrative team.
+                 </p>
+              </div>
+           </div>
+        </div>
+      </div>
+    </StaffLayout>
   );
 }

@@ -50,7 +50,11 @@ export default function DocDownloadPage() {
             case 'certificate':
                 a.download = 'SE_ELECTRONICS_CERTIFICATE.pdf'
                 break
+            case 'complaint':
+                a.download = 'SE_ELECTRONICS_COMPLAINT.pdf'
+                break
         }
+
         a.click()
 
         URL.revokeObjectURL(url)

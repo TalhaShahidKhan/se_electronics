@@ -639,7 +639,44 @@ export const updateStaff = async (staffId: string, data: FormData) => {
   }
 };
 
+export const toggleStaffStatus = async (staffId: string, status: boolean) => {
+  try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    const staff = await db.query.staffs.findFirst({
+      where: eq(staffs.staffId, staffId),
+    });
+
+    if (!staff) return { success: false, message: "Staff not found" };
+
+    await db
+      .update(staffs)
+      .set({ isActiveStaff: status })
+      .where(eq(staffs.staffId, staffId));
+
+    if (!status) {
+      // Sending block notification SMS
+      const blockMessage = `প্রিয় ${staff.name},\nআপনার অ্যাকাউন্টটি সাময়িকভাবে বন্ধ (Blocked) করা হয়েছে। বিস্তারিত জানতে বা অ্যাকাউন্টটি সক্রিয় করতে এডমিনের সাথে যোগাযোগ করুন। ${contactDetails.customerCare}`;
+      await sendSMS(staff.phone, blockMessage);
+    } else {
+      const activeMessage = `প্রিয় ${staff.name},\nআপনার অ্যাকাউন্টটি পুনরায় সক্রিয় (Activated) করা হয়েছে। আপনি এখন লগইন করে কাজ করতে পারবেন। ${contactDetails.customerCare}`;
+      await sendSMS(staff.phone, activeMessage);
+    }
+
+    revalidatePath("/staffs");
+    return {
+      success: true,
+      message: status ? "Staff activated" : "Staff blocked",
+    };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong" };
+  }
+};
+
 export const deleteStaff = async (staffId: string) => {
+
   try {
     const session = await verifySession(false, "admin");
     if (!session) return { success: false, message: "Unauthorized" };

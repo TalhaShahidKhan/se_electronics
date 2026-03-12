@@ -176,6 +176,26 @@ export default async function generatePDF(args: { docType: DocType, id: string, 
                 html = renderToStaticMarkup(<CertificateTemplate data={data} />)
                 break;
             };
+            case 'complaint': {
+                const ComplaintTemplate = (await import("@/components/features/complaints/ComplaintTemplate")).default;
+                const { getComplaintById } = await import("@/actions/complaintActions");
+
+                const response = await getComplaintById(id)
+                if (!response.success || !response.data) {
+                    throw new AppError("অভিযোগ আইডিটি সঠিক নয়।")
+                }
+
+                const bgImageBase64 = await convertToBase64(path.join(process.cwd(), 'src', 'assets', 'images', 'payment-receipt.jpg'));
+                const complaint = response.data!;
+                const data = {
+                    ...complaint,
+                    bgImage: bgImageBase64
+                }
+
+                html = renderToStaticMarkup(<ComplaintTemplate data={data as any} />)
+                break;
+            };
+
             default: {
                 throw new AppError("Invalid File Type")
             };

@@ -66,3 +66,44 @@ export const getAdminStats = async () => {
     return { success: false, message: "Could not fetch admin stats" };
   }
 };
+
+export const getAdminNotifications = async () => {
+  try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    const { adminNotifications } = await import("@/db/schema");
+    const { desc } = await import("drizzle-orm");
+
+    const notifications = await db.query.adminNotifications.findMany({
+      orderBy: [desc(adminNotifications.createdAt)],
+      limit: 10,
+    });
+
+    return { success: true, data: notifications };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Could not fetch notifications" };
+  }
+};
+
+export const markNotificationAsRead = async (id: string) => {
+  try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    const { adminNotifications } = await import("@/db/schema");
+    const { eq } = await import("drizzle-orm");
+
+    await db
+      .update(adminNotifications)
+      .set({ isRead: true })
+      .where(eq(adminNotifications.id, id));
+
+    return { success: true, message: "Notification marked as read" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong" };
+  }
+};
+

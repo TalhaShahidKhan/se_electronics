@@ -1,7 +1,6 @@
-'use client'
-import React from "react";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+"use client";
 import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const Banner = () => {
   const slides = [
@@ -14,7 +13,6 @@ const Banner = () => {
     {
       img: "https://images.pexels.com/photos/5912616/pexels-photo-5912616.jpeg",
     },
-
   ];
 
   return (
@@ -32,11 +30,11 @@ const Banner = () => {
         stopOnHover
       >
         {slides.map((slide, index) => (
-          <div key={index} className="w-full h-[40vh]">
+          <div key={index} className="w-full h-[20vh]">
             <img
               src={slide.img}
               alt={`Slide ${index + 1}`}
-              className="w-full h-[40vh] object-cover rounded-md"
+              className="w-full h-[20vh] object-cover rounded-md"
             />
           </div>
         ))}

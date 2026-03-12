@@ -4,11 +4,13 @@ import {
   deleteStaff,
   sendIdCardDownloadLink,
   setStaffCredentials,
+  toggleStaffStatus,
 } from "@/actions";
 import { Modal } from "@/components/ui";
 import { StaffsType } from "@/types";
 import { useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
+import { ShieldCheck, ShieldOff } from "lucide-react";
 import RegistrationForm from "./RegistrationForm";
 import StaffProfileModal from "./StaffProfileModal";
 
@@ -68,7 +70,24 @@ export default function StaffActionButtons({
     }
   };
 
+  const handleToggleStatus = async () => {
+    const isBlocking = staffData.isActiveStaff;
+    const confirmed = window.confirm(
+      `${isBlocking ? "Block" : "Unblock"} staff member ${staffData.name}?`
+    );
+    if (confirmed) {
+      toastId.current = toast(`${isBlocking ? "Blocking" : "Unblocking"}...`, { autoClose: false });
+      const res = await toggleStaffStatus(staffData.staffId, !isBlocking);
+      toast.update(toastId.current, {
+        type: res.success ? "success" : "error",
+        render: res.message,
+        autoClose: 1500,
+      });
+    }
+  };
+
   const deleteTechnicianHandler = async () => {
+
     const confirmed = window.confirm(
       "Delete technician " + staffData.name + "?",
     );
@@ -260,7 +279,15 @@ export default function StaffActionButtons({
         </svg>
       </a>
       <button
+        onClick={handleToggleStatus}
+        title={staffData.isActiveStaff ? "Block Staff" : "Activate Staff"}
+        className={`size-10 __center ${staffData.isActiveStaff ? "text-orange-500" : "text-green-500"}`}
+      >
+        {staffData.isActiveStaff ? <ShieldOff size={24} /> : <ShieldCheck size={24} />}
+      </button>
+      <button
         onClick={deleteTechnicianHandler}
+
         title="Delete"
         className="size-10 __center text-red-500"
       >

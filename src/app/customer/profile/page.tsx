@@ -74,11 +74,12 @@ export default async function CustomerProfilePage() {
       color: "bg-purple-600",
     },
     {
-      label: "Complain",
+      label: "My Complaints",
       icon: FileText,
-      href: "/customer/complain",
+      href: "/customer/complain/history",
       color: "bg-rose-600",
     },
+
     {
       label: "VIP card request",
       icon: Crown,

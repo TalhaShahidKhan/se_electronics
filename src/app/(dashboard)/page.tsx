@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import AdminStats from "@/components/features/admin/AdminStats";
 import DashboardHeader from "@/components/features/admin/DashboardHeader";
 import { ChevronRight, CreditCard, Plus, Users, Wrench } from "lucide-react";
