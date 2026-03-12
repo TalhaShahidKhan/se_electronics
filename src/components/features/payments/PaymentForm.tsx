@@ -40,7 +40,7 @@ export default function PaymentForm({
         senderBankInfo: {
           ...(prev.senderBankInfo || {}),
           [field]: value,
-        },
+        } as any,
       }));
     } else {
       setPaymentData((prev) => ({

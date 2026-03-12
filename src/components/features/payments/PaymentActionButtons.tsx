@@ -8,7 +8,7 @@ import {
 } from "@/actions";
 import { Modal } from "@/components/ui";
 import { paymentInvoiceDownloadLinkMessagePreview } from "@/constants";
-import { CheckCircle, Loader2 } from "lucide-react";
+import { CheckCircle, Loader2, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
 import PaymentForm from "./PaymentForm";
@@ -71,8 +71,10 @@ export default function PaymentActionButtons({
   };
 
   const handleStatusUpdate = async (
-    newStatus: "pending" | "processing" | "completed",
+    newStatus: "requested" | "pending" | "processing" | "approved" | "rejected" | "completed",
   ) => {
+    const confirmed = window.confirm(`Change status to "${newStatus}"?`);
+    if (!confirmed) return;
     setIsStatusUpdating(true);
     const res = await updatePaymentStatus(paymentData.paymentId, newStatus);
     toast(res.message, { type: res.success ? "success" : "error" });
@@ -92,28 +94,58 @@ export default function PaymentActionButtons({
     }
   };
 
+  // Determine next status in the flow
+  const getNextStatus = () => {
+    if (paymentData.status === "requested") return "approved";
+    if (paymentData.status === "approved") return "completed";
+    return null;
+  };
+
+  const nextStatus = getNextStatus();
+  const statusLabels: Record<string, string> = {
+    requested: "Requested",
+    approved: "Approved",
+    completed: "Mark Completed",
+  };
+
   return (
     <div className="flex gap-4">
-      <button
-        onClick={() => handleStatusUpdate("completed")}
-        disabled={paymentData.status === "completed" || isStatusUpdating}
-        title={
-          paymentData.status === "completed"
-            ? "Payment Completed"
-            : "Mark as Completed"
-        }
-        className={
-          paymentData.status === "completed"
-            ? "text-green-500 cursor-default"
-            : "text-gray-400 hover:text-green-600"
-        }
-      >
-        {isStatusUpdating ? (
-          <Loader2 className="size-6 animate-spin" />
-        ) : (
+      {/* Status flow button */}
+      {nextStatus && (
+        <button
+          onClick={() => handleStatusUpdate(nextStatus as any)}
+          disabled={isStatusUpdating}
+          title={nextStatus === "approved" ? "Approve Payment Request" : "Mark as Completed"}
+          className="text-gray-400 hover:text-green-600"
+        >
+          {isStatusUpdating ? (
+            <Loader2 className="size-6 animate-spin" />
+          ) : (
+            <CheckCircle className="size-6" />
+          )}
+        </button>
+      )}
+      {paymentData.status === "completed" && (
+        <span className="text-green-500 cursor-default" title="Payment Completed">
           <CheckCircle className="size-6" />
-        )}
-      </button>
+        </span>
+      )}
+      {paymentData.status === "rejected" && (
+        <span className="text-red-500 cursor-default" title="Payment Rejected">
+          <X className="size-6" />
+        </span>
+      )}
+      {/* Reject button for requested status */}
+      {paymentData.status === "requested" && (
+        <button
+          onClick={() => handleStatusUpdate("rejected")}
+          disabled={isStatusUpdating}
+          title="Reject Payment Request"
+          className="text-gray-400 hover:text-red-600"
+        >
+          <X className="size-6" />
+        </button>
+      )}
       {showPaymentInfoModal && (
         <PaymentViewModal
           paymentData={paymentData}

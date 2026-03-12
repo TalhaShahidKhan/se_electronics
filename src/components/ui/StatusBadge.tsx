@@ -1,6 +1,10 @@
 import clsx from "clsx";
 
 const STATUSES = {
+    requested: {
+      name: 'Requested',
+      styles: 'text-orange-500 bg-orange-500 bg-opacity-10 px-2 py-0.5 rounded-md border border-orange-500'
+    },
     pending: {
         name: 'Pending',
         styles: 'text-yellow-500 bg-yellow-500 bg-opacity-10 px-2 py-0.5 rounded-md border border-yellow-500'
@@ -60,6 +64,10 @@ const STATUSES = {
     custom: {
         name: 'Custom',
         styles: 'text-gray-500 bg-gray-500 bg-opacity-10 px-2 py-0.5 rounded-md border border-gray-500'
+    },
+    credited: {
+        name: 'Added',
+        styles: 'text-indigo-500 bg-indigo-500 bg-opacity-10 px-2 py-0.5 rounded-md border border-indigo-500'
     }
 }
 

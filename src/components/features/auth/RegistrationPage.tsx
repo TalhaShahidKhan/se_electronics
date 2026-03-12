@@ -5,6 +5,8 @@ import { DelayedLoading, RegistrationForm } from "@/components";
 import { contactDetails } from "@/constants";
 import { useThemeColor } from "@/hooks";
 import { AppError } from "@/utils";
+import { motion } from "framer-motion";
+import { CheckCircle, FileText } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 

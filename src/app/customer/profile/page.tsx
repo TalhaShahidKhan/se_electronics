@@ -65,7 +65,7 @@ export default async function CustomerProfilePage() {
     {
       label: "Tracking",
       icon: Activity,
-      href: "/service-track",
+      href: "/customer/services",
       color: "bg-emerald-600",
     },
     {
@@ -90,7 +90,7 @@ export default async function CustomerProfilePage() {
     {
       label: "Feedback Send",
       icon: Star,
-      href: "/service-feedback",
+      href: "/customer/services",
       color: "bg-pink-600",
     },
     {

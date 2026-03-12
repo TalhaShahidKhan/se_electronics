@@ -4,37 +4,36 @@ import { StaffsType } from "@/types";
 import Image from "next/image";
 import { useState } from "react";
 import StaffProfileModal from "@/components/features/staff/StaffProfileModal";
-import { User, Phone, MapPin, Eye, ShieldCheck, ShieldAlert } from "lucide-react";
-import clsx from "clsx";
+import { Phone, MapPin, Eye, ShieldCheck, ShieldAlert } from "lucide-react";
 
 export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
   const [selectedStaff, setSelectedStaff] = useState<StaffsType | null>(null);
 
   return (
-    <div className="flex-1 overflow-auto p-1">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+    <div className="flex-1 overflow-auto p-2 sm:p-3">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
         {staffs.map((staff) => (
           <div
             key={staff.id}
             onClick={() => setSelectedStaff(staff)}
-            className="group bg-white border border-gray-100 rounded-[2rem] p-5 text-center transition-all hover:shadow-xl hover:shadow-brand/5 hover:border-brand/20 cursor-pointer relative overflow-hidden active:scale-[0.98]"
+            className="group bg-white border border-gray-100 rounded-2xl sm:rounded-[2rem] p-3 sm:p-4 md:p-5 text-center transition-all hover:shadow-xl hover:shadow-brand/5 hover:border-brand/20 cursor-pointer relative overflow-hidden active:scale-[0.98]"
           >
             {/* Status Indicator */}
-            <div className="absolute top-4 right-4">
+            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4">
               {staff.isActiveStaff ? (
-                <div className="bg-emerald-50 text-emerald-600 p-1.5 rounded-full" title="Active">
-                  <ShieldCheck size={16} />
+                <div className="bg-emerald-50 text-emerald-600 p-1 sm:p-1.5 rounded-full" title="Active">
+                  <ShieldCheck size={12} className="sm:w-4 sm:h-4" />
                 </div>
               ) : (
-                <div className="bg-rose-50 text-rose-600 p-1.5 rounded-full" title="Blocked">
-                  <ShieldAlert size={16} />
+                <div className="bg-rose-50 text-rose-600 p-1 sm:p-1.5 rounded-full" title="Blocked">
+                  <ShieldAlert size={12} className="sm:w-4 sm:h-4" />
                 </div>
               )}
             </div>
 
             {/* Profile Image */}
-            <div className="relative mx-auto mb-5">
-              <div className="size-32 sm:size-40 rounded-[2.5rem] overflow-hidden __center mx-auto border-4 border-gray-50 group-hover:border-brand/10 transition-colors bg-gray-50">
+            <div className="relative mx-auto mb-3 sm:mb-4 md:mb-5">
+              <div className="size-20 sm:size-28 md:size-32 lg:size-36 rounded-xl sm:rounded-2xl md:rounded-[2rem] overflow-hidden __center mx-auto border-2 sm:border-4 border-gray-50 group-hover:border-brand/10 transition-colors bg-gray-50">
                 <Image 
                   src={staff.photoUrl} 
                   alt={staff.name} 
@@ -43,38 +42,38 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
                   className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100 flex items-center gap-1.5">
-                <span className="text-[10px] font-black text-brand uppercase tracking-widest">{staff.staffId}</span>
+              <div className="absolute -bottom-1.5 sm:-bottom-2 left-1/2 -translate-x-1/2 bg-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-sm border border-gray-100 flex items-center gap-1.5">
+                <span className="text-[8px] sm:text-[10px] font-black text-brand uppercase tracking-widest">{staff.staffId}</span>
               </div>
             </div>
 
             {/* Staff Info */}
-            <div className="space-y-4">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4">
               <div>
-                <h3 className="text-xl font-black text-gray-900 group-hover:text-brand transition-colors line-clamp-1 px-2">
+                <h3 className="text-sm sm:text-base md:text-lg font-black text-gray-900 group-hover:text-brand transition-colors line-clamp-1 px-1">
                   {staff.name}
                 </h3>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-1">
+                <p className="text-[8px] sm:text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mt-0.5 sm:mt-1">
                   {staff.role}
                 </p>
               </div>
 
-              <div className="flex flex-col gap-2 pt-2 border-t border-gray-50">
-                <div className="flex items-center justify-center gap-2 text-gray-500">
-                  <Phone size={14} className="text-brand/40" />
-                  <span className="text-sm font-bold">{staff.phone}</span>
+              <div className="flex flex-col gap-1 sm:gap-1.5 md:gap-2 pt-1.5 sm:pt-2 border-t border-gray-50">
+                <div className="flex items-center justify-center gap-1 sm:gap-2 text-gray-500">
+                  <Phone size={10} className="text-brand/40 sm:w-3.5 sm:h-3.5" />
+                  <span className="text-[10px] sm:text-xs md:text-sm font-bold">{staff.phone}</span>
                 </div>
-                <div className="flex items-center justify-center gap-2 text-gray-500">
-                  <MapPin size={14} className="text-brand/40" />
-                  <span className="text-sm font-bold truncate max-w-[150px]">{staff.currentDistrict}</span>
+                <div className="flex items-center justify-center gap-1 sm:gap-2 text-gray-500">
+                  <MapPin size={10} className="text-brand/40 sm:w-3.5 sm:h-3.5" />
+                  <span className="text-[10px] sm:text-xs md:text-sm font-bold truncate max-w-[80px] sm:max-w-[120px] md:max-w-[150px]">{staff.currentDistrict}</span>
                 </div>
               </div>
 
               {/* View Details Hint */}
-              <div className="pt-2">
-                <div className="w-full py-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-brand group-hover:text-white transition-all flex items-center justify-center gap-2">
-                  <Eye size={16} />
-                  <span className="text-xs font-black uppercase tracking-widest">View Details</span>
+              <div className="pt-1 sm:pt-2">
+                <div className="w-full py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl md:rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-brand group-hover:text-white transition-all flex items-center justify-center gap-1 sm:gap-2">
+                  <Eye size={12} className="sm:w-4 sm:h-4" />
+                  <span className="text-[8px] sm:text-[10px] md:text-xs font-black uppercase tracking-wider sm:tracking-widest">View Details</span>
                 </div>
               </div>
             </div>

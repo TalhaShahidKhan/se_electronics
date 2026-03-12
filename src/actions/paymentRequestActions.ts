@@ -4,7 +4,7 @@ import { db } from "@/db/drizzle";
 import { payments, staffs } from "@/db/schema";
 import { sendSMS } from "@/lib";
 import { generateRandomId } from "@/utils";
-import { eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -14,6 +14,52 @@ const PaymentRequestSchema = z.object({
   description: z.string().optional(),
 });
 
+/**
+ * Get staff's available (virtual) balance.
+ * Balance = total added by admin (status='pending','processing','approved','requested')
+ *          minus total completed/rejected.
+ * Simplified: sum of amounts where status is NOT 'completed' and NOT 'rejected'.
+ */
+export async function getStaffBalance(staffId: string) {
+  try {
+    const addedResult = await db
+      .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
+      .from(payments)
+      .where(
+        and(
+          eq(payments.staffId, staffId),
+          sql`${payments.status} = 'credited'`,
+        ),
+      )
+      .limit(1);
+
+    const requestedResult = await db
+      .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
+      .from(payments)
+      .where(
+        and(
+          eq(payments.staffId, staffId),
+          sql`${payments.status} IN ('requested', 'pending', 'approved', 'completed')`,
+        ),
+      )
+      .limit(1);
+
+    const totalAdded = addedResult[0]?.sum || 0;
+    const totalRequested = requestedResult[0]?.sum || 0;
+    const balance = totalAdded - totalRequested;
+
+    return { success: true, balance: Math.max(0, balance) };
+  } catch (error) {
+    console.error(error);
+    return { success: false, balance: 0 };
+  }
+}
+
+/**
+ * Staff requests money from their virtual balance.
+ * Status is set to "requested" — admin must approve → pending → completed.
+ * Staff can only request if they have sufficient available balance.
+ */
 export async function requestPayment(_prevState: any, formData: FormData) {
   try {
     const rawData = Object.fromEntries(formData);
@@ -36,6 +82,15 @@ export async function requestPayment(_prevState: any, formData: FormData) {
       };
     }
 
+    // Check available balance
+    const balanceRes = await getStaffBalance(validated.staffId);
+    if (!balanceRes.success || balanceRes.balance < validated.amount) {
+      return {
+        success: false,
+        message: `Insufficient balance. Available: ৳${Math.floor(balanceRes.balance).toLocaleString()}`,
+      };
+    }
+
     const paymentId = generateRandomId();
     const invoiceNumber = `REQ-${Date.now()}-${generateRandomId().slice(0, 8)}`;
 
@@ -46,7 +101,7 @@ export async function requestPayment(_prevState: any, formData: FormData) {
       amount: validated.amount,
       paymentMethod: method,
       description: validated.description ?? null,
-      status: "pending",
+      status: "requested", // NEW: starts as "requested"
       date: new Date(),
     };
     if (hasWallet) (insertPayload as any).receiverWalletNumber = staffData.walletNumber;
@@ -54,15 +109,29 @@ export async function requestPayment(_prevState: any, formData: FormData) {
 
     await db.insert(payments).values(insertPayload as typeof payments.$inferInsert);
 
+    // Send SMS to admin
     if (process.env.ADMIN_PHONE_NUMBER) {
       const smsText = `New Payment Request: Staff ${staffData.name} requested ৳${validated.amount} (${method}). Check dashboard.`;
       await sendSMS(process.env.ADMIN_PHONE_NUMBER, smsText);
+    }
+
+    // Create admin notification
+    try {
+      const { adminNotifications } = await import("@/db/schema");
+      await db.insert(adminNotifications).values({
+        type: "payment_request",
+        message: `${staffData.name} requested ৳${validated.amount} payment.`,
+        link: "/payments",
+      });
+    } catch (e) {
+      console.error("Failed to create admin notification:", e);
     }
 
     revalidatePath("/staff/profile");
     revalidatePath("/staff/payments");
     revalidatePath("/staff/payment");
     revalidatePath("/staff/payment/request");
+    revalidatePath("/payments");
     return { success: true, message: "Payment request sent. Admin will be notified." };
   } catch (error) {
     if (error instanceof z.ZodError) {

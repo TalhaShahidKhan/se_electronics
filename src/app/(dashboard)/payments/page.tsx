@@ -1,5 +1,6 @@
 import { getPaymentsMetadata } from "@/actions";
 import {
+  AddBalanceButton,
   AddPaymentButton,
   DelayedLoading,
   PaymentList,
@@ -16,14 +17,16 @@ export default async function Payments({
   const params = await searchParams;
   const pagination = await getPaymentsMetadata({ ...params });
 
-  // console.log(pagination , 'pagenatuion');
-  // console.log(params);
-
   return (
     <div className="flex-1 overflow-hidden flex flex-col gap-4">
       <Toolbar
         title="Payments"
-        actions={<AddPaymentButton />}
+        actions={
+          <div className="flex items-center gap-2">
+            <AddBalanceButton />
+            <AddPaymentButton />
+          </div>
+        }
         pagination={pagination}
       />
       <div className="overflow-auto flex-1">
@@ -34,7 +37,8 @@ export default async function Payments({
               <th className="text-left py-4 px-2">Invoice</th>
               <th className="text-left py-4 px-2">Receiver</th>
               <th className="text-left py-4 px-2">Amount</th>
-              <th className="text-left py-4 px-2">Payment Method</th>
+              <th className="text-left py-4 px-2">Status</th>
+              <th className="text-left py-4 px-2">Method</th>
               <th className="text-left py-4 px-2">Date</th>
               <th className="text-left py-4 px-2">Actions</th>
             </tr>
@@ -44,7 +48,7 @@ export default async function Payments({
               key={params?.query}
               fallback={
                 <tr>
-                  <td colSpan={7} className="text-center py-4 text-gray-600">
+                  <td colSpan={8} className="text-center py-4 text-gray-600">
                     <DelayedLoading />
                   </td>
                 </tr>

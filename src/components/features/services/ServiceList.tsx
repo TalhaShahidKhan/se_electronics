@@ -6,14 +6,15 @@ import { formatDate } from "@/utils";
 import ServiceActionButtons from "./ServiceActionButtons";
 
 export default async function ServiceList(
-  params: SearchParams & { type: "repair" | "install" },
+  params: SearchParams & { type?: "repair" | "install"; staffId?: string; hideStaff?: boolean },
 ) {
-  const response = await getServices(params);
+  const { hideStaff = false, ...p } = params;
+  const response = await getServices(p);
 
   if (!response.success) {
     return (
       <tr>
-        <td colSpan={10} className="text-center py-4 text-red-500">
+        <td colSpan={hideStaff ? 8 : 10} className="text-center py-4 text-red-500">
           <p>{response.message}</p>
         </td>
       </tr>
@@ -23,7 +24,7 @@ export default async function ServiceList(
   if (response.data!.length === 0) {
     return (
       <tr className="border-b">
-        <td colSpan={10} className="text-center py-4 text-gray-600">
+        <td colSpan={hideStaff ? 8 : 10} className="text-center py-4 text-gray-600">
           <p>No data</p>
         </td>
       </tr>
@@ -77,21 +78,25 @@ export default async function ServiceList(
           }
         />
       </td>
-      <td className="py-4 px-4 whitespace-nowrap">
-        <div className="flex items-center gap-2">
-          {service.staffId ? (
-            <ProfileLinkButton
-              text={service.staffName}
-              staffId={service.staffId}
-            />
-          ) : (
-            <span className="text-gray-400 italic text-xs sm:text-sm font-medium">{service.staffName || "Unassigned"}</span>
-          )}
-        </div>
-      </td>
-      <td className="py-4 px-4 whitespace-nowrap text-gray-600 text-xs sm:text-sm font-bold">
-        {service.staffPhone || "--"}
-      </td>
+      {!hideStaff && (
+        <>
+          <td className="py-4 px-4 whitespace-nowrap">
+            <div className="flex items-center gap-2">
+              {service.staffId ? (
+                <ProfileLinkButton
+                  text={service.staffName}
+                  staffId={service.staffId}
+                />
+              ) : (
+                <span className="text-gray-400 italic text-xs sm:text-sm font-medium">{service.staffName || "Unassigned"}</span>
+              )}
+            </div>
+          </td>
+          <td className="py-4 px-4 whitespace-nowrap text-gray-600 text-xs sm:text-sm font-bold">
+            {service.staffPhone || "--"}
+          </td>
+        </>
+      )}
       <td className="py-4 px-4 whitespace-nowrap sticky right-0 bg-white group-hover:bg-gray-50 transition-colors shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">
         <ServiceActionButtons serviceData={service} />
       </td>

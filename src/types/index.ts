@@ -253,6 +253,7 @@ export type ServiceInfo = {
 };
 
 export type Statuses =
+  | "requested"
   | "pending"
   | "in_progress"
   | "appointment_retry"
@@ -266,6 +267,7 @@ export type Statuses =
   | "expired"
   | "staff_arrived"
   | "staff_departed"
+  | "credited"
   | "service_center_received";
 
 export type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {

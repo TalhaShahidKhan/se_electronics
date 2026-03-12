@@ -102,7 +102,7 @@ export default function InputField({ label, required = true, src, ...restProps }
                         "w-full px-5 py-3.5 bg-white border-2 border-gray-100 rounded-2xl text-base transition-all focus:ring-4 focus:ring-brand/10 focus:border-brand outline-none font-medium placeholder:text-gray-400",
                         restProps.className
                     )} 
-                    placeholder={restProps.placeholder || `Enter ${label.toLowerCase()}`} 
+                    placeholder={restProps.placeholder || `Enter ${label?.toLowerCase() || ""}`} 
                 />
             </label>
         }

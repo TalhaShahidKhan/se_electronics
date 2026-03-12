@@ -10,7 +10,7 @@ import { verifyCustomerSession } from "@/actions/customerActions";
 const ComplaintSchema = z.object({
   customerId: z.string().min(1),
   staffId: z.string().min(1),
-  serviceId: z.string().optional(),
+  serviceId: z.preprocess((val) => (val === "" ? undefined : val), z.string().optional()),
   subject: z.string().min(1),
   description: z.string().min(1),
 });
@@ -34,7 +34,17 @@ export async function submitComplaint(_prevState: any, formData: FormData) {
     const { sendSMS } = await import("@/lib");
 
     await db.transaction(async (tx) => {
-      // 1. Insert the complaint
+      // 1. Verify serviceId if provided
+      if (validated.serviceId) {
+        const serviceExists = await tx.query.services.findFirst({
+          where: (s, { eq }) => eq(s.serviceId, validated.serviceId as string),
+        });
+        if (!serviceExists) {
+          throw new Error("INVALID_SERVICE_ID");
+        }
+      }
+
+      // 2. Insert the complaint
       await tx.insert(staffComplaints).values({
         complaintId: complaintId,
         ...validated,
@@ -74,6 +84,9 @@ export async function submitComplaint(_prevState: any, formData: FormData) {
     if (error instanceof z.ZodError) {
       console.error(error.issues);
       return { success: false, message: "Please fill all required fields." };
+    }
+    if (error instanceof Error && error.message === "INVALID_SERVICE_ID") {
+      return { success: false, message: "সার্ভিস আইডিটি সঠিক নয়। অনুগ্রহ করে সঠিক আইডি দিন অথবা খালি রাখুন।" };
     }
     console.error(error);
     return { success: false, message: "Something went wrong" };

@@ -99,11 +99,15 @@ export default async function StaffPaymentHubPage() {
                           "px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-sm border",
                           payment.status === "completed"
                             ? "bg-emerald-50 text-emerald-700 border-emerald-100"
-                            : payment.status === "processing"
-                              ? "bg-blue-50 text-blue-700 border-blue-100"
-                              : payment.status === "rejected"
-                                ? "bg-rose-50 text-rose-700 border-rose-100"
-                                : "bg-amber-50 text-amber-700 border-amber-100"
+                            : payment.status === "requested"
+                              ? "bg-orange-50 text-orange-700 border-orange-100"
+                            : payment.status === "approved"
+                              ? "bg-indigo-50 text-indigo-700 border-indigo-100"
+                            : payment.status === "credited"
+                              ? "bg-cyan-50 text-cyan-700 border-cyan-100"
+                            : payment.status === "rejected"
+                              ? "bg-rose-50 text-rose-700 border-rose-100"
+                              : "bg-amber-50 text-amber-700 border-amber-100"
                         )}
                       >
                         {payment.status}

@@ -206,6 +206,47 @@ async function seed() {
       },
     ]);
 
+    // 8. Create Payments for Staff
+    console.log("Creating staff payments...");
+    for (const staff of createdStaffs) {
+      // Add initial balance (credited)
+      await db.insert(schema.payments).values({
+        paymentId: `PAY${faker.string.numeric(8)}`,
+        staffId: staff.staffId,
+        invoiceNumber: `BAL-${Date.now()}-${faker.string.alphanumeric(6)}`,
+        paymentMethod: staff.paymentPreference,
+        amount: 5000,
+        status: "credited",
+        description: "Initial balance credited by admin",
+        date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+      });
+
+      // Add a requested payment
+      await db.insert(schema.payments).values({
+        paymentId: `PAY${faker.string.numeric(8)}`,
+        staffId: staff.staffId,
+        invoiceNumber: `REQ-${Date.now()}-${faker.string.alphanumeric(6)}`,
+        paymentMethod: staff.paymentPreference,
+        amount: 1000,
+        status: "requested",
+        description: "Staff payout request",
+        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+      });
+
+      // Add a completed payment
+      await db.insert(schema.payments).values({
+        paymentId: `PAY${faker.string.numeric(8)}`,
+        staffId: staff.staffId,
+        invoiceNumber: `INV-${Date.now()}-${faker.string.alphanumeric(6)}`,
+        paymentMethod: staff.paymentPreference,
+        amount: 500,
+        status: "completed",
+        transactionId: faker.string.alphanumeric(10).toUpperCase(),
+        description: "Staff payout completed",
+        date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+      });
+    }
+
     console.log("✅ Seeding completed successfully!");
     process.exit(0);
   } catch (error) {

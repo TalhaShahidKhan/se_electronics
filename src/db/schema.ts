@@ -64,11 +64,13 @@ export const agreementTypesEnum = pgEnum("agreementTypes", [
 ]);
 
 export const paymentStatusEnum = pgEnum("paymentStatus", [
+  "requested",
   "pending",
   "processing",
   "approved",
   "rejected",
   "completed",
+  "credited",
 ]);
 
 export const reportStatusEnum = pgEnum("reportStatus", [

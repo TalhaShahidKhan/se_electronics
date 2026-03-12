@@ -1,5 +1,6 @@
 "use server";
 
+import { contactDetails } from "@/constants";
 import {
   ApplicationMessages,
   MediaDownloadMessages,
@@ -676,7 +677,6 @@ export const toggleStaffStatus = async (staffId: string, status: boolean) => {
 };
 
 export const deleteStaff = async (staffId: string) => {
-
   try {
     const session = await verifySession(false, "admin");
     if (!session) return { success: false, message: "Unauthorized" };
@@ -811,7 +811,10 @@ export async function verifyStaffSession() {
 // STAFF PROFILE MANAGEMENT
 // ============================================
 
-export async function updateMyProfileForm(_prevState: { success: boolean; message: string } | undefined, formData: FormData) {
+export async function updateMyProfileForm(
+  _prevState: { success: boolean; message: string } | undefined,
+  formData: FormData,
+) {
   const session = await verifyStaffSession();
   if (!session.isAuth || typeof session.userId !== "string") {
     return { success: false, message: "Not authenticated" };
@@ -847,10 +850,16 @@ export async function updateMyProfile(staffId: string, data: FormData) {
     if (bio) staffData.bio = bio;
 
     if (profileData.paymentPreference) {
-      staffData.paymentPreference = profileData.paymentPreference as "cash" | "bkash" | "nagad" | "rocket" | "bank";
+      staffData.paymentPreference = profileData.paymentPreference as
+        | "cash"
+        | "bkash"
+        | "nagad"
+        | "rocket"
+        | "bank";
     }
 
-    const pref = staffData.paymentPreference ?? (profileData.paymentPreference as string);
+    const pref =
+      staffData.paymentPreference ?? (profileData.paymentPreference as string);
     if (pref === "bank") {
       if (
         profileData.bankName &&
@@ -868,7 +877,8 @@ export async function updateMyProfile(staffId: string, data: FormData) {
       }
     } else if (["bkash", "nagad", "rocket"].includes(pref || "")) {
       if (profileData.walletNumber) {
-        staffData.walletNumber = String(profileData.walletNumber).trim() || null;
+        staffData.walletNumber =
+          String(profileData.walletNumber).trim() || null;
         staffData.bankInfo = null;
       }
     }
@@ -975,19 +985,33 @@ export async function getStaffProfileStats(staffId: string) {
       limit: 10,
     });
 
-    // Calculate virtual balance from non-completed/non-rejected payments
-    const balanceResult = await db
+    // Calculate virtual balance
+    // Available = sum of "approved" payments (admin added) - sum of "requested" / "pending" payments (staff requested, waiting)
+    const addedResult = await db
       .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
       .from(payments)
       .where(
         and(
           eq(payments.staffId, staffId),
-          sql`${payments.status} != 'completed' AND ${payments.status} != 'rejected'`,
+          sql`${payments.status} = 'credited'`,
         ),
       )
       .limit(1);
 
-    const availableBalance = balanceResult[0]?.sum || 0;
+    const requestedResult = await db
+      .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
+      .from(payments)
+      .where(
+        and(
+          eq(payments.staffId, staffId),
+          sql`${payments.status} IN ('requested', 'pending', 'approved', 'completed')`,
+        ),
+      )
+      .limit(1);
+
+    const totalAdded = addedResult[0]?.sum || 0;
+    const totalRequested = requestedResult[0]?.sum || 0;
+    const availableBalance = totalAdded - totalRequested;
 
     return {
       success: true,

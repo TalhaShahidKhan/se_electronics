@@ -5,7 +5,7 @@ import { payments, staffs } from "@/db/schema";
 import { SearchParams } from "@/types";
 import { generateInvoiceNumber, generateRandomId } from "@/utils";
 import { PaymentDataSchema } from "@/validationSchemas";
-import { desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm";
+import { and, desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 import { verifySession } from "@/lib";
@@ -14,23 +14,27 @@ export const getPayments = async ({
   query,
   page = "1",
   limit = "20",
-}: SearchParams) => {
+  staffId,
+}: SearchParams & { staffId?: string }) => {
   try {
     const session = await verifySession(false, "admin");
     if (!session) return { success: false, message: "Unauthorized" };
 
     const q = `%${query}%`;
     const offset = page && limit ? (Number(page) - 1) * Number(limit) : 0;
-    const filters = query
-      ? or(
-          ilike(payments.paymentId, q),
-          ilike(payments.invoiceNumber, q),
-          ilike(payments.transactionId, q),
-          ilike(staffs.staffId, q),
-          ilike(staffs.name, q),
-          ilike(staffs.phone, q),
-        )
-      : undefined;
+    const filters = and(
+      staffId ? eq(payments.staffId, staffId) : undefined,
+      query
+        ? or(
+            ilike(payments.paymentId, q),
+            ilike(payments.invoiceNumber, q),
+            ilike(payments.transactionId, q),
+            ilike(staffs.staffId, q),
+            ilike(staffs.name, q),
+            ilike(staffs.phone, q),
+          )
+        : undefined,
+    );
     const paymentsColumns = getTableColumns(payments);
     const paymentsData = await db
       .select({
@@ -60,18 +64,22 @@ export const getPaymentsMetadata = async ({
   query,
   page = "1",
   limit = "20",
-}: SearchParams) => {
+  staffId,
+}: SearchParams & { staffId?: string }) => {
   const q = `%${query}%`;
 
-  const filters = query
-    ? or(
-        ilike(payments.paymentId, q),
-        ilike(payments.invoiceNumber, q),
-        ilike(payments.transactionId, q),
-        ilike(staffs.name, q),
-        ilike(staffs.phone, q),
-      )
-    : undefined;
+  const filters = and(
+    staffId ? eq(payments.staffId, staffId) : undefined,
+    query
+      ? or(
+          ilike(payments.paymentId, q),
+          ilike(payments.invoiceNumber, q),
+          ilike(payments.transactionId, q),
+          ilike(staffs.name, q),
+          ilike(staffs.phone, q),
+        )
+      : undefined,
+  );
 
   const totalRecords = (
     await db
@@ -132,7 +140,7 @@ export const getPaymentByNumber = async (invoiceNumber: string) => {
 
 export const updatePaymentStatus = async (
   paymentId: string,
-  status: "pending" | "processing" | "approved" | "rejected" | "completed",
+  status: "requested" | "pending" | "processing" | "approved" | "rejected" | "completed",
 ) => {
   try {
     const session = await verifySession(false, "admin");
@@ -152,16 +160,39 @@ export const updatePaymentStatus = async (
       .set({ status })
       .where(eq(payments.paymentId, paymentId));
 
+    // Send SMS on completed
     if (status === "completed" && paymentData.staff?.phone) {
       const { sendSMS } = await import("@/lib");
       await sendSMS(
         paymentData.staff.phone,
-        `আপনার পেমেন্ট রিকোয়েস্ট (৳${paymentData.amount}) সম্পন্ন হয়েছে। ধন্যাবাদ।`,
+        `আপনার পেমেন্ট রিকোয়েস্ট (৳${paymentData.amount}) সম্পন্ন হয়েছে। ধন্যাবাদ।`,
       );
+    }
+
+    // Create staff notification
+    try {
+      const { staffNotifications } = await import("@/db/schema");
+      const statusMessages: Record<string, string> = {
+        pending: `Your payment request of ৳${paymentData.amount} is being processed.`,
+        approved: `Your payment request of ৳${paymentData.amount} has been approved and is being processed.`,
+        completed: `Your payment of ৳${paymentData.amount} has been completed!`,
+        rejected: `Your payment request of ৳${paymentData.amount} has been rejected.`,
+      };
+      if (statusMessages[status]) {
+        await db.insert(staffNotifications).values({
+          staffId: paymentData.staffId,
+          type: "payment_update",
+          message: statusMessages[status],
+          link: "/staff/payment",
+        });
+      }
+    } catch (e) {
+      console.error("Failed to create notification:", e);
     }
 
     revalidatePath("/payments");
     revalidatePath("/staff/profile");
+    revalidatePath("/staff/payment");
     return { success: true, message: `Payment status updated to ${status}` };
   } catch (error) {
     console.error(error);
@@ -200,31 +231,57 @@ export const createPayment = async (
   }
 };
 
-export async function requestPayment(formData: FormData) {
+/**
+ * Admin adds virtual money to a staff member's balance.
+ * This amount will show as "available balance" in the staff dashboard.
+ */
+export async function addVirtualBalance(staffId: string, amount: number, description?: string) {
   try {
-    const data = Object.fromEntries(formData);
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
 
-    const validated = PaymentRequestSchema.parse(data);
+    if (amount <= 0) return { success: false, message: "Amount must be greater than 0" };
+
+    const staffData = await db.query.staffs.findFirst({
+      where: eq(staffs.staffId, staffId),
+    });
+
+    if (!staffData) return { success: false, message: "Staff not found" };
 
     const paymentId = generateRandomId();
+    const invoiceNumber = `BAL-${Date.now()}-${generateRandomId().slice(0, 8)}`;
 
     await db.insert(payments).values({
       paymentId,
-      invoiceNumber: `REQ-${Date.now()}`,
-      staffId: validated.staffId,
-      paymentMethod: validated.paymentMethod,
-      amount: validated.amount,
-      description: validated.description,
-      status: "pending",
+      invoiceNumber,
+      staffId,
+      paymentMethod: staffData.paymentPreference || "cash",
+      amount,
+      description: description || "Virtual balance added by admin",
+      status: "credited", // credited = counted in balance but not yet requested
       date: new Date(),
     });
 
-    revalidatePath("/staff/profile");
+    // Create staff notification
+    try {
+      const { staffNotifications } = await import("@/db/schema");
+      await db.insert(staffNotifications).values({
+        staffId,
+        type: "balance_added",
+        message: `Admin added ৳${amount} to your balance.`,
+        link: "/staff/payment",
+      });
+    } catch (e) {
+      console.error("Notification error:", e);
+    }
 
-    return { success: true, message: "Payment request sent" };
+    revalidatePath("/payments");
+    revalidatePath("/staff/profile");
+    revalidatePath("/staff/payment");
+    return { success: true, message: `৳${amount} added to ${staffData.name}'s balance` };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Failed to request payment" };
+    return { success: false, message: "Something went wrong" };
   }
 }
 

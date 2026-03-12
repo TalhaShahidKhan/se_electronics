@@ -33,7 +33,8 @@ export const getServices = async ({
   page = "1",
   limit = "20",
   type,
-}: SearchParams & { type: "repair" | "install" }) => {
+  staffId,
+}: SearchParams & { type?: "repair" | "install"; staffId?: string }) => {
   try {
     const session = await verifySession(false);
     if (!session || (session.role !== "admin" && session.role !== "staff")) {
@@ -42,21 +43,24 @@ export const getServices = async ({
     const q = `%${query}%`;
     const offset = page && limit ? (Number(page) - 1) * Number(limit) : 0;
 
+    const whereFilters = [
+      eq(services.isActive, true),
+      type ? eq(services.type, type) : undefined,
+      staffId ? eq(services.staffId, staffId) : undefined,
+      query
+        ? or(
+            ilike(services.serviceId, q),
+            ilike(services.customerId, q),
+            ilike(services.customerName, q),
+            ilike(services.customerPhone, q),
+            ilike(services.customerAddress, q),
+            ilike(services.productModel, q),
+          )
+        : undefined,
+    ].filter(Boolean);
+
     const servicesData = await db.query.services.findMany({
-      where: and(
-        eq(services.isActive, true),
-        eq(services.type, type),
-        query
-          ? or(
-              ilike(services.serviceId, q),
-              ilike(services.customerId, q),
-              ilike(services.customerName, q),
-              ilike(services.customerPhone, q),
-              ilike(services.customerAddress, q),
-              ilike(services.productModel, q),
-            )
-          : undefined,
-      ),
+      where: and(...whereFilters as any),
       with: {
         statusHistory: {
           columns: {
@@ -84,11 +88,13 @@ export const getServicesMetadata = async ({
   page = "1",
   limit = "20",
   type,
-}: SearchParams & { type: "repair" | "install" }) => {
+  staffId,
+}: SearchParams & { type?: "repair" | "install"; staffId?: string }) => {
   const q = `%${query}%`;
   const filters = and(
     eq(services.isActive, true),
-    eq(services.type, type),
+    type ? eq(services.type, type) : undefined,
+    staffId ? eq(services.staffId, staffId) : undefined,
     query
       ? or(
           ilike(services.serviceId, q),
@@ -150,23 +156,34 @@ export const getServiceById = async (serviceId: string) => {
       return { success: false, message: "Unauthorized access to service" };
     }
 
-    if (serviceData.appointedStaff) {
-      const staffPhotoUrl = await getObjectUrl(
-        serviceData.appointedStaff.photoKey,
-      );
-      return {
-        success: true,
-        data: {
-          ...serviceData,
-          appointedStaff: {
-            ...serviceData.appointedStaff,
-            photoUrl: staffPhotoUrl,
-          },
-        },
-      };
-    } else {
-      return { success: true, data: serviceData };
-    }
+    const mediaKeys = [
+      serviceData.productFrontPhotoKey,
+      serviceData.productBackPhotoKey,
+      serviceData.warrantyCardPhotoKey,
+      serviceData.appointedStaff?.photoKey,
+    ].filter(Boolean) as string[];
+
+    const mediaUrls = await Promise.all(
+      mediaKeys.map((key) => getObjectUrl(key))
+    );
+
+    const mediaMap: Record<string, string> = {};
+    mediaKeys.forEach((key, i) => {
+      mediaMap[key] = mediaUrls[i];
+    });
+
+    const data = {
+      ...serviceData,
+      productFrontPhotoUrl: serviceData.productFrontPhotoKey ? mediaMap[serviceData.productFrontPhotoKey] : null,
+      productBackPhotoUrl: serviceData.productBackPhotoKey ? mediaMap[serviceData.productBackPhotoKey] : null,
+      warrantyCardPhotoUrl: serviceData.warrantyCardPhotoKey ? mediaMap[serviceData.warrantyCardPhotoKey] : null,
+      appointedStaff: serviceData.appointedStaff ? {
+        ...serviceData.appointedStaff,
+        photoUrl: mediaMap[serviceData.appointedStaff.photoKey] || null,
+      } : null,
+    };
+
+    return { success: true, data };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Something went wrong" };

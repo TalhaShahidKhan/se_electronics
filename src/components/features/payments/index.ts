@@ -1,3 +1,4 @@
+export { default as AddBalanceButton } from "./AddBalanceButton";
 export { default as AddPaymentButton } from "./AddPaymentButton";
 export { default as PaymentActionButtons } from "./PaymentActionButtons";
 export { default as PaymentForm } from "./PaymentForm";

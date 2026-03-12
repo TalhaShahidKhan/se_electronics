@@ -47,7 +47,6 @@ export default function Modal({ title, isVisible, onClose, width, children }: { 
                     {/* Modal Content */}
                     <motion.div
                         initial={{ y: "100%", opacity: 0.5 }}
-                        sm={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: "100%", opacity: 0 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}

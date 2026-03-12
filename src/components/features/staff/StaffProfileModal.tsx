@@ -1,26 +1,22 @@
 "use client";
 
 import {
-  getPaymentHistoryById,
-  getServiceHistoryById,
   getStaffById,
   getStaffMediaUrls,
   getTOSContent,
 } from "@/actions";
-import { InvoicePreviewButton } from "@/components/features/invoices";
 import {
   ImageWithLightbox,
   Modal,
   Spinner,
-  StatusBadge,
 } from "@/components/ui";
-import { PaymentDataType, ServicesType, StaffsType } from "@/types";
+import { StaffsType } from "@/types";
 import { formatDate, parseUserAgent } from "@/utils";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import ProfileLinkButton from "./ProfileLinkButton";
 import StaffActionButtons from "./StaffActionButtons";
+import Link from "next/link";
+import { Wrench, CreditCard as CreditCardIcon } from "lucide-react";
 
 export default function StaffProfileModal({
   staffId,
@@ -37,10 +33,6 @@ export default function StaffProfileModal({
     nidBackPhoto: string;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(staffId ? true : false);
-  const [serviceData, setServiceData] = useState<Partial<ServicesType>[]>([]);
-  const [isLoadingServiceHistory, setIsLoadingServiceHistory] = useState(false);
-  const [paymentData, setPaymentData] = useState<Partial<PaymentDataType>[]>([]);
-  const [isLoadingPaymentHistory, setIsLoadingPaymentHistory] = useState(false);
   const [tosContent, setTosContent] = useState("");
 
   let userAgentInfo;
@@ -69,38 +61,6 @@ export default function StaffProfileModal({
         nidFrontPhoto: res.data![0],
         nidBackPhoto: res.data![1],
       });
-    }
-  };
-
-  const serviceHistoryToggleHandler = async (
-    e: React.ToggleEvent<HTMLDetailsElement>,
-  ) => {
-    const element = e.currentTarget;
-    if (element.open && serviceData.length === 0) {
-      setIsLoadingServiceHistory(true);
-      const res = await getServiceHistoryById(staffData.staffId!);
-      if (res.success) {
-        setServiceData([...res.data as unknown as Partial<ServicesType>[]]);
-      } else {
-        toast.error(res.message);
-      }
-      setIsLoadingServiceHistory(false);
-    }
-  };
-
-  const paymentHistoryToggleHandler = async (
-    e: React.ToggleEvent<HTMLDetailsElement>,
-  ) => {
-    const element = e.currentTarget;
-    if (element.open && serviceData.length === 0) {
-      setIsLoadingPaymentHistory(true);
-      const res = await getPaymentHistoryById(staffData.staffId!);
-      if (res.success) {
-        setPaymentData([...res.data as unknown as Partial<PaymentDataType>[]]);
-      } else {
-        toast.error(res.message);
-      }
-      setIsLoadingPaymentHistory(false);
     }
   };
 
@@ -166,7 +126,7 @@ export default function StaffProfileModal({
                   <div className="flex border-b py-1">
                     <span className="w-32 flex-shrink-0">
                       {staffData.hasInstallationExperience
-                        ? "হাউস ওয়ারিং এবং IPS ইন্সটলেশন দক্ষতা"
+                        ? "হাউস ওয়ারিং এবং IPS ইন্সটলেশন দক্ষতা"
                         : "IPS সার্ভিসিং দক্ষতা"}
                     </span>
                     <span className="mr-4 flex-shrink-0">:</span>
@@ -359,8 +319,25 @@ export default function StaffProfileModal({
               <div className="font-semibold mb-2 p-1 bg-brand/10 text-brand rounded-lg px-3">
                 Quick Actions
               </div>
-              <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-4">
                 <StaffActionButtons staffData={staffData as StaffsType} variant="details" />
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-gray-200">
+                  <Link 
+                    href={`/staffs/service-history/${staffData.staffId}`}
+                    className="flex items-center justify-center gap-2 p-4 bg-white hover:bg-gray-100 text-gray-700 rounded-2xl transition-colors border border-gray-200 font-black uppercase text-[10px] tracking-widest shadow-sm"
+                  >
+                    <Wrench size={18} className="text-brand" />
+                    View Service History
+                  </Link>
+                  <Link 
+                    href={`/staffs/payment-history/${staffData.staffId}`}
+                    className="flex items-center justify-center gap-2 p-4 bg-white hover:bg-gray-100 text-gray-700 rounded-2xl transition-colors border border-gray-200 font-black uppercase text-[10px] tracking-widest shadow-sm"
+                  >
+                    <CreditCardIcon size={18} className="text-brand" />
+                    View Payment History
+                  </Link>
+                </div>
               </div>
             </div>
             <div>
@@ -418,178 +395,6 @@ export default function StaffProfileModal({
                   }
                 })()}
               </div>
-            </details>
-            <details onToggle={serviceHistoryToggleHandler}>
-              <summary className="font-semibold select-none cursor-pointer">
-                Servicing History
-              </summary>
-              {isLoadingServiceHistory ? (
-                <div className="h-72 __center">
-                  <Spinner />
-                </div>
-              ) : serviceData.length === 0 ? (
-                <div className="__center text-gray-400 h-32">No history</div>
-              ) : (
-                <ul className="mt-4 overflow-auto max-h-80">
-                  {serviceData.map((service, i) => (
-                    <li key={service.id} className="relative flex gap-3.5">
-                      <span className="text-sm">
-                        {service.createdAt ? formatDate(service.createdAt) : "N/A"}
-                      </span>
-                      <div className="flex gap-3.5">
-                        <div className="w-3.5 flex flex-col h-full pt-1">
-                          <div
-                            className={clsx(
-                              "size-3.5 rounded-full  __center text-white relative bg-blue-500",
-                            )}
-                          ></div>
-                          {i != serviceData!.length - 1 && (
-                            <div
-                              className={"bg-gray-300 w-0.5 m-auto flex-1"}
-                            ></div>
-                          )}
-                        </div>
-                        <div className="flex flex-col text-start gap-2 pb-8">
-                          <div className={clsx("font-bold space-x-2")}>
-                            <span>
-                              {service.productType?.toUpperCase()}-
-                              {service.productModel}
-                            </span>
-                            <StatusBadge
-                              status={
-                                (service.statusHistory?.[0]?.statusType === "system"
-                                  ? service.statusHistory[0].status
-                                  : "custom") || "custom"
-                              }
-                            />
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-sm">
-                              Service Id:{" "}
-                              <span className="font-semibold text-sm">
-                                {service.serviceId}
-                              </span>
-                            </span>
-                            {service.customerName && (
-                              <span className="text-sm">
-                                Customer:{" "}
-                                {service.customerId ? (
-                                  <ProfileLinkButton
-                                    text={service.customerName}
-                                    customerId={service.customerId}
-                                  />
-                                ) : (
-                                  <span className="font-semibold text-sm hover:unserline">
-                                    {service.customerName}
-                                  </span>
-                                )}
-                              </span>
-                            )}
-                            <span className="text-sm">
-                              Address:{" "}
-                              <span className="font-semibold text-sm">
-                                {service.customerAddress},{" "}
-                                {service.customerAddressDistrict}
-                              </span>
-                            </span>
-                            <span className="text-sm">
-                              Service Type:{" "}
-                              <span className="font-semibold text-sm">
-                                {service.type === "install"
-                                  ? "Installation"
-                                  : "Repair"}
-                              </span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </details>
-            <details onToggle={paymentHistoryToggleHandler}>
-              <summary className="font-semibold select-none cursor-pointer">
-                Payment History
-              </summary>
-              {isLoadingPaymentHistory ? (
-                <div className="__center text-gray-400 h-32">
-                  <Spinner />
-                </div>
-              ) : paymentData.length === 0 ? (
-                <div className="__center text-gray-400 h-32">No history</div>
-              ) : (
-                <ul className="mt-4 overflow-auto max-h-80">
-                  {paymentData.map((payment, i) => (
-                    <li key={payment.id} className="relative flex gap-3.5">
-                      <span className="min-w-24 text-sm text-end">
-                        {payment.date ? formatDate(payment.date) : "N/A"}
-                      </span>
-                      <div className="flex gap-3.5">
-                        <div className="w-3.5 mt-1 flex flex-col h-full">
-                          <div
-                            className={
-                              "size-3.5 rounded-full  __center text-white relative bg-blue-500"
-                            }
-                          ></div>
-                          {i != paymentData!.length - 1 && (
-                            <div
-                              className={"bg-gray-300 w-0.5 m-auto flex-1"}
-                            ></div>
-                          )}
-                        </div>
-                        <div className="flex flex-col text-start gap-2 pb-8">
-                          <div className="space-x-2">
-                            <span className="font-bold">
-                              {payment.amount?.toLocaleString()} TK
-                            </span>
-                            <span className="text-green-500 bg-green-500 bg-opacity-10 px-2 text-sm rounded-md border border-green-500">
-                              Paid
-                            </span>
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-sm">
-                              Payment Id:{" "}
-                              <span className="font-semibold text-sm">
-                                {payment.paymentId}
-                              </span>
-                            </span>
-                            <span className="text-sm">
-                              Sender:{" "}
-                              <span className="text-gray-500  text-sm">
-                                Admin
-                              </span>
-                            </span>
-                            <span className="text-sm">
-                              Payment Method:{" "}
-                              <span className="font-semibold text-sm">
-                                {payment.paymentMethod?.toUpperCase()}
-                              </span>
-                            </span>
-                            {payment.transactionId && (
-                              <span className="text-sm">
-                                Transaction Id:{" "}
-                                <span className="font-semibold text-sm">
-                                  {payment.transactionId}
-                                </span>
-                              </span>
-                            )}
-                            <span className="text-sm">
-                              Payment Receipt:
-                              <InvoicePreviewButton
-                                paymentData={payment as PaymentDataType}
-                                className="text-blue-500 hover:underline cursor-pointer"
-                              >
-                                <span>#{payment.invoiceNumber}</span>
-                              </InvoicePreviewButton>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </details>
           </div>
         </>

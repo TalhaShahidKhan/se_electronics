@@ -19,6 +19,8 @@ import {
   LogOut,
   X,
   Crown,
+  History,
+  Clipboard,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,6 +38,8 @@ const links = [
   { name: "Technicians", href: "/staffs/technicians", icon: UserCog },
   { name: "Electricians", href: "/staffs/electricians", icon: UserCog },
   { name: "Payments", href: "/payments", icon: CreditCard },
+  { name: "Service History", href: "/staffs/service-history", icon: Clipboard },
+  { name: "Payment History", href: "/staffs/payment-history", icon: History },
   { name: "Messages", href: "/messages", icon: MessageSquare },
   { name: "Staff Reports", href: "/complaints", icon: AlertTriangle },
   { name: "Subscribers", href: "/subscribers", icon: Crown },
