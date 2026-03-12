@@ -11,15 +11,16 @@ const transporter = nodemailer.createTransport({
 
 export default async function sendEmail(mailData: {
     from: string,
+    to?: string,
     subject: string,
     text: string
 }) {
     try {
         if (process.env.NODE_ENV === 'production') {
-            const { from, subject, text } = mailData
+            const { from, to, subject, text } = mailData
             await transporter.sendMail({
                 from,
-                to: process.env.RECIP_EMAIL,
+                to: to || process.env.RECIP_EMAIL,
                 subject,
                 text
             })
@@ -27,6 +28,7 @@ export default async function sendEmail(mailData: {
             console.log(`
             [Email Service]
             From: ${mailData.from}
+            To: ${mailData.to || process.env.RECIP_EMAIL}
             Subject: ${mailData.subject}
             Text: ${mailData.text}
             `);

@@ -1,3 +1,6 @@
+import { db } from '@/db/drizzle';
+import { staffs } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 import 'server-only'
 import { JWTPayload, jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
@@ -60,6 +63,23 @@ export const verifySession = cache(async (shouldRedirect = true, expectedRole?: 
             else redirect('/')
         }
         return null
+    }
+
+    // Active check for blocked staff
+    if (session.role === 'staff') {
+        const staff = await db.query.staffs.findFirst({
+            where: eq(staffs.staffId, session.userId as string),
+            columns: { isActiveStaff: true }
+        });
+
+        if (!staff || !staff.isActiveStaff) {
+            const cookieStore = await cookies();
+            cookieStore.delete('session');
+            if (shouldRedirect) {
+                redirect('/staff/login');
+            }
+            return null;
+        }
     }
 
     return { isAuth: true, userId: session.userId, username: session.username, role: session.role }

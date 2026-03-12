@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { StaffBalanceBar } from "../features/staff/StaffBalanceBar";
-import StaffNotificationBell from "../features/staff/StaffNotificationBell";
+import { StaffNotificationBell } from "../features/notices";
 
 interface StaffHeaderProps {
   balance: number;

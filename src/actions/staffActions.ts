@@ -730,7 +730,7 @@ export async function staffLogin(prevState: any, credentials: FormData) {
     if (!staff.isActiveStaff) {
       return {
         success: false,
-        message: "Account is deactivated. Contact admin.",
+        message: "আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে। অনুগ্রহ করে এডমিনের সাথে যোগাযোগ করুন।",
       };
     }
 

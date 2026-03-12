@@ -1,5 +1,7 @@
 import {
   createdFromTypesEnum,
+  noticePriorityEnum,
+  noticeTargetEnum,
   paymentTypesEnum,
   productTypeEnum,
   serviceStatusEnum,
@@ -345,6 +347,18 @@ export const InvoiceDataSchema = z.object({
   total: z.number(),
   dueAmount: z.number(),
 });
+
+export const NoticeSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  content: z.string().min(1, "Content is required"),
+  priority: z.enum(noticePriorityEnum.enumValues),
+  targetType: z.enum(noticeTargetEnum.enumValues),
+  isDraft: z.boolean().default(false),
+  scheduledAt: z.coerce.date().nullable().optional(),
+  expiresAt: z.coerce.date().nullable().optional(),
+  recipientIds: z.array(z.string()).optional(), // For single/multiple targets
+});
+
 
 export const BaseSubscriptionDataSchema = z.object({
   name: z.string().min(1),

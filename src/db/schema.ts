@@ -92,6 +92,19 @@ export const resolvedByTypesEnum = pgEnum("resolvedByTypes", [
   "service_center",
 ]);
 
+export const noticePriorityEnum = pgEnum("noticePriority", [
+  "low",
+  "normal",
+  "high",
+  "urgent",
+]);
+
+export const noticeTargetEnum = pgEnum("noticeTarget", [
+  "single",
+  "multiple",
+  "all",
+]);
+
 export const subscriptionTypesEnum = pgEnum("subscriptionTypes", [
   "battery_maintenance",
   "ips_and_battery_maintenance",
@@ -685,6 +698,61 @@ export const feedbacksRelations = relations(feedbacks, ({ one }) => ({
     references: [customers.customerId],
   }),
 }));
+
+export const notices = pgTable("notices", {
+  id: uuid().defaultRandom().primaryKey(),
+  noticeId: varchar({ length: 255 }).unique().notNull(),
+  title: varchar({ length: 255 }).notNull(),
+  content: text().notNull(), // Rich-text
+  priority: noticePriorityEnum().default("normal").notNull(),
+  targetType: noticeTargetEnum().default("all").notNull(),
+  isDraft: boolean().default(false).notNull(),
+  scheduledAt: timestamp({ withTimezone: true }),
+  expiresAt: timestamp({ withTimezone: true }),
+  createdBy: uuid().references(() => admins.id, { onDelete: "set null" }),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp({ withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const noticeRecipients = pgTable("noticeRecipients", {
+  id: uuid().defaultRandom().primaryKey(),
+  noticeId: uuid()
+    .references(() => notices.id, { onDelete: "cascade" })
+    .notNull(),
+  staffId: varchar({ length: 255 })
+    .references(() => staffs.staffId, { onDelete: "cascade" })
+    .notNull(),
+  isRead: boolean().default(false).notNull(),
+  readAt: timestamp({ withTimezone: true }),
+  isAcknowledged: boolean().default(false).notNull(),
+  acknowledgedAt: timestamp({ withTimezone: true }),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+});
+
+export const noticesRelations = relations(notices, ({ many, one }) => ({
+  recipients: many(noticeRecipients),
+  creator: one(admins, {
+    fields: [notices.createdBy],
+    references: [admins.id],
+  }),
+}));
+
+export const noticeRecipientsRelations = relations(
+  noticeRecipients,
+  ({ one }) => ({
+    notice: one(notices, {
+      fields: [noticeRecipients.noticeId],
+      references: [notices.id],
+    }),
+    staff: one(staffs, {
+      fields: [noticeRecipients.staffId],
+      references: [staffs.staffId],
+    }),
+  }),
+);
 
 export const authTokens = pgTable("authTokens", {
   id: uuid().defaultRandom().primaryKey(),

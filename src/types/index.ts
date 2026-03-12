@@ -288,3 +288,36 @@ export type StarRatingProps = {
   showValue?: boolean;
   name?: string;
 };
+
+export type NoticePriority = "low" | "normal" | "high" | "urgent";
+export type NoticeTarget = "single" | "multiple" | "all";
+
+export type NoticeType = {
+  id: string;
+  noticeId: string;
+  title: string;
+  content: string;
+  priority: NoticePriority;
+  targetType: NoticeTarget;
+  isDraft: boolean;
+  scheduledAt: Date | null;
+  expiresAt: Date | null;
+  createdBy: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  recipients?: NoticeRecipientType[];
+};
+
+export type NoticeRecipientType = {
+  id: string;
+  noticeId: string;
+  staffId: string;
+  isRead: boolean;
+  readAt: Date | null;
+  isAcknowledged: boolean;
+  acknowledgedAt: Date | null;
+  createdAt: Date;
+  staff?: StaffsType;
+  notice?: NoticeType;
+};
+

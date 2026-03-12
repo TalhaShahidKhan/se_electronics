@@ -21,6 +21,7 @@ const staffProtectedRoutes = [
     '/staff/payments',
     '/staff/tracking',
     '/staff/feedbacks',
+    '/staff/notices',
 ];
 
 const customerProtectedRoutes = [
