@@ -30,39 +30,41 @@ export default async function InvoiceList(params: SearchParams) {
   const invoices = response.data!;
 
   return invoices.map((invoice) => (
-    <tr key={invoice.invoiceNumber} className="border-b">
-      <td className="py-4 px-2 whitespace-nowrap">
-        <div className="flex items-center">
-          <span>#{invoice.invoiceNumber}</span>
+    <tr key={invoice.invoiceNumber} className="hover:bg-gray-50/50 transition-colors group">
+      <td className="py-4 px-4 whitespace-nowrap">
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-brand">#{invoice.invoiceNumber}</span>
           <CopyButton content={invoice.invoiceNumber} />
         </div>
       </td>
-      <td className="py-4 px-2 whitespace-nowrap">
+      <td className="py-4 px-4 whitespace-nowrap">
         {invoice.customerId ? (
-          <div className="flex items-center">
-            <span>{invoice.customerId}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-900 font-medium">{invoice.customerId}</span>
             <CopyButton content={invoice.customerId} />
           </div>
         ) : (
-          <span className="text-sm text-gray-400  text-center">N/A</span>
+          <span className="text-xs text-gray-400 italic">N/A</span>
         )}
       </td>
-      <td className="text-left py-4 px-2 whitespace-nowrap">
-        {invoice.customerName}
+      <td className="py-4 px-4 whitespace-nowrap">
+        <span className="font-medium text-gray-900">{invoice.customerName}</span>
       </td>
-      <td className="text-left py-4 px-2 whitespace-nowrap">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-600 font-medium">
         {invoice.customerPhone}
       </td>
-      <td className="text-left py-4 px-2 whitespace-nowrap truncate">
-        {invoice.customerAddress}
+      <td className="py-4 px-4 whitespace-nowrap">
+        <p title={invoice.customerAddress} className="truncate max-w-[200px] text-gray-600 text-xs">
+          {invoice.customerAddress}
+        </p>
       </td>
-      <td className="py-4 px-2 whitespace-nowrap">
-        {invoice.total.toLocaleString()} TK
+      <td className="py-4 px-4 whitespace-nowrap text-right font-bold text-emerald-600">
+        ৳{invoice.total.toLocaleString()}
       </td>
-      <td className="py-4 px-2 whitespace-nowrap">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-500 text-xs font-medium">
         {formatDate(invoice.date!)}
       </td>
-      <td className="py-4 px-2">
+      <td className="py-4 px-4 whitespace-nowrap sticky right-0 bg-white group-hover:bg-gray-50 transition-colors shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">
         <InvoiceActionButtons invoiceData={invoice} />
       </td>
     </tr>

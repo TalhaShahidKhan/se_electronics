@@ -76,44 +76,59 @@ export default function Toolbar({ title, actions, filters, pagination }: {
         push(`?${params.toString()}`)
     }, 500)
 
-    return <header className="flex flex-col">
-        <div className="mb-6 flex gap-4 items-center justify-between">
+    return <header className="flex flex-col gap-4 mb-4">
+        <div className="flex flex-wrap gap-4 items-center justify-between">
             {/* Title and hamburger */}
-            <div className="flex items-center gap-4">
-                <button title="Show Sidebar" onClick={openSideNav} className="xl:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+                <button 
+                    title="Show Sidebar" 
+                    onClick={openSideNav} 
+                    className="xl:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-gray-600">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                 </button>
-                <div className="font-bold text-2xl">
+                <div className="font-extrabold text-xl sm:text-2xl text-brand tracking-tight">
                     <span>{title}</span>
                 </div>
             </div>
             {/* Custom Actions */}
-            {actions}
+            <div className="flex items-center gap-2">
+                {actions}
+            </div>
         </div>
-        <div className="flex flex-col md:flex-row flex-1 justify-between gap-4">
-            <div className="__center gap-4">
 
+        <div className="flex flex-col lg:flex-row gap-4 lg:items-center justify-between bg-white p-3 sm:p-4 rounded-2xl border border-gray-100 shadow-sm">
+            <div className="flex flex-col sm:flex-row gap-3 sm:items-center flex-1">
                 {/* Search bar */}
-                <div className="relative w-full sm:w-fit">
-                    <div className="absolute left-0 w-10 h-full justify-center flex items-center">
+                <div className="relative w-full lg:max-w-xs">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#696969" className="size-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
                     </div>
-                    <input defaultValue={searchParams.get('query')?.toString()} onChange={e => handleSearch(e.target.value)} type="text" placeholder="Search" className="pl-10 __input w-full sm:w-80" />
+                    <input 
+                        defaultValue={searchParams.get('query')?.toString()} 
+                        onChange={e => handleSearch(e.target.value)} 
+                        type="text" 
+                        placeholder="Search records..." 
+                        className="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-brand/20 transition-all outline-none" 
+                    />
                 </div>
 
                 {/* Refresh button */}
-                <button onClick={handleRefresh} className="group flex items-center gap-2 hover:bg-gray-100 rounded-md px-2.5 py-1.5">
+                <button 
+                    onClick={handleRefresh} 
+                    className="flex items-center justify-center gap-2 hover:bg-gray-50 text-gray-600 rounded-xl px-4 py-2 text-sm font-medium transition-colors border border-gray-100 sm:border-none"
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className={`size-5 ${isPending ? 'animate-spin' : ''}`}
+                        className={`size-4 ${isPending ? 'animate-spin' : ''}`}
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                     </svg>
@@ -122,29 +137,49 @@ export default function Toolbar({ title, actions, filters, pagination }: {
             </div>
 
             {/* Pagination controls */}
-            <div className="__center gap-6 justify-between overflow-auto whitespace-nowrap">
-                {filters}
-                <div className="__center gap-2">
-                    <span className="font-medium">Total: {pagination.totalRecords}</span>
-                </div>
-                <div className="__center gap-2">
-                    <span className="font-medium">Show:</span>
-                    <select defaultValue={currentLimit} onChange={e => handlePaginationControls({ limit: parseInt(e.target.value) })} className="w-16 border rounded-md outline-none h-8 px-2">
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                        <option value="40">40</option>
-                        <option value="50">50</option>
-                    </select>
-                </div>
-                <div className="__center gap-2">
-                    <span className="font-medium">Page {currentPage} of {pagination.totalPages}</span>
-                    <div className="__center gap-2">
-                        <button disabled={currentPage === '1' || isPaginationPending} onClick={() => { setPendingDirection('left'); handlePaginationControls({ page: -1 }); }} className="__btn bg-white border disabled:bg-gray-100 disabled:opacity-70">
-                            {pendingDirection === 'left' ? <Loader2 className="text-black animate-spin size-5" /> : <ChevronLeft className="text-black size-5" />}
-                        </button>
-                        <button disabled={currentPage === pagination.totalPages.toString() || isPaginationPending} onClick={() => { setPendingDirection('right'); handlePaginationControls({ page: 1 }); }} className="__btn bg-white border disabled:bg-gray-100 disabled:opacity-70">
-                            {pendingDirection === 'right' ? <Loader2 className="text-black animate-spin size-5" /> : <ChevronRight className="text-black size-5" />}
-                        </button>
+            <div className="flex flex-wrap items-center gap-4 lg:gap-6 pt-3 lg:pt-0 border-t lg:border-none border-gray-50">
+                {filters && <div className="flex items-center gap-2">{filters}</div>}
+                
+                <div className="flex items-center gap-4 ml-auto sm:ml-0">
+                    <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-500">
+                        <span className="hidden sm:inline">Total:</span>
+                        <span className="text-gray-900 bg-gray-100 px-2 py-1 rounded-lg">{pagination.totalRecords}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-500">
+                        <span className="hidden sm:inline">Show:</span>
+                        <select 
+                            defaultValue={currentLimit} 
+                            onChange={e => handlePaginationControls({ limit: parseInt(e.target.value) })} 
+                            className="bg-gray-100 border-none rounded-lg text-xs font-bold h-8 px-2 outline-none focus:ring-2 focus:ring-brand/20"
+                        >
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <span className="text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+                            {currentPage} / {pagination.totalPages}
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                            <button 
+                                disabled={currentPage === '1' || isPaginationPending} 
+                                onClick={() => { setPendingDirection('left'); handlePaginationControls({ page: -1 }); }} 
+                                className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:hover:bg-gray-100 rounded-lg transition-all"
+                            >
+                                {pendingDirection === 'left' ? <Loader2 className="text-brand animate-spin size-4" /> : <ChevronLeft className="text-gray-700 size-4" />}
+                            </button>
+                            <button 
+                                disabled={currentPage === pagination.totalPages.toString() || isPaginationPending} 
+                                onClick={() => { setPendingDirection('right'); handlePaginationControls({ page: 1 }); }} 
+                                className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:hover:bg-gray-100 rounded-lg transition-all"
+                            >
+                                {pendingDirection === 'right' ? <Loader2 className="text-brand animate-spin size-4" /> : <ChevronRight className="text-gray-700 size-4" />}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

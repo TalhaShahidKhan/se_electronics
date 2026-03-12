@@ -88,70 +88,76 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
 
     if (showToC) {
         return (
-            <div className="max-w-3xl mx-auto bg-white p-4 rounded-md shadow-sm">
+            <div className="max-w-3xl mx-auto bg-white p-4 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
                 <div className="mb-6">
-                    <h2 className="text-xl text-center font-semibold text-gray-800 mb-4">এস ই ইলেকট্রনিকস: অনলাইন সার্ভিসিং-এর শর্তাবলী ও নির্দেশিকা</h2>
-                    <p className="text-sm text-gray-500">
+                    <h2 className="text-xl sm:text-2xl text-center font-extrabold text-brand mb-4">এস ই ইলেকট্রনিকস: অনলাইন সার্ভিসিং-এর শর্তাবলী ও নির্দেশিকা</h2>
+                    <p className="text-sm text-gray-500 text-center mb-8">
                         প্রিয় গ্রাহক, এস ই ইলেকট্রনিকস-এর আইপিএস, ব্যাটারি ও অন্যান্য ইলেকট্রনিক পণ্য অনলাইন সার্ভিসিং-এর জন্য আবেদন করার জন্য আপনাকে ধন্যবাদ। আপনার সমস্যার দ্রুত ও কার্যকর সমাধানের জন্য নিম্নলিখিত শর্তাবলী ও নির্দেশিকাগুলি অত্যন্ত মনোযোগ সহকারে পড়ুন এবং মেনে চলুন।
                     </p>
-                    <div className="space-y-5 mt-4">
+                    <div className="space-y-6 mt-4">
                         {requirementsList.map((item, index) => (
-                            <div key={index} className="text-sm">
-                                <div className="flex items-start gap-2">
-                                    <span className="bg-primary text-white rounded-full flex items-center justify-center min-w-5 min-h-5 w-5 h-5">✓</span>
-                                    <span className="font-semibold">{item.title}:</span>
+                            <div key={index} className="text-sm bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                <div className="flex items-start gap-3 mb-2">
+                                    <span className="bg-brand text-white rounded-lg flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-xs font-bold">
+                                        {index + 1}
+                                    </span>
+                                    <span className="font-bold text-gray-900">{item.title}</span>
                                 </div>
-                                <p className="text-gray-600 ml-6">{item.description}</p>
+                                <p className="text-gray-600 leading-relaxed pl-9">{item.description}</p>
                             </div>
                         ))}
                     </div>
                 </div>
-                <div className="mb-6">
-                    <label className="flex items-start mt-4">
+                <div className="mb-8 p-4 bg-brand/5 rounded-xl border border-brand/10">
+                    <label className="flex items-start gap-3 cursor-pointer">
                         <input
                             type="checkbox"
-                            className="w-4 h-4 mt-0.5 border-gray-300"
+                            className="w-5 h-5 mt-0.5 border-brand/30 rounded-md text-brand focus:ring-brand"
                             checked={agreed}
                             onChange={(e) => setAgreed(e.target.checked)}
                         />
-                        <span className="ml-2 text-sm">
+                        <span className="text-sm font-medium text-gray-700 leading-snug">
                             উপরোক্ত "এস ই ইলেকট্রনিকস অনলাইন সার্ভিসিং-এর শর্তাবলী ও নির্দেশিকা" আমি মনোযোগ সহকারে পড়েছি এবং এতে সম্মত হয়ে, আমার সার্ভিসিং আবেদন প্রক্রিয়া শুরু করতে চাই।
                         </span>
                     </label>
                 </div>
 
                 <button
-                    className="__btn w-full"
+                    className="w-full py-4 bg-brand text-white rounded-2xl font-bold text-lg hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50 disabled:grayscale"
                     disabled={!agreed}
                     onClick={() => setShowToC(false)}
                 >
                     এগিয়ে যান
                 </button>
-                <p className="mt-6 text-xs text-gray-400 text-center">
-                    SEIPSBD, একটি প্রতিষ্ঠান। সর্বস্বত্ব সংরক্ষিত।
+                <p className="mt-8 text-xs text-gray-400 text-center font-medium">
+                    © SEIPSBD, All Rights Reserved.
                 </p>
             </div>
         )
     }
     return (
-        <div className="mx-auto max-w-[1000px] text-center p-3">
-            <div className="h-full font-bold mb-3 flex flex-col gap-0.5 bg-[#fffcda] p-3 rounded-lg">
-                <div className="text-xl">এস ই ইলেকট্রনিকস প্রডাক্ট অনলাইন সার্ভিসিং সেন্টার</div>
-                <div className="text-md">হেল্পলাইন : {contactDetails.customerCare}</div>
-                <div className="text-md">Email : {contactDetails.email}</div>
-                <div className="text-sm text-gray-500">হেড অফিস : {contactDetails.headOffice}</div>
-                <div className="text-sm border-2 border-yellow-400 p-2 mt-2">
-                    <p className="font-normal mb-3">যে কোন সহযোগীতা ও তথ্যের জন্য আমাদের সাথে আলাপ করুন</p>
+        <div className="mx-auto max-w-[1000px] text-center p-2 sm:p-4">
+            <div className="font-bold mb-4 flex flex-col gap-1 bg-white p-4 sm:p-6 rounded-2xl border border-gray-100 shadow-sm">
+                <div className="text-xl sm:text-2xl text-brand">এস ই ইলেকট্রনিকস প্রডাক্ট অনলাইন সার্ভিসিং সেন্টার</div>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-2 text-sm text-gray-600">
+                    <span>হেল্পলাইন: <span className="text-brand">{contactDetails.customerCare}</span></span>
+                    <span className="hidden sm:inline">|</span>
+                    <span>Email: <span className="text-brand">{contactDetails.email}</span></span>
+                </div>
+                <div className="text-xs sm:text-sm text-gray-400 mt-1">হেড অফিস : {contactDetails.headOffice}</div>
+                
+                <div className="border-2 border-brand/20 bg-brand/5 p-4 rounded-xl mt-4">
+                    <p className="font-semibold text-gray-700 mb-4 text-sm sm:text-base">যে কোন সহযোগীতা ও তথ্যের জন্য আমাদের সাথে আলাপ করুন</p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <Link className="__btn max-h-8 bg-yellow-400" href={`sms:${contactDetails.sms}`}>এস এম এস</Link>
-                        <Link className="__btn max-h-8 bg-yellow-400" href={`tel:${contactDetails.phone}`}>ফোন কল</Link>
-                        <Link className="__btn max-h-8 bg-yellow-400" href={`tel:${contactDetails.customerCare}`}>কাস্টমার কেয়ার</Link>
-                        <Link className="__btn max-h-8 bg-yellow-400" href={`https://wa.me/${contactDetails.whatsApp}`}>ওয়াসআপ</Link>
+                        <Link className="flex items-center justify-center h-10 bg-white border border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm font-bold" href={`sms:${contactDetails.sms}`}>এস এম এস</Link>
+                        <Link className="flex items-center justify-center h-10 bg-white border border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm font-bold" href={`tel:${contactDetails.phone}`}>ফোন কল</Link>
+                        <Link className="flex items-center justify-center h-10 bg-white border border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm font-bold" href={`tel:${contactDetails.customerCare}`}>কাস্টমার কেয়ার</Link>
+                        <Link className="flex items-center justify-center h-10 bg-white border border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm font-bold" href={`https://wa.me/${contactDetails.whatsApp}`}>ওয়াসআপ</Link>
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col gap-6 bg-[#fffcda] p-3 rounded-lg">
-                <p className="text-center font-bold mb-5 border-2 border-yellow-400 p-2">
+            <div className="flex flex-col gap-6 bg-white p-4 sm:p-8 rounded-2xl border border-gray-100 shadow-sm">
+                <p className="text-center font-bold text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-100 text-sm sm:text-base">
                     আপনার পণ্যের সার্ভিসং এর জন্য নিচের বক্স গুলা পূরণ করে আপনার পণ্যের সাভিসিং করার জন্য আমাদের SEIPSBD সার্ভিসং টিমকে সঠিক তথ্য দিয়ে সহযোগিতা করুন
                 </p>
                 <form
@@ -161,21 +167,24 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                     <input type="hidden" name="staffId" value={preferredStaffId || ''} />
                     <input type="hidden" name="customerId" value={customerId || ''} />
 
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <InputField className="border-yellow-400 border" label="নাম" name="customerName" defaultValue={customerData?.name || ''} />
-                        <InputField className="border-yellow-400 border" label="মোবাইল নাম্বার" name="customerPhone" type="tel" defaultValue={customerData?.phone || ''} />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <InputField label="নাম" name="customerName" defaultValue={customerData?.name || ''} />
+                        <InputField label="মোবাইল নাম্বার" name="customerPhone" type="tel" defaultValue={customerData?.phone || ''} />
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <InputField className="border-yellow-400 border" label="বর্তমান ঠিকানা" name="customerAddress" defaultValue={customerData?.address || ''} />
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <InputField label="বর্তমান ঠিকানা" name="customerAddress" defaultValue={customerData?.address || ''} />
                         <div className="flex-1 text-start">
-                            <label className="text-sm">
-                                জেলা <span className="text-red-500 text-lg">*</span>
+                            <label className="flex flex-col gap-1.5">
+                                <span className="text-sm font-medium text-gray-700">
+                                    জেলা <span className="text-red-500 text-lg">*</span>
+                                </span>
                                 <select
                                     required
                                     name="customerAddressDistrict"
                                     value={selectedDistrict}
                                     onChange={(e) => setSelectedDistrict(e.target.value)}
-                                    className="__input p-0 px-2 mt-1 border-yellow-400 border"
+                                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                 >
                                     <option value="">নির্বাচন করুন</option>
                                     {districts.map((district) => (
@@ -187,14 +196,17 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                             </label>
                         </div>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                         <div className="flex-1 text-start">
-                            <label className="text-sm">
-                                থানা <span className="text-red-500 text-lg">*</span>
+                            <label className="flex flex-col gap-1.5">
+                                <span className="text-sm font-medium text-gray-700">
+                                    থানা <span className="text-red-500 text-lg">*</span>
+                                </span>
                                 <select
                                     required
                                     name="customerAddressPoliceStation"
-                                    className="__input p-0 px-2 mt-1 border-yellow-400 border"
+                                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                     defaultValue={customerData?.policeStation || ''}
                                 >
                                     <option value="">নির্বাচন করুন</option>
@@ -206,17 +218,20 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                                 </select>
                             </label>
                         </div>
-                        <InputField className="border-yellow-400 border" label="পোস্ট অফিস" name="customerAddressPostOffice" defaultValue={customerData?.postOffice || ''} />
+                        <InputField label="পোস্ট অফিস" name="customerAddressPostOffice" defaultValue={customerData?.postOffice || ''} />
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <InputField className="border-yellow-400 border" label="মেমো নং" name="memoNumber" />
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <InputField label="মেমো নং" name="memoNumber" />
                         <div className="flex-1 text-start">
-                            <label className="text-sm">
-                                পণ্যের ধরণ <span className="text-red-500 text-lg">*</span>
+                            <label className="flex flex-col gap-1.5">
+                                <span className="text-sm font-medium text-gray-700">
+                                    পণ্যের ধরণ <span className="text-red-500 text-lg">*</span>
+                                </span>
                                 <select
                                     required
                                     name="productType"
-                                    className="__input p-0 px-2 mt-1 border-yellow-400 border"
+                                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                     value={selectedProductType}
                                     onChange={(e) => setSelectedProductType(e.target.value)}
                                 >
@@ -229,9 +244,11 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                     {(selectedProductType === 'ips' || selectedProductType === 'battery') &&
                         <div className="grid grid-cols-1">
                             <div className="flex-1 text-start">
-                                <label className="text-sm">
-                                    আইপিএস ব্র্যান্ড <span className="text-red-500 text-lg">*</span>
-                                    <select required name="ipsBrand" className="__input p-0 px-2 mt-1 border-yellow-400 border">
+                                <label className="flex flex-col gap-1.5">
+                                    <span className="text-sm font-medium text-gray-700">
+                                        আইপিএস ব্র্যান্ড <span className="text-red-500 text-lg">*</span>
+                                    </span>
+                                    <select required name="ipsBrand" className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none">
                                         <option value="">নির্বাচন করুন</option>
                                         {ipsBrands.map((model, i) => <option key={model} value={model}>{model}</option>)}
                                     </select>
@@ -240,13 +257,15 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                         </div>
                     }
                     {selectedProductType &&
-                        <div className="flex flex-col sm:flex-row gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                             <div className="flex-1 text-start">
                                 {selectedProductType === 'others' ?
-                                    <InputField className="border-yellow-400 border" label="পণ্যের মডেল" name="productModel" required />
-                                    : <label className="text-sm">
-                                        পণ্যের মডেল <span className="text-red-500 text-lg">*</span>
-                                        <select required name="productModel" className="__input p-0 px-2 mt-1 border-yellow-400 border">
+                                    <InputField label="পণ্যের মডেল" name="productModel" required />
+                                    : <label className="flex flex-col gap-1.5">
+                                        <span className="text-sm font-medium text-gray-700">
+                                            পণ্যের মডেল <span className="text-red-500 text-lg">*</span>
+                                        </span>
+                                        <select required name="productModel" className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none">
                                             <option value="">নির্বাচন করুন</option>
                                             {(selectedProductType === 'stabilizer' ? stabilizerBrands : batteryTypes).map((model, i) => <option key={model} value={model}>{model}</option>)}
                                         </select>
@@ -255,10 +274,12 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                             </div>
                             <div className="flex-1 text-start">
                                 {selectedProductType === 'others' ?
-                                    <InputField className="border-yellow-400 border" label="পণ্যের ওয়াট/ভিএ" name="powerRating" required />
-                                    : <label className="text-sm">
-                                        পণ্যের ওয়াট/ভিএ <span className="text-red-500 text-lg">*</span>
-                                        <select name="powerRating" className="__input p-0 px-2 mt-1 border-yellow-400 border">
+                                    <InputField label="পণ্যের ওয়াট/ভিএ" name="powerRating" required />
+                                    : <label className="flex flex-col gap-1.5">
+                                        <span className="text-sm font-medium text-gray-700">
+                                            পণ্যের ওয়াট/ভিএ <span className="text-red-500 text-lg">*</span>
+                                        </span>
+                                        <select name="powerRating" className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none">
                                             <option value="">নির্বাচন করুন</option>
                                             {(selectedProductType === 'stabilizer' ? stabilizerPowerRatings : productPowerRatings).map((ratings, i) => <option key={ratings} value={ratings}>{ratings}</option>)}
                                         </select>
@@ -269,18 +290,25 @@ export default function GetServiceForm({ preferredStaffId, customerId, customerD
                     }
                     <div className="grid grid-cols-1">
                         <div className="flex-1 text-start">
-                            <label className="text-sm">
-                                পণ্যেের সমস্যা <span className="text-red-500 text-lg">*</span>
-                                <textarea required name="reportedIssue" placeholder="পন্যের সমস্যা বিস্তারিত বর্ণনা করুন" className="__input h-32 mt-1 border-yellow-400 border"></textarea>
+                            <label className="flex flex-col gap-1.5">
+                                <span className="text-sm font-medium text-gray-700">
+                                    পণ্যেের সমস্যা <span className="text-red-500 text-lg">*</span>
+                                </span>
+                                <textarea required name="reportedIssue" placeholder="পন্যের সমস্যা বিস্তারিত বর্ণনা করুন..." className="w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none min-h-[120px]"></textarea>
                             </label>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        <InputField className="border-yellow-400 border" label='ওয়ারেন্টি কার্ডের ছবি' name="warrantyCardPhoto" type="file" />
-                        <InputField className="border-yellow-400 border" label='প্রোডাক্টের ছবি (সামনের দিকের)' placeholder="সামনের দিকের ছবি" name="productFrontPhoto" type="file" />
-                        <InputField className="border-yellow-400 border" label='প্রোডাক্টের ছবি (পেছনের দিকের)' placeholder="পেছনের দিকের ছবি" name="productBackPhoto" type="file" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <InputField label='ওয়ারেন্টি কার্ডের ছবি' name="warrantyCardPhoto" type="file" />
+                        <InputField label='প্রোডাক্টের ছবি (সামনে)' placeholder="সামনের দিকের ছবি" name="productFrontPhoto" type="file" />
+                        <InputField label='প্রোডাক্টের ছবি (পেছনে)' placeholder="পেছনের দিকের ছবি" name="productBackPhoto" type="file" />
                     </div>
-                    <button disabled={isPending} className="__btn">{isPending ? 'Submitting...' : 'Submit'}</button>
+                    <button 
+                        disabled={isPending} 
+                        className="w-full py-4 bg-brand text-white rounded-2xl font-bold text-lg hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50 mt-4"
+                    >
+                        {isPending ? 'Submitting...' : 'Submit Request'}
+                    </button>
                 </form>
             </div>
         </div>

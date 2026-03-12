@@ -143,17 +143,19 @@ export default function RegistrationForm({
       </div>
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 text-start">
-          <label className="text-sm">
-            জেলা (বর্তমান){" "}
-            {mode === "create" && (
-              <span className="text-red-500 text-lg">*</span>
-            )}
+          <label className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-gray-700">
+              জেলা (বর্তমান){" "}
+              {mode === "create" && (
+                <span className="text-red-500 text-lg">*</span>
+              )}
+            </span>
             <select
               required
               name="currentDistrict"
               value={selectedCurrentDistrict}
               onChange={(e) => setSelectedCurrentDistrict(e.target.value)}
-              className="__input p-0 px-2 mt-1"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="">নির্বাচন করুন</option>
               {districts.map((district) => (
@@ -165,16 +167,18 @@ export default function RegistrationForm({
           </label>
         </div>
         <div className="flex-1 text-start">
-          <label className="text-sm">
-            থানা (বর্তমান){" "}
-            {mode === "create" && (
-              <span className="text-red-500 text-lg">*</span>
-            )}
+          <label className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-gray-700">
+              থানা (বর্তমান){" "}
+              {mode === "create" && (
+                <span className="text-red-500 text-lg">*</span>
+              )}
+            </span>
             <select
               required
               name="currentPoliceStation"
               defaultValue={staffData?.currentPoliceStation || ""}
-              className="__input p-0 px-2 mt-1"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="">নির্বাচন করুন</option>
               {currentThanas.map((thana) => (
@@ -202,17 +206,19 @@ export default function RegistrationForm({
       </div>
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 text-start">
-          <label className="text-sm">
-            জেলা (স্থায়ী){" "}
-            {mode === "create" && (
-              <span className="text-red-500 text-lg">*</span>
-            )}
+          <label className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-gray-700">
+              জেলা (স্থায়ী){" "}
+              {mode === "create" && (
+                <span className="text-red-500 text-lg">*</span>
+              )}
+            </span>
             <select
               required
               name="permanentDistrict"
               value={selectedPermanentDistrict}
               onChange={(e) => setSelectedPermanentDistrict(e.target.value)}
-              className="__input p-0 px-2 mt-1"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="">নির্বাচন করুন</option>
               {districts.map((district) => (
@@ -224,16 +230,18 @@ export default function RegistrationForm({
           </label>
         </div>
         <div className="flex-1 text-start">
-          <label className="text-sm">
-            থানা (স্থায়ী){" "}
-            {mode === "create" && (
-              <span className="text-red-500 text-lg">*</span>
-            )}
+          <label className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-gray-700">
+              থানা (স্থায়ী){" "}
+              {mode === "create" && (
+                <span className="text-red-500 text-lg">*</span>
+              )}
+            </span>
             <select
               required
               name="permanentPoliceStation"
               defaultValue={staffData?.permanentPoliceStation || ""}
-              className="__input p-0 px-2 mt-1"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="">নির্বাচন করুন</option>
               {permanentThanas.map((thana) => (
@@ -347,16 +355,18 @@ export default function RegistrationForm({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex-1 text-start">
-          <label className="text-sm">
-            পেমেন্ট কিভাবে নিতে ইচ্ছুক?{" "}
-            <span className="text-red-500 text-lg">*</span>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-gray-700">
+              পেমেন্ট কিভাবে নিতে ইচ্ছুক?{" "}
+              <span className="text-red-500 text-lg">*</span>
+            </span>
             <select
               value={paymentPreference}
               onChange={(e) =>
                 setPaymentPreference(e.target.value as typeof paymentPreference)
               }
               name="paymentPreference"
-              className="__input p-0 px-2 mt-1"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="bkash">বিকাশ</option>
               <option value="nagad">নগদ</option>

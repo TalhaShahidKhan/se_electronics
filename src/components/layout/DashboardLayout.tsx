@@ -86,22 +86,22 @@ export default function DashboardLayout({
         {/* Sidebar */}
         <div
           className={clsx(
-            "fixed xl:static z-50 flex flex-col h-screen w-[260px] bg-brand text-white transition-transform duration-300 ease-in-out",
+            "fixed xl:static z-50 flex flex-col h-screen w-[280px] sm:w-[260px] bg-brand text-white transition-transform duration-300 ease-in-out shadow-2xl xl:shadow-none",
             showSideNav ? "translate-x-0" : "-translate-x-full xl:translate-x-0",
           )}
         >
           {/* Sidebar Header */}
-          <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
+          <div className="flex items-center gap-3 px-4 sm:px-5 py-4 sm:py-5 border-b border-white/10">
             <Image
               src="/logo.jpg"
               alt="SE Electronics"
-              width={36}
-              height={36}
-              className="rounded-lg border border-white/20"
+              width={32}
+              height={32}
+              className="rounded-lg border border-white/20 sm:w-9 sm:h-9"
             />
             <div className="flex-1 min-w-0">
-              <h1 className="font-bold text-sm truncate">{username}</h1>
-              <p className="text-[10px] text-blue-200 font-medium tracking-wider uppercase">Admin Panel</p>
+              <h1 className="font-bold text-xs sm:text-sm truncate">{username}</h1>
+              <p className="text-[9px] sm:text-[10px] text-blue-200 font-medium tracking-wider uppercase">Admin Panel</p>
             </div>
             {showSideNav && (
               <button
@@ -115,17 +115,17 @@ export default function DashboardLayout({
           </div>
 
           {/* SMS Balance */}
-          <div className="mx-4 mt-4 mb-2">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-3 py-2.5 border border-white/10">
+          <div className="mx-3 sm:mx-4 mt-4 mb-2">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 border border-white/10">
               {smsBalance ? (
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-blue-200 font-medium">SMS Balance</span>
-                  <span className="text-sm text-emerald-400 font-bold">
+                  <span className="text-[10px] sm:text-[11px] text-blue-200 font-medium">SMS Balance</span>
+                  <span className="text-xs sm:text-sm text-emerald-400 font-bold">
                     ৳{smsBalance.toLocaleString()}
                   </span>
                 </div>
               ) : (
-                <span className="text-[10px] text-red-300 leading-tight block">
+                <span className="text-[9px] sm:text-[10px] text-red-300 leading-tight block">
                   Could not fetch balance. Refresh to try again.
                 </span>
               )}
@@ -133,7 +133,7 @@ export default function DashboardLayout({
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-0.5">
+          <nav className="flex-1 overflow-y-auto px-2 sm:px-3 py-2 space-y-0.5 custom-scrollbar">
             {links.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -143,33 +143,33 @@ export default function DashboardLayout({
                   onClick={() => setShowSideNav(false)}
                   href={link.href}
                   className={clsx(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200",
+                    "flex items-center gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl text-xs sm:text-[13px] font-medium transition-all duration-200",
                     isActive
                       ? "bg-white text-brand shadow-sm"
                       : "text-blue-100 hover:bg-white/10 hover:text-white",
                   )}
                 >
-                  <Icon size={18} className={isActive ? "text-brand" : ""} />
-                  <span>{link.name}</span>
+                  <Icon size={16} className={clsx("sm:w-[18px] sm:h-[18px]", isActive ? "text-brand" : "")} />
+                  <span className="truncate">{link.name}</span>
                 </Link>
               );
             })}
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t border-white/10">
+          <div className="p-3 sm:p-4 border-t border-white/10">
             <button
               onClick={() => {
                 setIsLogginOut(true);
                 logout();
               }}
               disabled={isLogginOut}
-              className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-red-500/80 text-white font-semibold text-sm py-2.5 rounded-xl transition-all disabled:opacity-50 border border-white/10"
+              className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-red-500/80 text-white font-semibold text-xs sm:text-sm py-2 sm:py-2.5 rounded-xl transition-all disabled:opacity-50 border border-white/10"
             >
-              {!isLogginOut && <LogOut size={16} />}
+              {!isLogginOut && <LogOut size={14} className="sm:w-4 sm:h-4" />}
               <span>{isLogginOut ? "Logging out..." : "Logout"}</span>
             </button>
-            <span className="text-[10px] text-blue-300 mt-3 block text-center font-medium tracking-wider">
+            <span className="text-[9px] sm:text-[10px] text-blue-300 mt-2 sm:mt-3 block text-center font-medium tracking-wider">
               v{appVersion}
             </span>
           </div>
@@ -178,11 +178,11 @@ export default function DashboardLayout({
         {/* Main Content */}
         <section
           className={clsx(
-            "flex-1 h-screen overflow-auto flex flex-col",
+            "flex-1 h-screen overflow-hidden flex flex-col relative",
           )}
         >
           <SideNavContext value={{ openSideNav: () => setShowSideNav(true) }}>
-            <div className="flex-1 p-3 sm:p-5 pb-0">
+            <div className="flex-1 p-3 sm:p-5 pb-0 overflow-y-auto">
               {children}
             </div>
           </SideNavContext>

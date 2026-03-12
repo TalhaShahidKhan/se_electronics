@@ -33,47 +33,42 @@ export default async function ServiceList(
   const services = response.data!;
 
   return services.map((service: any) => (
-    <tr key={service.id} className="border-b">
-      <td className="py-4 px-2 whitespace-nowrap">
-        <div className="flex items-center">
-          <span>{service.serviceId}</span>
+    <tr key={service.id} className="hover:bg-gray-50/50 transition-colors group">
+      <td className="py-4 px-4 whitespace-nowrap">
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-gray-900">{service.serviceId}</span>
           <CopyButton content={service.serviceId} />
         </div>
       </td>
-      <td className={"py-4 px-2 whitespace-nowrap"}>
-        <p title={service.customerName} className="truncate max-w-52">
+      <td className="py-4 px-4 whitespace-nowrap">
+        <div className="flex items-center gap-2">
           {service.customerId ? (
             <ProfileLinkButton
               text={service.customerName}
               customerId={service.customerId}
             />
           ) : (
-            service.customerName
+            <span className="font-medium text-gray-700">{service.customerName}</span>
           )}
-        </p>
+        </div>
       </td>
-      <td className="py-4 px-2 whitespace-nowrap">{service.customerPhone}</td>
-      <td className="py-4 px-2 whitespace-nowrap">
-        <p title={service.customerAddress} className="truncate max-w-52">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-600 font-medium">
+        {service.customerPhone}
+      </td>
+      <td className="py-4 px-4 whitespace-nowrap">
+        <p title={service.customerAddress} className="truncate max-w-[200px] text-gray-600 text-xs">
           {service.customerAddress}
         </p>
       </td>
-      <td className="py-4 px-2 whitespace-nowrap">
-        <p
-          title={`${service.productType.toUpperCase()}-${service.productModel}`}
-          className="truncate max-w-52"
-        >
-          {service.productType.toUpperCase()}-{service.productModel}
-        </p>
+      <td className="py-4 px-4 whitespace-nowrap">
+        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-gray-100 text-gray-700 text-xs font-bold uppercase tracking-wider border border-gray-200">
+          {service.productType}-{service.productModel}
+        </span>
       </td>
-      <td className="py-4 px-2 whitespace-nowrap">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-500 text-xs font-medium">
         {formatDate(service.createdAt!)}
       </td>
-      <td
-        className={
-          "py-4 px-2 text-sm text-center font-semibold whitespace-nowrap"
-        }
-      >
+      <td className="py-4 px-4 whitespace-nowrap text-center">
         <StatusBadge
           status={
             service.statusHistory[0].statusType === "system"
@@ -82,22 +77,22 @@ export default async function ServiceList(
           }
         />
       </td>
-      <td className={"py-4 px-2 whitespace-nowrap"}>
-        <p className="truncate" title={service.staffName}>
+      <td className="py-4 px-4 whitespace-nowrap">
+        <div className="flex items-center gap-2">
           {service.staffId ? (
             <ProfileLinkButton
               text={service.staffName}
               staffId={service.staffId}
             />
           ) : (
-            service.staffName || "--"
+            <span className="text-gray-400 italic text-xs">{service.staffName || "Unassigned"}</span>
           )}
-        </p>
+        </div>
       </td>
-      <td className="py-4 px-2 whitespace-nowrap">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-600 text-xs font-medium">
         {service.staffPhone || "--"}
       </td>
-      <td className="py-4 px-2 whitespace-nowrap">
+      <td className="py-4 px-4 whitespace-nowrap sticky right-0 bg-white group-hover:bg-gray-50 transition-colors shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">
         <ServiceActionButtons serviceData={service} />
       </td>
     </tr>

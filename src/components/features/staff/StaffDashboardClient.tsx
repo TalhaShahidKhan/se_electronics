@@ -36,31 +36,89 @@ export default function StaffDashboardClient({
 }: StaffDashboardClientProps) {
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <div className="flex flex-col gap-4 p-4 text-gray-800">
+      <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800">
         {/* Banner Section */}
-        <div className="w-full">
+        <div className="w-full rounded-3xl overflow-hidden shadow-md">
           <Banner />
         </div>
 
+        {/* Staff Welcome Info Overlay */}
+        <div className="bg-gradient-to-br from-brand via-brand-800 to-brand-700 rounded-[2.5rem] p-6 sm:p-8 text-white shadow-xl overflow-hidden relative group">
+          <div className="relative z-10 flex items-center justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="inline-flex items-center px-2 py-1 rounded-lg bg-white/10 text-white/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+                Active Staff Member
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black mb-1 truncate">{staffData.name}</h3>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-white/70 text-sm font-bold">
+                <span className="flex items-center gap-1.5">
+                  <Briefcase size={14} className="text-emerald-400" />
+                  {staffData.role}
+                </span>
+                <span className="flex items-center gap-1.5">
+                   <User size={14} className="text-blue-400" />
+                   {staffData.staffId}
+                </span>
+              </div>
+            </div>
+            <div className="size-16 sm:size-24 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl group-hover:scale-105 transition-transform duration-500">
+              <User size={32} className="sm:w-12 sm:h-12" />
+            </div>
+          </div>
+          {/* Abstract background shapes */}
+          <div className="absolute -right-8 -bottom-8 size-48 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute left-1/4 top-0 size-24 bg-brand-light/20 rounded-full blur-2xl" />
+        </div>
+
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 gap-4 sm:gap-6">
+          <div className="bg-white p-5 sm:p-6 rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all group">
+            <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600 group-hover:scale-110 transition-transform">
+              <CheckCircle size={24} />
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-black text-gray-900 leading-none mb-1">
+                {stats?.successfulServices || 0}
+              </p>
+              <p className="text-[10px] sm:text-xs uppercase font-extrabold text-gray-400 tracking-wider">Services Done</p>
+            </div>
+          </div>
+          <div className="bg-white p-5 sm:p-6 rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all group">
+            <div className="p-3 bg-amber-50 rounded-2xl text-amber-600 group-hover:scale-110 transition-transform">
+              <Clock size={24} />
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-black text-gray-900 leading-none mb-1">
+                {experienceYears}
+              </p>
+              <p className="text-[10px] sm:text-xs uppercase font-extrabold text-gray-400 tracking-wider">Years Exp.</p>
+            </div>
+          </div>
+        </div>
+
         {/* Primary Action Grid (Large Cards) */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-          <div className="grid grid-cols-4 gap-2">
+        <div className="bg-white rounded-[2.5rem] p-6 sm:p-8 shadow-sm border border-gray-100">
+          <div className="flex items-center justify-between mb-6">
+             <h4 className="text-xs sm:text-sm font-black text-gray-400 uppercase tracking-[0.2em]">Core Operations</h4>
+             <div className="h-px flex-1 bg-gray-100 ml-6"></div>
+          </div>
+          <div className="grid grid-cols-4 gap-4 sm:gap-8">
             {[
-              { label: "My Services", icon: Wrench, href: "/staff/services", color: "text-emerald-500", bg: "bg-emerald-50" },
-              { label: "Report Task", icon: FileText, href: "/staff/services", color: "text-amber-500", bg: "bg-amber-50" },
+              { label: "Services", icon: Wrench, href: "/staff/services", color: "text-emerald-500", bg: "bg-emerald-50" },
+              { label: "Report", icon: FileText, href: "/staff/services", color: "text-amber-500", bg: "bg-amber-50" },
               { label: "Tracking", icon: Activity, href: "/staff/tracking", color: "text-blue-500", bg: "bg-blue-50" },
               { label: "Payments", icon: Wallet, href: "/staff/payments", color: "text-rose-500", bg: "bg-rose-50" },
             ].map((action, i) => (
-              <Link key={action.label} href={action.href} className="flex flex-col items-center gap-2 group">
+              <Link key={action.label} href={action.href} className="flex flex-col items-center gap-3 group">
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: i * 0.05 }}
-                  className={`${action.bg} ${action.color} p-3 rounded-2xl shadow-sm group-hover:shadow-md transition-all active:scale-95`}
+                  className={`${action.bg} ${action.color} p-4 sm:p-6 rounded-3xl shadow-sm group-hover:shadow-xl group-hover:-translate-y-1 transition-all active:scale-95`}
                 >
-                  <action.icon size={24} />
+                  <action.icon size={28} className="sm:w-8 sm:h-8" />
                 </motion.div>
-                <span className="text-[10px] sm:text-xs font-bold text-gray-600 text-center uppercase tracking-tight">
+                <span className="text-[10px] sm:text-xs font-black text-gray-600 text-center uppercase tracking-tight">
                   {action.label}
                 </span>
               </Link>
@@ -69,10 +127,14 @@ export default function StaffDashboardClient({
         </div>
 
         {/* Secondary Action Grid (Smaller Items) */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-          <div className="grid grid-cols-4 gap-y-6 gap-x-2">
+        <div className="bg-white rounded-[2.5rem] p-6 sm:p-8 shadow-sm border border-gray-100">
+           <div className="flex items-center justify-between mb-8">
+             <h4 className="text-xs sm:text-sm font-black text-gray-400 uppercase tracking-[0.2em]">Tools & Support</h4>
+             <div className="h-px flex-1 bg-gray-100 ml-6"></div>
+          </div>
+          <div className="grid grid-cols-4 gap-y-8 gap-x-4">
             {[
-              { label: "Staff Detail", icon: User, href: "/staff/details", color: "text-purple-500" },
+              { label: "Detail", icon: User, href: "/staff/details", color: "text-purple-500" },
               { label: "Stats", icon: Briefcase, href: "/staff/tracking", color: "text-cyan-500" },
               { label: "Feedback", icon: Star, href: "/staff/feedbacks", color: "text-pink-500" },
               { label: "Support", icon: PhoneCall, href: `tel:${adminPhone}`, color: "text-brand" },
@@ -81,16 +143,16 @@ export default function StaffDashboardClient({
               { label: "History", icon: Clock, href: "/staff/tracking", color: "text-slate-500" },
               { label: "Done", icon: CheckCircle, href: "/staff/tracking", color: "text-emerald-600" },
             ].map((action, i) => (
-              <Link key={action.label + i} href={action.href} className="flex flex-col items-center gap-1.5 group">
+              <Link key={action.label + i} href={action.href} className="flex flex-col items-center gap-2 group">
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 + i * 0.05 }}
-                  className="group-hover:scale-110 transition-transform active:scale-90"
+                  className="group-hover:scale-125 transition-transform active:scale-90"
                 >
                   <action.icon className={`${action.color}`} size={24} />
                 </motion.div>
-                <span className="text-[10px] sm:text-xs font-semibold text-gray-500 text-center">
+                <span className="text-[10px] font-extrabold text-gray-500 text-center uppercase tracking-tighter">
                   {action.label}
                 </span>
               </Link>
@@ -98,50 +160,11 @@ export default function StaffDashboardClient({
           </div>
         </div>
 
-        {/* Staff Welcome Info Overlay */}
-        <div className="bg-gradient-to-r from-brand to-brand-700 rounded-2xl p-4 text-white shadow-lg overflow-hidden relative">
-          <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <p className="text-white/70 text-[10px] uppercase font-bold tracking-wider">Active Staff</p>
-              <h3 className="text-lg font-bold">{staffData.name}</h3>
-              <p className="text-white/80 text-xs font-medium">{staffData.role} • {staffData.staffId}</p>
-            </div>
-            <div className="size-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-              <User size={24} />
-            </div>
-          </div>
-          {/* Abstract background shapes */}
-          <div className="absolute -right-4 -bottom-4 size-24 bg-white/5 rounded-full blur-2xl" />
-          <div className="absolute -right-2 -top-2 size-16 bg-white/10 rounded-full blur-xl" />
-        </div>
-
-        {/* Stats Section */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3">
-            <div className="p-2 bg-emerald-50 rounded-xl text-emerald-600">
-              <CheckCircle size={20} />
-            </div>
-            <div>
-              <p className="text-xl font-bold">{stats?.successfulServices || 0}</p>
-              <p className="text-[10px] uppercase font-bold text-gray-400">Services Done</p>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3">
-            <div className="p-2 bg-amber-50 rounded-xl text-amber-600">
-              <Clock size={20} />
-            </div>
-            <div>
-              <p className="text-xl font-bold">{experienceYears}</p>
-              <p className="text-[10px] uppercase font-bold text-gray-400">Years Exp.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-6">
           <form action={staffLogout}>
             <button
               type="submit"
-              className="flex items-center gap-2 px-6 py-2 rounded-full bg-gray-200 text-gray-600 font-bold text-xs uppercase tracking-widest hover:bg-red-50 hover:text-red-500 transition-colors"
+              className="flex items-center gap-2 px-8 py-3 rounded-2xl bg-gray-100 text-gray-500 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-500 transition-all active:scale-95"
             >
               <LogOut size={16} />
               Logout from Portal

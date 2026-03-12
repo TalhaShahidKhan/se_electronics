@@ -58,113 +58,117 @@ export default function RegistrationPage({ token }: { token: string }) {
 
   if (showRequirements) {
     return (
-      <div className="max-w-md mt-5 mx-auto bg-white p-4 rounded-md shadow-sm">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            রেজিস্ট্রেশন করতে যা যা লাগবে:
+      <div className="max-w-xl mx-auto mt-6 sm:mt-10 bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-gray-100">
+        <div className="mb-8">
+          <div className="w-16 h-16 bg-brand/5 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+             <FileText className="text-brand" size={32} />
+          </div>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-brand mb-2 text-center">
+            রেজিস্ট্রেশন নির্দেশিকা
           </h2>
-          <div className="space-y-5">
+          <p className="text-sm text-gray-500 text-center mb-8">
+             এস ই ইলেকট্রনিকস সার্ভিস এজেন্ট হিসেবে যোগ দিতে নিচের প্রয়োজনীয় তথ্য ও নথিগুলো সাথে রাখুন।
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {requirementsList.map((item) => (
-              <div key={item.id} className="flex items-start">
-                <span className="bg-green-500 text-white rounded-full flex items-center justify-center min-w-5 min-h-5 w-5 h-5">
+              <div key={item.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <span className="bg-emerald-500 text-white rounded-lg flex items-center justify-center min-w-5 min-h-5 w-5 h-5 shrink-0 text-[10px] font-bold">
                   ✓
                 </span>
-                <span className="ml-2 text-sm text-gray-700">{item.text}</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 leading-tight">{item.text}</span>
               </div>
             ))}
           </div>
         </div>
-        <div className="mb-6">
-          <label className="flex items-start">
+        
+        <div className="mb-8 p-4 bg-brand/5 rounded-xl border border-brand/10">
+          <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
-              className="w-4 h-4 mt-0.5 border-gray-300"
+              className="w-5 h-5 mt-0.5 border-brand/30 rounded-md text-brand focus:ring-brand"
               checked={isAgreed}
               onChange={(e) => setIsAgreed(e.target.checked)}
             />
-            <span className="ml-2 text-sm">
-              আমি সকল নিয়ম ও শর্তগুলোতে সম্মত আছি
+            <span className="text-sm font-medium text-gray-700 leading-snug">
+              আমি সকল নিয়ম ও শর্তগুলোতে সম্মত আছি এবং সঠিক তথ্য প্রদানে অঙ্গীকার করছি।
             </span>
           </label>
         </div>
 
         <button
-          className="__btn w-full"
+          className="w-full py-4 bg-brand text-white rounded-2xl font-bold text-lg hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50"
           disabled={!isAgreed}
           onClick={() => setShowRequirements(false)}
         >
-          আবেদন করুন
+          আবেদন শুরু করুন
         </button>
 
-        <p className="mt-4 text-xs text-gray-600">
-          ইতিমধ্যে আবেদন করে থাকলে আবেদনের স্ট্যাটাস জানতে আপনার নাম্বারে এসএমএস
-          এ পাঠানো লিঙ্কে ক্লিক করুন।
-        </p>
-        <p className="mt-4 text-xs text-gray-500">
-          রেজিস্ট্রেশন সফল হলে আপনার ঠিকানা যাচাইয়ের জন্য আপনার প্রদত্ত
-          নিবন্ধিত মোবাইল নাম্বারে একটি 'ওয়েলকাম' লেটার প্রেরণ করা হবে।
-        </p>
-        <p className="mt-6 text-xs text-gray-400 text-center">
-          SEIPSBD, একটি প্রতিষ্ঠান। সর্বস্বত্ব সংরক্ষিত।
-        </p>
+        <div className="mt-8 space-y-3">
+          <p className="text-xs text-gray-500 leading-relaxed text-center">
+            ইতিমধ্যে আবেদন করে থাকলে আবেদনের স্ট্যাটাস জানতে আপনার নাম্বারে এসএমএস এ পাঠানো লিঙ্কে ক্লিক করুন।
+          </p>
+          <p className="text-[10px] text-gray-400 text-center font-medium">
+            © SEIPSBD, All Rights Reserved.
+          </p>
+        </div>
       </div>
     );
   }
 
   if (showSuccessMessage) {
     return (
-      <div className="absolute inset-0 flex flex-col gap-4 items-center text-center px-4 justify-start pt-32 bg-blue-100">
-        <div className={"text-green-600"}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={0.5}
-            stroke="currentColor"
-            className="size-28"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-        </div>
-        <p className="text-2xl">
-          প্রিয় {name}, আপনার রেজিস্ট্রেশন সম্পন্ন হয়েছে। আপনার তথ্য যাচাইয়ের পর
-          আপনার সাথে যোগাযোগ করা হবে।
+      <div className="min-h-[80vh] flex flex-col items-center justify-center p-4 text-center">
+        <motion.div 
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6"
+        >
+          <CheckCircle size={48} />
+        </motion.div>
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-brand mb-4">অভিনন্দন {name}!</h2>
+        <p className="text-lg text-gray-600 max-w-md leading-relaxed mb-8">
+          আপনার রেজিস্ট্রেশন আবেদন সফলভাবে গৃহীত হয়েছে। আমাদের টিম আপনার তথ্য যাচাই করে দ্রুতই যোগাযোগ করবে।
         </p>
-        <Link href="/" className="__btn mt-8">
-          Back to Home
+        <Link href="/" className="px-8 py-3 bg-brand text-white rounded-2xl font-bold hover:bg-brand-800 transition-all shadow-lg shadow-brand/20">
+          হোম পেজে ফিরে যান
         </Link>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="mx-auto max-w-[1000px] text-center p-4">
-        <div className="h-full font-bold mb-4 flex flex-col gap-0.5 bg-gray-200 p-6 rounded-lg border border-gray-400">
-          <div className="text-xl">
-            এস ই ইলেকট্রনিকস সার্ভিস এজেন্ট নিয়োগ আবেদন ফর্ম
+    <div className="p-4 sm:p-6">
+      <div className="mx-auto max-w-[1000px]">
+        <div className="mb-6 flex flex-col gap-1 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-brand">
+            এস ই ইলেকট্রনিকস সার্ভিস এজেন্ট নিয়োগ আবেদন
+          </h1>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-2 text-sm text-gray-500">
+            <span>হেল্পলাইন: <span className="text-brand font-bold">{contactDetails.customerCare}</span></span>
+            <span className="hidden sm:inline">|</span>
+            <span>Email: <span className="text-brand font-bold">{contactDetails.email}</span></span>
           </div>
-          <div className="text-md">
-            হেল্পলাইন : {contactDetails.customerCare}
-          </div>
-          <div className="text-md">Email : {contactDetails.email}</div>
-          <div className="text-sm text-gray-500">
-            হেড অফিস : {contactDetails.headOffice}
-          </div>
+          <p className="text-xs text-gray-400 mt-1 uppercase tracking-wider font-medium">
+            হেড অফিস: {contactDetails.headOffice}
+          </p>
         </div>
-        <div className="flex flex-col gap-6 bg-gray-200 border-gray-400 border p-6 rounded-lg">
-          <RegistrationForm
-            mode="create"
-            token={token}
-            onRegistrationComplete={(name) => {
-              setName(name);
-              setShowSuccessMessage(true);
-            }}
-          />
+        
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div className="bg-gray-50 p-4 border-b border-gray-100">
+             <p className="text-sm font-bold text-gray-600 text-center">
+               দয়া করে নিচের প্রতিটি ফিল্ড সঠিক তথ্য দিয়ে পূরণ করুন
+             </p>
+          </div>
+          <div className="p-4 sm:p-8">
+            <RegistrationForm
+              mode="create"
+              token={token}
+              onRegistrationComplete={(name) => {
+                setName(name);
+                setShowSuccessMessage(true);
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

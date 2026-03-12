@@ -79,18 +79,44 @@
     background-color: #f3f4f6;
   }
 
-  table,
-  th,
-  td {
-    @apply border border-gray-200;
+  /* Table Reset */
+  table {
+    @apply border-collapse;
   }
 
   th {
-    @apply bg-gray-50 text-xs uppercase font-bold text-gray-500 tracking-wider;
+    @apply text-xs uppercase font-bold text-gray-500 tracking-wider;
   }
 
   td {
     @apply text-sm;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-200 rounded-full hover:bg-gray-300 transition-colors;
+  }
+
+  .xs\:block {
+    display: none;
+  }
+  @media (min-width: 480px) {
+    .xs\:block {
+      display: block;
+    }
   }
 }
 

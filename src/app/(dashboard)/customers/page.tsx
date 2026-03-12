@@ -23,27 +23,30 @@ export default async function Customers({
         actions={<AddCustomerButton />}
         pagination={pagination!}
       />
-      <div className="overflow-auto flex-1">
-        <table id="services" className="w-full border">
-          <thead>
-            <tr className="sticky top-0 z-10 bg-gray-100 border-b">
-              <th className="text-left py-4 px-2">Customer ID</th>
-              <th className="text-left py-4 px-2">Invoice Number</th>
-              <th className="text-left py-4 px-2">Name</th>
-              <th className="text-left py-4 px-2">Phone Number</th>
-              <th className="text-left py-4 px-2">Address</th>
-              <th className="text-left py-4 px-2">Total Amount</th>
-              <th className="text-left py-4 px-2">Date</th>
-              <th className="text-left py-4 px-2">Actions</th>
+      <div className="overflow-x-auto overflow-y-auto flex-1 bg-white rounded-2xl border border-gray-100 shadow-sm custom-scrollbar">
+        <table className="w-full text-sm text-left border-collapse">
+          <thead className="sticky top-0 z-20">
+            <tr className="bg-gray-50 border-b border-gray-100">
+              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Customer ID</th>
+              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Invoice Number</th>
+              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Name</th>
+              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Phone Number</th>
+              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Address</th>
+              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap text-right">Total Amount</th>
+              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Date</th>
+              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap sticky right-0 bg-gray-50 shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-50">
             <Suspense
               key={params?.query}
               fallback={
                 <tr className="border-b">
-                  <td colSpan={8} className="text-center py-4 text-gray-600">
-                    <DelayedLoading />
+                  <td colSpan={8} className="text-center py-12 text-gray-400 font-medium">
+                    <div className="flex flex-col items-center gap-3">
+                      <DelayedLoading />
+                      <span>Loading customers...</span>
+                    </div>
                   </td>
                 </tr>
               }
