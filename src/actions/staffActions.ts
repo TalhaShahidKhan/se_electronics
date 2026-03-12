@@ -809,6 +809,33 @@ export async function updateMyProfile(staffId: string, data: FormData) {
     }
     if (bio) staffData.bio = bio;
 
+    if (profileData.paymentPreference) {
+      staffData.paymentPreference = profileData.paymentPreference as "cash" | "bkash" | "nagad" | "rocket" | "bank";
+    }
+
+    const pref = staffData.paymentPreference ?? (profileData.paymentPreference as string);
+    if (pref === "bank") {
+      if (
+        profileData.bankName &&
+        profileData.accountHolderName &&
+        profileData.accountNumber &&
+        profileData.branchName
+      ) {
+        staffData.bankInfo = {
+          bankName: String(profileData.bankName),
+          accountHolderName: String(profileData.accountHolderName),
+          accountNumber: String(profileData.accountNumber),
+          branchName: String(profileData.branchName),
+        };
+        staffData.walletNumber = null;
+      }
+    } else if (["bkash", "nagad", "rocket"].includes(pref || "")) {
+      if (profileData.walletNumber) {
+        staffData.walletNumber = String(profileData.walletNumber).trim() || null;
+        staffData.bankInfo = null;
+      }
+    }
+
     let photoKey;
     if (photo && photo instanceof File && photo.size > 0) {
       photoKey = `media/staff/${staffId}/profile_${uuidv4()}.webp`;
@@ -825,6 +852,9 @@ export async function updateMyProfile(staffId: string, data: FormData) {
     await db.update(staffs).set(staffData).where(eq(staffs.staffId, staffId));
 
     revalidatePath("/staff/profile");
+    revalidatePath("/staff/details");
+    revalidatePath("/staff/payment/settings");
+    revalidatePath("/staff/payment/request");
     return { success: true, message: "Profile updated successfully" };
   } catch (error) {
     console.error(error);
@@ -908,6 +938,20 @@ export async function getStaffProfileStats(staffId: string) {
       limit: 10,
     });
 
+    // Calculate virtual balance from non-completed/non-rejected payments
+    const balanceResult = await db
+      .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
+      .from(payments)
+      .where(
+        and(
+          eq(payments.staffId, staffId),
+          sql`${payments.status} != 'completed' AND ${payments.status} != 'rejected'`,
+        ),
+      )
+      .limit(1);
+
+    const availableBalance = balanceResult[0]?.sum || 0;
+
     return {
       success: true,
       data: {
@@ -916,6 +960,7 @@ export async function getStaffProfileStats(staffId: string) {
         canceledServices,
         rating: parseFloat(rating.toFixed(2)),
         payments: staffPayments,
+        availableBalance,
       },
     };
   } catch (error) {

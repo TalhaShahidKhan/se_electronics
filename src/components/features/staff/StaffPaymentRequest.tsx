@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 
 interface StaffPaymentRequestProps {
   staffId: string;
-  completedServices: any[];
+  completedServices?: any[];
 }
 
-export default function StaffPaymentRequest({ staffId, completedServices }: StaffPaymentRequestProps) {
+export default function StaffPaymentRequest({ staffId, completedServices = [] }: StaffPaymentRequestProps) {
   const [selectedService, setSelectedService] = useState("");
   const [state, formAction, isPending] = useActionState(async (_prev: any, formData: FormData) => {
     const res = await requestPayment(_prev, formData);
@@ -22,29 +22,33 @@ export default function StaffPaymentRequest({ staffId, completedServices }: Staf
     return res;
   }, undefined);
 
+  const hasCompletedServices = completedServices.length > 0;
+
   return (
     <form action={formAction} className="space-y-3">
       <input type="hidden" name="staffId" value={staffId} />
+      {!hasCompletedServices && <input type="hidden" name="serviceId" value="" />}
 
-      <div>
-        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-          Select Service
-        </label>
-        <select
-          name="serviceId"
-          value={selectedService}
-          onChange={(e) => setSelectedService(e.target.value)}
-          required
-          className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
-        >
-          <option value="">-- Select a completed service --</option>
-          {completedServices.map((service: any) => (
-            <option key={service.serviceId} value={service.serviceId}>
-              #{service.serviceId.substring(0, 8)} - {service.customerName} ({service.productModel})
-            </option>
-          ))}
-        </select>
-      </div>
+      {hasCompletedServices && (
+        <div>
+          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+            Select Service (optional)
+          </label>
+          <select
+            name="serviceId"
+            value={selectedService}
+            onChange={(e) => setSelectedService(e.target.value)}
+            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+          >
+            <option value="">-- None / Request from balance --</option>
+            {completedServices.map((service: any) => (
+              <option key={service.serviceId} value={service.serviceId}>
+                #{service.serviceId.substring(0, 8)} - {service.customerName} ({service.productModel})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>

@@ -1,25 +1,23 @@
 import { staffLogout, verifyStaffSession } from "@/actions";
 import { getStaffById, getStaffProfileStats } from "@/actions/staffActions";
+import { StaffBalanceBar } from "@/components/features/staff/StaffBalanceBar";
 import Banner from "@/components/ui/Banner";
 import {
   Activity,
   Briefcase,
   CheckCircle,
   Clock,
-  CreditCard,
   FileText,
   LogOut,
   MapPin,
   MessageSquare,
   PhoneCall,
-  ShieldCheck,
   Star,
   User,
   Wallet,
   Wrench,
   XCircle,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default async function StaffProfilePage() {
@@ -118,71 +116,57 @@ export default async function StaffProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Top Navbar: Staff Details */}
-      <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
-        <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4">
-          <div className="flex items-center justify-between gap-3 sm:gap-4">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="size-12 sm:size-16 shrink-0 relative">
-                {staffData.photoUrl ? (
-                  <Image
-                    src={staffData.photoUrl}
-                    alt={staffData.name}
-                    width={64}
-                    height={64}
-                    className="rounded-full object-cover w-full h-full border-2 border-white/20"
-                  />
-                ) : (
-                  <div className="w-full h-full rounded-full bg-white/10 flex items-center justify-center text-blue-200 border border-white/20">
-                    <User className="w-6 h-6 sm:w-8 sm:h-8" />
-                  </div>
-                )}
-              </div>
-              <div className="overflow-hidden">
-                <h1 className="text-lg sm:text-xl font-bold leading-tight truncate">
-                  {staffData.name}
-                </h1>
-                <p className="text-xs sm:text-sm font-medium text-blue-200 capitalize flex items-center gap-1">
-                  <Briefcase size={14} className="min-w-max" />
-                  <span className="truncate">{staffData.role}</span> • ID:{" "}
-                  {staffData.staffId}
-                </p>
-                <div className="flex items-center mt-1">
-                  <span className="text-yellow-500 flex text-xs sm:text-sm tracking-widest">
-                    {"★".repeat(Math.floor(stats?.rating || 0))}
-                    {"☆".repeat(5 - Math.floor(stats?.rating || 0))}
-                  </span>
-                  <span className="text-blue-200 text-[10px] sm:text-xs ml-1 font-medium">
-                    ({stats?.rating || 0})
-                  </span>
-                </div>
-              </div>
+      {/* Top banner: WELCOME TO SE ELECTRONICS */}
+      <header className="sticky top-0 z-50 bg-brand text-white shadow-md rounded-b-2xl">
+        <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4 relative flex items-center justify-center">
+          <h1 className="text-base sm:text-lg font-bold tracking-wide text-center">
+            WELCOME TO SE ELECTRONICS
+          </h1>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            <div className="hidden sm:block">
+              <StaffBalanceBar amount={stats?.availableBalance || 0} />
             </div>
             <form action={staffLogout}>
-              <button className="p-2.5 sm:p-3 rounded-md bg-white/10 text-white hover:bg-white/20 transition-colors border border-white/10">
+              <button
+                type="submit"
+                className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors border border-white/20"
+                aria-label="Logout"
+              >
                 <LogOut size={20} />
               </button>
             </form>
           </div>
-
-          <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-            <div className="flex items-center gap-2 text-blue-100  ">
-              <PhoneCall size={16} className="text-blue-200 shrink-0" />
-              <span className="font-semibold truncate">{staffData.phone}</span>
-            </div>
-            <div className="flex items-center gap-2 text-blue-100  ">
-              <MapPin size={16} className="text-blue-200 shrink-0" />
-              <span className="font-medium truncate">
-                {staffData.currentStreetAddress || "Location not specified"}
-              </span>
-            </div>
-          </div>
-          <div className="mt-2 text-[10px] text-yellow-200 font-medium  px-3 py-1.5 rounded-lg border border-white/10 flex items-center justify-center gap-1">
-            <ShieldCheck size={14} /> Contact Admin to update your profile
-            details
-          </div>
         </div>
       </header>
+
+      {/* White section: Staff details left, profile circle right */}
+      <div className="max-w-4xl mx-auto w-full px-3 sm:px-4 -mt-px">
+        <div className="bg-white rounded-b-2xl shadow-sm border border-t-0 border-gray-200 overflow-hidden">
+          <div className="flex flex-row items-stretch gap-4 sm:gap-6 p-4 sm:p-6">
+            <div className="flex-1 min-w-0 flex flex-col justify-center space-y-1.5 sm:space-y-2">
+              <p className="text-sm sm:text-base text-gray-800">
+                <span className="font-semibold text-gray-600">Staff:</span>{" "}
+                {staffData.name}
+              </p>
+              <p className="text-sm sm:text-base text-gray-800">
+                <span className="font-semibold text-gray-600">Staff ID:</span>{" "}
+                {staffData.staffId}
+              </p>
+              <p className="text-sm sm:text-base text-gray-800">
+                <span className="font-semibold text-gray-600">Phone:</span>{" "}
+                {staffData.phone}
+              </p>
+              <p className="text-sm sm:text-base text-gray-800">
+                <span className="font-semibold text-gray-600">Address:</span>{" "}
+                {staffData.currentStreetAddress || "Not specified"}
+              </p>
+            </div>
+            <div className="shrink-0 flex items-center justify-center">
+              <StaffBalanceBar amount={stats?.availableBalance || 0} />
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Banner content */}
       <div className="w-full max-w-4xl mx-auto p-2 sm:p-4 py-4 sm:py-6 flex flex-col justify-center">

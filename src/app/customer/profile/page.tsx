@@ -114,45 +114,58 @@ export default async function CustomerProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Top Navbar: Customer Details */}
-      <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
-        <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4">
-          <div className="flex items-center justify-between gap-3 sm:gap-4">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="size-12 sm:size-16 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-                <User className="w-6 h-6 sm:w-8 sm:h-8 text-blue-200" />
-              </div>
-              <div className="overflow-hidden">
-                <h1 className="text-lg sm:text-xl font-bold leading-tight truncate">
-                  {customer.name}
-                </h1>
-                <p className="text-xs sm:text-sm font-medium text-blue-200">
-                  ID: {customer.customerId}
-                </p>
-                <li className="flex items-center gap-2 text-xs sm:text-sm font-medium text-blue-200 mt-1">
-                  <PhoneCall size={16} className="text-blue-200 shrink-0" />
-                  <span className="font-semibold">{customer.phone}</span>
-                </li>
-
-                <li className="flex items-center gap-2 text-xs sm:text-sm font-medium text-blue-200 mt-1">
-                  <MapPin size={16} className="text-blue-200 shrink-0" />
-                  <span className="font-medium">
-                    {customer.address || "No address provided"}
-                  </span>
-                </li>
-              </div>
-            </div>
-            <form action={customerLogout}>
-              <button className="p-2.5 sm:p-3 rounded-md bg-white/10 text-white hover:bg-white/20 transition-colors border border-white/10">
-                <LogOut size={20} />
-              </button>
-            </form>
-          </div>
+      {/* Top banner: WELCOME TO SE ELECTRONICS */}
+      <header className="sticky top-0 z-50 bg-brand text-white shadow-md rounded-b-2xl">
+        <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
+          <h1 className="text-base sm:text-lg font-bold tracking-wide w-full text-center">
+            WELCOME TO SE ELECTRONICS
+          </h1>
+          <form action={customerLogout} className="absolute right-4 top-1/2 -translate-y-1/2">
+            <button
+              type="submit"
+              className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors border border-white/20"
+              aria-label="Logout"
+            >
+              <LogOut size={20} />
+            </button>
+          </form>
         </div>
       </header>
+
+      {/* White section: Customer details left, profile circle right */}
+      <div className="max-w-4xl mx-auto w-full px-3 sm:px-4 -mt-px">
+        <div className="bg-white rounded-b-2xl shadow-sm border border-t-0 border-gray-200 overflow-hidden">
+          <div className="flex flex-row items-stretch gap-4 sm:gap-6 p-4 sm:p-6">
+            <div className="flex-1 min-w-0 flex flex-col justify-center space-y-1.5 sm:space-y-2">
+              <p className="text-sm sm:text-base text-gray-800">
+                <span className="font-semibold text-gray-600">Customer:</span>{" "}
+                {customer.name}
+              </p>
+              <p className="text-sm sm:text-base text-gray-800">
+                <span className="font-semibold text-gray-600">Customer ID:</span>{" "}
+                {customer.customerId}
+              </p>
+              <p className="text-sm sm:text-base text-gray-800">
+                <span className="font-semibold text-gray-600">Phone:</span>{" "}
+                {customer.phone}
+              </p>
+              <p className="text-sm sm:text-base text-gray-800">
+                <span className="font-semibold text-gray-600">Address:</span>{" "}
+                {customer.address || "No address provided"}
+              </p>
+            </div>
+            <div className="shrink-0 flex items-center justify-center">
+              <div className="size-20 sm:size-28 rounded-full bg-gray-200 border-2 border-gray-300 flex items-center justify-center">
+                <User className="w-10 h-10 sm:w-14 sm:h-14 text-gray-500" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Banner content */}
       <div className="w-full max-w-4xl mx-auto p-2 sm:p-4 py-4 sm:py-6 flex flex-col justify-center">
-        <Banner></Banner>
+        <Banner />
       </div>
       {/* Main Content: Dashboard Grid */}
       <main className="flex-1 w-full max-w-4xl mx-auto p-2 sm:p-4 py-4 sm:py-8 flex flex-col justify-center">
