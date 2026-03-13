@@ -168,3 +168,56 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #9eafd2;
 }
+
+
+
+
+/* The top banner iframe */
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Body gets pushed down when the banner tries to show */
+html body {
+  top: 0 !important;
+}
+
+/* The inline gadget / dropdown (keep hidden if you don't want it visible) */
+#google_translate_element,
+.skiptranslate,
+.skiptranslate * {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Tooltip balloon that sometimes appears */
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Yellow highlight that Google sometimes adds to translated text */
+.goog-text-highlight {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Tiny gadget icon that can appear */
+.goog-te-gadget,
+.goog-te-gadget-simple,
+.goog-te-gadget-icon {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* If Google wraps the whole page in a span with class 'skiptranslate' */
+html > body > .skiptranslate {
+  display: none !important;
+}

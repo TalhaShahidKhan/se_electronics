@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import CustomerNotificationBell from "@/components/features/customers/CustomerNotificationBell";
-
+import LanguageToggle from "@/components/ui/LanguageToggle";
 export default async function CustomerProfilePage() {
   const session = await verifyCustomerSession();
 
@@ -120,7 +120,8 @@ export default async function CustomerProfilePage() {
       <header className="sticky top-0 z-50 bg-brand text-white shadow-lg">
         <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between relative">
           <div className="flex items-center gap-2">
-             <CustomerNotificationBell />
+            <CustomerNotificationBell />
+             <LanguageToggle />
           </div>
           <h1 className="text-base sm:text-xl font-black tracking-[0.2em] uppercase flex-1 text-center truncate px-10">
             SE ELECTRONICS
@@ -133,6 +134,7 @@ export default async function CustomerProfilePage() {
             >
               <LogOut size={20} className="sm:w-6 sm:h-6" />
             </button>
+  
           </form>
         </div>
       </header>
@@ -142,7 +144,7 @@ export default async function CustomerProfilePage() {
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden relative">
           {/* Abstract background accent */}
           <div className="absolute top-0 right-0 w-48 h-48 bg-brand/5 rounded-full -mr-24 -mt-24 blur-3xl" />
-          
+
           <div className="flex flex-row items-center gap-6 sm:gap-10 p-6 sm:p-10 relative z-10">
             <div className="flex-1 min-w-0 flex flex-col justify-center gap-2 sm:gap-3">
               <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-brand/5 text-brand text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] w-fit mb-2">
@@ -153,15 +155,25 @@ export default async function CustomerProfilePage() {
               </h2>
               <div className="flex flex-col gap-2 sm:gap-3 mt-2">
                 <div className="flex items-center gap-3 text-sm sm:text-base text-gray-500 font-bold">
-                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">ID:</span>
-                  <span className="text-gray-900 font-black">{customer.customerId}</span>
+                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">
+                    ID:
+                  </span>
+                  <span className="text-gray-900 font-black">
+                    {customer.customerId}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3 text-sm sm:text-base text-gray-500 font-bold">
-                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">Phone:</span>
-                  <span className="text-gray-900 font-black">{customer.phone}</span>
+                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">
+                    Phone:
+                  </span>
+                  <span className="text-gray-900 font-black">
+                    {customer.phone}
+                  </span>
                 </div>
                 <div className="flex items-start gap-3 text-sm sm:text-base text-gray-500 font-bold">
-                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">Address:</span>
+                  <span className="shrink-0 w-20 uppercase tracking-tighter text-gray-400">
+                    Address:
+                  </span>
                   <span className="text-gray-900 font-black leading-relaxed">
                     {customer.address || "No address provided"}
                   </span>
@@ -188,10 +200,12 @@ export default async function CustomerProfilePage() {
       {/* Main Content: Dashboard Grid */}
       <main className="flex-1 w-full max-w-4xl mx-auto px-3 sm:px-4 mt-10">
         <div className="flex items-center justify-between mb-8">
-           <h3 className="text-sm sm:text-base font-black text-brand uppercase tracking-[0.25em]">Quick Actions</h3>
-           <div className="h-px flex-1 bg-gray-200 ml-8 hidden sm:block"></div>
+          <h3 className="text-sm sm:text-base font-black text-brand uppercase tracking-[0.25em]">
+            Quick Actions
+          </h3>
+          <div className="h-px flex-1 bg-gray-200 ml-8 hidden sm:block"></div>
         </div>
-        
+
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 sm:gap-8">
           {dashboardActions.map((action) => {
             const Icon = action.icon;

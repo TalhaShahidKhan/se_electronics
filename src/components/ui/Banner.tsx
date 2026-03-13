@@ -1,18 +1,17 @@
 "use client";
+import Image from "next/image";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+import img1 from "../../assets/images/banner1.jpg";
+import img2 from "../../assets/images/banner2.jpg";
+import img3 from "../../assets/images/banner3.jpg";
+
 const Banner = () => {
   const slides = [
-    {
-      img: "https://images.pexels.com/photos/5912616/pexels-photo-5912616.jpeg",
-    },
-    {
-      img: "https://images.pexels.com/photos/4427225/pexels-photo-4427225.jpeg",
-    },
-    {
-      img: "https://images.pexels.com/photos/5912616/pexels-photo-5912616.jpeg",
-    },
+    { img: img1 },
+    { img: img2 },
+    { img: img3 },
   ];
 
   return (
@@ -30,11 +29,12 @@ const Banner = () => {
         stopOnHover
       >
         {slides.map((slide, index) => (
-          <div key={index} className="w-full h-[40vh]">
-            <img
+          <div key={index} className="w-full h-[40vh] relative">
+            <Image
               src={slide.img}
               alt={`Slide ${index + 1}`}
-              className="w-full h-full object-cover rounded-md"
+              fill
+              className="object-cover rounded-md"
             />
           </div>
         ))}
