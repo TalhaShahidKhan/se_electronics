@@ -63,8 +63,8 @@ export default function ServiceHistoryClient({ staffs }: { staffs: StaffsType[] 
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-bold text-gray-900 text-sm truncate">{staff.name}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{staff.staffId}</p>
-              <p className="text-xs text-gray-400">{staff.phone}</p>
+              <p className="text-sm text-gray-500">{staff.phone}</p>
+              <p className="text-sm text-gray-500 mt-0.5">- {staff.staffId}</p>
             </div>
             <div className="text-brand">
               <Wrench size={16} />

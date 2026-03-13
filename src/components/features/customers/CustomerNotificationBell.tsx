@@ -40,7 +40,7 @@ export default function CustomerNotificationBell() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2.5 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all shadow-sm border border-transparent hover:border-white/20"
+        className="relative p-2.5 rounded-md bg-white/10 text-white hover:bg-white/20 transition-all shadow-sm border border-transparent hover:border-white/20"
         title="Notifications"
       >
         <Bell size={20} />

@@ -21,7 +21,11 @@ const statusColors: Record<string, string> = {
   rejected: "bg-rose-100 text-rose-700",
 };
 
-export default function PaymentHistoryClient({ staffs }: { staffs: StaffsType[] }) {
+export default function PaymentHistoryClient({
+  staffs,
+}: {
+  staffs: StaffsType[];
+}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStaff, setSelectedStaff] = useState<StaffsType | null>(null);
   const [payments, setPayments] = useState<Partial<PaymentDataType>[]>([]);
@@ -43,7 +47,7 @@ export default function PaymentHistoryClient({ staffs }: { staffs: StaffsType[] 
     setIsLoading(true);
     const res = await getPaymentHistoryById(staff.staffId);
     if (res.success) {
-      setPayments([...res.data as unknown as Partial<PaymentDataType>[]]);
+      setPayments([...(res.data as unknown as Partial<PaymentDataType>[])]);
     } else {
       toast.error(res.message);
     }
@@ -53,7 +57,10 @@ export default function PaymentHistoryClient({ staffs }: { staffs: StaffsType[] 
   return (
     <div className="flex-1 overflow-auto p-1 space-y-4">
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+        <Search
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          size={16}
+        />
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -70,12 +77,20 @@ export default function PaymentHistoryClient({ staffs }: { staffs: StaffsType[] 
             className="flex items-center gap-3 p-4 bg-white rounded-2xl border border-gray-100 hover:border-brand/20 hover:shadow-md transition-all text-left"
           >
             <div className="size-12 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0">
-              <Image src={staff.photoUrl} alt={staff.name} width={48} height={48} className="object-cover w-full h-full" />
+              <Image
+                src={staff.photoUrl}
+                alt={staff.name}
+                width={48}
+                height={48}
+                className="object-cover w-full h-full"
+              />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-gray-900 text-sm truncate">{staff.name}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{staff.staffId}</p>
-              <p className="text-xs text-gray-400">{staff.phone}</p>
+              <p className="font-bold text-gray-900 text-sm truncate">
+                {staff.name}
+              </p>
+              <p className="text-sm text-gray-500">{staff.phone}</p>
+              <p className="text-sm text-gray-500 mt-0.5">- {staff.staffId}</p>
             </div>
             <div className="text-brand">
               <CreditCard size={16} />

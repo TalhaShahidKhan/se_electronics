@@ -46,7 +46,7 @@ export default function Home() {
             />
             <ActionCard
               href="/staffs"
-              title="Staff Management"
+              title="Staff Managements"
               description="Manage technicians"
               icon={Plus}
               color="text-amber-600 bg-amber-50"
@@ -96,14 +96,14 @@ function ActionCard({ href, title, description, icon: Icon, color }: any) {
         <Icon size={18} />
       </div>
       <div className="flex-1">
-        <h3 className="text-sm font-bold text-gray-900 flex items-center gap-1 group-hover:text-brand transition-colors">
+        <h3 className="text-md font-bold text-gray-900 flex items-center gap-1 group-hover:text-brand transition-colors">
           {title}
           <ChevronRight
             size={14}
             className="opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all"
           />
         </h3>
-        <p className="text-[10px] text-gray-500 mt-0.5">{description}</p>
+        <p className="text-[11px] text-gray-500 mt-0.5">{description}</p>
       </div>
     </Link>
   );

@@ -32,14 +32,14 @@ export default async function StaffServiceHistoryPage({
         <table className="w-full text-sm text-left border-collapse">
           <thead className="sticky top-0 z-20">
             <tr className="bg-gray-50 border-b border-gray-100">
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Service ID</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Customer Name</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Phone Number</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Address</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Product</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Date</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Status</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap sticky right-0 bg-gray-50 shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">Actions</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Service ID</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Customer Name</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Phone Number</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Address</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Product</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Date</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Status</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap sticky right-0 bg-gray-50 shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">

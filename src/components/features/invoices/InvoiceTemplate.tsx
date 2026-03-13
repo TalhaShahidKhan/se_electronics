@@ -15,13 +15,13 @@ export default function InvoiceTemplate({ data }: { data: InvoicesType & { bgIma
                 <div className="text-right text-xl font-bold tracking-wide mb-4">INVOICE</div>
                 <div className="flex justify-between mb-4 text-sm">
                     <div className="space-y-1">
-                        <div><span className="font-semibold">Invoice To</span></div>
+                        <div><span className="font-semibold text-xl ">Invoice To</span></div>
                         <div><span className="font-semibold">Name :</span> {data.customerName}</div>
                         <div><span className="font-semibold">Address :</span> {data.customerAddress}</div>
                         <div><span className="font-semibold">Phone :</span> {data.customerPhone}</div>
                     </div>
                     <div className="text-right space-y-1">
-                        <div><span className="font-semibold">Invoice number #</span> {data.invoiceNumber}</div>
+                        <div><span className="font-semibold ">Invoice number #</span> {data.invoiceNumber}</div>
                         <div><span className="font-semibold">Date :</span> {formatDate(data.date)}</div>
                         <div><span className="font-semibold">Customer ID :</span> {data.customerId}</div>
                     </div>
@@ -41,14 +41,14 @@ export default function InvoiceTemplate({ data }: { data: InvoicesType & { bgIma
                         <tbody>
                             {data.products?.map((product, index) => (
                                 <tr key={product.id} className="border border-black">
-                                    <td className="py-3 px-3 text-sm border-r border-black">{index + 1}.</td>
-                                    <td className="py-3 px-3 text-sm border-r border-black">{product.type.toUpperCase()}-{product.model}</td>
-                                    <td className="py-3 px-3 text-center text-sm border-r border-black">
+                                    <td className="py-3 px-3 text-md border-r border-black">{index + 1}.</td>
+                                    <td className="py-3 px-3 text-md border-r border-black">{product.type.toUpperCase()}-{product.model}</td>
+                                    <td className="py-3 px-3 text-center text-md border-r border-black">
                                         {product.warrantyDurationMonths === 0 ? 'None' : product.warrantyDurationMonths + ' Months'}
                                     </td>
-                                    <td className="py-3 px-3 text-center text-sm border-r border-black">{product.quantity}</td>
-                                    <td className="py-3 px-3 text-right text-sm border-r border-black">{product.unitPrice.toLocaleString()}</td>
-                                    <td className="py-3 px-3 text-right text-sm font-semibold border-black">{(product.unitPrice * product.quantity).toLocaleString()} TK</td>
+                                    <td className="py-3 px-3 text-center text-md border-r border-black">{product.quantity}</td>
+                                    <td className="py-3 px-3 text-right text-md border-r border-black">{product.unitPrice.toLocaleString()}</td>
+                                    <td className="py-3 px-3 text-right text-md font-semibold border-black">{(product.unitPrice * product.quantity).toLocaleString()} TK</td>
                                 </tr>
                             ))}
                             <tr>

@@ -11,7 +11,7 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
 
   return (
     <div className="flex-1 overflow-auto p-2 sm:p-3">
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
+      <div className="grid  grid-cols-2 sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
         {staffs.map((staff) => (
           <div
             key={staff.id}
@@ -43,7 +43,7 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
                 />
               </div>
               <div className="absolute -bottom-1.5 sm:-bottom-2 left-1/2 -translate-x-1/2 bg-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-sm border border-gray-100 flex items-center gap-1.5">
-                <span className="text-[8px] sm:text-[10px] font-black text-brand uppercase tracking-widest">{staff.staffId}</span>
+                <span className="text-[12px] sm:text-[12px] font-black text-brand uppercase tracking-widest">{staff.staffId}</span>
               </div>
             </div>
 
@@ -53,7 +53,7 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
                 <h3 className="text-sm sm:text-base md:text-lg font-black text-gray-900 group-hover:text-brand transition-colors line-clamp-1 px-1">
                   {staff.name}
                 </h3>
-                <p className="text-[8px] sm:text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mt-0.5 sm:mt-1">
+                <p className="text-[10px] sm:text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mt-0.5 sm:mt-1">
                   {staff.role}
                 </p>
               </div>

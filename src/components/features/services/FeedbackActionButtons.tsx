@@ -36,7 +36,7 @@ function FeedbackActionButtons({
         title="Customer Feedbacks"
         onClose={() => setVisibleFeedbacksModal(false)}
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 text-lg">
           <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
               <div>

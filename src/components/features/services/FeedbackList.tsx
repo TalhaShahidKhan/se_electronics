@@ -33,7 +33,7 @@ async function FeedbackList(params: SearchParams) {
   const feedbacks = response.data!;
 
   return feedbacks.map((feedback: any) => (
-    <tr key={feedback.serviceId} className="border-b">
+    <tr key={feedback.serviceId} className="border-b text-lg">
       <td className="py-4 px-2 whitespace-nowrap">
         <div className="flex items-center">
           <span>{feedback.serviceId}</span>

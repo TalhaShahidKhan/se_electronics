@@ -65,13 +65,13 @@ export default async function AdminStats() {
         >
           <div className="flex items-center justify-between">
             <div className="flex-1 min-w-0 mr-4">
-              <p className="text-sm sm:text-base font-medium text-gray-500 truncate">{card.title}</p>
+              <p className="text-md sm:text-base font-bold text-gray-600 truncate">{card.title}</p>
               <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 truncate">
                 {card.value}
               </h3>
             </div>
             <div className={`${card.color} p-2.5 sm:p-3 rounded-xl sm:rounded-2xl text-white shrink-0`}>
-              <card.icon size={24} className="sm:w-7 sm:h-7" />
+              <card.icon size={24} className="sm:w-7 sm:h-7" /> 
             </div>
           </div>
         </div>

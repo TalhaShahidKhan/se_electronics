@@ -32,13 +32,13 @@ export default async function StaffPaymentHistoryPage({
         <table id="services" className="w-full border-collapse text-sm text-left">
           <thead>
             <tr className="sticky top-0 z-10 bg-gray-50 border-b border-gray-100">
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Payment ID</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Invoice</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Amount</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Status</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Method</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Date</th>
-              <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Actions</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Payment ID</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Invoice</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Amount</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Status</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Method</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Date</th>
+              <th className="py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">

@@ -136,7 +136,7 @@ export default function ComplaintsPage() {
                   >
                     {complaint.status}
                   </span>
-                  <span className="text-[10px] font-mono text-gray-400">
+                  <span className="text-[13px] font-mono text-gray-400">
                     {complaint.complaintId}
                   </span>
                 </div>
@@ -153,7 +153,7 @@ export default function ComplaintsPage() {
                     <span className="text-gray-400 uppercase font-bold tracking-tighter">
                       Customer
                     </span>
-                    <span className="font-bold text-gray-900">
+                    <span className="font-bold text-[14px] text-gray-900">
                       {complaint.customer.name}
                     </span>
                   </div>
@@ -165,7 +165,7 @@ export default function ComplaintsPage() {
                       <span className="font-bold text-red-600 italic">
                         @{complaint.staff.name}
                       </span>
-                      <span className="text-[10px] text-gray-400">
+                      <span className="text-[12px] text-gray-400">
                         {complaint.staff.phone}
                       </span>
                     </div>
@@ -186,7 +186,6 @@ export default function ComplaintsPage() {
                   )}
                 </div>
               </div>
-
               <div className="p-4 bg-gray-50 border-t border-gray-100">
                 {complaint.status === "pending" ? (
                   <button

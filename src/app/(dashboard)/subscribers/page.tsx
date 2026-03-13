@@ -18,12 +18,12 @@ export default async function Subscribers({
         <table id="feedbacks" className="w-full border">
           <thead>
             <tr className="border-b sticky top-0 z-10 bg-gray-100">
-              <th className="text-left py-4 px-2">Subscriber Id</th>
-              <th className="text-left py-4 px-2">Customer Name</th>
-              <th className="text-left py-4 px-2">Phone Number</th>
-              <th className="text-left py-4 px-2">District</th>
-              <th className="text-left py-4 px-2">Date</th>
-              <th className="text-left py-4 px-2">Actions</th>
+              <th className="text-left py-4 text-sm px-2">Subscriber Id</th>
+              <th className="text-left py-4 text-sm px-2">Customer Name</th>
+              <th className="text-left py-4 text-sm px-2">Phone Number</th>
+              <th className="text-left py-4 text-sm px-2">District</th>
+              <th className="text-left py-4 text-sm px-2">Date</th>
+              <th className="text-left py-4 text-sm px-2">Actions</th>
             </tr>
           </thead>
           <tbody>

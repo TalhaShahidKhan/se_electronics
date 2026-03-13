@@ -63,7 +63,7 @@ export default async function CustomerList(params: SearchParams) {
         {customer.phone}
       </td>
       <td className="py-4 px-4 whitespace-nowrap">
-        <p title={customer.address} className="truncate max-w-[200px] text-gray-600 text-xs sm:text-sm font-medium">
+        <p title={customer.address} className="truncate max-w-[200px] text-gray-600 text-[16px] font-medium">
           {customer.address}
         </p>
       </td>

@@ -128,7 +128,7 @@ export default async function CustomerProfilePage() {
           <form action={customerLogout} className="flex items-center">
             <button
               type="submit"
-              className="p-2.5 rounded-xl bg-white/10 text-white hover:bg-red-500 transition-all border border-white/10 active:scale-95"
+              className="p-2.5 rounded-md bg-white/10 text-white hover:bg-red-500 transition-all border border-white/10 active:scale-95"
               aria-label="Logout"
             >
               <LogOut size={20} className="sm:w-6 sm:h-6" />
@@ -180,7 +180,7 @@ export default async function CustomerProfilePage() {
 
       {/* Banner content */}
       <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 mt-8">
-        <div className="rounded-[2.5rem] overflow-hidden shadow-lg border border-gray-100">
+        <div className=" overflow-hidden shadow-lg border border-gray-100">
           <Banner />
         </div>
       </div>
@@ -199,7 +199,7 @@ export default async function CustomerProfilePage() {
               <Link
                 key={action.label}
                 href={action.href}
-                className="group relative flex flex-col items-center justify-center bg-white aspect-square rounded-[2.5rem] sm:rounded-[3rem] p-4 sm:p-6 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:scale-[1.05] active:scale-95 overflow-hidden"
+                className="group relative flex flex-col items-center justify-center bg-white aspect-square rounded-md p-4 sm:p-6 shadow-sm border border-gray-200 transition-all duration-300 hover:shadow-2xl hover:scale-[1.05] active:scale-95 overflow-hidden"
               >
                 <div
                   className={`${action.color} p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] text-white mb-3 sm:mb-6 shadow-xl shadow-black/5 group-hover:rotate-6 transition-transform duration-300`}

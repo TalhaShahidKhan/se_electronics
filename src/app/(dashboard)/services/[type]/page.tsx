@@ -23,15 +23,15 @@ export default async function Services({ params, searchParams }: {
             <table className="w-full text-sm text-left border-collapse">
                 <thead className="sticky top-0 z-20">
                     <tr className="bg-gray-50 border-b border-gray-100">
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Service ID</th>
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Customer Name</th>
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Phone Number</th>
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Address</th>
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Product</th>
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Date</th>
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Status</th>
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Staff Name</th>
-                        <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap">Staff Number</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Service ID</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Customer Name</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Phone Number</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Address</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Product</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Date</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Status</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Staff Name</th>
+                        <th className="py-4 px-4 font-bold text-gray-700 text-sm whitespace-nowrap">Staff Number</th>
                         <th className="py-4 px-4 font-bold text-gray-700 whitespace-nowrap sticky right-0 bg-gray-50 shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">Actions</th>
                     </tr>
                 </thead>
