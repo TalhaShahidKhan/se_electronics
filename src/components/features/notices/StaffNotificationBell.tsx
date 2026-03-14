@@ -49,13 +49,10 @@ export default function StaffNotificationBell() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-<<<<<<< HEAD
-          "relative size-12 rounded-2xl flex items-center justify-center transition-all duration-300",
-          isOpen ? "bg-white text-brand shadow-xl scale-110" : "bg-white/10 text-white hover:bg-white/20 border border-white/20 shadow-sm"
-=======
+
           "relative size-12 rounded-xl flex items-center justify-center transition-all duration-300",
           isOpen ? "bg-white/35 text-white shadow-xl shadow-brand/20 scale-110" : "bg-white text-gray-400 hover:bg-brand/5 hover:text-brand border border-gray-100 shadow-sm"
->>>>>>> 569184c (staff dashboarda dded)
+
         )}
       >
         <Bell size={24} />
