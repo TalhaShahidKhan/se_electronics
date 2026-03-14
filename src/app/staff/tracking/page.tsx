@@ -55,7 +55,7 @@ export default async function StaffTrackingPage() {
       <div className="p-4 space-y-6">
         {/* Page Title */}
         <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 bg-brand/10 rounded-xl text-brand">
+          <div className="p-2 bg-brand/5 rounded-xl text-brand">
             <BarChart3 size={20} />
           </div>
           <h1 className="text-xl font-bold text-gray-800">Tracking & History</h1>

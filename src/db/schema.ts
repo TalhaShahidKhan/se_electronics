@@ -532,6 +532,9 @@ export const payments = pgTable("payments", {
   receiverWalletNumber: varchar({ length: 255 }),
   receiverBankInfo: json().$type<BankInfo>(),
   amount: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
+  serviceId: varchar({ length: 255 }).references(() => services.serviceId, {
+    onDelete: "set null",
+  }),
   status: paymentStatusEnum().default("pending").notNull(),
   transactionId: varchar({ length: 255 }).unique(),
   description: text(),

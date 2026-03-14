@@ -195,6 +195,7 @@ export type PaymentDataType = {
   receiverWalletNumber: string | null;
   transactionId: string | null;
   amount: number;
+  serviceId?: string | null;
   description: string | null;
   staffId: string;
   status: Statuses;
@@ -321,3 +322,16 @@ export type NoticeRecipientType = {
   notice?: NoticeType;
 };
 
+export type StaffNotificationType = {
+  id: string;
+  staffId: string;
+  type: string;
+  message: string;
+  link: string | null;
+  isRead: boolean;
+  createdAt: Date;
+};
+
+export type CombinedNotificationType = 
+  | (NoticeRecipientType & { itemType: 'notice' }) 
+  | (StaffNotificationType & { itemType: 'action' });

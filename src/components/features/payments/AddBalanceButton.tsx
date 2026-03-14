@@ -14,6 +14,7 @@ export default function AddBalanceButton() {
   const [selectedStaff, setSelectedStaff] = useState<Partial<StaffsType> | null>(null);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
+  const [serviceId, setServiceId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,6 +50,7 @@ export default function AddBalanceButton() {
       selectedStaff.staffId,
       parseFloat(amount),
       description || undefined,
+      serviceId || undefined,
     );
     setIsSubmitting(false);
 
@@ -58,6 +60,7 @@ export default function AddBalanceButton() {
       setSelectedStaff(null);
       setAmount("");
       setDescription("");
+      setServiceId("");
     } else {
       toast.error(res.message);
     }
@@ -149,6 +152,17 @@ export default function AddBalanceButton() {
                   min="1"
                   required
                   placeholder="Enter amount to add"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Service ID (optional)</label>
+                <input
+                  type="text"
+                  value={serviceId}
+                  onChange={(e) => setServiceId(e.target.value)}
+                  placeholder="e.g., SERV-123456"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
               </div>

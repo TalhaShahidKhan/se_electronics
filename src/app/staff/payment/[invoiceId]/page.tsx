@@ -141,6 +141,22 @@ export default async function StaffInvoiceDetailsPage({
                     {payment.transactionId || "N/A"}
                   </p>
                 </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                    <Briefcase size={12} />
+                    Service ID
+                  </p>
+                  {payment.serviceId ? (
+                    <Link
+                      href={`/service-track?trackingId=${payment.serviceId}`}
+                      className="text-base font-black text-brand hover:underline"
+                    >
+                      #{payment.serviceId}
+                    </Link>
+                  ) : (
+                    <p className="text-base font-black text-gray-900">N/A</p>
+                  )}
+                </div>
               </div>
 
               <div className="h-px bg-gray-100 w-full"></div>
@@ -350,6 +366,18 @@ export default async function StaffInvoiceDetailsPage({
                   <span className="font-bold text-gray-900 text-right max-w-[55%] truncate">
                     {payment.transactionId}
                   </span>
+                </div>
+              )}
+
+              {payment.serviceId && (
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-500">Service ID</span>
+                  <Link
+                    href={`/service-track?trackingId=${payment.serviceId}`}
+                    className="font-bold text-brand hover:underline"
+                  >
+                    #{payment.serviceId}
+                  </Link>
                 </div>
               )}
 

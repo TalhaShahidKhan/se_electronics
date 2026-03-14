@@ -1,6 +1,7 @@
 "use client";
 
 import { StaffHeader } from "./StaffHeader";
+import { StaffBottomNav } from "./StaffBottomNav";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { NoticeBanner } from "../features/notices";
@@ -33,7 +34,7 @@ export function StaffLayout({ children, balance }: StaffLayoutProps) {
       
       <NoticeBanner notifications={notifications} />
 
-      <main className="flex-1 w-full max-w-4xl mx-auto pb-20">
+      <main className="flex-1 w-full max-w-4xl mx-auto pb-24 lg:pb-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname}
@@ -47,7 +48,7 @@ export function StaffLayout({ children, balance }: StaffLayoutProps) {
         </AnimatePresence>
       </main>
 
-      {/* Bottom Nav Placeholder (User said ignore for now, but I'll leave space) */}
+      <StaffBottomNav />
     </div>
   );
 }

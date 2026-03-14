@@ -70,7 +70,7 @@ export default function StaffDashboardClient({
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800 pb-24">
+      <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800">
 
         {/* Banner */}
         <div className="w-full overflow-hidden shadow-md">
@@ -185,36 +185,7 @@ export default function StaffDashboardClient({
           </div>
         </div>
 
-        {/* Logout */}
-        <div className="flex justify-center mt-8">
-          <form action={staffLogout}>
-            <button
-              type="submit"
-              className="flex items-center gap-3 px-10 py-4 rounded-md bg-gray-200 text-gray-600 font-black text-sm uppercase hover:bg-red-50 hover:text-red-500"
-            >
-              <LogOut size={20} />
-              Logout
-            </button>
-          </form>
-        </div>
       </div>
-
-      {/* MOBILE BOTTOM NAVBAR */}
-      <div className="sm:hidden fixed bottom-0 left-0 w-full bg-white border-t shadow-lg z-50">
-        <div className="grid grid-cols-4 py-2">
-          {primaryActions.map((action) => (
-            <Link
-              key={action.label}
-              href={action.href}
-              className="flex flex-col items-center justify-center text-xs font-semibold"
-            >
-              <action.icon className={action.color} size={22} />
-              <span className="text-[10px] mt-1">{action.label}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
-
     </StaffLayout>
   );
 }

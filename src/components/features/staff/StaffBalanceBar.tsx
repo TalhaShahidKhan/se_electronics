@@ -45,7 +45,7 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
               >
                 <motion.div
                   layoutId="wallet-icon"
-                  className="size-6 rounded-full bg-brand/10 flex items-center justify-center shrink-0"
+                  className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0"
                 >
                   <Wallet className="w-3.5 h-3.5 text-brand" />
                 </motion.div>
@@ -66,7 +66,7 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
             <motion.div
               layoutId="wallet-icon"
               animate={{ x: revealed ? 0 : -20 }}
-              className="size-6 rounded-full bg-brand/10 flex items-center justify-center shrink-0"
+              className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0"
             >
               <Wallet className="w-3.5 h-3.5 text-brand" />
             </motion.div>

@@ -235,7 +235,12 @@ export const createPayment = async (
  * Admin adds virtual money to a staff member's balance.
  * This amount will show as "available balance" in the staff dashboard.
  */
-export async function addVirtualBalance(staffId: string, amount: number, description?: string) {
+export async function addVirtualBalance(
+  staffId: string,
+  amount: number,
+  description?: string,
+  serviceId?: string,
+) {
   try {
     const session = await verifySession(false, "admin");
     if (!session) return { success: false, message: "Unauthorized" };
@@ -257,6 +262,7 @@ export async function addVirtualBalance(staffId: string, amount: number, descrip
       staffId,
       paymentMethod: staffData.paymentPreference || "cash",
       amount,
+      serviceId: serviceId || null,
       description: description || "Virtual balance added by admin",
       status: "credited", // credited = counted in balance but not yet requested
       date: new Date(),
@@ -268,7 +274,7 @@ export async function addVirtualBalance(staffId: string, amount: number, descrip
       await db.insert(staffNotifications).values({
         staffId,
         type: "balance_added",
-        message: `Admin added ৳${amount} to your balance.`,
+        message: `Admin added ৳${amount} to your balance${serviceId ? ` for job #${serviceId}` : ""}.`,
         link: "/staff/payment",
       });
     } catch (e) {

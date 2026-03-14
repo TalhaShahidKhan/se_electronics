@@ -39,7 +39,7 @@ export default function NoticeBanner({ notifications }: { notifications: NoticeR
 
       <div className="flex items-center gap-3 shrink-0">
         <Link 
-          href="/staff/notices" 
+          href="/staff/notifications" 
           className="px-4 py-2 bg-white text-gray-900 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-100 transition-all flex items-center gap-2"
         >
           View Notice

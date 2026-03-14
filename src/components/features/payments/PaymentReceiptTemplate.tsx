@@ -18,6 +18,7 @@ interface PaymentReceiptTemplateProps {
     staff: {
         name: string;
     };
+    serviceId?: string | null;
 }
 
 export default function PaymentReceiptTemplate({ data }: { data: PaymentReceiptTemplateProps }) {
@@ -93,6 +94,12 @@ export default function PaymentReceiptTemplate({ data }: { data: PaymentReceiptT
                             <td className="border border-black px-3 py-2 font-semibold align-top">Employee ID :</td>
                             <td className="border border-black px-3 py-2 break-all whitespace-normal">{data.staffId}</td>
                         </tr>
+                        {data.serviceId && (
+                            <tr>
+                                <td className="border border-black px-3 py-2 font-semibold align-top">Service ID :</td>
+                                <td className="border border-black px-3 py-2 break-all whitespace-normal">{data.serviceId}</td>
+                            </tr>
+                        )}
                         {data.paymentMethod === 'bank' && data.receiverBankInfo && (
                             <>
                                 <tr>
