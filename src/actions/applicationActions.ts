@@ -2,7 +2,7 @@
 
 import { ApplicationMessages } from "@/constants/messages"
 import { db } from "@/db/drizzle"
-import { agreements, applications, services, staffs, subscriptions } from "@/db/schema"
+import { agreements, applications, customers, services, staffs, subscriptions } from "@/db/schema"
 import { sendSMS, verifySession } from "@/lib"
 import { getObjectUrl } from "@/lib/s3"
 import { ApplicationTypes, SearchParams } from "@/types"
@@ -234,17 +234,51 @@ export const updateApplicationStatus = async (applicationId: string, updates: { 
                 .leftJoin(subscriptions, eq(subscriptions.subscriptionId, applications.applicantId))
                 .where(eq(applications.applicationId, applicationId))
 
-            await sendSMS(
-                applicantData[0].phone,
-                renderText(
-                    messageContent,
-                    {
-                        applicant_name: applicantData[0].name,
-                        service_id: serviceId,
-                        tracking_link: generateUrl('service-tracking', { trackingId: serviceId }),
-                    }
-                )
-            )
+            const fullMessage = renderText(
+                messageContent,
+                {
+                    applicant_name: applicantData[0].name,
+                    service_id: serviceId,
+                    tracking_link: generateUrl(
+                        applicationData[0].type === 'service_application' ? 'service-tracking' : 'application-tracking',
+                        { trackingId: applicationData[0].type === 'service_application' ? serviceId : applicationId }
+                    ),
+                }
+            );
+
+            const { notifyCustomer, notifyStaff } = await import("./notificationActions");
+
+            if (applicationData[0].type === 'staff_application') {
+                const shortSMS = `প্রিয় {applicant_name}, আপনার আবেদনটি {status} হয়েছে। বিস্তারিত দেখুন আপনার ড্যাশবোর্ডে।`;
+                await notifyStaff({
+                    staffId: applicationData[0].applicantId,
+                    phoneNumber: applicantData[0].phone,
+                    type: 'application_update',
+                    message: fullMessage,
+                    shortMessage: renderText(shortSMS, { applicant_name: applicantData[0].name, status: status === 'approved' ? 'অনুমোদিত' : 'বাতিল' }),
+                    link: '/staff/profile'
+                });
+            } else {
+                // For service and subscription applications
+                // Try to find if they are a registered customer
+                const customerRecord = await db.query.customers.findFirst({
+                    where: eq(customers.phone, applicantData[0].phone)
+                });
+
+                if (customerRecord) {
+                    const shortSMS = `প্রিয় {applicant_name}, আপনার আবেদনের সর্বশেষ আপডেট দেখতে ড্যাশবোর্ডে লগইন করুন।`;
+                    await notifyCustomer({
+                        customerId: customerRecord.customerId,
+                        phoneNumber: applicantData[0].phone,
+                        type: 'application_update',
+                        message: fullMessage,
+                        shortMessage: renderText(shortSMS, { applicant_name: applicantData[0].name }),
+                        link: '/customer/profile'
+                    });
+                } else {
+                    await sendSMS(applicantData[0].phone, fullMessage);
+                }
+            }
         }
 
         revalidatePath('/applications')

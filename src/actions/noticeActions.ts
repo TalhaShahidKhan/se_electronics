@@ -154,26 +154,61 @@ export const getStaffNotices = async () => {
     return { success: false, message: "Could not fetch notifications" };
   }
 };
+export const getCustomerNotices = async () => {
+  try {
+    const session = await verifySession(false, "customer");
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    const data = await db.query.noticeRecipients.findMany({
+      where: eq(noticeRecipients.customerId, session.userId as string),
+      with: {
+        notice: true
+      },
+      orderBy: [desc(noticeRecipients.createdAt)]
+    });
+
+    return { success: true, data };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Could not fetch notifications" };
+  }
+};
 
 export const markNoticeAsRead = async (recipientId: string) => {
   try {
-    const session = await verifySession(false, "staff");
+    const session = await verifySession(false);
     if (!session) return { success: false, message: "Unauthorized" };
 
-    await db
-      .update(noticeRecipients)
-      .set({
-        isRead: true,
-        readAt: new Date(),
-      })
-      .where(
-        and(
-          eq(noticeRecipients.id, recipientId),
-          eq(noticeRecipients.staffId, session.userId as string)
-        )
-      );
+    if (session.role === "staff") {
+      await db
+        .update(noticeRecipients)
+        .set({
+          isRead: true,
+          readAt: new Date(),
+        })
+        .where(
+          and(
+            eq(noticeRecipients.id, recipientId),
+            eq(noticeRecipients.staffId, session.userId as string)
+          )
+        );
+      revalidatePath("/staff/profile");
+    } else if (session.role === "customer") {
+      await db
+        .update(noticeRecipients)
+        .set({
+          isRead: true,
+          readAt: new Date(),
+        })
+        .where(
+          and(
+            eq(noticeRecipients.id, recipientId),
+            eq(noticeRecipients.customerId, session.userId as string)
+          )
+        );
+      revalidatePath("/customer/profile");
+    }
 
-    revalidatePath("/staff/profile");
     return { success: true, message: "Marked as read" };
   } catch (error) {
     console.error(error);

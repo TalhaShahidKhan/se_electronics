@@ -124,11 +124,8 @@ export const getPaymentByNumber = async (invoiceNumber: string) => {
     const paymentData = await db.query.payments.findFirst({
       where: eq(payments.invoiceNumber, invoiceNumber),
       with: {
-        staff: {
-          columns: {
-            name: true,
-          },
-        },
+        staff: true,
+        service: true,
       },
     });
     return { success: true, data: paymentData };
@@ -160,34 +157,28 @@ export const updatePaymentStatus = async (
       .set({ status })
       .where(eq(payments.paymentId, paymentId));
 
-    // Send SMS on completed
-    if (status === "completed" && paymentData.staff?.phone) {
-      const { sendSMS } = await import("@/lib");
-      await sendSMS(
-        paymentData.staff.phone,
-        `আপনার পেমেন্ট রিকোয়েস্ট (৳${paymentData.amount}) সম্পন্ন হয়েছে। ধন্যাবাদ।`,
-      );
-    }
+    // Send Notification and SMS
+    const { notifyStaff } = await import("./notificationActions");
+    const statusMessages: Record<string, string> = {
+      pending: `Your payment request of ৳${paymentData.amount} is being processed.`,
+      approved: `Your payment request of ৳${paymentData.amount} has been approved and is being processed.`,
+      completed: `Your payment of ৳${paymentData.amount} has been completed!`,
+      rejected: `Your payment request of ৳${paymentData.amount} has been rejected.`,
+    };
 
-    // Create staff notification
-    try {
-      const { staffNotifications } = await import("@/db/schema");
-      const statusMessages: Record<string, string> = {
-        pending: `Your payment request of ৳${paymentData.amount} is being processed.`,
-        approved: `Your payment request of ৳${paymentData.amount} has been approved and is being processed.`,
-        completed: `Your payment of ৳${paymentData.amount} has been completed!`,
-        rejected: `Your payment request of ৳${paymentData.amount} has been rejected.`,
-      };
-      if (statusMessages[status]) {
-        await db.insert(staffNotifications).values({
-          staffId: paymentData.staffId,
-          type: "payment_update",
-          message: statusMessages[status],
-          link: "/staff/payment",
+    if (statusMessages[status]) {
+        const shortSMS = status === "completed" 
+            ? `আপনার পেমেন্ট রিকোয়েস্ট (৳${paymentData.amount}) সম্পন্ন হয়েছে। ধন্যাবাদ।`
+            : `আপনার পেমেন্ট রিকোয়েস্ট (৳${paymentData.amount}) এখন ${status} অবস্থায় আছে। বিস্তারিত দেখুন পোর্টালে।`;
+        
+        await notifyStaff({
+            staffId: paymentData.staffId,
+            phoneNumber: paymentData.staff.phone!,
+            type: "payment_update",
+            message: statusMessages[status],
+            shortMessage: shortSMS,
+            link: "/staff/payment",
         });
-      }
-    } catch (e) {
-      console.error("Failed to create notification:", e);
     }
 
     revalidatePath("/payments");
@@ -268,18 +259,16 @@ export async function addVirtualBalance(
       date: new Date(),
     });
 
-    // Create staff notification
-    try {
-      const { staffNotifications } = await import("@/db/schema");
-      await db.insert(staffNotifications).values({
-        staffId,
-        type: "balance_added",
-        message: `Admin added ৳${amount} to your balance${serviceId ? ` for job #${serviceId}` : ""}.`,
-        link: "/staff/payment",
-      });
-    } catch (e) {
-      console.error("Notification error:", e);
-    }
+    // Notify Staff
+    const { notifyStaff } = await import("./notificationActions");
+    await notifyStaff({
+      staffId,
+      phoneNumber: staffData.phone,
+      type: "balance_added",
+      message: `Admin added ৳${amount} to your balance${serviceId ? ` for job #${serviceId}` : ""}.`,
+      shortMessage: `৳${amount} আপনার ব্যালেন্সে যোগ করা হয়েছে। বিস্তারিত আপনার পোর্টালে দেখুন।`,
+      link: "/staff/payment",
+    });
 
     revalidatePath("/payments");
     revalidatePath("/staff/profile");

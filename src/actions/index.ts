@@ -9,4 +9,5 @@ export * from './paymentActions'
 export * from './serviceActions'
 export * from './staffActions'
 export * from './subscriptionActions'
+export * from './notificationActions'
 

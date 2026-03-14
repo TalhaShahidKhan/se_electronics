@@ -121,7 +121,15 @@ export const sendIdCardDownloadLink = async (staffData: {
       },
     );
 
-    await sendSMS(phoneNumber, message);
+    const { notifyStaff } = await import("./notificationActions");
+    await notifyStaff({
+      staffId,
+      phoneNumber,
+      type: "id_card",
+      message: message,
+      shortMessage: `প্রিয় {staff_name}, আপনার আইডি কার্ড ডাউনলোড করার জন্য ড্যাশবোর্ডে লগইন করুন।`,
+      link: "/staff/profile", // Or a specific link if available
+    });
 
     return { success: true, message: "Download link sent" };
   } catch (error) {
@@ -177,7 +185,15 @@ export const sendCertificateLink = async (formData: FormData) => {
       download_link: generateUrl("certificate-download", { token }),
     });
 
-    await sendSMS(phone, message);
+    const { notifyStaff } = await import("./notificationActions");
+    await notifyStaff({
+      staffId: staffId!,
+      phoneNumber: phone,
+      type: "certificate",
+      message: message,
+      shortMessage: `প্রিয় {ownerName}, আপনার সার্টিফিকেট ডাউনলোড করার জন্য ড্যাশবোর্ডে লগইন করুন।`,
+      link: "/staff/profile",
+    });
 
     return { success: true, message: "Certificate link sent" };
   } catch (error) {
@@ -656,13 +672,28 @@ export const toggleStaffStatus = async (staffId: string, status: boolean) => {
       .set({ isActiveStaff: status })
       .where(eq(staffs.staffId, staffId));
 
+    const { notifyStaff } = await import("./notificationActions");
     if (!status) {
       // Sending block notification SMS
       const blockMessage = `প্রিয় ${staff.name},\nআপনার অ্যাকাউন্টটি সাময়িকভাবে বন্ধ (Blocked) করা হয়েছে। বিস্তারিত জানতে বা অ্যাকাউন্টটি সক্রিয় করতে এডমিনের সাথে যোগাযোগ করুন। ${contactDetails.customerCare}`;
-      await sendSMS(staff.phone, blockMessage);
+      await notifyStaff({
+        staffId,
+        phoneNumber: staff.phone,
+        type: "account_status",
+        message: blockMessage,
+        shortMessage: `আপনার অ্যাকাউন্টটি সাময়িকভাবে বন্ধ করা হয়েছে। বিস্তারিত জানতে এডমিনের সাথে যোগাযোগ করুন।`,
+        link: "/staff/profile",
+      });
     } else {
       const activeMessage = `প্রিয় ${staff.name},\nআপনার অ্যাকাউন্টটি পুনরায় সক্রিয় (Activated) করা হয়েছে। আপনি এখন লগইন করে কাজ করতে পারবেন। ${contactDetails.customerCare}`;
-      await sendSMS(staff.phone, activeMessage);
+      await notifyStaff({
+        staffId,
+        phoneNumber: staff.phone,
+        type: "account_status",
+        message: activeMessage,
+        shortMessage: `আপনার অ্যাকাউন্টটি পুনরায় সক্রিয় করা হয়েছে। আপনি এখন কাজ করতে পারবেন।`,
+        link: "/staff/profile",
+      });
     }
 
     revalidatePath("/staffs");

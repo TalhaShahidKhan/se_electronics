@@ -45,25 +45,46 @@ export const sendInvoiceDownloadLink = async (
     };
 
     await saveAuthToken({ token, expiresAt, payload });
-    await sendSMS(
-      phoneNumber,
-      renderText(
-        invoiceType === "staff-payment:repair"
-          ? MediaDownloadMessages.REPAIR_PAYMENT_INVOICE
-          : invoiceType === "staff-payment:install"
-            ? MediaDownloadMessages.INSTALL_PAYMENT_INVOICE
-            : MediaDownloadMessages.CUSTOMER_REGISTRATION,
-        {
-          name,
-          customer_id: customerId,
-          invoice_number: invoiceNumber,
-          date: formatDate(date),
-          total_price: `${totalPrice.toLocaleString()} Tk`,
-          download_link: generateUrl("invoice-download", { token }),
-          dashboard_link: generateUrl("customer-login", {}),
-        },
-      ),
+
+    const fullMessage = renderText(
+      invoiceType === "staff-payment:repair"
+        ? MediaDownloadMessages.REPAIR_PAYMENT_INVOICE
+        : invoiceType === "staff-payment:install"
+          ? MediaDownloadMessages.INSTALL_PAYMENT_INVOICE
+          : MediaDownloadMessages.CUSTOMER_REGISTRATION,
+      {
+        name,
+        customer_id: customerId,
+        invoice_number: invoiceNumber,
+        date: formatDate(date),
+        total_price: `${totalPrice.toLocaleString()} Tk`,
+        download_link: generateUrl("invoice-download", { token }),
+        dashboard_link: generateUrl("customer-login", {}),
+      },
     );
+
+    const shortenedSMS = renderText(
+      `প্রিয় গ্রাহক {name}, এস ই ইলেকট্রনিকস এ আপনাকে স্বাগতম! ইনভয়েস ও সার্ভিস আপডেট দেখতে লগইন করুন: {dashboard_link}`,
+      {
+        name,
+        dashboard_link: generateUrl("customer-login", {}),
+      },
+    );
+
+    if (customerId) {
+      const { notifyCustomer } = await import("./notificationActions");
+      await notifyCustomer({
+        customerId,
+        phoneNumber,
+        type: invoiceType,
+        message: fullMessage,
+        shortMessage: shortenedSMS,
+        link: "/customer/profile",
+      });
+    } else {
+      await sendSMS(phoneNumber, fullMessage);
+    }
+
     return { success: true, message: "Download link sent" };
   } catch (error) {
     console.error(error);

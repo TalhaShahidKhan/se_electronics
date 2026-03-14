@@ -414,3 +414,38 @@ export const markCustomerNotificationAsRead = async (id: string) => {
     return { success: false, message: "Something went wrong" };
   }
 };
+
+export const getCustomerProfileStats = async (customerId: string) => {
+  try {
+    const session = await verifySession(false, "customer");
+    if (!session || session.userId !== customerId) {
+      return { success: false, message: "Unauthorized" };
+    }
+
+    const { services, subscriptions, customers } = await import("@/db/schema");
+    const { count, and, eq } = await import("drizzle-orm");
+
+    const customer = await db.query.customers.findFirst({
+        where: eq(customers.customerId, customerId),
+        columns: { phone: true }
+    });
+
+    if (!customer) return { success: false, message: "Customer not found" };
+
+    const [servicesDone, activeSubs] = await Promise.all([
+      db.$count(services, eq(services.customerId, customerId)),
+      db.$count(subscriptions, and(eq(subscriptions.phone, customer.phone), eq(subscriptions.isActive, true)))
+    ]);
+
+    return {
+      success: true,
+      data: {
+        totalServices: servicesDone,
+        activeSubscriptions: activeSubs
+      }
+    };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Could not fetch stats" };
+  }
+};

@@ -7,7 +7,6 @@ import {
   BarChart3,
   CheckCircle,
   Clock,
-  CreditCard,
   TrendingUp,
   Wrench,
   XCircle,
@@ -107,143 +106,71 @@ export default async function StaffTrackingPage() {
         </div>
 
         {/* Service History */}
-        <div className="space-y-3">
-          <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
+        <div className="space-y-4">
+          <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">
             Service History
           </h2>
           {services.length === 0 ? (
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-500">
-              <Wrench size={36} className="mx-auto mb-2 text-gray-200" />
-              <p className="text-sm font-semibold">No service history.</p>
+            <div className="bg-white p-12 rounded-[2rem] shadow-sm border border-gray-100 text-center text-gray-500">
+              <Wrench size={48} className="mx-auto mb-4 text-gray-200" />
+              <p className="font-bold text-gray-700">No service history found.</p>
+              <p className="text-sm mt-1 text-gray-400 font-medium">Your completed and active services will show up here.</p>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse min-w-[500px]">
-                  <thead>
-                    <tr className="bg-gray-50/50 text-[10px] text-gray-400 uppercase font-bold tracking-wider">
-                      <th className="px-4 py-3">Service ID</th>
-                      <th className="px-4 py-3">Customer</th>
-                      <th className="px-4 py-3">Product</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3 text-right">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-sm divide-y divide-gray-50">
-                    {services.slice(0, 20).map((service: any) => {
-                      const currentStatus =
-                        service.statusHistory?.[0]?.status || "pending";
-                      return (
-                        <tr
-                          key={service.serviceId}
-                          className="hover:bg-gray-50/30 transition-colors"
-                        >
-                          <td className="px-4 py-4 font-mono text-gray-400 text-[10px] font-bold">
-                            <Link
-                              href={`/service-track?trackingId=${service.serviceId}`}
-                              className="hover:text-brand transition-colors"
-                            >
-                              #{service.serviceId.substring(0, 8)}
-                            </Link>
-                          </td>
-                          <td className="px-4 py-4 font-semibold text-gray-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-24">
+              {services.map((service: any) => {
+                const currentStatus = service.statusHistory?.[0]?.status || "pending";
+                return (
+                  <div 
+                    key={service.serviceId} 
+                    className="bg-white rounded-[1.5rem] p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all active:scale-[0.98] group"
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-4">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                           <span className="text-[9px] font-black font-mono text-gray-300 uppercase tracking-tighter">
+                             #{service.serviceId.substring(0, 8)}
+                           </span>
+                           <span className="size-1 rounded-full bg-gray-200" />
+                           <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                             {new Date(service.createdAt).toLocaleDateString()}
+                           </span>
+                        </div>
+                        <h3 className="text-base font-black text-gray-900 truncate group-hover:text-brand transition-colors">
                             {service.customerName}
-                          </td>
-                          <td className="px-4 py-4 text-gray-500">
-                            <span className="capitalize text-xs font-bold block">
-                              {service.productType}
-                            </span>
-                            <div className="text-[10px] text-gray-400 truncate max-w-[120px]">
-                              {service.productModel}
-                            </div>
-                          </td>
-                          <td className="px-4 py-4">
-                            <span
-                              className={clsx(
-                                "px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider",
-                                getStatusColor(currentStatus),
-                              )}
-                            >
-                              {currentStatus.replace("_", " ")}
-                            </span>
-                          </td>
-                          <td className="px-4 py-4 text-gray-400 text-[11px] font-medium text-right font-mono">
-                            {new Date(service.createdAt).toLocaleDateString()}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-        </div>
+                        </h3>
+                        <p className="text-[10px] font-bold text-gray-500 mt-0.5 uppercase tracking-tight flex items-center gap-1">
+                          <span className="text-brand/60">{service.productType}</span>
+                          <span className="text-gray-300">•</span>
+                          <span className="truncate">{service.productModel}</span>
+                        </p>
+                      </div>
+                      <span className={clsx(
+                        "px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider whitespace-nowrap shadow-sm border",
+                        currentStatus === "completed" ? "bg-emerald-50 text-emerald-700 border-emerald-100" :
+                        currentStatus === "canceled" ? "bg-rose-50 text-rose-700 border-rose-100" :
+                        "bg-brand/5 text-brand border-brand/10"
+                      )}>
+                        {currentStatus.replace("_", " ")}
+                      </span>
+                    </div>
 
-        {/* Payment History */}
-        <div className="space-y-3">
-          <h2 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
-            Payment History
-          </h2>
-          {paymentsList.length === 0 ? (
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-500">
-              <CreditCard size={36} className="mx-auto mb-2 text-gray-200" />
-              <p className="text-sm font-semibold">No payment records.</p>
-            </div>
-          ) : (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse min-w-[500px]">
-                  <thead>
-                    <tr className="bg-gray-50/50 text-[10px] text-gray-400 uppercase font-bold tracking-wider">
-                      <th className="px-4 py-3">Date</th>
-                      <th className="px-4 py-3">Payment ID</th>
-                      <th className="px-4 py-3">Amount</th>
-                      <th className="px-4 py-3">Method</th>
-                      <th className="px-4 py-3 text-right">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-sm divide-y divide-gray-50">
-                    {paymentsList.map((payment: any) => (
-                      <tr
-                        key={payment.paymentId}
-                        className="hover:bg-gray-50/30 transition-colors"
-                      >
-                        <td className="px-4 py-4 text-gray-500 text-[11px] font-mono">
-                          {new Date(
-                            payment.date || payment.createdAt,
-                          ).toLocaleDateString()}
-                        </td>
-                        <td className="px-4 py-4 font-mono text-gray-400 text-[10px] font-bold">
-                          {payment.paymentId?.substring(0, 8)}
-                        </td>
-                        <td className="px-4 py-4 font-bold text-gray-900">
-                          ৳{payment.amount?.toLocaleString()}
-                        </td>
-                        <td className="px-4 py-4 text-gray-500 capitalize text-xs font-bold">
-                          {payment.paymentMethod}
-                        </td>
-                        <td className="px-4 py-4 text-right">
-                          <span
-                            className={clsx(
-                              "px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider",
-                              payment.status === "completed"
-                                ? "bg-emerald-100 text-emerald-700"
-                                : payment.status === "processing"
-                                  ? "bg-blue-100 text-blue-700"
-                                  : payment.status === "rejected"
-                                    ? "bg-rose-100 text-rose-700"
-                                    : "bg-amber-100 text-amber-700",
-                            )}
-                          >
-                            {payment.status}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    <div className="pt-4 border-t border-gray-50 flex items-center justify-between">
+                         <div className="flex -space-x-2">
+                            <div className="size-6 rounded-full bg-brand/10 border-2 border-white flex items-center justify-center text-brand">
+                                <Wrench size={10} />
+                            </div>
+                         </div>
+                         <Link 
+                            href={`/service-track?trackingId=${service.serviceId}`}
+                            className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-1 hover:text-brand transition-colors"
+                         >
+                            Details <TrendingUp size={12} />
+                         </Link>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

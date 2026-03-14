@@ -551,6 +551,10 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
     fields: [payments.staffId],
     references: [staffs.staffId],
   }),
+  service: one(services, {
+    fields: [payments.serviceId],
+    references: [services.serviceId],
+  }),
 }));
 
 export const staffComplaints = pgTable("staffComplaints", {
@@ -726,8 +730,9 @@ export const noticeRecipients = pgTable("noticeRecipients", {
     .references(() => notices.id, { onDelete: "cascade" })
     .notNull(),
   staffId: varchar({ length: 255 })
-    .references(() => staffs.staffId, { onDelete: "cascade" })
-    .notNull(),
+    .references(() => staffs.staffId, { onDelete: "cascade" }),
+  customerId: varchar({ length: 255 })
+    .references(() => customers.customerId, { onDelete: "cascade" }),
   isRead: boolean().default(false).notNull(),
   readAt: timestamp({ withTimezone: true }),
   isAcknowledged: boolean().default(false).notNull(),
@@ -753,6 +758,10 @@ export const noticeRecipientsRelations = relations(
     staff: one(staffs, {
       fields: [noticeRecipients.staffId],
       references: [staffs.staffId],
+    }),
+    customer: one(customers, {
+      fields: [noticeRecipients.customerId],
+      references: [customers.customerId],
     }),
   }),
 );

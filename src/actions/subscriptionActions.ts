@@ -218,22 +218,44 @@ export const createSubscriber = async (prevState: any, formData: FormData) => {
 
     if (applicationId) {
       // Sending SMSs
-      await Promise.all([
+      const fullMessage = renderText(ApplicationMessages.subscription.SUBMISSION, {
+        applicant_name: restData.name,
+        subscription_id: subscriptionId,
+        tracking_link: generateUrl("application-tracking", {
+          trackingId: applicationId,
+        }),
+      });
+
+      const { notifyCustomer } = await import("./notificationActions");
+      const { customers } = await import("@/db/schema");
+
+      // Try to find if they are a registered customer
+      const customerRecord = await db.query.customers.findFirst({
+        where: eq(customers.phone, restData.phone),
+      });
+
+      const promises = [
         sendSMS(
-          process.env.ADMIN_PHONE_NUMBER!,
-          ApplicationMessages.subscription.ADMIN_NOTIF,
+            process.env.ADMIN_PHONE_NUMBER!,
+            ApplicationMessages.subscription.ADMIN_NOTIF,
         ),
-        sendSMS(
-          restData.phone,
-          renderText(ApplicationMessages.subscription.SUBMISSION, {
-            applicant_name: restData.name,
-            subscription_id: subscriptionId,
-            tracking_link: generateUrl("application-tracking", {
-              trackingId: applicationId,
-            }),
-          }),
-        ),
-      ]);
+      ];
+
+      if (customerRecord) {
+        const shortSMS = `প্রিয় {applicant_name}, আপনার সাবস্ক্রিপশন আবেদনটি (ID: {subscription_id}) জমা হয়েছে। বিস্তারিত দেখুন ড্যাশবোর্ডে।`;
+        promises.push(notifyCustomer({
+          customerId: customerRecord.customerId,
+          phoneNumber: restData.phone,
+          type: "subscription_submission",
+          message: fullMessage,
+          shortMessage: renderText(shortSMS, { applicant_name: restData.name, subscription_id: subscriptionId }),
+          link: "/customer/profile",
+        }));
+      } else {
+        promises.push(sendSMS(restData.phone, fullMessage));
+      }
+
+      await Promise.all(promises);
     } else {
       console.error("applicationId does not exists");
     }

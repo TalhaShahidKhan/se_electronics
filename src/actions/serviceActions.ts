@@ -419,14 +419,36 @@ export async function createService(prevState: any, formData: FormData) {
       ]);
     } else if (originSource === "dashboard") {
       // Else this form is created from the dashboard so send a SMS to the customer with service status tracking link
-      const smsMessageContent = renderText(ServiceMessages.CONFIRMATION, {
+      const fullMessage = renderText(ServiceMessages.CONFIRMATION, {
         customer_name: validatedCustomerData.customerName,
         service_id: serviceId,
         tracking_link: generateUrl("service-tracking", {
           trackingId: serviceId,
         }),
       });
-      await sendSMS(validatedCustomerData.customerPhone, smsMessageContent);
+      
+      const shortSMS = renderText(
+         `প্রিয় গ্রাহক {customer_name}, আপনার সার্ভিস অনুরোধটি (ID: {service_id}) গ্রহণ করা হয়েছে। বিস্তারিত দেখুন: {tracking_link}`,
+         {
+           customer_name: validatedCustomerData.customerName,
+           service_id: serviceId,
+           tracking_link: generateUrl("service-tracking", { trackingId: serviceId }),
+         }
+      );
+
+      if (validatedCustomerData.customerId) {
+        const { notifyCustomer } = await import("./notificationActions");
+        await notifyCustomer({
+          customerId: validatedCustomerData.customerId,
+          phoneNumber: validatedCustomerData.customerPhone,
+          type: "service_confirmation",
+          message: fullMessage,
+          shortMessage: shortSMS,
+          link: `/customer/services/${serviceId}`,
+        });
+      } else {
+        await sendSMS(validatedCustomerData.customerPhone, fullMessage);
+      }
     }
 
     return { success: true, message: "Added to service list" };
@@ -525,39 +547,80 @@ export const appointStaff = async (
       });
     });
 
-    await Promise.all([
-      sendSMS(
-        validatedData.customerPhone,
-        renderText(
-          validatedData.serviceType === "install"
-            ? ServiceMessages.CUSTOMER_INSTALL
-            : ServiceMessages.CUSTOMER_REPAIR,
-          {
-            customer_name: validatedData.customerName,
-            service_id: validatedData.serviceId,
-          },
-        ),
-      ),
-      sendSMS(
-        validatedData.staffPhone,
-        renderText(
-          validatedData.serviceType === "install"
-            ? ServiceMessages.ELECTRICIAN_APPOINT
-            : ServiceMessages.TECHNICIAN_APPOINT,
-          {
-            staff_name: validatedData.staffName,
-            customer_name: validatedData.customerName,
-            customer_phone: validatedData.customerPhone,
-            service_id: validatedData.serviceId,
-            product_model: validatedData.productModel,
-            customer_address: validatedData.customerAddress,
-            service_report_url: generateUrl("service-report", {
-              serviceId: validatedData.serviceId,
-            }),
-          },
-        ),
-      ),
-    ]);
+    const service = await db.query.services.findFirst({
+      where: eq(services.serviceId, validatedData.serviceId),
+      columns: { customerId: true },
+    });
+
+    const customerMessage = renderText(
+      validatedData.serviceType === "install"
+        ? ServiceMessages.CUSTOMER_INSTALL
+        : ServiceMessages.CUSTOMER_REPAIR,
+      {
+        customer_name: validatedData.customerName,
+        service_id: validatedData.serviceId,
+      },
+    );
+
+    const staffMessage = renderText(
+      validatedData.serviceType === "install"
+        ? ServiceMessages.ELECTRICIAN_APPOINT
+        : ServiceMessages.TECHNICIAN_APPOINT,
+      {
+        staff_name: validatedData.staffName,
+        customer_name: validatedData.customerName,
+        customer_phone: validatedData.customerPhone,
+        service_id: validatedData.serviceId,
+        product_model: validatedData.productModel,
+        customer_address: validatedData.customerAddress,
+        service_report_url: generateUrl("service-report", {
+          serviceId: validatedData.serviceId,
+        }),
+      },
+    );
+
+    const { notifyCustomer, notifyStaff } = await import("./notificationActions");
+
+    const promises: Promise<any>[] = [];
+
+    // Notify Customer
+    if (service?.customerId) {
+      const shortCustomerSMS = renderText(
+        `প্রিয় গ্রাহক {customer_name}, আপনার {service_id} সার্ভিসের জন্য আমাদের টিম নিযুক্ত করা হয়েছে। বিস্তারিত দেখুন: {tracking_link}`,
+        {
+          customer_name: validatedData.customerName,
+          service_id: validatedData.serviceId,
+          tracking_link: generateUrl("service-tracking", { trackingId: validatedData.serviceId }),
+        }
+      );
+      promises.push(notifyCustomer({
+        customerId: service.customerId,
+        phoneNumber: validatedData.customerPhone,
+        type: "staff_appointed",
+        message: customerMessage,
+        shortMessage: shortCustomerSMS,
+        link: `/customer/services/${validatedData.serviceId}`,
+      }));
+    } else {
+      promises.push(sendSMS(validatedData.customerPhone, customerMessage));
+    }
+
+    // Notify Staff
+    if (validatedData.staffId) {
+      const shortStaffSMS = `নতুন সার্ভিস নিয়োগ করা হয়েছে (ID: ${validatedData.serviceId})। বিস্তারিত আপনার ড্যাশবোর্ডে দেখুন।`;
+      promises.push(notifyStaff({
+        staffId: validatedData.staffId,
+        phoneNumber: validatedData.staffPhone,
+        type: "service_appointed",
+        message: staffMessage,
+        shortMessage: shortStaffSMS,
+        link: `/staff/services/${validatedData.serviceId}`,
+      }));
+    } else {
+      promises.push(sendSMS(validatedData.staffPhone, staffMessage));
+    }
+
+    await Promise.all(promises);
 
     revalidatePath("/services");
     revalidatePath("/installations");
@@ -676,7 +739,7 @@ export const updateService = async (
 
     // Send completion SMS if admin wants it
     if (sendCompletionSMS) {
-      const message = renderText(
+      const fullMessage = renderText(
         serviceData[0].type === "install"
           ? ServiceMessages.COMPLETION_INSTALL
           : ServiceMessages.COMPLETION_REPAIR,
@@ -686,7 +749,33 @@ export const updateService = async (
           feedback_url: generateUrl("feedback", { serviceId: serviceId }),
         },
       );
-      await sendSMS(restData.customerPhone, message);
+
+      const serviceRecord = await db.query.services.findFirst({
+        where: eq(services.serviceId, serviceId),
+        columns: { customerId: true },
+      });
+
+      if (serviceRecord?.customerId) {
+        const { notifyCustomer } = await import("./notificationActions");
+        const shortSMS = renderText(
+          `প্রিয় গ্রাহক {customer_name}, আপনার সার্ভিসটি (ID: {service_id}) সম্পন্ন হয়েছে। আপনার মূল্যবান ফিডব্যাক দিন: {feedback_url}`,
+          {
+            customer_name: restData.customerName,
+            service_id: serviceId,
+            feedback_url: generateUrl("feedback", { serviceId: serviceId }),
+          }
+        );
+        await notifyCustomer({
+          customerId: serviceRecord.customerId,
+          phoneNumber: restData.customerPhone,
+          type: "service_completed",
+          message: fullMessage,
+          shortMessage: shortSMS,
+          link: `/customer/services/${serviceId}`,
+        });
+      } else {
+        await sendSMS(restData.customerPhone, fullMessage);
+      }
     }
 
     // Updating images if there is any

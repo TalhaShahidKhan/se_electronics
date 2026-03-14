@@ -266,6 +266,66 @@ export default async function StaffInvoiceDetailsPage({
                     )}
                   </div>
                 </div>
+
+                {/* Customer Information (New) */}
+                {payment.service && (
+                   <div className="space-y-6">
+                    <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.25em] flex items-center gap-2">
+                        <User size={14} className="text-brand" />
+                        Customer Information
+                    </h3>
+                    <div className="bg-brand/5 rounded-3xl p-6 space-y-4 border border-brand/10">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Name</p>
+                                <p className="text-sm font-black text-gray-900">{payment.service.customerName}</p>
+                            </div>
+                            <Link 
+                                href={`/staff/customers/${payment.service.customerId}`}
+                                className="px-4 py-2 bg-white rounded-xl text-[10px] font-black text-brand uppercase tracking-tighter border border-brand/20 shadow-sm hover:bg-brand hover:text-white transition-all"
+                            >
+                                View Profile
+                            </Link>
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Phone</p>
+                            <p className="text-sm font-bold text-gray-700">{payment.service.customerPhone}</p>
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Address</p>
+                            <p className="text-sm font-bold text-gray-700 leading-tight">{payment.service.customerAddress}</p>
+                        </div>
+                    </div>
+                   </div>
+                )}
+
+                {/* Service Information (New) */}
+                {payment.service && (
+                   <div className="space-y-6">
+                    <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.25em] flex items-center gap-2 text-right justify-end">
+                        Service details
+                        <Activity size={14} className="text-brand" />
+                    </h3>
+                    <div className="bg-gray-50 rounded-3xl p-6 space-y-4 border border-gray-100 text-right">
+                        <div>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Type</p>
+                            <p className="text-sm font-black text-brand uppercase">{payment.service.type}</p>
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Product</p>
+                            <p className="text-sm font-bold text-gray-700">
+                                {payment.service.productType} • {payment.service.productModel}
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Status</p>
+                            <p className="text-sm font-black text-gray-900 uppercase">
+                                {payment.service.isActive ? "Active" : "Closed"}
+                            </p>
+                        </div>
+                    </div>
+                   </div>
+                )}
               </div>
 
               {payment.description && (
@@ -311,152 +371,226 @@ export default async function StaffInvoiceDetailsPage({
       </div>
 
       {/* ─────────────── MOBILE VIEW (Steadfast-style) ─────────────── */}
-      <div className="lg:hidden bg-gray-100 min-h-screen pb-10">
+      <div className="lg:hidden bg-gray-100 min-h-screen pb-24">
         {/* Top Bar */}
-        <div className="bg-brand text-white px-4 py-3 flex items-center gap-3">
+        <div className="bg-brand text-white px-4 py-3 flex items-center gap-3 shadow-md">
           <Link href="/staff/payment">
             <ChevronLeft size={22} />
           </Link>
-          <h2 className="font-bold">Payment Details</h2>
+          <h2 className="font-bold tracking-tight">Payment Details</h2>
         </div>
 
         <div className="p-3 space-y-3">
           {/* ── Invoice Header Block ── */}
           <div className="bg-white rounded-xl p-4 shadow-sm">
-            <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">
+            <p className="text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
               INVOICE
             </p>
-            <p className="font-bold text-gray-900 text-sm">{payment.invoiceNumber}</p>
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-black text-gray-900 text-base">{payment.invoiceNumber}</p>
               <span
                 className={clsx(
-                  "text-xs font-bold px-2 py-0.5 rounded-full",
+                  "text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg shadow-sm border",
                   payment.status === "completed"
-                    ? "bg-emerald-100 text-emerald-700"
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-100"
                     : payment.status === "processing"
-                    ? "bg-blue-100 text-blue-700"
+                    ? "bg-blue-50 text-blue-700 border-blue-100"
                     : payment.status === "rejected"
-                    ? "bg-rose-100 text-rose-700"
-                    : "bg-amber-100 text-amber-700"
+                    ? "bg-rose-50 text-rose-700 border-rose-100"
+                    : "bg-amber-50 text-amber-700 border-amber-100"
                 )}
               >
-                {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
+                {payment.status}
               </span>
-              <p className="text-xs text-gray-400">
-                {formatDate(payment.date || payment.createdAt!)}
-              </p>
             </div>
+            <p className="text-xs text-gray-400 font-bold">
+              {formatDate(payment.date || payment.createdAt!)}
+            </p>
           </div>
 
           {/* ── Payment Information Block ── */}
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <h3 className="font-bold text-gray-900 mb-3">Payment Information</h3>
+          <div className="bg-white rounded-xl p-5 shadow-sm">
+            <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+                <CreditCard size={16} className="text-brand" />
+                Payment Information
+            </h3>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Amount Delivered</span>
-                <span className="font-bold text-gray-900">
-                  ৳{payment.amount?.toLocaleString()}
+                <span className="text-gray-500 font-bold">Amount Delivered</span>
+                <span className="font-black text-gray-900">
+                  ৳{(payment.amount + 190 + 34).toLocaleString()}
                 </span>
               </div>
 
-              {payment.transactionId && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">Transaction ID</span>
-                  <span className="font-bold text-gray-900 text-right max-w-[55%] truncate">
-                    {payment.transactionId}
-                  </span>
-                </div>
-              )}
-
-              {payment.serviceId && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">Service ID</span>
-                  <Link
-                    href={`/service-track?trackingId=${payment.serviceId}`}
-                    className="font-bold text-brand hover:underline"
-                  >
-                    #{payment.serviceId}
-                  </Link>
-                </div>
-              )}
-
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Payment Method</span>
-                <span className="font-bold text-gray-900 uppercase">
-                  {payment.paymentMethod}
+                <span className="text-gray-500 font-bold">Due Bills</span>
+                <span className="font-black text-rose-500">
+                  -৳190
                 </span>
               </div>
 
-              {/* Divider */}
-              <div className="border-t border-dashed border-gray-200 my-1" />
+               <div className="flex items-center justify-between text-sm border-t border-gray-50 pt-2">
+                <span className="text-gray-500 font-bold">Sub-Total</span>
+                <span className="font-black text-gray-900">
+                  ৳{(payment.amount + 34).toLocaleString()}
+                </span>
+              </div>
 
-              <div className="flex items-center justify-between text-sm font-black">
-                <span className="text-gray-900">Total</span>
-                <span className="text-brand">৳{payment.amount?.toLocaleString()}</span>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-500 font-bold">COD Charge & Fees</span>
+                <span className="font-black text-rose-500">
+                  -৳34
+                </span>
+              </div>
+
+              {/* Final Total */}
+              <div className="border-t border-dashed border-gray-200 my-2 pt-2" />
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-black text-gray-900">Total Settlement</span>
+                <span className="text-xl font-black text-brand">৳{payment.amount?.toLocaleString()}</span>
               </div>
             </div>
           </div>
 
-          {/* ── Recipient Information Block ── */}
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <h3 className="font-bold text-gray-900 mb-3">Recipient Information</h3>
-            <p className="font-bold text-gray-900 text-sm">{String(session.username)}</p>
+          {/* ── Recipient Information (Customer) ── */}
+          {payment.service && (
+            <div className="bg-white rounded-xl p-5 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-brand/5 rounded-full -mr-8 -mt-8 grayscale" />
+                <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+                    <User size={16} className="text-brand" />
+                    Customer Information
+                </h3>
+                <div className="space-y-4">
+                    <div>
+                        <p className="text-base font-black text-gray-900 mb-1">{payment.service.customerName}</p>
+                        <p className="text-xs text-gray-500 font-bold leading-relaxed">
+                            {payment.service.customerAddress}, {payment.service.customerAddressDistrict}
+                        </p>
+                        <p className="text-xs text-brand font-black mt-1">{payment.service.customerPhone}</p>
+                    </div>
+
+                    <div className="pt-2 border-t border-gray-50 flex gap-3">
+                        <Link 
+                            href={`/staff/customers/${payment.service.customerId}`}
+                            className="flex-1 text-center py-2.5 rounded-xl bg-gray-50 text-gray-600 font-black text-[10px] uppercase tracking-widest border border-gray-100 hover:bg-brand/5 hover:text-brand hover:border-brand/20 transition-all active:scale-95"
+                        >
+                            View Profile
+                        </Link>
+                        <Link 
+                            href={`tel:${payment.service.customerPhone}`}
+                            className="p-2.5 rounded-xl bg-brand text-white shadow-lg shadow-brand/20 active:scale-95"
+                        >
+                            <PhoneCall size={16} />
+                        </Link>
+                    </div>
+                </div>
+            </div>
+          )}
+
+          {/* ── Recipient (Staff) Info ── */}
+          <div className="bg-white rounded-xl p-5 shadow-sm">
+            <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+                <Briefcase size={16} className="text-brand" />
+                Recipient Information
+            </h3>
+            <p className="font-black text-gray-900 text-base">{String(session.username)}</p>
+            <p className="text-xs text-gray-400 font-bold uppercase tracking-tighter mt-1">Staff Member • {payment.paymentMethod}</p>
 
             {payment.paymentMethod === "bank" ? (
-              <div className="mt-1 space-y-0.5">
-                <p className="text-sm text-gray-500">
+              <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <p className="text-xs font-black text-gray-400 uppercase mb-1">Bank Account</p>
+                <p className="text-sm font-bold text-gray-700">
                   {payment.receiverBankInfo?.bankName}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm font-black text-gray-900">
                   {payment.receiverBankInfo?.accountNumber}
                 </p>
               </div>
             ) : (
-              <p className="text-sm text-gray-500 mt-1">
-                {payment.receiverWalletNumber || "N/A"}
-              </p>
-            )}
-          </div>
-
-          {/* ── Sender Information Block ── */}
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <h3 className="font-bold text-gray-900 mb-3">Sender Information</h3>
-            <p className="font-bold text-gray-900 text-sm">SE ELECTRONICS</p>
-
-            {payment.paymentMethod === "bank" ? (
-              <div className="mt-1 space-y-0.5">
-                <p className="text-sm text-gray-500">
-                  {payment.senderBankInfo?.bankName || "Corporate Bank"}
-                </p>
-                <p className="text-sm text-gray-500">
-                  {payment.senderBankInfo?.accountNumber || "********4590"}
+              <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <p className="text-xs font-black text-gray-400 uppercase mb-1">Wallet Number</p>
+                <p className="text-sm font-black text-gray-900">
+                  {payment.receiverWalletNumber || "N/A"}
                 </p>
               </div>
-            ) : (
-              <p className="text-sm text-gray-500 mt-1">
-                {payment.senderWalletNumber || "N/A"}
-              </p>
             )}
           </div>
 
-          {/* ── Description Block (conditional) ── */}
-          {payment.description && (
-            <div className="bg-white rounded-xl p-4 shadow-sm">
-              <h3 className="font-bold text-gray-900 mb-2">Description / Task</h3>
-              <p className="text-sm text-gray-600 italic leading-relaxed">
-                &ldquo;{payment.description}&rdquo;
-              </p>
+          {/* ── Service Information Block ── */}
+          {payment.service && (
+            <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-brand">
+              <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+                  <Activity size={16} className="text-brand" />
+                  Service details
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-400 font-bold uppercase tracking-widest">Service Type</span>
+                    <span className="text-gray-900 font-black uppercase text-brand">
+                        {payment.service.type}
+                    </span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-400 font-bold uppercase tracking-widest">Product</span>
+                    <span className="text-gray-900 font-black text-right">
+                        {payment.service.productType} • {payment.service.productModel}
+                    </span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-400 font-bold uppercase tracking-widest">Tracking ID</span>
+                    <Link 
+                        href={`/service-track?trackingId=${payment.service.serviceId}`}
+                        className="text-brand font-black underline"
+                    >
+                        #{payment.service.serviceId.substring(0, 12)}...
+                    </Link>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* ── Customer View Button ── */}
-          <Link
-            href={`/customer/payment/${payment.invoiceNumber}`}
-            className="block w-full bg-brand text-white text-center py-3 rounded-xl font-bold text-sm"
-          >
-            Customer View
-          </Link>
+          {/* ── Sender Information Block ── */}
+          <div className="bg-white rounded-xl p-5 shadow-sm opacity-75">
+            <h3 className="text-sm font-black text-gray-400 mb-4 flex items-center gap-2">
+                <Building2 size={16} />
+                Sender Information
+            </h3>
+            <p className="font-black text-gray-800 text-sm">SE ELECTRONICS</p>
+            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-0.5">Corporate Office</p>
+
+            {payment.paymentMethod === "bank" ? (
+              <div className="mt-3 text-xs space-y-0.5 font-bold text-gray-500">
+                <p>{payment.senderBankInfo?.bankName || "Corporate Bank"}</p>
+                <p>{payment.senderBankInfo?.accountNumber || "********4590"}</p>
+              </div>
+            ) : (
+              <p className="text-xs font-bold text-gray-500 mt-2">
+                Merchant: {payment.senderWalletNumber || "N/A"}
+              </p>
+            )}
+          </div>
+
+          {/* ── Action Buttons ── */}
+          <div className="pt-4 grid grid-cols-2 gap-3">
+            <InvoicePreviewButton
+                paymentData={payment}
+                className="flex items-center justify-center gap-2 bg-white text-gray-900 py-4 rounded-2xl text-xs font-black border border-gray-200 shadow-sm active:scale-95"
+            >
+                <Eye size={16} />
+                Preview
+            </InvoicePreviewButton>
+            {payment.status === "completed" && (
+                <a
+                  target="_blank"
+                  href={`/pdf/download?type=payment&id=${payment.invoiceNumber}`}
+                  className="flex items-center justify-center gap-2 bg-brand text-white py-4 rounded-2xl text-xs font-black shadow-lg shadow-brand/20 active:scale-95"
+                >
+                  <Download size={16} />
+                  Download
+                </a>
+            )}
+          </div>
         </div>
       </div>
     </StaffLayout>
