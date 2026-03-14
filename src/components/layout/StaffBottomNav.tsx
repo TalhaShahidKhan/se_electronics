@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Wrench, Activity, User, Bell } from "lucide-react";
+import { Home, Wrench, Wallet, User } from "lucide-react";
 import clsx from "clsx";
 
 export function StaffBottomNav() {
@@ -20,9 +20,9 @@ export function StaffBottomNav() {
       href: "/staff/services",
     },
     {
-      label: "Notices",
-      icon: Bell,
-      href: "/staff/notifications",
+      label: "Payment",
+      icon: Wallet,
+      href: "/staff/payment",
     },
     {
       label: "Profile",
