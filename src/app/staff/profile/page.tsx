@@ -27,6 +27,7 @@ export default async function StaffProfilePage() {
 
   const staffData = profileRes.success ? profileRes.data : null;
   const stats = statsRes.success ? statsRes.data : null;
+  console.log(staffData , "staff profile data");
 
   if (!staffData) {
     return (
@@ -42,7 +43,7 @@ export default async function StaffProfilePage() {
 
   if (!staffData.isActiveStaff) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 p-2">
         <div className="w-full max-w-sm bg-white rounded-3xl p-8 shadow-xl border border-rose-100 text-center flex flex-col items-center gap-6 animate-in zoom-in duration-300">
            <div className="size-20 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center animate-pulse">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10">

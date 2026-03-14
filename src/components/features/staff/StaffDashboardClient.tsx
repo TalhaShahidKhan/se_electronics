@@ -70,7 +70,11 @@ export default function StaffDashboardClient({
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+<<<<<<< HEAD
       <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800">
+=======
+      <div className="flex flex-col gap-6 p-3 text-gray-800 pb-24">
+>>>>>>> 569184c (staff dashboarda dded)
 
         {/* Banner */}
         <div className="w-full overflow-hidden shadow-md">
@@ -133,8 +137,8 @@ export default function StaffDashboardClient({
         </div>
 
         {/* Desktop Action Grid */}
-        <div className="hidden sm:block bg-white rounded-md p-8 shadow-sm border">
-          <div className="grid grid-cols-4 gap-10">
+        <div className="hidden sm:block bg-white rounded-md p-8 shadow-sm border ">
+          <div className="grid grid-cols-4 gap-10 rounded-t-md">
             {primaryActions.map((action, i) => (
               <Link
                 key={action.label}
@@ -185,6 +189,21 @@ export default function StaffDashboardClient({
           </div>
         </div>
 
+<<<<<<< HEAD
+=======
+        {/* Logout */}
+        {/* <div className="flex justify-center mt-8">
+          <form action={staffLogout}>
+            <button
+              type="submit"
+              className="flex items-center gap-3 px-10 py-4 rounded-md border border-gray-300 bg-gray-300 text-gray-600 font-black text-sm uppercase hover:bg-red-100 hover:text-red-500"
+            >
+              <LogOut size={20} />
+              Logout
+            </button>
+          </form>
+        </div> */}
+>>>>>>> 569184c (staff dashboarda dded)
       </div>
     </StaffLayout>
   );

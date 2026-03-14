@@ -55,7 +55,7 @@ export default function StaffNotificationBell() {
             className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
           ></div>
-          <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-md shadow-2xl border border-gray-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="p-4 bg-brand text-white flex justify-between items-center">
               <h3 className="font-bold tracking-tight">System Notifications</h3>
               <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-medium uppercase tracking-widest">

@@ -1,7 +1,26 @@
+<<<<<<< HEAD
 import { staffLogout, verifyStaffSession } from "@/actions";
 import { getStaffById, getStaffProfileStats } from "@/actions/staffActions";
 import { getObjectUrl } from "@/lib/s3";
 import { Briefcase, FileText, MapPin, PhoneCall, User, Wallet, LogOut } from "lucide-react";
+=======
+import { verifyStaffSession } from "@/actions";
+import {
+  getStaffById,
+  getStaffProfileStats,
+  staffLogout,
+} from "@/actions/staffActions";
+import { getObjectUrl } from "@/lib/s3";
+import {
+  Briefcase,
+  FileText,
+  LogOut,
+  MapPin,
+  PhoneCall,
+  User,
+  Wallet,
+} from "lucide-react";
+>>>>>>> 569184c (staff dashboarda dded)
 import Image from "next/image";
 import Link from "next/link";
 import { StaffLayout } from "@/components/layout/StaffLayout";
@@ -18,7 +37,140 @@ export default async function StaffDetailsPage() {
 
   const staffData = profileRes.success ? profileRes.data : null;
   const stats = statsRes.success ? statsRes.data : null;
-
+  console.log(staffData, "staff data");
+  //  this is my staff data valid infor mation in staff data
+  //   bankInfo
+  // :
+  // null
+  // bio
+  // :
+  // null
+  // canceledServices
+  // :
+  // 2
+  // createdAt
+  // :
+  // Thu Mar 12 2026 12:53:07 GMT-0700 (Pacific Daylight Time) {}
+  // createdFrom
+  // :
+  // "dashboard"
+  // currentDistrict
+  // :
+  // "Dhaka"
+  // currentPoliceStation
+  // :
+  // null
+  // currentPostOffice
+  // :
+  // null
+  // currentStreetAddress
+  // :
+  // "778 Zulauf Manors"
+  // docs
+  // :
+  // null
+  // fatherName
+  // :
+  // "Wilbur Marks"
+  // hasInstallationExperience
+  // :
+  // false
+  // hasRepairExperience
+  // :
+  // false
+  // id
+  // :
+  // "3b7a79d6-8d7a-4bf1-bb5b-c740b9cee891"
+  // installationExperienceYears
+  // :
+  // 0
+  // ipAddress
+  // :
+  // null
+  // isActiveStaff
+  // :
+  // true
+  // isVerified
+  // :
+  // true
+  // name
+  // :
+  // "Mrs. Blanche DuBuque"
+  // nidBackPhotoKey
+  // :
+  // "demo/nid_back.jpg"
+  // nidBackPhotoUrl
+  // :
+  // "https://service-manager.45739e2ef39226b7c581576fc26bd700.r2.cloudflarestorage.com/demo/nid_back.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=14d657e13ee022a16c895beca8ac3d24%2F20260314%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260314T173120Z&X-Amz-Expires=86400&X-Amz-Signature=f922893a809d27b3beb9651fb843148ab8fa116225d32fab57923a65c61f7a49&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+  // nidFrontPhotoKey
+  // :
+  // "demo/nid_front.jpg"
+  // nidFrontPhotoUrl
+  // :
+  // "https://service-manager.45739e2ef39226b7c581576fc26bd700.r2.cloudflarestorage.com/demo/nid_front.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=14d657e13ee022a16c895beca8ac3d24%2F20260314%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260314T173120Z&X-Amz-Expires=86400&X-Amz-Signature=df08042eebbf84fa7ff90f2511f3276c6b16fd4a4b35631c3e73a1a038036674&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+  // password
+  // :
+  // "$2b$10$N7CHl3OD7RvpzFVg283vnucmEjsTmC/2/QS.F28Mb4uDH3pC5hUAi"
+  // paymentPreference
+  // :
+  // "cash"
+  // permanentDistrict
+  // :
+  // "Dhaka"
+  // permanentPoliceStation
+  // :
+  // null
+  // permanentPostOffice
+  // :
+  // null
+  // permanentStreetAddress
+  // :
+  // "692 Edward Creek"
+  // phone
+  // :
+  // "+8801317806120"
+  // photoKey
+  // :
+  // "demo/photo.jpg"
+  // photoUrl
+  // :
+  // "https://service-manager.45739e2ef39226b7c581576fc26bd700.r2.cloudflarestorage.com/demo/photo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=14d657e13ee022a16c895beca8ac3d24%2F20260314%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260314T173120Z&X-Amz-Expires=86400&X-Amz-Signature=e239640cace62a6b28119f400fe1fd3677d8a6b65c618ba75534b9e5d496b1d8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+  // profileCompleted
+  // :
+  // true
+  // rating
+  // :
+  // 0
+  // repairExperienceYears
+  // :
+  // 0
+  // role
+  // :
+  // "technician"
+  // skills
+  // :
+  // null
+  // staffId
+  // :
+  // "STF79225"
+  // successfulServices
+  // :
+  // 0
+  // totalServices
+  // :
+  // 4
+  // updatedAt
+  // :
+  // Sat Mar 14 2026 05:39:49 GMT-0700 (Pacific Daylight Time) {}
+  // userAgent
+  // :
+  // null
+  // username
+  // :
+  // "01310673602"
+  // walletNumber
+  // :
+  // null
   if (!staffData) {
     return (
       <div className="p-6 text-center">
@@ -30,59 +182,70 @@ export default async function StaffDetailsPage() {
   }
 
   // Pre-fetch S3 URLs if not available
-  const nidFrontUrl = staffData.nidFrontPhotoKey 
-    ? (staffData.nidFrontPhotoUrl || await getObjectUrl(staffData.nidFrontPhotoKey))
+  const nidFrontUrl = staffData.nidFrontPhotoKey
+    ? staffData.nidFrontPhotoUrl ||
+      (await getObjectUrl(staffData.nidFrontPhotoKey))
     : null;
   const nidBackUrl = staffData.nidBackPhotoKey
-    ? (staffData.nidBackPhotoUrl || await getObjectUrl(staffData.nidBackPhotoKey))
+    ? staffData.nidBackPhotoUrl ||
+      (await getObjectUrl(staffData.nidBackPhotoKey))
     : null;
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+<<<<<<< HEAD
       <div className="p-4 space-y-6">
         {/* Page Title */}
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-brand/5 rounded-xl text-brand">
             <User size={20} />
+=======
+      <div className="min-h-screen bg-gray-100 ">
+        {/* HEADER */}
+        <div className="bg-brand text-white px-4 sm:px-6 py-5 sm:py-6 mt-5 rounded-t-md shadow-sm mx-2">
+          <div className="max-w-6xl mx-auto flex justify-between gap-4">
+            {/* Title */}
+            <h1 className="text-lg sm:text-xl font-bold tracking-wide">
+              Staff Profile
+            </h1>
+
+            {/* Logout */}
+            <form action={staffLogout}>
+              <button
+                type="submit"
+                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-red-500 hover:bg-red-600 active:scale-95 transition-all text-white text-sm font-bold shadow-sm"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            </form>
+>>>>>>> 569184c (staff dashboarda dded)
           </div>
-          <h1 className="text-xl font-bold text-gray-800">My Profile Details</h1>
         </div>
 
-        {/* Profile Photo & Basic Info */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row items-center sm:items-start gap-6">
-          <div className="size-24 sm:size-28 shrink-0 rounded-2xl overflow-hidden border-2 border-brand/5 bg-gray-50 shadow-inner">
-            {staffData.photoUrl ? (
+        <div className="max-w-6xl mx-auto px-4 mt-12 pb-10 space-y-6 ">
+          {/* PROFILE CARD */}
+          <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col md:flex-row items-center gap-6">
+            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow">
               <Image
                 src={staffData.photoUrl}
                 alt={staffData.name}
-                width={112}
-                height={112}
-                className="object-cover w-full h-full"
+                width={96}
+                height={96}
+                className="object-cover"
               />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-300">
-                <User size={48} />
-              </div>
-            )}
-          </div>
-          <div className="text-center sm:text-left flex-1 space-y-1">
-            <h2 className="text-2xl font-bold text-gray-900 leading-tight">{staffData.name}</h2>
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
-              <span className="text-sm font-bold text-brand bg-brand/5 px-2.5 py-0.5 rounded-full capitalize">
-                {staffData.role}
-              </span>
-              <span className="text-sm font-bold text-gray-400">
-                ID: {staffData.staffId}
-              </span>
             </div>
-            {staffData.fatherName && (
-              <p className="text-sm font-medium text-gray-500 mt-2">
-                Father&apos;s Name: <span className="text-gray-700">{staffData.fatherName}</span>
-              </p>
-            )}
-          </div>
-        </div>
 
+            <div className="text-center md:text-left flex-1">
+              <h2 className="text-xl font-bold text-gray-900">
+                {staffData.name}
+              </h2>
+
+              <p className="text-lg text-gray-600">
+                Staff ID: {staffData.staffId}
+              </p>
+
+<<<<<<< HEAD
         {/* Contact Info */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Contact & Location</h3>
@@ -106,128 +269,163 @@ export default async function StaffDetailsPage() {
                   {[staffData.currentStreetAddress, staffData.currentDistrict, staffData.currentPoliceStation]
                     .filter(Boolean).join(", ") || "Not specified"}
                 </p>
+=======
+              <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-2">
+                <span className="bg-brand/10 text-brand text-sm font-bold px-3 py-1 rounded-full capitalize">
+                  {staffData.role}
+                </span>
+
+                {staffData.isVerified && (
+                  <span className="bg-green-100 text-green-600 text-sm font-bold px-3 py-1 rounded-full">
+                    Verified
+                  </span>
+                )}
+
+                {staffData.isActiveStaff && (
+                  <span className="bg-blue-100 text-blue-600 text-sm font-bold px-3 py-1 rounded-full">
+                    Active
+                  </span>
+                )}
+>>>>>>> 569184c (staff dashboarda dded)
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Permanent Address */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Permanent Residence</h3>
-          <p className="text-sm font-bold text-gray-700 bg-gray-50/50 p-4 rounded-2xl border border-gray-100 leading-relaxed">
-            {[staffData.permanentStreetAddress, staffData.permanentDistrict, staffData.permanentPoliceStation, staffData.permanentPostOffice]
-              .filter(Boolean).join(", ") || "N/A"}
-          </p>
-        </div>
-
-        {/* Bio & Skills */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Professional Profile</h3>
-          <div className="space-y-5">
-            <div>
-              <p className="text-[10px] text-gray-400 font-bold uppercase mb-2 ml-1">About Me</p>
-              <p className="text-sm font-medium text-gray-700 bg-gray-50/50 p-4 rounded-2xl border border-gray-100 leading-relaxed italic">
-                &ldquo;{staffData.bio || "No bio description provided."}&rdquo;
+          {/* PERFORMANCE STATS */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white p-5 rounded-xl shadow-sm border text-center">
+              <p className="text-2xl font-bold text-brand">
+                {staffData.totalServices}
+              </p>
+              <p className="text-xs text-gray-400 font-bold uppercase">
+                Total Services
               </p>
             </div>
-            <div>
-              <p className="text-[10px] text-gray-400 font-bold uppercase mb-2 ml-1">Expertise & Skills</p>
-              <div className="flex flex-wrap gap-2">
-                {(() => {
-                  try {
-                    const skills = typeof staffData.skills === "string"
-                      ? JSON.parse(staffData.skills || "[]")
-                      : (staffData.skills || []);
-                    if (skills.length === 0) return <span className="text-xs text-gray-400 font-bold ml-1">No skills listed</span>;
-                    return skills.map((skill: string, idx: number) => (
-                      <span key={idx} className="bg-brand text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm">
-                        {skill}
-                      </span>
-                    ));
-                  } catch {
-                    return <span className="text-sm text-gray-500">{staffData.skills || "N/A"}</span>;
-                  }
-                })()}
-              </div>
+
+            <div className="bg-white p-5 rounded-xl shadow-sm border text-center">
+              <p className="text-2xl font-bold text-green-600">
+                {staffData.successfulServices}
+              </p>
+              <p className="text-xs text-gray-400 font-bold uppercase">
+                Successful
+              </p>
+            </div>
+
+            <div className="bg-white p-5 rounded-xl shadow-sm border text-center text-lg">
+              <p className="text-2xl font-bold text-red-500">
+                {staffData.canceledServices}
+              </p>
+              <p className="text-xs text-gray-400 font-bold uppercase">
+                Canceled
+              </p>
+            </div>
+
+            <div className="bg-white p-5 rounded-xl shadow-sm border text-center">
+              <p className="text-2xl font-bold text-orange-500">
+                {staffData.rating}
+              </p>
+              <p className="text-xs text-gray-400 font-bold uppercase">
+                Rating
+              </p>
             </div>
           </div>
-        </div>
 
-        {/* Payment Info */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Payout Configuration</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-teal-50/30 border border-teal-100">
-              <div className="size-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-600">
-                <Wallet size={18} />
-              </div>
-              <div>
-                <p className="text-[10px] text-teal-600 font-bold uppercase">Method</p>
-                <p className="text-sm font-bold text-teal-800 uppercase tracking-wide">
-                  {staffData.paymentPreference || "Not Set"}
-                </p>
-              </div>
+          {/* INFO GRID */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* CONTACT */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
+              <h3 className="text-xs font-bold text-gray-400 uppercase">
+                Contact
+              </h3>
+
+              <p className="text-md font-semibold text-gray-800">
+                Phone: {staffData.phone}
+              </p>
+
+              <p className="text-md text-gray-700">
+                Father: {staffData.fatherName}
+              </p>
             </div>
-            {staffData.walletNumber && (
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-indigo-50/30 border border-indigo-100">
-                <div className="size-10 rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600">
-                  <FileText size={18} />
-                </div>
-                <div>
-                  <p className="text-[10px] text-indigo-600 font-bold uppercase">Account / Wallet</p>
-                  <p className="text-sm font-mono font-bold text-indigo-900 tracking-wider">
-                    {staffData.walletNumber}
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
 
-        {/* NID Photos */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Identification Documents</h3>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {nidFrontUrl ? (
-              <div className="relative group rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 aspect-[3/2] flex items-center justify-center">
-                <Image
-                  src={nidFrontUrl}
-                  alt="NID Front"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-sm p-1.5 text-center">
-                  <span className="text-white text-[9px] font-bold uppercase tracking-widest">Front Side</span>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-gray-50 border border-dashed border-gray-200 rounded-2xl aspect-[3/2] flex flex-col items-center justify-center text-gray-300">
-                <FileText size={24} />
-                <span className="text-[9px] font-bold mt-1">NO FRONT IMAGE</span>
-              </div>
-            )}
-            {nidBackUrl ? (
-              <div className="relative group rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 aspect-[3/2] flex items-center justify-center">
-                <Image
-                  src={nidBackUrl}
-                  alt="NID Back"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-sm p-1.5 text-center">
-                  <span className="text-white text-[9px] font-bold uppercase tracking-widest">Back Side</span>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-gray-50 border border-dashed border-gray-200 rounded-2xl aspect-[3/2] flex flex-col items-center justify-center text-gray-300">
-                <FileText size={24} />
-                <span className="text-[9px] font-bold mt-1">NO BACK IMAGE</span>
-              </div>
-            )}
+            {/* EXPERIENCE */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
+              <h3 className="text-xs font-bold text-gray-400 uppercase">
+                Experience
+              </h3>
+
+              <p className="text-md text-gray-700">
+                Repair Experience:{" "}
+                {staffData.hasRepairExperience
+                  ? `${staffData.repairExperienceYears} Years`
+                  : "No"}
+              </p>
+
+              <p className="text-md text-gray-700">
+                Installation Experience:{" "}
+                {staffData.hasInstallationExperience
+                  ? `${staffData.installationExperienceYears} Years`
+                  : "No"}
+              </p>
+            </div>
+
+            {/* ADDRESSES */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
+              <h3 className="text-xs font-bold text-gray-400 uppercase">
+                Current Address
+              </h3>
+
+              <p className="text-md text-gray-700">
+                {staffData.currentStreetAddress}, {staffData.currentDistrict}
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
+              <h3 className="text-md font-bold text-gray-400 uppercase">
+                Permanent Address
+              </h3>
+
+              <p className="text-md text-gray-700">
+                {staffData.permanentStreetAddress},{" "}
+                {staffData.permanentDistrict}
+              </p>
+            </div>
           </div>
-          {!nidFrontUrl && !nidBackUrl && (
-            <p className="text-xs text-gray-400 uppercase font-bold text-center mt-4">NID documentation missing from records</p>
-          )}
+
+          {/* PAYMENT */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border">
+            <h3 className="text-sm font-bold text-gray-400 uppercase mb-3">
+              Payment Method
+            </h3>
+
+            <p className="text-md font-semibold text-gray-800 uppercase">
+              {staffData.paymentPreference}
+            </p>
+          </div>
+
+          {/* NID DOCUMENTS */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border">
+            <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">
+              NID Documents
+            </h3>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Image
+                src={staffData.nidFrontPhotoUrl}
+                alt="NID Front"
+                width={300}
+                height={200}
+                className="rounded-lg border"
+              />
+
+              <Image
+                src={staffData.nidBackPhotoUrl}
+                alt="NID Back"
+                width={300}
+                height={200}
+                className="rounded-lg border"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Logout Section */}
