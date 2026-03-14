@@ -15,7 +15,7 @@ const Banner = () => {
   ];
 
   return (
-    <section className="relative rounded-sm">
+    <section className="relative rounded-sm overflow-hidden">
       <Carousel
         infiniteLoop
         autoPlay
@@ -29,12 +29,17 @@ const Banner = () => {
         stopOnHover
       >
         {slides.map((slide, index) => (
-          <div key={index} className="w-full h-[40vh] relative">
+          <div
+            key={index}
+            className="relative w-full h-[160px] sm:h-[250px] md:h-[320px] lg:h-[40vh]"
+          >
             <Image
               src={slide.img}
               alt={`Slide ${index + 1}`}
               fill
-              className="object-cover rounded-md"
+              priority={index === 0}
+              sizes="100vw"
+              className="object-cover w-full h-full rounded-md"
             />
           </div>
         ))}

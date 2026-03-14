@@ -34,7 +34,8 @@ export const MediaDownloadMessages = {
 };
 
 export const ServiceMessages = {
-  CUSTOMER_REPAIR: `প্রিয় গ্রাহক {customer_name},\nআপনার {service_id} সার্ভিসটি সমাধান করার জন্য সার্ভিস টিমকে নিযুক্ত করা হয়েছে। দ্রুত সময়ের মধ্যে সার্ভিস টিম আপনার সাথে যোগাযোগ করে সমাধান করবে। যে কোন তথ্যের জন্য ${contactDetails.customerCare}`,
+ CUSTOMER_REPAIR: `প্রিয় গ্রাহক {customer_name}, 
+আপনার {service_id} সার্ভিসটি সমাধানের জন্য সার্ভিস টিম নিয়োগ করা হয়েছে। বিস্তারিত জানতে অনুগ্রহ করে আপনার ড্যাশবোর্ড চেক করুন।`,
   CUSTOMER_INSTALL: `প্রিয় গ্রাহক {customer_name},\nআপনার {service_id} প্যাকেজ টি ইন্সটল করার জন্য অফিসিয়াল ইন্সটল টিমকে নিযুক্ত করা হয়েছে। দ্রুত সময়ের মধ্যে ইন্সটল টিম আপনার সাথে যোগাযোগ করে সমাধান করবে। যে কোন তথ্যের জন্য ${contactDetails.customerCare}`,
   TECHNICIAN_APPOINT:
     "জনাব {staff_name},\nআপনাকে এস ই ইলেকট্রনিক্স কোম্পানির পন্য সার্ভিস করার জন্য নিয়োগ করা হয়েছে আপনি সম্মানিত কাস্টমার এর সাথে যোগাযোগ করে পন্যটির সমাধান দিন ধন্যবাদ।\nকাস্টমার নাম : {customer_name}\nকাস্টমার ফোন : {customer_phone}\nকাস্টমার সার্ভিস আই ডি নং : {service_id}\nপ্রোডাক্ট মডেল : {product_model}\nকাস্টমার লোকেশন : {customer_address}\nসার্ভিসিং সম্পর্কে তথ্য প্রদান করতে লিঙ্কটিতে ক্লিক করুন {service_report_url}",
