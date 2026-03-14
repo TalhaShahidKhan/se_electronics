@@ -29,17 +29,14 @@ const Banner = () => {
         stopOnHover
       >
         {slides.map((slide, index) => (
-          <div
-            key={index}
-            className="relative w-full h-[160px] sm:h-[250px] md:h-[320px] lg:h-[40vh]"
-          >
+          <div key={index} className="relative w-full aspect-[16/6] sm:aspect-[16/5] md:aspect-[16/4]">
             <Image
               src={slide.img}
               alt={`Slide ${index + 1}`}
               fill
               priority={index === 0}
               sizes="100vw"
-              className="object-cover w-full h-full rounded-md"
+              className="object-fill rounded-md"
             />
           </div>
         ))}

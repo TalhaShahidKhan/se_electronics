@@ -38,12 +38,12 @@ export default function StaffDashboardClient({
     <StaffLayout balance={stats?.availableBalance || 0}>
       <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800">
         {/* Banner Section */}
-        <div className="w-full rounded-3xl overflow-hidden shadow-md">
+        <div className="w-full  overflow-hidden shadow-md">
           <Banner />
         </div>
 
         {/* Staff Welcome Info Overlay */}
-        <div className="bg-gradient-to-br from-brand via-brand-800 to-brand-700 rounded-[2.5rem] p-6 sm:p-8 text-white shadow-xl overflow-hidden relative group">
+        <div className="bg-gradient-to-br from-brand via-brand-800 to-brand-700 rounded-md p-6 sm:p-8 text-white shadow-xl overflow-hidden relative group">
           <div className="relative z-10 flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="inline-flex items-center px-2 py-1 rounded-lg bg-white/10 text-white/90 text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] mb-3">
@@ -72,7 +72,7 @@ export default function StaffDashboardClient({
 
         {/* Stats Section */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6">
-          <div className="bg-white p-5 sm:p-8 rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all group">
+          <div className="bg-white p-5 sm:p-8 rounded-md shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all group">
             <div className="p-3 sm:p-4 bg-emerald-50 rounded-2xl text-emerald-600 group-hover:scale-110 transition-transform">
               <CheckCircle size={28} className="sm:w-8 sm:h-8" />
             </div>
@@ -83,7 +83,7 @@ export default function StaffDashboardClient({
               <p className="text-[11px] sm:text-xs uppercase font-black text-gray-400 tracking-widest">Services Done</p>
             </div>
           </div>
-          <div className="bg-white p-5 sm:p-8 rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all group">
+          <div className="bg-white p-5 sm:p-8 rounded-md shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all group">
             <div className="p-3 sm:p-4 bg-amber-50 rounded-2xl text-amber-600 group-hover:scale-110 transition-transform">
               <Clock size={28} className="sm:w-8 sm:h-8" />
             </div>
@@ -97,7 +97,7 @@ export default function StaffDashboardClient({
         </div>
 
         {/* Primary Action Grid (Large Cards) */}
-        <div className="bg-white rounded-[2.5rem] p-6 sm:p-10 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-md p-6 sm:p-10 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-8">
              <h4 className="text-xs sm:text-sm font-black text-gray-400 uppercase tracking-[0.25em]">Core Operations</h4>
              <div className="h-px flex-1 bg-gray-100 ml-8"></div>
@@ -127,7 +127,7 @@ export default function StaffDashboardClient({
         </div>
 
         {/* Secondary Action Grid (Smaller Items) */}
-        <div className="bg-white rounded-[2.5rem] p-6 sm:p-10 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-md p-6 sm:p-10 shadow-sm border border-gray-200">
            <div className="flex items-center justify-between mb-10">
              <h4 className="text-xs sm:text-sm font-black text-gray-400 uppercase tracking-[0.25em]">Tools & Support</h4>
              <div className="h-px flex-1 bg-gray-100 ml-8"></div>
@@ -164,7 +164,7 @@ export default function StaffDashboardClient({
           <form action={staffLogout}>
             <button
               type="submit"
-              className="flex items-center gap-3 px-10 py-4 rounded-2xl bg-gray-100 text-gray-500 font-black text-xs sm:text-sm uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-500 transition-all active:scale-95"
+              className="flex items-center gap-3 px-10 py-4 rounded-md bg-gray-200 text-gray-500 font-black text-xs sm:text-sm uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-500 transition-all active:scale-95"
             >
               <LogOut size={20} />
               Logout from Portal
