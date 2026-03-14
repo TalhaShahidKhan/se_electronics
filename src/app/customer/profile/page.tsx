@@ -150,7 +150,7 @@ export default function CustomerProfilePage() {
         </div>
 
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 sm:gap-8">
-          {dashboardActions.slice(4,13).map((action) => {
+          {dashboardActions.map((action) => {
             const Icon = action.icon;
             return (
               <Link

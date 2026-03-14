@@ -4,14 +4,11 @@ import { getStaffNotices } from "@/actions";
 import { getStaffNotifications } from "@/actions/staffActions";
 import { NoticeRecipientType, StaffNotificationType, CombinedNotificationType } from "@/types";
 import { useState, useEffect } from "react";
-import { Bell, AlertTriangle, Zap, Info, ChevronRight, Inbox, Wallet } from "lucide-react";
+import { Bell } from "lucide-react";
 import Link from "next/link";
-import clsx from "clsx";
-import { formatDate } from "@/utils";
 
 export default function StaffNotificationBell() {
   const [notifications, setNotifications] = useState<CombinedNotificationType[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
@@ -41,10 +38,10 @@ export default function StaffNotificationBell() {
     return () => clearInterval(interval);
   }, []);
 
-  const unreadNotifications = notifications.filter(n => !n.isRead);
-  const unreadCount = unreadNotifications.length;
+  const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
+<<<<<<< HEAD
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -158,7 +155,18 @@ export default function StaffNotificationBell() {
             </Link>
           </div>
         </>
+=======
+    <Link
+      href="/staff/notifications"
+      className="relative size-12 rounded-2xl flex items-center justify-center transition-all duration-300 bg-white/10 text-white hover:bg-white/20 border border-white/20 shadow-sm"
+    >
+      <Bell size={24} />
+      {unreadCount > 0 && (
+        <span className="absolute -top-1 -right-1 size-6 bg-[#FF5252] text-white text-[10px] font-black rounded-full flex items-center justify-center border-4 border-brand shadow-lg">
+          {unreadCount}
+        </span>
+>>>>>>> e0fd63d8685d03480b0b8e98937a0f7f13c4a367
       )}
-    </div>
+    </Link>
   );
 }
