@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import { staffLogout, verifyStaffSession } from "@/actions";
-import { getStaffById, getStaffProfileStats } from "@/actions/staffActions";
-import { getObjectUrl } from "@/lib/s3";
-import { Briefcase, FileText, MapPin, PhoneCall, User, Wallet, LogOut } from "lucide-react";
-=======
 import { verifyStaffSession } from "@/actions";
 import {
   getStaffById,
@@ -20,7 +14,6 @@ import {
   User,
   Wallet,
 } from "lucide-react";
->>>>>>> 569184c (staff dashboarda dded)
 import Image from "next/image";
 import Link from "next/link";
 import { StaffLayout } from "@/components/layout/StaffLayout";
@@ -193,17 +186,10 @@ export default async function StaffDetailsPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-<<<<<<< HEAD
-      <div className="p-4 space-y-6">
-        {/* Page Title */}
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 bg-brand/5 rounded-xl text-brand">
-            <User size={20} />
-=======
       <div className="min-h-screen bg-gray-100 ">
         {/* HEADER */}
         <div className="bg-brand text-white px-4 sm:px-6 py-5 sm:py-6 mt-5 rounded-t-md shadow-sm mx-2">
-          <div className="max-w-6xl mx-auto flex justify-between gap-4">
+          <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             {/* Title */}
             <h1 className="text-lg sm:text-xl font-bold tracking-wide">
               Staff Profile
@@ -219,7 +205,6 @@ export default async function StaffDetailsPage() {
                 Logout
               </button>
             </form>
->>>>>>> 569184c (staff dashboarda dded)
           </div>
         </div>
 
@@ -245,31 +230,6 @@ export default async function StaffDetailsPage() {
                 Staff ID: {staffData.staffId}
               </p>
 
-<<<<<<< HEAD
-        {/* Contact Info */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Contact & Location</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-gray-50/50 border border-gray-100">
-              <div className="size-10 rounded-xl bg-brand/5 flex items-center justify-center text-brand">
-                <PhoneCall size={18} />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-gray-400 font-bold uppercase">Phone Number</p>
-                <p className="text-sm font-bold text-gray-800">{staffData.phone}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-gray-50/50 border border-gray-100">
-              <div className="size-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
-                <MapPin size={18} />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-gray-400 font-bold uppercase">Current Address</p>
-                <p className="text-sm font-bold text-gray-800 truncate">
-                  {[staffData.currentStreetAddress, staffData.currentDistrict, staffData.currentPoliceStation]
-                    .filter(Boolean).join(", ") || "Not specified"}
-                </p>
-=======
               <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-2">
                 <span className="bg-brand/10 text-brand text-sm font-bold px-3 py-1 rounded-full capitalize">
                   {staffData.role}
@@ -286,7 +246,6 @@ export default async function StaffDetailsPage() {
                     Active
                   </span>
                 )}
->>>>>>> 569184c (staff dashboarda dded)
               </div>
             </div>
           </div>
@@ -426,22 +385,6 @@ export default async function StaffDetailsPage() {
               />
             </div>
           </div>
-        </div>
-
-        {/* Logout Section */}
-        <div className="pt-2 pb-6">
-          <form action={staffLogout}>
-            <button
-              type="submit"
-              className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl bg-rose-50 text-rose-500 font-black text-sm uppercase hover:bg-rose-100 transition-all border border-rose-100 shadow-sm"
-            >
-              <LogOut size={20} />
-              Logout from account
-            </button>
-          </form>
-          <p className="text-center text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-4">
-            SE Electronics Staff Portal v2.0
-          </p>
         </div>
       </div>
     </StaffLayout>
