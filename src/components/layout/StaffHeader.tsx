@@ -16,7 +16,7 @@ export function StaffHeader({ balance }: StaffHeaderProps) {
         <div className="flex items-center justify-center">
           <Link
             href="/staff/profile"
-            className="flex items-center gap-2 hover:bg-white/10 p-1.5 rounded-xl transition-colors"
+            className="flex items-center gap-2 hover:bg-white/40 p-1.5 rounded-xl transition-colors"
           >
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg flex items-center justify-center border border-white/20 overflow-hidden">
               <span className="text-base font-bold">SE</span>

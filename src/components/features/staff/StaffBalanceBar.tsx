@@ -47,14 +47,18 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
                   layoutId="wallet-icon"
                   className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0"
                 >
-                  <Wallet className="w-3.5 h-3.5 text-brand" />
+                  <div className="w-3 h-3 text-brand text-sm font-extrabold -mt-2">৳</div>
                 </motion.div>
                 <span className="text-xs sm:text-sm font-black text-brand whitespace-nowrap">
-                  Tap for Balance
+                  Tap For Balance
                 </span>
                 <motion.div
                   animate={{ x: ["-100%", "200%"] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-brand/10 to-transparent skew-x-12"
                 />
               </motion.button>
@@ -74,7 +78,12 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
             <motion.div
               initial={{ x: 20, opacity: 0 }}
               animate={revealed ? { x: 0, opacity: 1 } : { x: 20, opacity: 0 }}
-              transition={{ delay: 0.1, type: "spring", stiffness: 300, damping: 30 }}
+              transition={{
+                delay: 0.1,
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+              }}
               className="flex-1 flex items-center justify-between gap-2"
             >
               <span className="text-sm sm:text-base font-black text-brand ml-2">
@@ -94,4 +103,3 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
     </div>
   );
 }
-

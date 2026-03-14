@@ -70,7 +70,7 @@ export default function StaffDashboardClient({
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800">
+      <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800 pb-24">
 
         {/* Banner */}
         <div className="w-full overflow-hidden shadow-md">
@@ -133,8 +133,8 @@ export default function StaffDashboardClient({
         </div>
 
         {/* Desktop Action Grid */}
-        <div className="hidden sm:block bg-white rounded-md p-8 shadow-sm border">
-          <div className="grid grid-cols-4 gap-10">
+        <div className="hidden sm:block bg-white rounded-md p-8 shadow-sm border ">
+          <div className="grid grid-cols-4 gap-10 rounded-t-md">
             {primaryActions.map((action, i) => (
               <Link
                 key={action.label}
