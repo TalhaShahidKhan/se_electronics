@@ -274,16 +274,18 @@ async function dispatchNotice(noticeInternalId: string, targetType: string, reci
 
         // Send emails/SMS for high/urgent priority notices
         if (notice.priority === "high" || notice.priority === "urgent") {
-            for (const s of targetStaff) {
-                if (s.username && s.username.includes('@')) { // Check if username is an email
-                    await sendEmail({
+            const emailPromises = targetStaff
+                .filter(s => s.username && s.username.includes('@'))
+                .map(s => 
+                    sendEmail({
                         from: "SE Electronics <noreply@seelectronics.com>",
-                        to: s.username,
+                        to: s.username!,
                         subject: `[${notice.priority.toUpperCase()}] ${notice.title}`,
                         text: `${notice.title}\n\n${notice.content}\n\nPlease acknowledge this notice in your staff dashboard.`
-                    }).catch(e => console.error(`Email delivery failed for ${s.username}`, e));
-                }
-            }
+                    }).catch(e => console.error(`Email delivery failed for ${s.username}`, e))
+                );
+            
+            await Promise.all(emailPromises);
         }
     }
 }

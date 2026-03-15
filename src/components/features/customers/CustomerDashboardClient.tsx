@@ -26,8 +26,17 @@ import { CustomerLayout } from "@/components/layout/CustomerLayout";
 import { customerLogout } from "@/actions/customerActions";
 
 interface CustomerDashboardClientProps {
-  customer: any;
-  stats: any;
+  customer: {
+    id: string;
+    customerId: string;
+    name: string;
+    phone: string;
+    address: string | null;
+  };
+  stats: {
+    totalServices: number;
+    activeSubscriptions: number;
+  } | null;
   adminPhone: string;
 }
 

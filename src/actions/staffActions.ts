@@ -975,71 +975,53 @@ export async function setStaffCredentials(
 
 export async function getStaffProfileStats(staffId: string) {
   try {
-    // Get total services assigned to this staff
-    const totalServices = await db.$count(
-      services,
-      eq(services.staffId, staffId),
-    );
-
-    // Get successful (completed) services
-    const successfulServices = await db.$count(
-      services,
-      and(
-        eq(services.staffId, staffId),
-        eq(services.resolvedBy, "staff_member"),
+    const [
+      totalServices,
+      successfulServices,
+      canceledServices,
+      ratingResult,
+      staffPayments,
+      addedResult,
+      requestedResult,
+    ] = await Promise.all([
+      db.$count(services, eq(services.staffId, staffId)),
+      db.$count(
+        services,
+        and(eq(services.staffId, staffId), eq(services.resolvedBy, "staff_member")),
       ),
-    );
-
-    // Get canceled services
-    const canceledServices = await db.$count(
-      services,
-      and(
-        eq(services.staffId, staffId),
-        eq(services.resolvedBy, "service_center"), // or check status history for canceled
+      db.$count(
+        services,
+        and(eq(services.staffId, staffId), eq(services.resolvedBy, "service_center")),
       ),
-    );
-
-    // Get feedback rating average
-    const ratingResult = await db
-      .select({ avg: sql<number>`AVG(${feedbacks.rating})` })
-      .from(feedbacks)
-      .innerJoin(services, eq(services.serviceId, feedbacks.serviceId))
-      .where(eq(services.staffId, staffId))
-      .limit(1);
+      db
+        .select({ avg: sql<number>`AVG(${feedbacks.rating})` })
+        .from(feedbacks)
+        .innerJoin(services, eq(services.serviceId, feedbacks.serviceId))
+        .where(eq(services.staffId, staffId))
+        .limit(1),
+      db.query.payments.findMany({
+        where: eq(payments.staffId, staffId),
+        orderBy: (payments, { desc }) => [desc(payments.date)],
+        limit: 10,
+      }),
+      db
+        .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
+        .from(payments)
+        .where(and(eq(payments.staffId, staffId), sql`${payments.status} = 'credited'`))
+        .limit(1),
+      db
+        .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
+        .from(payments)
+        .where(
+          and(
+            eq(payments.staffId, staffId),
+            sql`${payments.status} IN ('requested', 'pending', 'approved', 'completed')`,
+          ),
+        )
+        .limit(1),
+    ]);
 
     const rating = ratingResult[0]?.avg || 0;
-
-    // Get payment history
-    const staffPayments = await db.query.payments.findMany({
-      where: eq(payments.staffId, staffId),
-      orderBy: (payments, { desc }) => [desc(payments.date)],
-      limit: 10,
-    });
-
-    // Calculate virtual balance
-    // Available = sum of "approved" payments (admin added) - sum of "requested" / "pending" payments (staff requested, waiting)
-    const addedResult = await db
-      .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
-      .from(payments)
-      .where(
-        and(
-          eq(payments.staffId, staffId),
-          sql`${payments.status} = 'credited'`,
-        ),
-      )
-      .limit(1);
-
-    const requestedResult = await db
-      .select({ sum: sql<number>`COALESCE(SUM(${payments.amount}), 0)` })
-      .from(payments)
-      .where(
-        and(
-          eq(payments.staffId, staffId),
-          sql`${payments.status} IN ('requested', 'pending', 'approved', 'completed')`,
-        ),
-      )
-      .limit(1);
-
     const totalAdded = addedResult[0]?.sum || 0;
     const totalRequested = requestedResult[0]?.sum || 0;
     const availableBalance = totalAdded - totalRequested;

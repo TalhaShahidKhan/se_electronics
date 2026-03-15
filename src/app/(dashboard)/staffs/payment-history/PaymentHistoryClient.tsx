@@ -78,7 +78,7 @@ export default function PaymentHistoryClient({
           >
             <div className="size-12 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0">
               <Image
-                src={staff.photoUrl}
+                src={staff.photoUrl || "/placeholder-avatar.png"}
                 alt={staff.name}
                 width={48}
                 height={48}

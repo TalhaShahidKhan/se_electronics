@@ -96,11 +96,11 @@ export type StaffsType = {
   staffId: string;
   phone: string;
   photoKey: string;
-  photoUrl: string;
+  photoUrl?: string;
   nidFrontPhotoKey: string;
-  nidFrontPhotoUrl: string;
+  nidFrontPhotoUrl?: string;
   nidBackPhotoKey: string;
-  nidBackPhotoUrl: string;
+  nidBackPhotoUrl?: string;
   hasRepairExperience: boolean;
   repairExperienceYears: number | null;
   bankInfo: BankInfo | null;
@@ -208,6 +208,7 @@ export type PaymentDataType = {
     statusType: "system" | "custom";
   }[];
   staff?: StaffsType;
+  service?: ServicesType | null;
   senderBankInfo: BankInfo | null;
   receiverBankInfo: BankInfo | null;
 };

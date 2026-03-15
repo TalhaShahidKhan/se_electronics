@@ -1,25 +1,30 @@
 import { getPaymentByNumber } from "@/actions/paymentActions";
-import { getStaffProfileStats, verifyStaffSession } from "@/actions/staffActions";
-import { StaffLayout } from "@/components/layout/StaffLayout";
 import {
+  getStaffProfileStats,
+  verifyStaffSession,
+} from "@/actions/staffActions";
+import { InvoicePreviewButton } from "@/components/features/invoices";
+import { StaffLayout } from "@/components/layout/StaffLayout";
+import { PaymentDataType } from "@/types";
+import { formatDate } from "@/utils";
+import clsx from "clsx";
+import {
+  Briefcase,
+  Building2,
+  Calendar,
   ChevronLeft,
+  CreditCard,
   Download,
   Eye,
   FileText,
-  Calendar,
-  CreditCard,
   Hash,
-  User,
-  Briefcase,
-  Building2,
   Smartphone,
+  User,
+  Activity,
+  PhoneCall,
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import clsx from "clsx";
-import { formatDate } from "@/utils";
-import { InvoicePreviewButton } from "@/components/features/invoices";
-import { BankInfo, PaymentDataType } from "@/types";
 
 export default async function StaffInvoiceDetailsPage({
   params,
@@ -70,10 +75,10 @@ export default async function StaffInvoiceDetailsPage({
                 payment.status === "completed"
                   ? "bg-emerald-50 text-emerald-700 border-emerald-100"
                   : payment.status === "processing"
-                  ? "bg-blue-50 text-blue-700 border-blue-100"
-                  : payment.status === "rejected"
-                  ? "bg-rose-50 text-rose-700 border-rose-100"
-                  : "bg-amber-50 text-amber-700 border-amber-100"
+                    ? "bg-blue-50 text-blue-700 border-blue-100"
+                    : payment.status === "rejected"
+                      ? "bg-rose-50 text-rose-700 border-rose-100"
+                      : "bg-amber-50 text-amber-700 border-amber-100",
               )}
             >
               {payment.status}
@@ -242,7 +247,8 @@ export default async function StaffInvoiceDetailsPage({
                             Bank Name
                           </p>
                           <p className="text-sm font-bold text-gray-700">
-                            {payment.senderBankInfo?.bankName || "Corporate Bank"}
+                            {payment.senderBankInfo?.bankName ||
+                              "Corporate Bank"}
                           </p>
                         </div>
                         <div>
@@ -250,7 +256,8 @@ export default async function StaffInvoiceDetailsPage({
                             Account Number
                           </p>
                           <p className="text-sm font-bold text-gray-700">
-                            {payment.senderBankInfo?.accountNumber || "********4590"}
+                            {payment.senderBankInfo?.accountNumber ||
+                              "********4590"}
                           </p>
                         </div>
                       </div>
@@ -269,62 +276,83 @@ export default async function StaffInvoiceDetailsPage({
 
                 {/* Customer Information (New) */}
                 {payment.service && (
-                   <div className="space-y-6">
+                  <div className="space-y-6">
                     <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.25em] flex items-center gap-2">
-                        <User size={14} className="text-brand" />
-                        Customer Information
+                      <User size={14} className="text-brand" />
+                      Customer Information
                     </h3>
                     <div className="bg-brand/5 rounded-3xl p-6 space-y-4 border border-brand/10">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Name</p>
-                                <p className="text-sm font-black text-gray-900">{payment.service.customerName}</p>
-                            </div>
-                            <Link 
-                                href={`/staff/customers/${payment.service.customerId}`}
-                                className="px-4 py-2 bg-white rounded-xl text-[10px] font-black text-brand uppercase tracking-tighter border border-brand/20 shadow-sm hover:bg-brand hover:text-white transition-all"
-                            >
-                                View Profile
-                            </Link>
-                        </div>
+                      <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Phone</p>
-                            <p className="text-sm font-bold text-gray-700">{payment.service.customerPhone}</p>
+                          <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
+                            Name
+                          </p>
+                          <p className="text-sm font-black text-gray-900">
+                            {payment.service.customerName}
+                          </p>
                         </div>
-                        <div>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Address</p>
-                            <p className="text-sm font-bold text-gray-700 leading-tight">{payment.service.customerAddress}</p>
-                        </div>
+                        <Link
+                          href={`/staff/customers/${payment.service.customerId}`}
+                          className="px-4 py-2 bg-white rounded-xl text-[10px] font-black text-brand uppercase tracking-tighter border border-brand/20 shadow-sm hover:bg-brand hover:text-white transition-all"
+                        >
+                          View Profile
+                        </Link>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
+                          Phone
+                        </p>
+                        <p className="text-sm font-bold text-gray-700">
+                          {payment.service.customerPhone}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
+                          Address
+                        </p>
+                        <p className="text-sm font-bold text-gray-700 leading-tight">
+                          {payment.service.customerAddress}
+                        </p>
+                      </div>
                     </div>
-                   </div>
+                  </div>
                 )}
 
                 {/* Service Information (New) */}
                 {payment.service && (
-                   <div className="space-y-6">
+                  <div className="space-y-6">
                     <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.25em] flex items-center gap-2 text-right justify-end">
-                        Service details
-                        <Activity size={14} className="text-brand" />
+                      Service details
+                      <Activity size={14} className="text-brand" />
                     </h3>
                     <div className="bg-gray-50 rounded-3xl p-6 space-y-4 border border-gray-100 text-right">
-                        <div>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Type</p>
-                            <p className="text-sm font-black text-brand uppercase">{payment.service.type}</p>
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Product</p>
-                            <p className="text-sm font-bold text-gray-700">
-                                {payment.service.productType} • {payment.service.productModel}
-                            </p>
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Status</p>
-                            <p className="text-sm font-black text-gray-900 uppercase">
-                                {payment.service.isActive ? "Active" : "Closed"}
-                            </p>
-                        </div>
+                      <div>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
+                          Type
+                        </p>
+                        <p className="text-sm font-black text-brand uppercase">
+                          {payment.service.type}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
+                          Product
+                        </p>
+                        <p className="text-sm font-bold text-gray-700">
+                          {payment.service.productType} •{" "}
+                          {payment.service.productModel}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
+                          Status
+                        </p>
+                        <p className="text-sm font-black text-gray-900 uppercase">
+                          {payment.service.isActive ? "Active" : "Closed"}
+                        </p>
+                      </div>
                     </div>
-                   </div>
+                  </div>
                 )}
               </div>
 
@@ -387,17 +415,19 @@ export default async function StaffInvoiceDetailsPage({
               INVOICE
             </p>
             <div className="flex items-center justify-between mb-2">
-              <p className="font-black text-gray-900 text-base">{payment.invoiceNumber}</p>
+              <p className="font-black text-gray-900 text-base">
+                {payment.invoiceNumber}
+              </p>
               <span
                 className={clsx(
                   "text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg shadow-sm border",
                   payment.status === "completed"
                     ? "bg-emerald-50 text-emerald-700 border-emerald-100"
                     : payment.status === "processing"
-                    ? "bg-blue-50 text-blue-700 border-blue-100"
-                    : payment.status === "rejected"
-                    ? "bg-rose-50 text-rose-700 border-rose-100"
-                    : "bg-amber-50 text-amber-700 border-amber-100"
+                      ? "bg-blue-50 text-blue-700 border-blue-100"
+                      : payment.status === "rejected"
+                        ? "bg-rose-50 text-rose-700 border-rose-100"
+                        : "bg-amber-50 text-amber-700 border-amber-100",
                 )}
               >
                 {payment.status}
@@ -411,13 +441,15 @@ export default async function StaffInvoiceDetailsPage({
           {/* ── Payment Information Block ── */}
           <div className="bg-white rounded-xl p-5 shadow-sm">
             <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-                <CreditCard size={16} className="text-brand" />
-                Payment Information
+              <CreditCard size={16} className="text-brand" />
+              Payment Information
             </h3>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500 font-bold">Amount Delivered</span>
+                <span className="text-gray-500 font-bold">
+                  Amount Delivered
+                </span>
                 <span className="font-black text-gray-900">
                   ৳{(payment.amount + 190 + 34).toLocaleString()}
                 </span>
@@ -425,12 +457,10 @@ export default async function StaffInvoiceDetailsPage({
 
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-500 font-bold">Due Bills</span>
-                <span className="font-black text-rose-500">
-                  -৳190
-                </span>
+                <span className="font-black text-rose-500">-৳190</span>
               </div>
 
-               <div className="flex items-center justify-between text-sm border-t border-gray-50 pt-2">
+              <div className="flex items-center justify-between text-sm border-t border-gray-50 pt-2">
                 <span className="text-gray-500 font-bold">Sub-Total</span>
                 <span className="font-black text-gray-900">
                   ৳{(payment.amount + 34).toLocaleString()}
@@ -438,17 +468,21 @@ export default async function StaffInvoiceDetailsPage({
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500 font-bold">COD Charge & Fees</span>
-                <span className="font-black text-rose-500">
-                  -৳34
+                <span className="text-gray-500 font-bold">
+                  COD Charge & Fees
                 </span>
+                <span className="font-black text-rose-500">-৳34</span>
               </div>
 
               {/* Final Total */}
               <div className="border-t border-dashed border-gray-200 my-2 pt-2" />
               <div className="flex items-center justify-between">
-                <span className="text-sm font-black text-gray-900">Total Settlement</span>
-                <span className="text-xl font-black text-brand">৳{payment.amount?.toLocaleString()}</span>
+                <span className="text-sm font-black text-gray-900">
+                  Total Settlement
+                </span>
+                <span className="text-xl font-black text-brand">
+                  ৳{payment.amount?.toLocaleString()}
+                </span>
               </div>
             </div>
           </div>
@@ -456,50 +490,61 @@ export default async function StaffInvoiceDetailsPage({
           {/* ── Recipient Information (Customer) ── */}
           {payment.service && (
             <div className="bg-white rounded-xl p-5 shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-16 h-16 bg-brand/5 rounded-full -mr-8 -mt-8 grayscale" />
-                <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-                    <User size={16} className="text-brand" />
-                    Customer Information
-                </h3>
-                <div className="space-y-4">
-                    <div>
-                        <p className="text-base font-black text-gray-900 mb-1">{payment.service.customerName}</p>
-                        <p className="text-xs text-gray-500 font-bold leading-relaxed">
-                            {payment.service.customerAddress}, {payment.service.customerAddressDistrict}
-                        </p>
-                        <p className="text-xs text-brand font-black mt-1">{payment.service.customerPhone}</p>
-                    </div>
-
-                    <div className="pt-2 border-t border-gray-50 flex gap-3">
-                        <Link 
-                            href={`/staff/customers/${payment.service.customerId}`}
-                            className="flex-1 text-center py-2.5 rounded-xl bg-gray-50 text-gray-600 font-black text-[10px] uppercase tracking-widest border border-gray-100 hover:bg-brand/5 hover:text-brand hover:border-brand/20 transition-all active:scale-95"
-                        >
-                            View Profile
-                        </Link>
-                        <Link 
-                            href={`tel:${payment.service.customerPhone}`}
-                            className="p-2.5 rounded-xl bg-brand text-white shadow-lg shadow-brand/20 active:scale-95"
-                        >
-                            <PhoneCall size={16} />
-                        </Link>
-                    </div>
+              <div className="absolute top-0 right-0 w-16 h-16 bg-brand/5 rounded-full -mr-8 -mt-8 grayscale" />
+              <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+                <User size={16} className="text-brand" />
+                Customer Information
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-base font-black text-gray-900 mb-1">
+                    {payment.service.customerName}
+                  </p>
+                  <p className="text-xs text-gray-500 font-bold leading-relaxed">
+                    {payment.service.customerAddress},{" "}
+                    {payment.service.customerAddressDistrict}
+                  </p>
+                  <p className="text-xs text-brand font-black mt-1">
+                    {payment.service.customerPhone}
+                  </p>
                 </div>
+
+                <div className="pt-2 border-t border-gray-50 flex gap-3">
+                  <Link
+                    href={`/staff/customers/${payment.service.customerId}`}
+                    className="flex-1 text-center py-2.5 rounded-xl bg-gray-50 text-gray-600 font-black text-[10px] uppercase tracking-widest border border-gray-100 hover:bg-brand/5 hover:text-brand hover:border-brand/20 transition-all active:scale-95"
+                  >
+                    View Profile
+                  </Link>
+                  <Link
+                    href={`tel:${payment.service.customerPhone}`}
+                    className="p-2.5 rounded-xl bg-brand text-white shadow-lg shadow-brand/20 active:scale-95"
+                  >
+                    <PhoneCall size={16} />
+                  </Link>
+                </div>
+              </div>
             </div>
           )}
 
           {/* ── Recipient (Staff) Info ── */}
           <div className="bg-white rounded-xl p-5 shadow-sm">
             <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-                <Briefcase size={16} className="text-brand" />
-                Recipient Information
+              <Briefcase size={16} className="text-brand" />
+              Recipient Information
             </h3>
-            <p className="font-black text-gray-900 text-base">{String(session.username)}</p>
-            <p className="text-xs text-gray-400 font-bold uppercase tracking-tighter mt-1">Staff Member • {payment.paymentMethod}</p>
+            <p className="font-black text-gray-900 text-base">
+              {String(session.username)}
+            </p>
+            <p className="text-xs text-gray-400 font-bold uppercase tracking-tighter mt-1">
+              Staff Member • {payment.paymentMethod}
+            </p>
 
             {payment.paymentMethod === "bank" ? (
               <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                <p className="text-xs font-black text-gray-400 uppercase mb-1">Bank Account</p>
+                <p className="text-xs font-black text-gray-400 uppercase mb-1">
+                  Bank Account
+                </p>
                 <p className="text-sm font-bold text-gray-700">
                   {payment.receiverBankInfo?.bankName}
                 </p>
@@ -509,7 +554,9 @@ export default async function StaffInvoiceDetailsPage({
               </div>
             ) : (
               <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                <p className="text-xs font-black text-gray-400 uppercase mb-1">Wallet Number</p>
+                <p className="text-xs font-black text-gray-400 uppercase mb-1">
+                  Wallet Number
+                </p>
                 <p className="text-sm font-black text-gray-900">
                   {payment.receiverWalletNumber || "N/A"}
                 </p>
@@ -521,30 +568,37 @@ export default async function StaffInvoiceDetailsPage({
           {payment.service && (
             <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-brand">
               <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-                  <Activity size={16} className="text-brand" />
-                  Service details
+                <Activity size={16} className="text-brand" />
+                Service details
               </h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400 font-bold uppercase tracking-widest">Service Type</span>
-                    <span className="text-gray-900 font-black uppercase text-brand">
-                        {payment.service.type}
-                    </span>
+                  <span className="text-gray-400 font-bold uppercase tracking-widest">
+                    Service Type
+                  </span>
+                  <span className=" font-black uppercase text-brand">
+                    {payment.service.type}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400 font-bold uppercase tracking-widest">Product</span>
-                    <span className="text-gray-900 font-black text-right">
-                        {payment.service.productType} • {payment.service.productModel}
-                    </span>
+                  <span className="text-gray-400 font-bold uppercase tracking-widest">
+                    Product
+                  </span>
+                  <span className="text-gray-900 font-black text-right">
+                    {payment.service.productType} •{" "}
+                    {payment.service.productModel}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400 font-bold uppercase tracking-widest">Tracking ID</span>
-                    <Link 
-                        href={`/service-track?trackingId=${payment.service.serviceId}`}
-                        className="text-brand font-black underline"
-                    >
-                        #{payment.service.serviceId.substring(0, 12)}...
-                    </Link>
+                  <span className="text-gray-400 font-bold uppercase tracking-widest">
+                    Tracking ID
+                  </span>
+                  <Link
+                    href={`/service-track?trackingId=${payment.service.serviceId}`}
+                    className="text-brand font-black underline"
+                  >
+                    #{payment.service.serviceId.substring(0, 12)}...
+                  </Link>
                 </div>
               </div>
             </div>
@@ -553,11 +607,13 @@ export default async function StaffInvoiceDetailsPage({
           {/* ── Sender Information Block ── */}
           <div className="bg-white rounded-xl p-5 shadow-sm opacity-75">
             <h3 className="text-sm font-black text-gray-400 mb-4 flex items-center gap-2">
-                <Building2 size={16} />
-                Sender Information
+              <Building2 size={16} />
+              Sender Information
             </h3>
             <p className="font-black text-gray-800 text-sm">SE ELECTRONICS</p>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-0.5">Corporate Office</p>
+            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-0.5">
+              Corporate Office
+            </p>
 
             {payment.paymentMethod === "bank" ? (
               <div className="mt-3 text-xs space-y-0.5 font-bold text-gray-500">
@@ -574,21 +630,21 @@ export default async function StaffInvoiceDetailsPage({
           {/* ── Action Buttons ── */}
           <div className="pt-4 grid grid-cols-2 gap-3">
             <InvoicePreviewButton
-                paymentData={payment}
-                className="flex items-center justify-center gap-2 bg-white text-gray-900 py-4 rounded-2xl text-xs font-black border border-gray-200 shadow-sm active:scale-95"
+              paymentData={payment}
+              className="flex items-center justify-center gap-2 bg-white text-gray-900 py-4 rounded-2xl text-xs font-black border border-gray-200 shadow-sm active:scale-95"
             >
-                <Eye size={16} />
-                Preview
+              <Eye size={16} />
+              Preview
             </InvoicePreviewButton>
             {payment.status === "completed" && (
-                <a
-                  target="_blank"
-                  href={`/pdf/download?type=payment&id=${payment.invoiceNumber}`}
-                  className="flex items-center justify-center gap-2 bg-brand text-white py-4 rounded-2xl text-xs font-black shadow-lg shadow-brand/20 active:scale-95"
-                >
-                  <Download size={16} />
-                  Download
-                </a>
+              <a
+                target="_blank"
+                href={`/pdf/download?type=payment&id=${payment.invoiceNumber}`}
+                className="flex items-center justify-center gap-2 bg-brand text-white py-4 rounded-2xl text-xs font-black shadow-lg shadow-brand/20 active:scale-95"
+              >
+                <Download size={16} />
+                Download
+              </a>
             )}
           </div>
         </div>

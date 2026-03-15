@@ -35,7 +35,7 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
             <div className="relative mx-auto mb-3 sm:mb-4 md:mb-5">
               <div className="size-20 sm:size-28 md:size-32 lg:size-36 rounded-xl sm:rounded-2xl md:rounded-[2rem] overflow-hidden __center mx-auto border-2 sm:border-4 border-gray-50 group-hover:border-brand/10 transition-colors bg-gray-50">
                 <Image 
-                  src={staff.photoUrl} 
+                  src={staff.photoUrl || "/placeholder-avatar.png"} 
                   alt={staff.name} 
                   width={160} 
                   height={160} 

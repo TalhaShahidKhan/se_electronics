@@ -59,7 +59,7 @@ export default function ServiceHistoryClient({ staffs }: { staffs: StaffsType[] 
             className="flex items-center gap-3 p-4 bg-white rounded-2xl border border-gray-100 hover:border-brand/20 hover:shadow-md transition-all text-left"
           >
             <div className="size-12 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0">
-              <Image src={staff.photoUrl} alt={staff.name} width={48} height={48} className="object-cover w-full h-full" />
+              <Image src={staff.photoUrl || "/placeholder-avatar.png"} alt={staff.name} width={48} height={48} className="object-cover w-full h-full" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-bold text-gray-900 text-sm truncate">{staff.name}</p>
