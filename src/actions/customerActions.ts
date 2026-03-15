@@ -112,6 +112,8 @@ export async function verifyCustomerSession() {
         name: true,
         phone: true,
         address: true,
+        vipCardNumber: true,
+        vipStatus: true,
       },
     });
 
@@ -447,5 +449,62 @@ export const getCustomerProfileStats = async (customerId: string) => {
   } catch (error) {
     console.error(error);
     return { success: false, message: "Could not fetch stats" };
+  }
+};
+
+export const applyForVipCard = async () => {
+  try {
+    const session = await verifyCustomerSession();
+    if (!session.isAuth || !session.customer) {
+      return { success: false, message: "Unauthorized" };
+    }
+
+    const { applications, customers } = await import("@/db/schema");
+    const { eq } = await import("drizzle-orm");
+
+    // Check if customer already has a VIP card or an active application
+    const customer = await db.query.customers.findFirst({
+        where: eq(customers.customerId, session.userId as string),
+        columns: { vipStatus: true, name: true, phone: true }
+    });
+
+    if (customer?.vipStatus === 'approved') {
+        return { success: false, message: "You already have a VIP card" };
+    }
+
+    if (customer?.vipStatus === 'pending' || customer?.vipStatus === 'processing') {
+        return { success: false, message: "Your VIP application is already being processed" };
+    }
+
+    const { createApplication } = await import("./applicationActions");
+    const { notifyAdmin } = await import("./notificationActions");
+    const { ApplicationMessages } = await import("@/constants/messages");
+
+    const applicationRes = await createApplication({
+        applicantId: session.userId as string,
+        type: "vip_card_application",
+        status: "pending",
+    });
+
+    if (!applicationRes.success) return applicationRes;
+
+    // Update customer's vipStatus to pending
+    await db.update(customers)
+        .set({ vipStatus: "pending" })
+        .where(eq(customers.customerId, session.userId as string));
+
+    // Notify Admin
+    await notifyAdmin({
+        type: 'vip_card_application',
+        message: `${customer?.name} has applied for a VIP Card.`,
+        link: `/applications?type=vip_card`
+    });
+
+    revalidatePath("/customer/vip-card");
+    
+    return { success: true, message: "Application submitted successfully" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong" };
   }
 };

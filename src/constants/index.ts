@@ -30,6 +30,7 @@ export const ApplicationTypes = {
     staff_application: 'Staff Application',
     service_application: 'Service Application',
     subscription_application: 'Subscription Application',
+    vip_card_application: 'VIP Card Application',
 }
 
 export const serviceCancelationReasons = [

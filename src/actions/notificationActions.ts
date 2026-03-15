@@ -86,3 +86,33 @@ export async function notifyStaff({
     return { success: false, error };
   }
 }
+
+/**
+ * Creates a notification for the admin
+ */
+export async function notifyAdmin({
+  type,
+  message,
+  link,
+}: {
+  type: string;
+  message: string;
+  link?: string;
+}) {
+  try {
+    const { adminNotifications } = await import("@/db/schema");
+    
+    // Create notification in database
+    await db.insert(adminNotifications).values({
+      type,
+      message,
+      link,
+    });
+
+    revalidatePath("/(dashboard)");
+    return { success: true };
+  } catch (error) {
+    console.error("Error in notifyAdmin:", error);
+    return { success: false, error };
+  }
+}

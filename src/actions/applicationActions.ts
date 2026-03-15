@@ -6,7 +6,7 @@ import { agreements, applications, customers, services, staffs, subscriptions } 
 import { sendSMS, verifySession } from "@/lib"
 import { getObjectUrl } from "@/lib/s3"
 import { ApplicationTypes, SearchParams } from "@/types"
-import { generateRandomId, generateUrl, renderText } from "@/utils"
+import { generateRandomId, generateUrl, renderText, generateVipCardNumber } from "@/utils"
 import { and, desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { deleteSubscriber } from "./subscriptionActions"
@@ -40,18 +40,20 @@ export const getApplications = async ({ query, type, page = '1', limit = '20' }:
         const applicationsData = await db
             .select({
                 ...applicationColumns,
-                applicantName: sql<string>`coalesce(${staffs.name}, ${services.customerName}, ${subscriptions.name})`.as('applicantName'),
-                applicantPhone: sql<string>`coalesce(${staffs.phone}, ${services.customerPhone}, ${subscriptions.phone})`.as('applicantPhone'),
+                applicantName: sql<string>`coalesce(${staffs.name}, ${services.customerName}, ${subscriptions.name}, ${customers.name})`.as('applicantName'),
+                applicantPhone: sql<string>`coalesce(${staffs.phone}, ${services.customerPhone}, ${subscriptions.phone}, ${customers.phone})`.as('applicantPhone'),
                 applicantDistrict: sql<string>`coalesce(
                     ${staffs.currentDistrict}, 
                     ${services.customerAddressDistrict}, 
-                    ${subscriptions.district}
+                    ${subscriptions.district},
+                    ${customers.address}
                     )`.as('applicantDistrict'),
             })
             .from(applications)
             .leftJoin(staffs, eq(staffs.staffId, applications.applicantId))
             .leftJoin(services, eq(services.serviceId, applications.applicantId))
             .leftJoin(subscriptions, eq(subscriptions.subscriptionId, applications.applicantId))
+            .leftJoin(customers, eq(customers.customerId, applications.applicantId))
             .where(filters)
             .limit(Number(limit))
             .offset(offset)
@@ -88,6 +90,7 @@ export const getApplicationsMetadata = async ({ query, type, page = '1', limit =
         .leftJoin(staffs, eq(staffs.staffId, applications.applicantId))
         .leftJoin(services, eq(services.serviceId, applications.applicantId))
         .leftJoin(subscriptions, eq(subscriptions.subscriptionId, applications.applicantId))
+        .leftJoin(customers, eq(customers.customerId, applications.applicantId))
         .where(filters))[0].count
 
     const totalPages = limit ? Math.ceil(totalRecords / Number(limit)) : 1;
@@ -221,6 +224,26 @@ export const updateApplicationStatus = async (applicationId: string, updates: { 
                     }
                     break
                 }
+                case 'vip_card_application': {
+                    let vipCardNumber = null;
+                    if (status === 'approved') {
+                        vipCardNumber = generateVipCardNumber();
+                    }
+
+                    await db.update(customers)
+                        .set({ 
+                            vipStatus: status,
+                            ...(status === 'approved' && { vipCardNumber })
+                        })
+                        .where(eq(customers.customerId, applicationData[0].applicantId));
+
+                    if (status === 'approved') {
+                        messageContent = ApplicationMessages.vip_card.APPROVAL;
+                    } else {
+                        messageContent = ApplicationMessages.vip_card.REJECTION;
+                    }
+                    break;
+                }
             }
 
             const applicantData = await db
@@ -239,6 +262,7 @@ export const updateApplicationStatus = async (applicationId: string, updates: { 
                 {
                     applicant_name: applicantData[0].name,
                     service_id: serviceId,
+                    card_number: (status === 'approved' && applicationData[0].type === 'vip_card_application') ? (await db.query.customers.findFirst({ where: eq(customers.customerId, applicationData[0].applicantId), columns: { vipCardNumber: true } }))?.vipCardNumber : '',
                     tracking_link: generateUrl(
                         applicationData[0].type === 'service_application' ? 'service-tracking' : 'application-tracking',
                         { trackingId: applicationData[0].type === 'service_application' ? serviceId : applicationId }

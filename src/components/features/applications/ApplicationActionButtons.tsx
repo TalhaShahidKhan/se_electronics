@@ -4,6 +4,7 @@ import { deleteApplication, updateApplicationStatus } from "@/actions";
 import { ServiceViewModal } from "@/components/features/services";
 import { StaffProfileModal } from "@/components/features/staff";
 import { SubscriberViewModal } from "@/components/features/subscriptions";
+import { CustomerViewModal } from "@/components/features/customers";
 import { Modal, StatusBadge } from "@/components/ui";
 import { useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
@@ -18,7 +19,8 @@ export default function ApplicationActionButtons({
     type:
       | "service_application"
       | "staff_application"
-      | "subscription_application";
+      | "subscription_application"
+      | "vip_card_application";
     rejectReason: string | null;
   };
 }) {
@@ -149,13 +151,18 @@ export default function ApplicationActionButtons({
                 serviceId={applicationData.applicantId}
                 onClose={() => setShowViewModal(false)}
               />
-            ) : (
-              applicationData.type === "subscription_application" && (
+            ) : applicationData.type === "subscription_application" ? (
                 <SubscriberViewModal
                   subscriberId={applicationData.applicantId}
                   onClose={() => setShowViewModal(false)}
                 />
-              )
+            ) : (
+                applicationData.type === "vip_card_application" && (
+                    <CustomerViewModal
+                        customerId={applicationData.applicantId}
+                        onClose={() => setShowViewModal(false)}
+                    />
+                )
             ))}
           {showDropdown && (
             <button onClick={updateApplicationStatusHandler} title="Update">

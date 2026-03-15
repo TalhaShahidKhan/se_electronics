@@ -47,6 +47,7 @@ export const applicationTypesEnum = pgEnum("applicationTypes", [
   "service_application",
   "staff_application",
   "subscription_application",
+  "vip_card_application",
 ]);
 
 export const staffRoleEnum = pgEnum("staffRole", ["technician", "electrician"]);
@@ -133,6 +134,8 @@ export const customers = pgTable(
     invoiceNumber: varchar({ length: 255 }).unique().notNull(),
     isActiveCustomer: boolean().default(true).notNull(),
     profileCompleted: boolean().default(false).notNull(),
+    vipCardNumber: varchar({ length: 16 }).unique(),
+    vipStatus: applicationStatusEnum().default("pending"),
     createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp({ withTimezone: true })
       .defaultNow()
@@ -475,6 +478,10 @@ export const applicationsRelations = relations(applications, ({ one }) => ({
   subscriber: one(subscriptions, {
     fields: [applications.applicantId],
     references: [subscriptions.subscriptionId],
+  }),
+  customer: one(customers, {
+    fields: [applications.applicantId],
+    references: [customers.customerId],
   }),
 }));
 

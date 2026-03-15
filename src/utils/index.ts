@@ -29,6 +29,16 @@ export function generateInvoiceNumber(): string {
   return `${timestamp}${randomPart}`;
 }
 
+export function generateVipCardNumber(): string {
+  // Generate a 16-digit number
+  let result = "";
+  for (let i = 0; i < 4; i++) {
+    const segment = Math.floor(1000 + Math.random() * 9000).toString();
+    result += segment;
+  }
+  return result;
+}
+
 export const generateUrl = <T extends UrlConfig["type"]>(
   type: T,
   params: Extract<UrlConfig, { type: T }>["params"],
