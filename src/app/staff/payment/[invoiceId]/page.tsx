@@ -445,7 +445,7 @@ export default async function StaffInvoiceDetailsPage({
               Payment Information
             </h3>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-500 font-bold">
                   Amount Delivered
@@ -473,10 +473,11 @@ export default async function StaffInvoiceDetailsPage({
                 </span>
                 <span className="font-black text-rose-500">-৳34</span>
               </div>
-
+              <div className="border-t border-dashed border-gray-400 my-4"></div>
               {/* Final Total */}
-              <div className="border-t border-dashed border-gray-200 my-2 pt-2" />
+              <div className="border-t border-dashed border-gray-200  " />
               <div className="flex items-center justify-between">
+                {String(session.username)}
                 <span className="text-sm font-black text-gray-900">
                   Total Settlement
                 </span>
@@ -528,9 +529,9 @@ export default async function StaffInvoiceDetailsPage({
           )}
 
           {/* ── Recipient (Staff) Info ── */}
-          <div className="bg-white rounded-xl p-5 shadow-sm">
+          <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-400 md:border-none">
             <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-              <Briefcase size={16} className="text-brand" />
+              {/* <Briefcase size={16} className="text-brand" /> */}
               Recipient Information
             </h3>
             <p className="font-black text-gray-900 text-base">
@@ -541,7 +542,7 @@ export default async function StaffInvoiceDetailsPage({
             </p>
 
             {payment.paymentMethod === "bank" ? (
-              <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+              <div className="mt-3  bg-gray-50 rounded-xl border border-gray-100">
                 <p className="text-xs font-black text-gray-400 uppercase mb-1">
                   Bank Account
                 </p>
@@ -553,20 +554,38 @@ export default async function StaffInvoiceDetailsPage({
                 </p>
               </div>
             ) : (
-              <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                <p className="text-xs font-black text-gray-400 uppercase mb-1">
-                  Wallet Number
-                </p>
-                <p className="text-sm font-black text-gray-900">
-                  {payment.receiverWalletNumber || "N/A"}
-                </p>
+              <div>
+                <div className=" flex justify-start gap-2 items-center  bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-xs font-black text-gray-400 uppercase mb-1">
+                    Wallet Number
+                  </p>
+                  <p className="text-sm font-black text-gray-900">
+                    {payment.receiverWalletNumber || "N/A"}
+                  </p>
+                </div>
+                <div className="flex justify-start gap-2 items-center  bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-sm font-black text-gray-400 uppercase ">
+                    Amount
+                  </p>
+                  <p className="text-sm font-black text-gray-500">
+                    {payment.amount || "N/A"}
+                  </p>
+                </div>
+                <div className="flex justify-start gap-2 items-center  bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-sm font-black text-gray-400 uppercase ">
+                    Trx Id :
+                  </p>
+                  <p className="text-sm font-black text-gray-500">
+                    {payment.transactionId || "N/A"}
+                  </p>
+                </div>
               </div>
             )}
           </div>
 
           {/* ── Service Information Block ── */}
           {payment.service && (
-            <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-brand">
+            <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-brand ">
               <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
                 <Activity size={16} className="text-brand" />
                 Service details
@@ -605,15 +624,17 @@ export default async function StaffInvoiceDetailsPage({
           )}
 
           {/* ── Sender Information Block ── */}
-          <div className="bg-white rounded-xl p-5 shadow-sm opacity-75">
-            <h3 className="text-sm font-black text-gray-400 mb-4 flex items-center gap-2">
-              <Building2 size={16} />
+          <div className="bg-white rounded-md md:border-none border border-gray-500 p-5 shadow-sm opacity-75">
+            <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+              {/* <Building2 size={16} /> */}
               Sender Information
             </h3>
-            <p className="font-black text-gray-800 text-sm">SE ELECTRONICS</p>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-0.5">
-              Corporate Office
-            </p>
+            <div className="flex justify-start gap-3 items-center">
+              <p className="font-black text-gray-800 text-sm">SE ELECTRONICS</p>
+              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-0.5">
+                Corporate Office
+              </p>
+            </div>
 
             {payment.paymentMethod === "bank" ? (
               <div className="mt-3 text-xs space-y-0.5 font-bold text-gray-500">
@@ -621,11 +642,104 @@ export default async function StaffInvoiceDetailsPage({
                 <p>{payment.senderBankInfo?.accountNumber || "********4590"}</p>
               </div>
             ) : (
-              <p className="text-xs font-bold text-gray-500 mt-2">
-                Merchant: {payment.senderWalletNumber || "N/A"}
-              </p>
+              <div>
+                <p className="text-xs font-bold text-gray-500 mt-2">
+                  Merchant: {payment.senderWalletNumber || "N/A"}
+                </p>
+                <p className="text-xs font-bold text-gray-500 mt-2">
+                  Payment Method: {payment.paymentMethod || "N/A"}
+                </p>
+                <p className="text-xs font-bold text-gray-500 mt-2">
+                  Trx ID: {payment.transactionId || "N/A"}
+                </p>
+              </div>
             )}
           </div>
+
+          <div className="bg-white rounded-md md:border-none border border-gray-500 p-5 shadow-sm opacity-75">
+            <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+              {/* <Building2 size={16} /> */}
+              Service Information
+            </h3>
+
+            {payment.paymentMethod === "bank" ? (
+              <div className="mt-3 text-xs space-y-0.5 font-bold text-gray-500">
+                <p>{payment.senderBankInfo?.bankName || "Corporate Bank"}</p>
+                <p>{payment.senderBankInfo?.accountNumber || "********4590"}</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {/* Service ID + Status */}
+                <div className="flex justify-between items-center">
+                  <p className="text-xs font-bold text-gray-500">
+                    Service Id: {payment.serviceId || "N/A"}
+                  </p>
+
+                  <div
+                    className={clsx(
+                      "px-2 py-1 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-sm border",
+                      payment.status === "completed"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                        : payment.status === "processing"
+                          ? "bg-blue-50 text-blue-700 border-blue-100"
+                          : payment.status === "rejected"
+                            ? "bg-rose-50 text-rose-700 border-rose-100"
+                            : "bg-amber-50 text-amber-700 border-amber-100",
+                    )}
+                  >
+                    {payment.status}
+                  </div>
+                </div>
+
+                {/* Customer + COD */}
+                <div className="flex justify-between">
+                  <p className="text-xs font-bold text-gray-500">
+                    Customer: {String(session.username)}
+                  </p>
+
+                  <span className="text-xs font-bold text-gray-500">
+                    COD: {payment.amount?.toLocaleString()}
+                  </span>
+                </div>
+
+                {/* Date */}
+                <p className="text-xs font-bold text-gray-500">
+                  Date:{" "}
+                  <span>{formatDate(payment.date || payment.createdAt!)}</span>
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* createdAt: Date;
+    updatedAt: Date;
+    id: string;
+    date: Date;
+    paymentId: string;
+    invoiceNumber: string;
+    paymentMethod: PaymentTypes;
+    senderWalletNumber: string | null;
+    receiverWalletNumber: string | null;
+    transactionId: string | null;
+    amount: number;
+    serviceId?: string | null;
+    description: string | null;
+    staffId: string;
+    status: Statuses;
+    statusHistory?: {
+        customNote: string | null;
+        customLabel: string | null;
+        cancelReason: string | null;
+        id: string;
+        status: Statuses;
+        statusType: "system" | "custom";
+    }[];
+    staff?: StaffsType;
+    service?: ServicesType | null;
+    senderBankInfo: BankInfo | null;
+    receiverBankInfo: BankInfo | null;
+} */}
+          {/* ====================================================== */}
 
           {/* ── Action Buttons ── */}
           <div className="pt-4 grid grid-cols-2 gap-3">

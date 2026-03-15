@@ -156,7 +156,7 @@ export default function GetServiceForm({
               >
                 {/* vertical dotted line */}
                 {index !== requirementsList.length - 1 && (
-                  <div className="absolute left-9 top-10 h-full border-l-2 border-dotted border-brand mt-2"></div>
+                  <div className="absolute left-[26px] top-7 md:left-9 md:top-10 h-full border-l-2 border-dotted border-brand mt-2"></div>
                 )}
 
                 <div className="flex items-start gap-3 mb-2">

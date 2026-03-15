@@ -1,5 +1,5 @@
 "use client";
-
+import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -35,9 +35,8 @@ export default function StaffDashboardClient({
   experienceYears,
   adminPhone,
 }: StaffDashboardClientProps) {
-
   const primaryActions = [
-        {
+    {
       label: "Home",
       icon: Home,
       href: "/staff/profile",
@@ -71,7 +70,6 @@ export default function StaffDashboardClient({
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
       <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800 pb-24">
-
         {/* Banner */}
         <div className="w-full overflow-hidden shadow-md">
           <Banner />
@@ -107,34 +105,68 @@ export default function StaffDashboardClient({
           </div>
         </div> */}
 
+        <Marquee
+          speed={50}
+          gradient={false}
+          pauseOnHover={true}
+          className="py-1"
+        >
+          <span className="text-slate-900 font-extrabold text-sm tracking-wide">
+            আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+          </span>
+          <span className="mx-6 text-slate-800">•</span>
+          <span className="text-slate-900 font-extrabold text-sm tracking-wide">
+            আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+          </span>
+          <span className="mx-6 text-slate-800">•</span>
+          <span className="text-slate-800 font-extrabold text-sm tracking-wide">
+            আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+          </span>
+          <span className="mx-6 text-slate-800">•</span>
+        </Marquee>
+
         {/* Stats */}
-        <div className="grid grid-cols-2 gap-4 sm:gap-6">
-          <div className="bg-white p-6 rounded-md shadow-sm border flex items-center gap-4">
-            <CheckCircle className="text-emerald-500" size={28} />
+        <div className="grid grid-cols-3 gap-4 sm:gap-6">
+          <div className="bg-violet-100/50  border-violet-400/70 p-1.5 rounded-md shadow-sm border flex items-center text-center justify-center gap-4">
+            {/* <CheckCircle className="text-emerald-400/70" size={28} /> */}
             <div>
-              <p className="text-2xl font-black">
+              <p className="text-2xl font-black text-violet-600">
                 {stats?.successfulServices || 0}
               </p>
-              <p className="text-xs uppercase font-black text-gray-400">
-                Services Done
+              <p className="text-xs uppercase font-black text-violet-600">
+                Complete Service
               </p>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-md shadow-sm border flex items-center gap-4">
-            <Clock className="text-amber-500" size={28} />
+          <div className="bg-green-100/50  border-green-400/70 p-1.5 rounded-md shadow-sm border flex items-center text-center justify-center gap-4">
+            {/* <Clock className="text-amber-400/70" size={28} /> */}
             <div>
-              <p className="text-2xl font-black">{experienceYears}</p>
-              <p className="text-xs uppercase font-black text-gray-400">
-                Years Exp.
+              <p className="text-2xl font-black text-green-600">
+                {experienceYears}
+              </p>
+              <p className="text-xs text-green-600 uppercase font-black ">
+                Servicing Center
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-red-50/70 border-red-400/70 p-1.5 rounded-md shadow-sm border flex items-center text-center justify-center gap-4">
+            {/* <Clock className="text-amber-500" size={28} /> */}
+            <div>
+              <p className="text-2xl font-black text-red-500">
+                {staffData.cancle || "0"}
+              </p>
+              <p className="text-xs uppercase font-black text-red-500">
+                Cancle
               </p>
             </div>
           </div>
         </div>
 
         {/* Desktop Action Grid */}
-        <div className="hidden sm:block bg-white rounded-md p-8 shadow-sm border ">
-          <div className="grid grid-cols-4 gap-10 rounded-t-md">
+        <div className="hidden sm:block bg-white rounded-md shadow-md p-8  border ">
+          <div className="grid grid-cols-4 gap-10 rounded-t-md ">
             {primaryActions.map((action, i) => (
               <Link
                 key={action.label}
@@ -159,17 +191,37 @@ export default function StaffDashboardClient({
         </div>
 
         {/* Secondary Grid */}
-        <div className="bg-white rounded-md p-6 sm:p-10 shadow-sm border">
+        <div className="md:hidden  bg-white rounded-md p-6 sm:p-10 shadow-sm border">
           <div className="grid grid-cols-4 gap-8">
             {[
-              { label: "Detail", icon: User, href: "/staff/details", color: "text-purple-500" },
-              { label: "Stats", icon: Briefcase, href: "/staff/tracking", color: "text-cyan-500" },
-              { label: "Feedback", icon: Star, href: "/staff/feedbacks", color: "text-pink-500" },
-              { label: "Support", icon: PhoneCall, href: `tel:${adminPhone}`, color: "text-brand" },
-              { label: "WhatsApp", icon: MessageSquare, href: "https://wa.me/8801310673600", color: "text-green-500" },
-              { label: "Tracking", icon: Activity, href: "/staff/tracking", color: "text-blue-500" },
-              { label: "History", icon: Clock, href: "/staff/tracking", color: "text-slate-500" },
-              { label: "Done", icon: CheckCircle, href: "/staff/tracking", color: "text-emerald-600" },
+              {
+                label: "Services",
+                icon: Wrench,
+                href: "/staff/services",
+                color: "text-emerald-500",
+                bg: "bg-emerald-50",
+              },
+
+              {
+                label: "Report",
+                icon: User,
+                href: "/staff/details",
+                color: "text-yellow-500",
+                bg: "bg-yellow-50",
+              },
+              {
+                label: "Payments",
+                icon: Wallet,
+                href: "/staff/payments",
+                color: "text-rose-500",
+                bg: "bg-rose-50",
+              },
+              {
+                label: "Tracking",
+                icon: Activity,
+                href: "/staff/tracking",
+                color: "text-blue-500",
+              },
             ].map((action, i) => (
               <Link
                 key={i}
@@ -185,6 +237,71 @@ export default function StaffDashboardClient({
           </div>
         </div>
 
+        <div className="bg-white rounded-md p-6 sm:p-10 shadow-sm border">
+          <div className="grid grid-cols-4 gap-8">
+            {[
+              {
+                label: "Detail",
+                icon: User,
+                href: "/staff/details",
+                color: "text-purple-500",
+              },
+              {
+                label: "Stats",
+                icon: Briefcase,
+                href: "/staff/tracking",
+                color: "text-cyan-500",
+              },
+              {
+                label: "Feedback",
+                icon: Star,
+                href: "/staff/feedbacks",
+                color: "text-pink-500",
+              },
+              {
+                label: "Support",
+                icon: PhoneCall,
+                href: `tel:${adminPhone}`,
+                color: "text-brand",
+              },
+              {
+                label: "WhatsApp",
+                icon: MessageSquare,
+                href: "https://wa.me/8801310673600",
+                color: "text-green-500",
+              },
+              {
+                label: "Tracking",
+                icon: Activity,
+                href: "/staff/tracking",
+                color: "text-blue-500",
+              },
+              {
+                label: "History",
+                icon: Clock,
+                href: "/staff/tracking",
+                color: "text-slate-500",
+              },
+              {
+                label: "Done",
+                icon: CheckCircle,
+                href: "/staff/tracking",
+                color: "text-emerald-600",
+              },
+            ].map((action, i) => (
+              <Link
+                key={i}
+                href={action.href}
+                className="flex flex-col items-center gap-2"
+              >
+                <action.icon className={action.color} size={26} />
+                <span className="text-xs font-black text-gray-500 uppercase">
+                  {action.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </StaffLayout>
   );

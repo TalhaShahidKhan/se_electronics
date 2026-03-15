@@ -189,7 +189,7 @@ export default async function StaffDetailsPage() {
       <div className="min-h-screen bg-gray-100 ">
         {/* HEADER */}
         <div className="bg-brand text-white px-4 sm:px-6 py-5 sm:py-6 mt-5 rounded-t-md shadow-sm mx-2">
-          <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="max-w-6xl mx-auto flex  justify-between items-center gap-4">
             {/* Title */}
             <h1 className="text-lg sm:text-xl font-bold tracking-wide">
               Staff Profile
@@ -231,18 +231,18 @@ export default async function StaffDetailsPage() {
               </p>
 
               <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-2">
-                <span className="bg-brand/10 text-brand text-sm font-bold px-3 py-1 rounded-full capitalize">
+                <span className="bg-brand/10 text-brand text-sm font-bold px-3 py-2 rounded-md capitalize">
                   {staffData.role}
                 </span>
 
                 {staffData.isVerified && (
-                  <span className="bg-green-100 text-green-600 text-sm font-bold px-3 py-1 rounded-full">
+                  <span className="bg-green-100 text-green-600 text-sm font-bold px-3 py-2 rounded-md">
                     Verified
                   </span>
                 )}
 
                 {staffData.isActiveStaff && (
-                  <span className="bg-blue-100 text-blue-600 text-sm font-bold px-3 py-1 rounded-full">
+                  <span className="bg-blue-100 text-blue-600 text-sm font-bold px-3 py-2 rounded-md">
                     Active
                   </span>
                 )}
@@ -252,38 +252,38 @@ export default async function StaffDetailsPage() {
 
           {/* PERFORMANCE STATS */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white p-5 rounded-xl shadow-sm border text-center">
-              <p className="text-2xl font-bold text-brand">
+            <div className="bg-green-100 border border-green-400  p-3 rounded-md shadow-sm  text-center">
+              <p className="text-2xl font-bold text-green-600">
                 {staffData.totalServices}
               </p>
-              <p className="text-xs text-gray-400 font-bold uppercase">
+              <p className="text-xs text-green-600 font-bold uppercase">
                 Total Services
               </p>
             </div>
 
-            <div className="bg-white p-5 rounded-xl shadow-sm border text-center">
-              <p className="text-2xl font-bold text-green-600">
+            <div className="bg-violet-100 border border-violet-400  p-3 rounded-md shadow-sm  text-center">
+              <p className="text-2xl font-bold text-violet-600">
                 {staffData.successfulServices}
               </p>
-              <p className="text-xs text-gray-400 font-bold uppercase">
+              <p className="text-xs text-violet-600 font-bold uppercase">
                 Successful
               </p>
             </div>
 
-            <div className="bg-white p-5 rounded-xl shadow-sm border text-center text-lg">
+            <div className="bg-red-100 border border-red-400  p-3 rounded-md shadow-sm  text-center">
               <p className="text-2xl font-bold text-red-500">
                 {staffData.canceledServices}
               </p>
-              <p className="text-xs text-gray-400 font-bold uppercase">
+              <p className="text-xs text-red-500 font-bold uppercase">
                 Canceled
               </p>
             </div>
 
-            <div className="bg-white p-5 rounded-xl shadow-sm border text-center">
+            <div className="bg-orange-100 border border-orange-400  p-3 rounded-md shadow-sm  text-center">
               <p className="text-2xl font-bold text-orange-500">
                 {staffData.rating}
               </p>
-              <p className="text-xs text-gray-400 font-bold uppercase">
+              <p className="text-xs text-orange-500 font-bold uppercase">
                 Rating
               </p>
             </div>
