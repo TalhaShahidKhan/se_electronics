@@ -75,57 +75,90 @@ export default async function ComplaintDocPage({
           </div>
         </div>
 
-        {/* APPLICATION STATUS TRACKER */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 font-sans overflow-hidden">
-            <h3 className="text-center font-bold text-gray-800 border-b border-gray-100 py-3 uppercase tracking-wider text-sm bg-gray-50">বর্তমান অবস্থা (Current Status)</h3>
-            <div className="flex items-center justify-center p-8 relative overflow-x-auto">
-                <div className="absolute left-[15%] right-[15%] top-[40%] -translate-y-1/2 h-1 bg-gray-200 -z-10 min-w-[500px]"></div>
-                <div className="absolute left-[15%] right-[15%] top-[40%] -translate-y-1/2 h-1 bg-brand -z-10 transition-all duration-500 min-w-[500px]" style={{width: getProgressWidth()}}></div>
+        {/* APPLICATION STATUS TRACKER - VERTICAL ENGLISH UI */}
+        <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 mb-10 p-8 sm:p-12">
+            <h3 className="text-center font-black text-gray-900 uppercase tracking-[0.2em] text-lg mb-12">
+              Status of Application
+            </h3>
 
-                <div className="w-full flex justify-between min-w-[600px] px-8">
-                    {/* Step 1 */}
-                    <div className="flex flex-col items-center gap-2 bg-white px-2">
-                        <CheckCircle size={28} className="text-brand bg-white" />
-                        <span className="text-xs font-bold text-brand mt-1">Under Trial</span>
-                        <span className="text-[10px] text-gray-500">{formatDate(complaint.createdAt)}</span>
+            <div className="max-w-md mx-auto relative px-4">
+                {/* Vertical Line Connecting Dots */}
+                <div className="absolute left-[39px] top-4 bottom-4 w-0.5 bg-emerald-100 hidden sm:block"></div>
+
+                <div className="space-y-12">
+                    {/* Step 1: Pending */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 relative group">
+                        <div className={`z-10 size-10 rounded-full border-2 flex items-center justify-center shrink-0 transition-all bg-white ${isProcessing || complaint.status === 'under_trial' ? 'border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]' : 'border-gray-200'}`}>
+                            <CheckCircle size={20} className={isProcessing || complaint.status === 'under_trial' ? 'text-emerald-500' : 'text-gray-200'} />
+                        </div>
+                        
+                        <div className="flex-1 flex items-center gap-4 w-full">
+                            <div className="h-0.5 w-12 bg-emerald-100 hidden sm:block"></div>
+                            <div className="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 group-hover:bg-emerald-50 transition-colors">
+                                <h4 className="font-bold text-emerald-800 text-sm uppercase tracking-widest mb-1">Pending</h4>
+                                <p className="text-[10px] font-bold text-emerald-600/60 uppercase mb-1">Application Date</p>
+                                <p className="text-xs font-black text-emerald-700">{formatDate(complaint.createdAt)}</p>
+                            </div>
+                        </div>
                     </div>
-                    {/* Step 2 */}
-                    <div className="flex flex-col items-center gap-2 bg-white px-2">
-                        {isProcessing ? (
-                            <CheckCircle size={28} className="text-brand bg-white" />
-                        ) : (
-                            <div className="w-7 h-7 rounded-full bg-gray-200 border-4 border-white shadow-sm" />
-                        )}
-                        <span className={`text-xs font-bold mt-1 ${isProcessing ? 'text-brand' : 'text-gray-400'}`}>Processing</span>
+
+                    {/* Step 2: Processing */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 relative group">
+                        <div className={`z-10 size-10 rounded-full border-2 flex items-center justify-center shrink-0 transition-all bg-white ${isProcessing ? 'border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]' : 'border-gray-200'}`}>
+                            <CheckCircle size={20} className={isProcessing ? 'text-emerald-500' : 'text-gray-200'} />
+                        </div>
+                        
+                        <div className="flex-1 flex items-center gap-4 w-full">
+                            <div className={`h-0.5 w-12 hidden sm:block ${isProcessing ? 'bg-emerald-100' : 'bg-gray-100'}`}></div>
+                            <div className={`flex-1 border rounded-2xl p-5 transition-all ${isProcessing ? 'bg-emerald-50/50 border-emerald-100 group-hover:bg-emerald-50' : 'bg-gray-50 border-gray-100 opacity-60'}`}>
+                                <h4 className={`font-bold text-sm uppercase tracking-widest mb-1 ${isProcessing ? 'text-emerald-800' : 'text-gray-400'}`}>Processing</h4>
+                                <p className={`text-[10px] font-bold uppercase mb-1 ${isProcessing ? 'text-emerald-600/60' : 'text-gray-400'}`}>Receiving Date</p>
+                                <p className={`text-xs font-black ${isProcessing ? 'text-emerald-700' : 'text-gray-300'}`}>{isProcessing ? formatDate(complaint.updatedAt) : "Awaiting..."}</p>
+                            </div>
+                        </div>
                     </div>
-                    {/* Step 3 */}
-                    <div className="flex flex-col items-center gap-2 bg-white px-2">
-                        {isHearing ? (
-                            <CheckCircle size={28} className="text-brand bg-white" />
-                        ) : (
-                            <div className="w-7 h-7 rounded-full bg-gray-200 border-4 border-white shadow-sm" />
-                        )}
-                        <span className={`text-xs font-bold mt-1 ${isHearing ? 'text-brand' : 'text-gray-400'}`}>Hearing</span>
+
+                    {/* Step 3: Hearing */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 relative group">
+                        <div className={`z-10 size-10 rounded-full border-2 flex items-center justify-center shrink-0 transition-all bg-white ${isHearing ? 'border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]' : 'border-gray-200'}`}>
+                            <CheckCircle size={20} className={isHearing ? 'text-emerald-500' : 'text-gray-200'} />
+                        </div>
+                        
+                        <div className="flex-1 flex items-center gap-4 w-full">
+                            <div className={`h-0.5 w-12 hidden sm:block ${isHearing ? 'bg-emerald-100' : 'bg-gray-100'}`}></div>
+                            <div className={`flex-1 border rounded-2xl p-5 transition-all ${isHearing ? 'bg-emerald-50/50 border-emerald-100 group-hover:bg-emerald-50' : 'bg-gray-50 border-gray-100 opacity-60'}`}>
+                                <h4 className={`font-bold text-sm uppercase tracking-widest mb-1 ${isHearing ? 'text-emerald-800' : 'text-gray-400'}`}>Hearing</h4>
+                                <p className={`text-[10px] font-bold uppercase mb-1 ${isHearing ? 'text-emerald-600/60' : 'text-gray-400'}`}>Hearing Date</p>
+                                <p className={`text-xs font-black ${isHearing ? 'text-emerald-700' : 'text-gray-300'}`}>{isHearing ? formatDate(complaint.updatedAt) : "Planned"}</p>
+                            </div>
+                        </div>
                     </div>
-                    {/* Step 4 */}
-                    <div className="flex flex-col items-center gap-2 bg-white px-2">
-                        {isCompleted ? (
-                            <CheckCircle size={28} className="text-brand bg-white" />
-                        ) : (
-                            <div className="w-7 h-7 rounded-full bg-gray-200 border-4 border-white shadow-sm" />
-                        )}
-                        <span className={`text-xs font-bold mt-1 ${isCompleted ? 'text-brand' : 'text-gray-400'}`}>Completed</span>
+
+                    {/* Step 4: Completed */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 relative group">
+                        <div className={`z-10 size-10 rounded-full border-2 flex items-center justify-center shrink-0 transition-all bg-white ${isCompleted ? 'border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]' : 'border-gray-200'}`}>
+                            <CheckCircle size={20} className={isCompleted ? 'text-emerald-500' : 'text-gray-200'} />
+                        </div>
+                        
+                        <div className="flex-1 flex flex-col items-center w-full">
+                            <div className={`h-0.5 w-12 mb-4 self-start hidden sm:block ${isCompleted ? 'bg-emerald-100' : 'bg-gray-100'}`}></div>
+                            <div className={`w-full border rounded-2xl p-6 transition-all text-center ${isCompleted ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-200' : 'bg-gray-50 border-gray-100 opacity-60'}`}>
+                                <h4 className={`font-black uppercase tracking-[0.2em] mb-1 ${isCompleted ? 'text-white' : 'text-gray-400'}`}>Settled</h4>
+                                <p className={`text-[10px] font-bold uppercase mb-2 ${isCompleted ? 'text-white/70' : 'text-gray-400'}`}>Final Review Date</p>
+                                <p className={`text-sm font-black ${isCompleted ? 'text-white' : 'text-gray-300'}`}>{isCompleted ? formatDate(complaint.updatedAt) : "Processing..."}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
             {(isHearing || isCompleted) && complaint.adminNote && (
-                 <div className="p-4 bg-amber-50/50 border-t border-amber-100 flex flex-col items-center text-center">
-                    <p className="text-xs font-bold text-amber-800 uppercase tracking-widest mb-1.5">
-                       {isCompleted ? "Final Resolution Details" : "Hearing Notice / Update"}
+                 <div className="mt-12 p-6 bg-amber-50 rounded-3xl border border-amber-100 flex flex-col items-center text-center">
+                    <p className="text-[10px] font-black text-amber-600 uppercase tracking-[0.2em] mb-3">
+                       {isCompleted ? "Executive Resolution Summary" : "Officer's Hearing Notice"}
                     </p>
-                    <p className="text-sm font-medium text-amber-900 leading-relaxed max-w-2xl italic">
-                       "{complaint.adminNote}"
+                    <p className="text-sm font-bold text-amber-900 leading-relaxed max-w-2xl italic">
+                       &ldquo;{complaint.adminNote}&rdquo;
                     </p>
                  </div>
             )}

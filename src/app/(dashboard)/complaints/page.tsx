@@ -1,7 +1,7 @@
 "use client";
 
 import { getAllComplaints, updateComplaintStatus } from "@/actions/complaintActions";
-import { ExternalLink, Search, Shield, ArrowRight, CheckCircle2, FileText, Gavel } from "lucide-react";
+import { ExternalLink, Search, Shield, ArrowRight, CheckCircle2, FileText, Gavel, Download } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -129,11 +129,39 @@ export default function ComplaintsPage() {
           {filteredComplaints.map((complaint) => (
             <div key={complaint.complaintId} className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
               <div className="p-6 flex-1">
-                <div className="flex justify-between items-start mb-4">
-                  <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getStatusColor(complaint.status)}`}>
-                    {complaint.status.replace("_", " ")}
-                  </span>
-                  <span className="text-[11px] font-mono text-gray-400 bg-gray-50 px-2 py-1 rounded-md">{complaint.complaintId}</span>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex-1 flex items-center gap-1">
+                    {[
+                      { id: "under_trial", label: "UT" },
+                      { id: "processing", label: "P" },
+                      { id: "hearing", label: "H" },
+                      { id: "completed", label: "C" }
+                    ].map((step, index, array) => {
+                      const statuses = ["under_trial", "processing", "hearing", "completed"];
+                      const currentIdx = statuses.indexOf(complaint.status);
+                      const stepIdx = statuses.indexOf(step.id);
+                      const isCompleted = currentIdx >= stepIdx;
+                      const isActive = complaint.status === step.id;
+                      
+                      return (
+                        <div key={step.id} className="flex flex-1 items-center last:flex-none">
+                          <div 
+                            title={step.id.replace("_", " ")}
+                            className={`w-6 h-6 rounded-md flex items-center justify-center text-[8px] font-black transition-all ${
+                              isActive ? 'bg-black text-white scale-110 shadow-sm' : 
+                              isCompleted ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-400'
+                            }`}
+                          >
+                            {step.label}
+                          </div>
+                          {index < array.length - 1 && (
+                            <div className={`h-0.5 flex-1 mx-1 rounded-full ${currentIdx > stepIdx ? 'bg-emerald-500' : 'bg-gray-200'}`} />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-400 bg-gray-50 px-2 py-1 rounded-md ml-4">{complaint.complaintId}</span>
                 </div>
 
                 <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">
@@ -166,12 +194,43 @@ export default function ComplaintsPage() {
                 </div>
               </div>
               
-              <div className="p-4 bg-gray-50 border-t border-gray-100 relative">
+              <div className="p-4 bg-gray-50 border-t border-gray-100 space-y-3">
+                  {/* Download Buttons Row */}
+                  <div className="flex flex-wrap gap-2 mb-1">
+                    <Link 
+                      href={`/pdf/download?type=complaint&id=${complaint.complaintId}`}
+                      className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-gray-600 hover:bg-brand-50 hover:text-brand transition-all flex justify-center items-center gap-2 shadow-sm"
+                      title="Download Complaint Document"
+                    >
+                      <Download size={14} /> DOC
+                    </Link>
+                    
+                    {(complaint.status === "hearing" || complaint.status === "completed") && (
+                      <Link 
+                        href={`/pdf/download?type=hearing-notice&id=${complaint.complaintId}`}
+                        className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-amber-600 hover:bg-amber-50 transition-all flex justify-center items-center gap-2 shadow-sm"
+                        title="Download Hearing Notice"
+                      >
+                        <Download size={14} /> HEARING
+                      </Link>
+                    )}
+
+                    {complaint.status === "completed" && (
+                      <Link 
+                        href={`/pdf/download?type=completion-notice&id=${complaint.complaintId}`}
+                        className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-emerald-600 hover:bg-emerald-50 transition-all flex justify-center items-center gap-2 shadow-sm"
+                        title="Download Resolution Letter"
+                      >
+                        <Download size={14} /> RESOLVED
+                      </Link>
+                    )}
+                  </div>
+
                   {/* Action Buttons Based on Status */}
                   {complaint.status === "under_trial" && (
                      <button
                        onClick={() => { setSelectedComplaint(complaint); setActionType("processing"); setAdminNotes(""); }}
-                       className="w-full py-3 bg-blue-600 rounded-xl text-sm font-bold text-white shadow-sm hover:bg-blue-700 transition-all flex justify-center items-center gap-2"
+                       className="w-full py-3 bg-black rounded-xl text-sm font-bold text-white shadow-sm hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
                      >
                        <FileText size={16} /> Mark as Processing / Review
                      </button>
@@ -179,15 +238,15 @@ export default function ComplaintsPage() {
                   {complaint.status === "processing" && (
                      <button
                        onClick={() => { setSelectedComplaint(complaint); setActionType("hearing"); setAdminNotes(""); }}
-                       className="w-full py-3 bg-amber-600 rounded-xl text-sm font-bold text-white shadow-sm hover:bg-amber-700 transition-all flex justify-center items-center gap-2"
+                       className="w-full py-3 bg-amber-600 rounded-xl text-sm font-bold text-white shadow-sm hover:bg-amber-700 hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
                      >
-                       <Gavel size={16} /> Setup Hearing Notice
+                       <Gavel size={16} /> Issue Hearing Notice
                      </button>
                   )}
                   {complaint.status === "hearing" && (
                      <button
                        onClick={() => { setSelectedComplaint(complaint); setActionType("completed"); setAdminNotes(complaint.adminNote || ""); }}
-                       className="w-full py-3 bg-emerald-600 rounded-xl text-sm font-bold text-white shadow-sm hover:bg-emerald-700 transition-all flex justify-center items-center gap-2"
+                       className="w-full py-3 bg-emerald-600 rounded-xl text-sm font-bold text-white shadow-sm hover:bg-emerald-700 hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
                      >
                        <CheckCircle2 size={16} /> Complete & Resolve
                      </button>

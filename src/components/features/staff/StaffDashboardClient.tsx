@@ -15,6 +15,7 @@ import {
   User,
   Wallet,
   Wrench,
+  ShieldAlert
 } from "lucide-react";
 
 import Banner from "@/components/ui/Banner";
@@ -114,12 +115,12 @@ export default function StaffDashboardClient({
         >
           {activeComplaints.length > 0 ? (
             activeComplaints.map((c, i) => (
-              <span key={c.complaintId} className="flex items-center">
+              <Link key={c.complaintId} href={`/staff/complaints/${c.complaintId}`} className="flex items-center hover:opacity-80 transition-opacity">
                 <span className="text-rose-700 font-extrabold text-sm tracking-wide">
-                  ⚠️ অভিযোগ সতর্কতাঃ {c.customer?.name || "একজন কাস্টমার"} আপনার বিরুদ্ধে অভিযোগ দায়ের করেছেন। বিষয়ঃ {c.subject} | ট্র্যাকিং নং: {c.complaintId} | স্ট্যাটাসঃ {c.status.replace('_', ' ').toUpperCase()}
+                  ⚠️ COMPLAINT ALERT: {c.customer?.name || "A Customer"} has filed a report against you. Subject: {c.subject} | ID: {c.complaintId} | Status: {c.status.replace('_', ' ').toUpperCase()} • CLICK TO VIEW DETAILS
                 </span>
                 <span className="mx-8 text-rose-400">•</span>
-              </span>
+              </Link>
             ))
           ) : (
             <>
@@ -228,6 +229,13 @@ export default function StaffDashboardClient({
                 color: "text-rose-500",
                 bg: "bg-rose-50",
               },
+               {
+                label: "Complaints",
+                icon: ShieldAlert,
+                href: "/staff/feedbacks", // For now redirecting to feedback or I can make a list page
+                color: "text-red-500",
+                bg: "bg-red-50",
+              },
               {
                 label: "Tracking",
                 icon: Activity,
@@ -282,7 +290,13 @@ export default function StaffDashboardClient({
                 href: "https://wa.me/8801310673600",
                 color: "text-green-500",
               },
-              {
+               {
+                 label: "Complaints",
+                 icon: ShieldAlert,
+                 href: "/staff/feedbacks",
+                 color: "text-red-600",
+               },
+               {
                 label: "Tracking",
                 icon: Activity,
                 href: "/staff/tracking",

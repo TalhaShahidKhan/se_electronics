@@ -1,7 +1,7 @@
 import { verifyCustomerSession } from "@/actions/customerActions";
 import { getComplaintsByCustomer } from "@/actions/complaintActions";
 import Link from "next/link";
-import { PlusCircle, FileText, UserCircle, ExternalLink, ArrowRight } from "lucide-react";
+import { PlusCircle, FileText, Home, ExternalLink, ArrowRight } from "lucide-react";
 import { formatDate } from "@/utils";
 
 export default async function ComplainDashboardPage() {
@@ -43,8 +43,8 @@ export default async function ComplainDashboardPage() {
                         <span className="text-lg">Complaint List</span>
                     </Link>
                     <Link href="/customer/profile" className="flex items-center justify-center gap-2 bg-rose-100/50 hover:bg-rose-100 text-rose-700 font-bold py-5 px-6 rounded-xl border border-rose-200 transition-all shadow-sm">
-                        <UserCircle size={24} className="text-rose-600" />
-                        <span className="text-lg">Profile</span>
+                        <Home size={24} className="text-rose-600" />
+                        <span className="text-lg">Dashboard</span>
                     </Link>
                 </div>
 
@@ -57,26 +57,54 @@ export default async function ComplainDashboardPage() {
                         
                         {lastComplaint ? (
                             <div className="flex-1 flex flex-col space-y-6">
-                                {/* Progress Tracker */}
-                                <div className="flex items-center justify-between relative px-2 sm:px-4">
-                                    <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gray-200 -z-10"></div>
-                                    <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-emerald-600 -z-10" style={{ width: lastComplaint.status === 'completed' ? '100%' : lastComplaint.status === 'hearing' ? '66.6%' : lastComplaint.status === 'processing' ? '33.3%' : '0%' }}></div>
+                                 {/* Vertical Status Tracker */}
+                                <div className="space-y-6 pt-2">
+                                    <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center border-b border-gray-50 pb-4 mb-6">Status Timeline</h4>
                                     
-                                    <div className="flex flex-col items-center gap-2">
-                                        <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-md">1</div>
-                                        <span className="text-[10px] sm:text-xs font-semibold text-gray-600">Under Trial</span>
-                                    </div>
-                                    <div className="flex flex-col items-center gap-2">
-                                        <div className={`w-8 h-8 rounded-full ${lastComplaint.status === 'processing' || lastComplaint.status === 'hearing' || lastComplaint.status === 'completed' ? 'bg-emerald-600 text-white' : 'bg-gray-300 text-gray-500'} flex items-center justify-center font-bold text-sm shadow-md`}>2</div>
-                                        <span className="text-[10px] sm:text-xs font-semibold text-gray-600">Processing</span>
-                                    </div>
-                                    <div className="flex flex-col items-center gap-2">
-                                        <div className={`w-8 h-8 rounded-full ${lastComplaint.status === 'hearing' || lastComplaint.status === 'completed' ? 'bg-emerald-600 text-white' : 'bg-gray-300 text-gray-500'} flex items-center justify-center font-bold text-sm shadow-md`}>3</div>
-                                        <span className="text-[10px] sm:text-xs font-semibold text-gray-600">Hearing</span>
-                                    </div>
-                                    <div className="flex flex-col items-center gap-2">
-                                        <div className={`w-8 h-8 rounded-full ${lastComplaint.status === 'completed' ? 'bg-emerald-600 text-white' : 'bg-gray-300 text-gray-500'} flex items-center justify-center font-bold text-sm shadow-md`}>4</div>
-                                        <span className="text-[10px] sm:text-xs font-semibold text-gray-600">Completed</span>
+                                    <div className="flex flex-col gap-6 max-w-[240px] mx-auto">
+                                        {/* Step 1 */}
+                                        <div className="flex items-center gap-4 group">
+                                            <div className="size-8 rounded-full border-2 border-emerald-500 bg-emerald-50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">
+                                                <CheckCircle size={16} className="text-emerald-500" />
+                                            </div>
+                                            <div className="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-xl px-3 py-2">
+                                                <p className="font-bold text-emerald-800 text-[11px] uppercase tracking-tight">Pending</p>
+                                                <p className="text-[9px] text-emerald-600 font-bold">{formatDate(lastComplaint.createdAt)}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 2 */}
+                                        <div className="flex items-center gap-4 group">
+                                            <div className={`size-8 rounded-full border-2 flex items-center justify-center shrink-0 ${lastComplaint.status !== 'under_trial' ? 'border-emerald-500 bg-emerald-50 shadow-[0_0_10px_rgba(16,185,129,0.15)]' : 'border-gray-200 bg-white'}`}>
+                                                <CheckCircle size={16} className={lastComplaint.status !== 'under_trial' ? 'text-emerald-500' : 'text-gray-200'} />
+                                            </div>
+                                            <div className={`flex-1 border rounded-xl px-3 py-2 ${lastComplaint.status !== 'under_trial' ? 'bg-emerald-50/50 border-emerald-100' : 'bg-gray-50 border-gray-100 opacity-60'}`}>
+                                                <p className={`font-bold text-[11px] uppercase tracking-tight ${lastComplaint.status !== 'under_trial' ? 'text-emerald-800' : 'text-gray-400'}`}>Processing</p>
+                                                <p className={`text-[9px] font-bold ${lastComplaint.status !== 'under_trial' ? 'text-emerald-600' : 'text-gray-300'}`}>{lastComplaint.status !== 'under_trial' ? 'In Review' : 'Awaiting'}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 3 */}
+                                        <div className="flex items-center gap-4 group">
+                                            <div className={`size-8 rounded-full border-2 flex items-center justify-center shrink-0 ${lastComplaint.status === 'hearing' || lastComplaint.status === 'completed' ? 'border-emerald-500 bg-emerald-50 shadow-[0_0_10px_rgba(16,185,129,0.15)]' : 'border-gray-200 bg-white'}`}>
+                                                <CheckCircle size={16} className={lastComplaint.status === 'hearing' || lastComplaint.status === 'completed' ? 'text-emerald-500' : 'text-gray-200'} />
+                                            </div>
+                                            <div className={`flex-1 border rounded-xl px-3 py-2 ${lastComplaint.status === 'hearing' || lastComplaint.status === 'completed' ? 'bg-emerald-50/50 border-emerald-100' : 'bg-gray-50 border-gray-100 opacity-60'}`}>
+                                                <p className={`font-bold text-[11px] uppercase tracking-tight ${lastComplaint.status === 'hearing' || lastComplaint.status === 'completed' ? 'text-emerald-800' : 'text-gray-400'}`}>Hearing</p>
+                                                <p className={`text-[9px] font-bold ${lastComplaint.status === 'hearing' || lastComplaint.status === 'completed' ? 'text-emerald-600' : 'text-gray-300'}`}>{lastComplaint.status === 'hearing' || lastComplaint.status === 'completed' ? 'Officer Summons' : 'Planned'}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 4 */}
+                                        <div className="flex items-center gap-4 group">
+                                            <div className={`size-8 rounded-full border-2 flex items-center justify-center shrink-0 ${lastComplaint.status === 'completed' ? 'border-emerald-500 bg-emerald-50 shadow-[0_0_10px_rgba(16,185,129,0.15)]' : 'border-gray-200 bg-white'}`}>
+                                                <CheckCircle size={16} className={lastComplaint.status === 'completed' ? 'text-emerald-500' : 'text-gray-200'} />
+                                            </div>
+                                            <div className={`flex-1 border rounded-xl px-3 py-2 ${lastComplaint.status === 'completed' ? 'bg-emerald-600 text-white' : 'bg-gray-50 border-gray-100 opacity-60'}`}>
+                                                <p className={`font-bold text-[11px] uppercase tracking-tight ${lastComplaint.status === 'completed' ? 'text-white' : 'text-gray-400'}`}>Settled</p>
+                                                <p className={`text-[9px] font-bold ${lastComplaint.status === 'completed' ? 'text-white/80' : 'text-gray-300'}`}>{lastComplaint.status === 'completed' ? 'Closed' : 'Final Step'}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 

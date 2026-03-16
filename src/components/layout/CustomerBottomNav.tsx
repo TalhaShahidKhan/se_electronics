@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Monitor, Crown, FileText, User } from "lucide-react";
+import { Home, Activity, Crown, FileText, Bell } from "lucide-react";
 import clsx from "clsx";
 
 export function CustomerBottomNav() {
@@ -15,8 +15,8 @@ export function CustomerBottomNav() {
       href: "/customer/profile",
     },
     {
-      label: "Services",
-      icon: Monitor,
+      label: "History",
+      icon: Activity,
       href: "/customer/services",
     },
     {
@@ -25,14 +25,14 @@ export function CustomerBottomNav() {
       href: "/customer/complain",
     },
     {
-      label: "VIP",
+      label: "VIP Card",
       icon: Crown,
       href: "/customer/vip-card",
     },
     {
-      label: "Profile",
-      icon: User,
-      href: "/customer/tracking",
+      label: "Alerts",
+      icon: Bell,
+      href: "/customer/notifications",
     },
   ];
 
