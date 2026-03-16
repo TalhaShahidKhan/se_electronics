@@ -114,9 +114,6 @@ export default function CustomerForm({
       },
       products: productItems,
     };
-
-    console.log(customerDataPayload);
-
     const response =
       mode === "create"
         ? await createCustomer(customerDataPayload as Parameters<typeof createCustomer>[0], sendInvoiceLink)

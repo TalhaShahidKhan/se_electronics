@@ -28,6 +28,25 @@ export async function submitComplaint(_prevState: any, formData: FormData) {
       return { success: false, message: "Unauthorized" };
     }
     const complaintId = generateRandomId();
+    let evidencePhotoKey: string | null = null;
+
+    if (rawData.evidence && (rawData.evidence as File).size > 0) {
+      const { v4: uuidv4 } = await import("uuid");
+      const { compressImage } = await import("@/lib/sharp");
+      const { putObject } = await import("@/lib/s3");
+
+      const file = rawData.evidence as File;
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const compressedBuffer = await compressImage(buffer, "product" as any);
+      
+      evidencePhotoKey = `media/complaints/${complaintId}/evidence_${uuidv4()}.webp`;
+      
+      await putObject({
+        Key: evidencePhotoKey,
+        Body: compressedBuffer,
+        ContentType: "image/webp",
+      });
+    }
 
     const { adminNotifications, customers, staffs } = await import("@/db/schema");
     const { contactDetails } = await import("@/constants");
@@ -48,6 +67,7 @@ export async function submitComplaint(_prevState: any, formData: FormData) {
       await tx.insert(staffComplaints).values({
         complaintId: complaintId,
         ...validated,
+        evidencePhotoKey: evidencePhotoKey,
       });
 
       // 2. Fetch customer and staff info for notification
@@ -130,23 +150,32 @@ export async function getAllComplaints() {
   }
 }
 
-export async function resolveComplaint(complaintId: string, adminNote: string) {
+export async function updateComplaintStatus(
+  complaintId: string,
+  newStatus: "under_trial" | "processing" | "hearing" | "completed",
+  adminNote?: string
+) {
   try {
     const { eq } = await import("drizzle-orm");
+    const updateData: any = {
+      status: newStatus,
+      updatedAt: new Date(),
+    };
+    if (adminNote) {
+      updateData.adminNote = adminNote;
+    }
+
     await db
       .update(staffComplaints)
-      .set({
-        status: "resolved",
-        adminNote,
-        updatedAt: new Date(),
-      })
+      .set(updateData)
       .where(eq(staffComplaints.complaintId, complaintId));
 
     revalidatePath("/complaints");
-    return { success: true, message: "Complaint resolved successfully" };
+    revalidatePath(`/customer/complain/doc/${complaintId}`);
+    return { success: true, message: `Complaint status updated to ${newStatus}` };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Could not resolve complaint" };
+    return { success: false, message: "Could not update complaint status" };
   }
 }
 
@@ -168,3 +197,22 @@ export async function getComplaintById(complaintId: string) {
   }
 }
 
+export async function getComplaintsByStaff(staffId: string) {
+  try {
+    const data = await db.query.staffComplaints.findMany({
+      where: (complaints, { eq, and, ne }) =>
+        and(
+          eq(complaints.staffId, staffId),
+          ne(complaints.status, "completed")
+        ),
+      with: {
+        customer: true,
+      },
+      orderBy: (complaints, { desc }) => [desc(complaints.createdAt)],
+    });
+    return { success: true, data };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Could not fetch staff complaints" };
+  }
+}

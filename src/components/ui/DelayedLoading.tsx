@@ -32,7 +32,6 @@ export default function DelayedLoading() {
     }, [])
 
     const handleRetry = () => {
-        console.log('Retry')
         window.location.reload()
     }
 

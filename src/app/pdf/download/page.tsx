@@ -53,6 +53,12 @@ export default function DocDownloadPage() {
             case 'complaint':
                 a.download = 'SE_ELECTRONICS_COMPLAINT.pdf'
                 break
+            case 'hearing-notice':
+                a.download = 'SE_ELECTRONICS_HEARING_NOTICE.pdf'
+                break
+            case 'completion-notice':
+                a.download = 'SE_ELECTRONICS_RESOLUTION_LETTER.pdf'
+                break
         }
 
         a.click()

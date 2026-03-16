@@ -14,7 +14,7 @@ export type ApplicationTypes =
   | "service_application"
   | "staff_application"
   | "subscription_application";
-export type DocType = "invoice" | "payment" | "id-card" | "certificate" | "complaint";
+export type DocType = "invoice" | "payment" | "id-card" | "certificate" | "complaint" | "hearing-notice" | "completion-notice";
 
 export type CertificateData = {
   staffId: string;

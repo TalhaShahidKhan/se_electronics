@@ -30,8 +30,6 @@ export default async function StaffDetailsPage() {
 
   const staffData = profileRes.success ? profileRes.data : null;
   const stats = statsRes.success ? statsRes.data : null;
-  console.log(staffData, "staff data");
-  //  this is my staff data valid infor mation in staff data
   //   bankInfo
   // :
   // null

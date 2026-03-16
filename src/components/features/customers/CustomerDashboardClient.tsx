@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   Activity,
@@ -141,10 +140,8 @@ export default function CustomerDashboardClient({
         {/* VIP Card Display */}
         {customer.vipStatus === "approved" && (
             <Link href="/customer/vip-card" className="block perspective-1000 group">
-                <motion.div 
-                    initial={{ rotateX: 20, y: 20, opacity: 0 }}
-                    animate={{ rotateX: 0, y: 0, opacity: 1 }}
-                    className="bg-[#1d4ed8] rounded-[2rem] p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden group border-4 border-white/20"
+                <div 
+                    className="bg-[#1d4ed8] rounded-[2rem] p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden group border-4 border-white/20 animate-in slide-in-from-bottom-4 duration-500"
                 >
                     <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-white/10 transition-all duration-700"></div>
                     
@@ -174,7 +171,7 @@ export default function CustomerDashboardClient({
                             </div>
                         </div>
                     </div>
-                </motion.div>
+                </div>
             </Link>
         )}
 
@@ -192,14 +189,12 @@ export default function CustomerDashboardClient({
                 href={action.href}
                 className="flex flex-col items-center gap-4 group"
               >
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`${action.bg} ${action.color} p-8 rounded-[2.5rem] shadow-sm group-hover:shadow-xl group-hover:scale-105 transition-all duration-300 group-hover:rotate-3`}
+                <div
+                  className={`${action.bg} ${action.color} p-8 rounded-[2.5rem] shadow-sm group-hover:shadow-xl group-hover:scale-105 transition-all duration-300 group-hover:rotate-3 animate-in zoom-in-90`}
+                  style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'both' }}
                 >
                   <action.icon size={32} />
-                </motion.div>
+                </div>
 
                 <span className="text-[11px] font-black text-gray-600 uppercase tracking-widest group-hover:text-brand transition-colors">
                   {action.label}

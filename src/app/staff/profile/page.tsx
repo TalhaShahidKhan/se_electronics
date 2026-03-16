@@ -1,5 +1,6 @@
 import { staffLogout, verifyStaffSession } from "@/actions";
 import { getStaffById, getStaffProfileStats } from "@/actions/staffActions";
+import { getComplaintsByStaff } from "@/actions/complaintActions";
 import StaffDashboardClient from "@/components/features/staff/StaffDashboardClient";
 import Link from "next/link";
 
@@ -20,14 +21,15 @@ export default async function StaffProfilePage() {
   }
 
   const userId = session.userId as string;
-  const [profileRes, statsRes] = await Promise.all([
+  const [profileRes, statsRes, complaintsRes] = await Promise.all([
     getStaffById(userId),
     getStaffProfileStats(userId),
+    getComplaintsByStaff(userId),
   ]);
 
   const staffData = profileRes.success ? profileRes.data : null;
   const stats = statsRes.success ? statsRes.data : null;
-  console.log(staffData , "staff profile data");
+  const activeComplaints = complaintsRes.success ? (complaintsRes.data || []) : [];
 
   if (!staffData) {
     return (
@@ -87,6 +89,7 @@ export default async function StaffProfilePage() {
       stats={stats}
       experienceYears={experienceYears}
       adminPhone={adminPhone}
+      activeComplaints={activeComplaints}
     />
   );
 }

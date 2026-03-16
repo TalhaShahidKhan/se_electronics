@@ -7,7 +7,6 @@ import { reportService } from "@/actions"
 import { StaffServiveReport, Statuses } from "@/types"
 import { toast } from "react-toastify"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
 import { 
     Navigation, 
     UserCheck, 
@@ -147,13 +146,10 @@ export default function ServiceReport({ serviceData }: {
         setCurrentScreen('success')
     }
 
-    // Screen 3: Success
     if (currentScreen === 'success') {
         return (
-            <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center text-center py-12 px-4"
+            <div 
+                className="flex flex-col items-center text-center py-12 px-4 animate-in fade-in zoom-in-95 duration-500"
             >
                 <div className="size-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle2 size={48} strokeWidth={1.5} />
@@ -166,7 +162,7 @@ export default function ServiceReport({ serviceData }: {
                     Back to Dashboard
                     <ArrowRight size={18} />
                 </Link>
-            </motion.div>
+            </div>
         )
     }
 
@@ -193,15 +189,11 @@ export default function ServiceReport({ serviceData }: {
                 </div>
             </div>
 
-            <AnimatePresence mode="wait">
+            <div>
                 {/* Screen 1: Journey Status */}
                 {currentScreen === 'journey' && (
-                    <motion.div
-                        key="journey"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="space-y-4"
+                    <div
+                        className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300"
                     >
                         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
                             <div className="flex gap-3 p-3 bg-blue-50/50 rounded-xl border border-blue-100/50 mb-2">
@@ -263,17 +255,13 @@ export default function ServiceReport({ serviceData }: {
                                 )}
                             </button>
                         </div>
-                    </motion.div>
+                    </div>
                 )}
 
                 {/* Screen 2: Service Report */}
                 {currentScreen === 'report' && (
-                    <motion.div
-                        key="report"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="space-y-6"
+                    <div
+                        className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300"
                     >
                         {showNoteForm ? (
                             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
@@ -370,117 +358,111 @@ export default function ServiceReport({ serviceData }: {
                                         </button>
                                     </div>
 
-                                    <AnimatePresence>
-                                        {answer === 'হ্যাঁ' && (
-                                            <motion.div 
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: 'auto' }}
-                                                className="space-y-4 pt-4 overflow-hidden"
-                                            >
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
-                                                        {serviceType === 'install'
-                                                            ? 'ব্যবহৃত সামগ্রীর বিস্তারিত লিখুন'
-                                                            : 'সমস্যা ও সমাধানের বিবরণ'}
-                                                        <span className="text-red-500 ml-1">*</span>
-                                                    </label>
-                                                    <textarea
-                                                        value={explanation}
-                                                        onChange={(e) => setExplanation(e.target.value)}
-                                                        placeholder={serviceType === 'install'
-                                                            ? 'কি কি সামগ্রী লেগেছে...'
-                                                            : 'কি কি পার্টস পরিবর্তন করেছেন...'}
-                                                        className="w-full bg-gray-50 border-gray-100 rounded-2xl p-4 text-sm font-medium focus:ring-2 focus:ring-brand h-32 outline-none transition-all"
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
-                                                        যাতায়াত খরচ (টাকা)
-                                                        <span className="text-red-500 ml-1">*</span>
-                                                    </label>
-                                                    <input
-                                                        type="number"
-                                                        value={travelCost}
-                                                        onChange={(e) => setTravelCost(e.target.value)}
-                                                        placeholder="0.00"
-                                                        className="w-full bg-gray-50 border-gray-100 rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-brand outline-none transition-all"
-                                                    />
-                                                </div>
-                                                <button 
-                                                    disabled={isSubmitting} 
-                                                    onClick={handleFinalSubmit} 
-                                                    className="w-full bg-brand text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all mt-2"
-                                                >
-                                                    <Send size={18} />
-                                                    {isSubmitting ? 'সেভ হচ্ছে...' : 'রিপোর্ট সাবমিট করুন'}
-                                                </button>
-                                            </motion.div>
-                                        )}
-
-                                        {answer === 'না' && (
-                                            <motion.div 
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: 'auto' }}
-                                                className="space-y-4 pt-4 overflow-hidden"
-                                            >
+                                    {answer === 'হ্যাঁ' && (
+                                        <div 
+                                            className="space-y-4 pt-4 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300"
+                                        >
+                                            <div className="space-y-2">
                                                 <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
-                                                    অসম্পূর্ণ থাকার কারণ
+                                                    {serviceType === 'install'
+                                                        ? 'ব্যবহৃত সামগ্রীর বিস্তারিত লিখুন'
+                                                        : 'সমস্যা ও সমাধানের বিবরণ'}
                                                     <span className="text-red-500 ml-1">*</span>
                                                 </label>
-                                                <div className="grid gap-2">
-                                                    {(serviceType === 'install' ? installCancelationReasons : serviceCancelationReasons).map((r, index) => (
-                                                        <button 
-                                                            key={r + index}
-                                                            onClick={() => {
-                                                                setReason(r)
-                                                                setOtherReason('')
-                                                            }}
-                                                            className={clsx(
-                                                                "p-3 rounded-xl border text-xs font-bold text-left transition-all",
-                                                                reason === r ? 'bg-brand/5 border-brand text-brand' : 'bg-gray-50 border-gray-100 text-gray-500'
-                                                            )}
-                                                        >
-                                                            {r}
-                                                        </button>
-                                                    ))}
+                                                <textarea
+                                                    value={explanation}
+                                                    onChange={(e) => setExplanation(e.target.value)}
+                                                    placeholder={serviceType === 'install'
+                                                        ? 'কি কি সামগ্রী লেগেছে...'
+                                                        : 'কি কি পার্টস পরিবর্তন করেছেন...'}
+                                                    className="w-full bg-gray-50 border-gray-100 rounded-2xl p-4 text-sm font-medium focus:ring-2 focus:ring-brand h-32 outline-none transition-all"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
+                                                    যাতায়াত খরচ (টাকা)
+                                                    <span className="text-red-500 ml-1">*</span>
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    value={travelCost}
+                                                    onChange={(e) => setTravelCost(e.target.value)}
+                                                    placeholder="0.00"
+                                                    className="w-full bg-gray-50 border-gray-100 rounded-2xl p-4 text-sm font-bold focus:ring-2 focus:ring-brand outline-none transition-all"
+                                                />
+                                            </div>
+                                            <button 
+                                                disabled={isSubmitting} 
+                                                onClick={handleFinalSubmit} 
+                                                className="w-full bg-brand text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all mt-2"
+                                            >
+                                                <Send size={18} />
+                                                {isSubmitting ? 'সেভ হচ্ছে...' : 'রিপোর্ট সাবমিট করুন'}
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    {answer === 'না' && (
+                                        <div 
+                                            className="space-y-4 pt-4 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300"
+                                        >
+                                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
+                                                অসম্পূর্ণ থাকার কারণ
+                                                <span className="text-red-500 ml-1">*</span>
+                                            </label>
+                                            <div className="grid gap-2">
+                                                {(serviceType === 'install' ? installCancelationReasons : serviceCancelationReasons).map((r, index) => (
                                                     <button 
-                                                        onClick={() => setReason('others')}
+                                                        key={r + index}
+                                                        onClick={() => {
+                                                            setReason(r)
+                                                            setOtherReason('')
+                                                        }}
                                                         className={clsx(
                                                             "p-3 rounded-xl border text-xs font-bold text-left transition-all",
-                                                            reason === 'others' ? 'bg-brand/5 border-brand text-brand' : 'bg-gray-50 border-gray-100 text-gray-500'
+                                                            reason === r ? 'bg-brand/5 border-brand text-brand' : 'bg-gray-50 border-gray-100 text-gray-500'
                                                         )}
                                                     >
-                                                        অন্যান্য কারণ
+                                                        {r}
                                                     </button>
-                                                </div>
-
-                                                {reason === 'others' && (
-                                                    <textarea
-                                                        value={otherReason}
-                                                        onChange={(e) => setOtherReason(e.target.value)}
-                                                        placeholder="বিস্তারিত কারণ এখানে লিখুন..."
-                                                        className="w-full bg-gray-50 border-gray-100 rounded-2xl p-4 text-sm font-medium focus:ring-2 focus:ring-brand h-24 outline-none transition-all"
-                                                        autoFocus
-                                                    />
-                                                )}
-
+                                                ))}
                                                 <button 
-                                                    disabled={isSubmitting} 
-                                                    onClick={handleFinalSubmit} 
-                                                    className="w-full bg-brand text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all mt-2"
+                                                    onClick={() => setReason('others')}
+                                                    className={clsx(
+                                                        "p-3 rounded-xl border text-xs font-bold text-left transition-all",
+                                                        reason === 'others' ? 'bg-brand/5 border-brand text-brand' : 'bg-gray-50 border-gray-100 text-gray-500'
+                                                    )}
                                                 >
-                                                    <Send size={18} />
-                                                    {isSubmitting ? 'সেভ হচ্ছে...' : 'আপডেট সাবমিট করুন'}
+                                                    অন্যান্য কারণ
                                                 </button>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
+                                            </div>
+
+                                            {reason === 'others' && (
+                                                <textarea
+                                                    value={otherReason}
+                                                    onChange={(e) => setOtherReason(e.target.value)}
+                                                    placeholder="বিস্তারিত কারণ এখানে লিখুন..."
+                                                    className="w-full bg-gray-50 border-gray-100 rounded-2xl p-4 text-sm font-medium focus:ring-2 focus:ring-brand h-24 outline-none transition-all"
+                                                    autoFocus
+                                                />
+                                            )}
+
+                                            <button 
+                                                disabled={isSubmitting} 
+                                                onClick={handleFinalSubmit} 
+                                                className="w-full bg-brand text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all mt-2"
+                                            >
+                                                <Send size={18} />
+                                                {isSubmitting ? 'সেভ হচ্ছে...' : 'আপডেট সাবমিট করুন'}
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}
-                    </motion.div>
+                    </div>
                 )}
-            </AnimatePresence>
+            </div>
         </div>
     )
 }

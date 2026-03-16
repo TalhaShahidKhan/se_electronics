@@ -53,8 +53,8 @@ export default async function ComplaintHistoryPage() {
                                 <div className="flex-1 space-y-2">
                                     <div className="flex items-center gap-3">
                                         <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 font-mono">#{c.complaintId}</span>
-                                        <div className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${c.status === 'resolved' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-                                            {c.status}
+                                        <div className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${c.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : c.status === 'hearing' ? 'bg-amber-100 text-amber-700' : c.status === 'processing' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'}`}>
+                                            {c.status.replace("_", " ")}
                                         </div>
                                     </div>
                                     <h3 className="text-lg font-bold text-gray-900 group-hover:text-brand transition-colors">{c.subject}</h3>

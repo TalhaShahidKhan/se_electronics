@@ -259,17 +259,12 @@ export const getServiceMediaUrls = async (keys: string[]) => {
 
 export async function createService(prevState: any, formData: FormData) {
   try {
-    console.log(
-      "createService called with formData keys:",
-      Array.from(formData.keys()),
-    );
     const entries = Object.fromEntries(formData);
     // Convert empty strings to null for ID fields to avoid FK constraint violations
     if (entries.staffId === "") entries.staffId = null as any;
     if (entries.customerId === "") entries.customerId = null as any;
 
     const validatedCustomerData = ServiceDataSchema.parse(entries);
-    console.log("Validation successful:", validatedCustomerData.customerName);
     const {
       productFrontPhoto,
       productBackPhoto,

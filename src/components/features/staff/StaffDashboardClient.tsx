@@ -1,6 +1,5 @@
 "use client";
 import Marquee from "react-fast-marquee";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   Activity,
@@ -27,6 +26,7 @@ interface StaffDashboardClientProps {
   stats: any;
   experienceYears: number;
   adminPhone: string;
+  activeComplaints: any[];
 }
 
 export default function StaffDashboardClient({
@@ -34,6 +34,7 @@ export default function StaffDashboardClient({
   stats,
   experienceYears,
   adminPhone,
+  activeComplaints,
 }: StaffDashboardClientProps) {
   const primaryActions = [
     {
@@ -109,20 +110,33 @@ export default function StaffDashboardClient({
           speed={50}
           gradient={false}
           pauseOnHover={true}
-          className="py-1"
+          className={`py-1 rounded-md ${activeComplaints.length > 0 ? 'bg-rose-50 border border-rose-200' : ''}`}
         >
-          <span className="text-slate-900 font-extrabold text-sm tracking-wide">
-            আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
-          </span>
-          <span className="mx-6 text-slate-800">•</span>
-          <span className="text-slate-900 font-extrabold text-sm tracking-wide">
-            আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
-          </span>
-          <span className="mx-6 text-slate-800">•</span>
-          <span className="text-slate-800 font-extrabold text-sm tracking-wide">
-            আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
-          </span>
-          <span className="mx-6 text-slate-800">•</span>
+          {activeComplaints.length > 0 ? (
+            activeComplaints.map((c, i) => (
+              <span key={c.complaintId} className="flex items-center">
+                <span className="text-rose-700 font-extrabold text-sm tracking-wide">
+                  ⚠️ অভিযোগ সতর্কতাঃ {c.customer?.name || "একজন কাস্টমার"} আপনার বিরুদ্ধে অভিযোগ দায়ের করেছেন। বিষয়ঃ {c.subject} | ট্র্যাকিং নং: {c.complaintId} | স্ট্যাটাসঃ {c.status.replace('_', ' ').toUpperCase()}
+                </span>
+                <span className="mx-8 text-rose-400">•</span>
+              </span>
+            ))
+          ) : (
+            <>
+              <span className="text-slate-900 font-extrabold text-sm tracking-wide">
+                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+              </span>
+              <span className="mx-6 text-slate-800">•</span>
+              <span className="text-slate-900 font-extrabold text-sm tracking-wide">
+                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+              </span>
+              <span className="mx-6 text-slate-800">•</span>
+              <span className="text-slate-800 font-extrabold text-sm tracking-wide">
+                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+              </span>
+              <span className="mx-6 text-slate-800">•</span>
+            </>
+          )}
         </Marquee>
 
         {/* Stats */}
@@ -173,14 +187,12 @@ export default function StaffDashboardClient({
                 href={action.href}
                 className="flex flex-col items-center gap-4 group"
               >
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`${action.bg} ${action.color} p-8 rounded-3xl shadow-sm`}
+                <div
+                  className={`${action.bg} ${action.color} p-8 rounded-3xl shadow-sm animate-in zoom-in-90 duration-300`}
+                  style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'both' }}
                 >
                   <action.icon size={32} />
-                </motion.div>
+                </div>
 
                 <span className="text-sm font-black text-gray-700 uppercase">
                   {action.label}

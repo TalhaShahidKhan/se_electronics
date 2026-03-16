@@ -5,7 +5,6 @@ import { DelayedLoading, RegistrationForm } from "@/components";
 import { contactDetails } from "@/constants";
 import { useThemeColor } from "@/hooks";
 import { AppError } from "@/utils";
-import { motion } from "framer-motion";
 import { CheckCircle, FileText } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -43,7 +42,7 @@ export default function RegistrationPage({ token }: { token: string }) {
         setIsTokenValid(res.isValid);
         setIsVerifying(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }, []);
 
   if (isVerifying) {
@@ -120,13 +119,11 @@ export default function RegistrationPage({ token }: { token: string }) {
   if (showSuccessMessage) {
     return (
       <div className="min-h-[80vh] flex flex-col items-center justify-center p-4 text-center">
-        <motion.div 
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6"
+        <div 
+          className="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6 animate-in zoom-in duration-500 scale-100"
         >
           <CheckCircle size={48} />
-        </motion.div>
+        </div>
         <h2 className="text-3xl sm:text-4xl font-extrabold text-brand mb-4">অভিনন্দন {name}!</h2>
         <p className="text-lg sm:text-xl text-gray-600 max-w-md leading-relaxed mb-8 font-medium">
           আপনার রেজিস্ট্রেশন আবেদন সফলভাবে গৃহীত হয়েছে। আমাদের টিম আপনার তথ্য যাচাই করে দ্রুতই যোগাযোগ করবে।

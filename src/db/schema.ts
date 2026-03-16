@@ -79,6 +79,9 @@ export const reportStatusEnum = pgEnum("reportStatus", [
   "processing",
   "resolved",
   "dismissed",
+  "under_trial",
+  "hearing",
+  "completed",
 ]);
 
 export const statusTypesEnum = pgEnum("statusTypes", ["system", "custom"]);
@@ -578,7 +581,8 @@ export const staffComplaints = pgTable("staffComplaints", {
   }),
   subject: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
-  status: reportStatusEnum().default("pending").notNull(),
+  evidencePhotoKey: varchar({ length: 255 }),
+  status: reportStatusEnum().default("under_trial").notNull(),
   adminNote: text(),
   createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp({ withTimezone: true })

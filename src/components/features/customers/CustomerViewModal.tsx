@@ -83,7 +83,6 @@ function CustomerViewModal({
           setIsLoading(false);
 
           const productResponse = await getProducts(res.data?.invoice?.id ?? '');
-          console.log({ productResponse });
 
           if (productResponse.success) {
             setProductItems(productResponse.data!);
