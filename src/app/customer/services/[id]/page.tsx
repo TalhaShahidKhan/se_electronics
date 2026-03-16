@@ -40,7 +40,7 @@ export default async function ServiceDetailsPage({
 
     return (
       <div className="p-6">
-        <div className="bg-red-50 text-red-600 p-4 rounded-xl border">
+        <div className="bg-red-50 text-red-600 p-4 rounded-xl border border-gray-300">
           {response.message}
         </div>
       </div>
@@ -57,7 +57,7 @@ export default async function ServiceDetailsPage({
     <div className="min-h-screen bg-gray-50 pb-10">
 
       {/* HEADER */}
-      <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
+      <header className="sticky top-0 z-50 bg-white border border-gray-300-b shadow-sm">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center gap-3">
 
           {/* BACK BUTTON */}
@@ -77,7 +77,7 @@ export default async function ServiceDetailsPage({
       <main className="max-w-3xl mx-auto p-3 md:p-6 space-y-4">
 
         {/* SERVICE HEADER CARD */}
-        <div className="bg-white rounded-xl shadow border p-4 text-sm">
+        <div className="bg-white rounded-xl shadow border border-gray-300 p-4 text-sm">
 
           <div className="flex justify-between items-center">
             <p className="font-semibold">
@@ -109,7 +109,7 @@ export default async function ServiceDetailsPage({
         </div>
 
         {/* WARRANTY */}
-        <div className="bg-white border rounded-xl p-4 text-sm">
+        <div className="bg-white border border-gray-300 rounded-xl p-4 text-sm">
 
           <div className="flex justify-between items-center">
             <p className="font-semibold flex items-center gap-2">
@@ -125,7 +125,7 @@ export default async function ServiceDetailsPage({
         </div>
 
         {/* CUSTOMER INFO */}
-        <div className="bg-white border rounded-xl p-4 text-sm">
+        <div className="bg-white border border-gray-300 rounded-xl p-4 text-sm">
 
           <p className="font-semibold mb-3">Customer Information</p>
 
@@ -156,7 +156,7 @@ export default async function ServiceDetailsPage({
 
         {/* TECHNICIAN */}
         {service.appointedStaff && (
-          <div className="bg-white border rounded-xl p-4 text-sm">
+          <div className="bg-white border border-gray-300 rounded-xl p-4 text-sm">
 
             <p className="font-semibold mb-3">
               Technician Information
@@ -184,7 +184,7 @@ export default async function ServiceDetailsPage({
         )}
 
         {/* SERVICE CENTER */}
-        <div className="bg-white border rounded-xl p-4 text-sm">
+        <div className="bg-white border border-gray-300 rounded-xl p-4 text-sm">
 
           <p className="font-semibold mb-3">
             Current Servicing Center
@@ -206,7 +206,7 @@ export default async function ServiceDetailsPage({
         </div>
 
         {/* ONGOING */}
-        <div className="bg-white border rounded-xl p-4 text-sm">
+        <div className="bg-white border border-gray-300 rounded-xl p-4 text-sm">
 
           <div className="flex justify-between items-center mb-3">
 
