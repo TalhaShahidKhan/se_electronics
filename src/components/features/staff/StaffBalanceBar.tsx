@@ -33,8 +33,8 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
               onClick={() => setRevealed(true)}
               className="absolute inset-0 flex items-center gap-3 px-4 z-20 bg-white transition-opacity duration-300 hover:bg-gray-50 active:scale-95"
             >
-              <div className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0">
-                <div className="w-3 h-3 text-brand text-sm font-extrabold -mt-2">৳</div>
+              <div className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0 bg-[#0A1A3A]">
+                <div className="w-3 h-3  text-white text-sm font-extrabold -mt-2">৳</div>
               </div>
               <span className="text-xs sm:text-sm font-black text-brand whitespace-nowrap">
                 Tap For Balance
@@ -46,8 +46,8 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
           ) : (
             /* Revealed Balance Content */
             <div className="flex items-center justify-between w-full h-full px-1 pl-4 animate-in fade-in slide-in-from-right-2 duration-300">
-              <div className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0 animate-in slide-in-from-left-4 duration-300">
-                <Wallet className="w-3.5 h-3.5 text-brand" />
+              <div className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0 bg-[#0A1A3A]">
+                <div className="w-3 h-3  text-white text-sm font-extrabold -mt-2">৳</div>
               </div>
 
               <div className="flex-1 flex items-center justify-between gap-2 animate-in fade-in slide-in-from-right-4 duration-500">
