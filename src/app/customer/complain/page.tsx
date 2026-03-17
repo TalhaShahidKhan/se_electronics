@@ -1,7 +1,7 @@
 import { verifyCustomerSession } from "@/actions/customerActions";
 import { getComplaintsByCustomer } from "@/actions/complaintActions";
 import Link from "next/link";
-import { PlusCircle, FileText, Home, ExternalLink, ArrowRight } from "lucide-react";
+import { PlusCircle, FileText, Home, ExternalLink, ArrowRight, CheckCircle } from "lucide-react";
 import { formatDate } from "@/utils";
 
 export default async function ComplainDashboardPage() {

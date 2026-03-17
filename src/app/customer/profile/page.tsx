@@ -24,10 +24,18 @@ export default async function CustomerProfilePage() {
   const stats = statsRes.success ? statsRes.data : null;
   const adminPhone = process.env.ADMIN_PHONE_NUMBER || "017XXXXXXXX";
 
+  if (!session.customer) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Customer profile not found.</div>
+      </div>
+    );
+  }
+
   return (
     <CustomerDashboardClient 
-      customer={session.customer}
-      stats={stats}
+      customer={session.customer as any}
+      stats={stats as any}
       adminPhone={adminPhone}
     />
   );

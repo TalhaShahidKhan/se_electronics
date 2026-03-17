@@ -94,7 +94,7 @@ export default async function ServiceDetailsPage({
 
             <div className="flex items-center gap-1 text-xs">
               <CreditCard size={14} className="text-green-600" />
-              COD: ৳ {service.codAmount}
+              Cash on Delivery (COD)
             </div>
 
             <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">
@@ -104,7 +104,7 @@ export default async function ServiceDetailsPage({
 
           <div className="flex items-center gap-2 text-xs mt-2">
             <Calendar size={14} />
-            Service Date : {service.serviceDate}
+            Service Date : {formatDate(service.createdAt!)}
           </div>
         </div>
 
@@ -238,7 +238,7 @@ export default async function ServiceDetailsPage({
 
             <p className="flex items-center gap-2">
               <Calendar size={14} />
-              {service.serviceDate}
+              {formatDate(service.createdAt!)}
             </p>
 
           </div>

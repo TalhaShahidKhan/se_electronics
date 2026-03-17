@@ -31,11 +31,10 @@ export default async function VipCardPage() {
         "Special home-delivery rates"
     ];
 
-    async function handleApply() {
+    async function handleApply(formData: FormData) {
         "use server";
-        const res = await applyForVipCard();
+        await applyForVipCard();
         revalidatePath("/customer/vip-card");
-        return res;
     }
 
     return (
