@@ -43,7 +43,10 @@
     @apply text-gray-800 antialiased text-sm sm:text-base;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     @apply tracking-tight;
   }
 }
@@ -85,7 +88,7 @@
   }
 
   th {
-    @apply text-xs uppercase font-bold text-gray-500 tracking-wider;
+    @apply text-sm uppercase font-bold text-gray-500 tracking-wider;
   }
 
   td {
@@ -143,7 +146,9 @@
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px var(--brand), 0 0 5px var(--brand);
+  box-shadow:
+    0 0 10px var(--brand),
+    0 0 5px var(--brand);
   opacity: 1;
   transform: rotate(3deg) translate(0px, -4px);
 }
@@ -168,9 +173,6 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #9eafd2;
 }
-
-
-
 
 /* The top banner iframe */
 .goog-te-banner-frame.skiptranslate,

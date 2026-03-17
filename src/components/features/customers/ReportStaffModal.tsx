@@ -61,14 +61,14 @@ export default function ReportStaffModal({
         </div>
 
         <div className="bg-red-50 p-4 rounded-xl mb-6">
-          <p className="text-xs text-red-700 font-semibold mb-1">
+          <p className="text-sm text-red-700 font-semibold mb-1">
             Reporting Staff:
           </p>
           <p className="text-sm font-bold text-red-900">
             {staffName} ({staffId})
           </p>
           {serviceId && (
-            <p className="text-xs text-red-600 mt-1">Service ID: {serviceId}</p>
+            <p className="text-sm text-red-600 mt-1">Service ID: {serviceId}</p>
           )}
         </div>
 

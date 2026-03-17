@@ -145,7 +145,7 @@ export default function AddServicePage() {
           </div>
 
           <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
-            <label className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2 block">
+            <label className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-2 block">
               SMS Preview
             </label>
             <p className="text-sm text-blue-800 leading-relaxed italic">

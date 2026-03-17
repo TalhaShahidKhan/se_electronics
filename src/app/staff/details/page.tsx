@@ -254,7 +254,7 @@ export default async function StaffDetailsPage() {
               <p className="text-2xl font-bold text-green-600">
                 {staffData.totalServices}
               </p>
-              <p className="text-xs text-green-600 font-bold uppercase">
+              <p className="text-sm text-green-600 font-bold uppercase">
                 Total Services
               </p>
             </div>
@@ -263,7 +263,7 @@ export default async function StaffDetailsPage() {
               <p className="text-2xl font-bold text-violet-600">
                 {staffData.successfulServices}
               </p>
-              <p className="text-xs text-violet-600 font-bold uppercase">
+              <p className="text-sm text-violet-600 font-bold uppercase">
                 Successful
               </p>
             </div>
@@ -272,7 +272,7 @@ export default async function StaffDetailsPage() {
               <p className="text-2xl font-bold text-red-500">
                 {staffData.canceledServices}
               </p>
-              <p className="text-xs text-red-500 font-bold uppercase">
+              <p className="text-sm text-red-500 font-bold uppercase">
                 Canceled
               </p>
             </div>
@@ -281,7 +281,7 @@ export default async function StaffDetailsPage() {
               <p className="text-2xl font-bold text-orange-500">
                 {staffData.rating}
               </p>
-              <p className="text-xs text-orange-500 font-bold uppercase">
+              <p className="text-sm text-orange-500 font-bold uppercase">
                 Rating
               </p>
             </div>
@@ -291,7 +291,7 @@ export default async function StaffDetailsPage() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* CONTACT */}
             <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
-              <h3 className="text-xs font-bold text-gray-400 uppercase">
+              <h3 className="text-sm font-bold text-gray-400 uppercase">
                 Contact
               </h3>
 
@@ -306,7 +306,7 @@ export default async function StaffDetailsPage() {
 
             {/* EXPERIENCE */}
             <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
-              <h3 className="text-xs font-bold text-gray-400 uppercase">
+              <h3 className="text-sm font-bold text-gray-400 uppercase">
                 Experience
               </h3>
 
@@ -327,7 +327,7 @@ export default async function StaffDetailsPage() {
 
             {/* ADDRESSES */}
             <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
-              <h3 className="text-xs font-bold text-gray-400 uppercase">
+              <h3 className="text-sm font-bold text-gray-400 uppercase">
                 Current Address
               </h3>
 
@@ -361,7 +361,7 @@ export default async function StaffDetailsPage() {
 
           {/* NID DOCUMENTS */}
           <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">
+            <h3 className="text-sm font-bold text-gray-400 uppercase mb-4">
               NID Documents
             </h3>
 

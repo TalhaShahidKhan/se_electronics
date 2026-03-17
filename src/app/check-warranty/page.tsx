@@ -46,7 +46,7 @@ export default function CheckWarrantyPage() {
       style={{ backgroundColor: "rgb(239, 246, 255)" }}
     >
       {/* Header */}
-      <div className="font-bold flex flex-col gap-0.5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 text-center bg-white shadow-sm">
+      <div className="font-bold flex flex-col gap-0.5 p-4 sm:p-6 rounded-md sm:rounded-md border border-gray-300 text-center bg-white shadow-sm">
         <div className="text-lg">
           এস ই ইলেকট্রনিকস প্রডাক্ট ওয়ারেন্টি ট্রেকিং
         </div>
@@ -58,7 +58,7 @@ export default function CheckWarrantyPage() {
       </div>
 
       {/* Search Form */}
-      <div className="p-4 sm:p-6 border border-gray-200 rounded-xl sm:rounded-2xl bg-white shadow-sm">
+      <div className="p-4 sm:p-6 border border-gray-200 rounded-md sm:rounded-md bg-white shadow-sm">
         <h2 className="text-lg font-semibold mb-4">ওয়ারেন্টি চেক করুন</h2>
         <div className="flex gap-3">
           <input
@@ -66,19 +66,19 @@ export default function CheckWarrantyPage() {
             placeholder="ইনভয়েস নম্বর লিখুন"
             value={invoiceNumber}
             onChange={(e) => setInvoiceNumber(e.target.value)}
-            className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+            className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-md focus:outline-none focus:border-gray-300  transition-all"
             disabled={loading}
           />
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="px-6 py-2.5 bg-brand text-white rounded-xl font-semibold hover:bg-brand-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all text-sm"
+            className="px-6 py-2.5 bg-brand text-white rounded-md font-semibold hover:bg-brand-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all text-sm"
           >
             {loading ? "Checking..." : "Check"}
           </button>
         </div>
         {error && (
-          <div className="mt-3 p-3 bg-red-50 text-red-700 rounded-xl border border-red-200 text-sm">
+          <div className="mt-3 p-3 bg-red-50 text-red-700 rounded-md border border-red-200 text-sm">
             {error}
           </div>
         )}
@@ -88,7 +88,7 @@ export default function CheckWarrantyPage() {
       {warrantyData && (
         <div className="space-y-3 mb-10">
           {/* Customer Info */}
-          <div className="p-4 border border-gray-200 rounded-xl sm:rounded-2xl bg-white shadow-sm">
+          <div className="p-4 border border-gray-200 rounded-md sm:rounded-md bg-white shadow-sm">
             <h3 className="text-lg font-semibold mb-6 text-gray-800 border-b-2 pb-2 inline-block">
               গ্রাহকের তথ্য
             </h3>
@@ -98,7 +98,7 @@ export default function CheckWarrantyPage() {
                   <span className="text-blue-600 font-bold text-lg">👤</span>
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs text-gray-500 mb-1">নাম</div>
+                  <div className="text-sm text-gray-500 mb-1">নাম</div>
                   <div className="font-semibold text-gray-800">
                     {warrantyData.customerName}
                   </div>
@@ -110,7 +110,7 @@ export default function CheckWarrantyPage() {
                   <span className="text-green-600 font-bold text-lg">🆔</span>
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs text-gray-500 mb-1">
+                  <div className="text-sm text-gray-500 mb-1">
                     কাস্টমার আইডি
                   </div>
                   <div className="font-semibold text-gray-800">
@@ -124,7 +124,7 @@ export default function CheckWarrantyPage() {
                   <span className="text-purple-600 font-bold text-lg">📞</span>
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs text-gray-500 mb-1">ফোন নম্বর</div>
+                  <div className="text-sm text-gray-500 mb-1">ফোন নম্বর</div>
                   <div className="font-semibold text-gray-800">
                     {warrantyData.customerPhone}
                   </div>
@@ -136,7 +136,7 @@ export default function CheckWarrantyPage() {
                   <span className="text-orange-600 font-bold text-lg">📅</span>
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs text-gray-500 mb-1">
+                  <div className="text-sm text-gray-500 mb-1">
                     ক্রয়ের তারিখ
                   </div>
                   <div className="font-semibold text-gray-800">
@@ -148,7 +148,7 @@ export default function CheckWarrantyPage() {
           </div>
 
           {/* Products Card Grid - REPLACING THE TABLE */}
-          <div className="border border-gray-200 rounded-xl sm:rounded-2xl p-4 bg-white shadow-sm">
+          <div className="border border-gray-200 rounded-md sm:rounded-md p-4 bg-white shadow-sm">
             <h3 className="text-xl font-bold mb-4 border-b pb-2 text-gray-800">
               Purchased Products
             </h3>
@@ -164,7 +164,7 @@ export default function CheckWarrantyPage() {
                 );
 
                 return (
-                  <div key={index} className="p-5 border rounded-xl">
+                  <div key={index} className="p-5 border rounded-md">
                     {/* Status Tag */}
                     <div className="mb-3">
                       {product.warrantyDurationMonths > 0 ? (
@@ -225,7 +225,7 @@ export default function CheckWarrantyPage() {
                       </div>
                       {product.warrantyDurationMonths > 0 && (
                         <div className="flex flex-col items-start text-gray-600 pt-2 border-t mt-3">
-                          <div className="text-xs text-gray-500 mb-0.5">
+                          <div className="text-sm text-gray-500 mb-0.5">
                             {isValid
                               ? "ওয়ারেন্টি শেষ হবে:"
                               : "ওয়ারেন্টি শেষ হয়েছে:"}

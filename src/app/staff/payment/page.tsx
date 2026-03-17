@@ -65,7 +65,7 @@ export default async function StaffPaymentHubPage() {
                 <h2 className="font-black text-gray-900 lg:text-lg text-sm">
                   Settings
                 </h2>
-                <p className="hidden lg:block text-xs sm:text-sm font-bold text-gray-400 mt-1 truncate">
+                <p className="hidden lg:block text-sm sm:text-sm font-bold text-gray-400 mt-1 truncate">
                   Configure Wallet
                 </p>
               </div>
@@ -86,7 +86,7 @@ export default async function StaffPaymentHubPage() {
                 <h2 className="font-black text-gray-900 lg:text-lg text-sm">
                   Withdraw
                 </h2>
-                <p className="hidden lg:block text-xs sm:text-sm font-bold text-gray-400 mt-1 truncate">
+                <p className="hidden lg:block text-sm sm:text-sm font-bold text-gray-400 mt-1 truncate">
                   Request Payout
                 </p>
               </div>
@@ -100,7 +100,7 @@ export default async function StaffPaymentHubPage() {
           {/* Payment History Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between px-1">
-              <h2 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">
+              <h2 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em]">
                 Payout History
               </h2>
             </div>
@@ -120,45 +120,47 @@ export default async function StaffPaymentHubPage() {
                     href={`/staff/payment/${payment.invoiceNumber}`}
                     className="block bg-white rounded-xl lg:rounded-2xl p-4 shadow-sm border border-gray-100 hover:border-brand/20 transition-all active:scale-[0.99] group"
                   >
-<div className="flex justify-between items-start mb-3">
-  <div className="w-full">
-    
-    {/* Invoice + Status */}
-    <div className="flex justify-between items-center w-full">
-      <span className="font-black text-gray-700 lg:text-lg">
-        {payment.invoiceNumber.startsWith("BAL-")
-          ? "BAL#" + payment.paymentId.substring(0, 8)
-          : "SFC#" + payment.invoiceNumber}
-      </span>
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="w-full">
+                        {/* Invoice + Status */}
+                        <div className="flex justify-between items-center w-full">
+                          <span className="font-black text-gray-700 lg:text-lg">
+                            {payment.invoiceNumber.startsWith("BAL-")
+                              ? "BAL#" + payment.paymentId.substring(0, 8)
+                              : "SFC#" + payment.invoiceNumber}
+                          </span>
 
-      <span
-        className={clsx(
-          "px-3 py-0.5 rounded-full text-[10px] lg:text-xs font-black uppercase tracking-wider",
-          payment.status === "completed"
-            ? "bg-[#E8F5E9] text-[#4CAF50]"
-            : payment.status === "rejected"
-              ? "bg-rose-50 text-rose-700"
-              : "bg-[#FFF8E1] text-[#FFA000]"
-        )}
-      >
-        {payment.status === "completed" ? "Paid" : payment.status}
-      </span>
-    </div>
+                          <span
+                            className={clsx(
+                              "px-3 py-0.5 rounded-full text-[10px] lg:text-sm font-black uppercase tracking-wider",
+                              payment.status === "completed"
+                                ? "bg-[#E8F5E9] text-[#4CAF50]"
+                                : payment.status === "rejected"
+                                  ? "bg-rose-50 text-rose-700"
+                                  : "bg-[#FFF8E1] text-[#FFA000]",
+                            )}
+                          >
+                            {payment.status === "completed"
+                              ? "Paid"
+                              : payment.status}
+                          </span>
+                        </div>
 
-    {/* Payment Method */}
-    <div className="flex items-center gap-3 mt-1">
-      <p className="text-gray-600 font-semibold">Payment Method</p>
-      <span className="bg-[#E3F2FD] text-[#546E7A] px-2 py-0.5 rounded-md text-[10px] font-black uppercase">
-        {payment.paymentMethod}
-      </span>
-    </div>
-
-  </div>
-</div>
+                        {/* Payment Method */}
+                        <div className="flex items-center gap-3 mt-1">
+                          <p className="text-gray-600 font-semibold">
+                            Payment Method
+                          </p>
+                          <span className="bg-[#E3F2FD] text-[#546E7A] px-2 py-0.5 rounded-md text-[10px] font-black uppercase">
+                            {payment.paymentMethod}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
                     <div className="flex justify-between items-end -mt-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs lg:text-sm font-bold text-gray-500">
+                        <span className="text-sm lg:text-sm font-bold text-gray-500">
                           {new Date(
                             payment.date || payment.createdAt!,
                           ).toLocaleDateString("en-US", {

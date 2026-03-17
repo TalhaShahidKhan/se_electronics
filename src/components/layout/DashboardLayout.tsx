@@ -93,7 +93,9 @@ export default function DashboardLayout({
         <div
           className={clsx(
             "fixed xl:static z-50 flex flex-col h-screen w-[280px] sm:w-[260px] bg-brand text-white transition-transform duration-300 ease-in-out shadow-2xl xl:shadow-none",
-            showSideNav ? "translate-x-0" : "-translate-x-full xl:translate-x-0",
+            showSideNav
+              ? "translate-x-0"
+              : "-translate-x-full xl:translate-x-0",
           )}
         >
           {/* Sidebar Header */}
@@ -106,8 +108,12 @@ export default function DashboardLayout({
               className="rounded-lg border border-white/20 sm:w-9 sm:h-9"
             />
             <div className="flex-1 min-w-0">
-              <h1 className="font-bold text-md sm:text-base truncate">{username}</h1>
-              <p className="text-[12px]  text-blue-200 font-medium tracking-wider uppercase">Admin Panel</p>
+              <h1 className="font-bold text-md sm:text-base truncate">
+                {username}
+              </h1>
+              <p className="text-[12px]  text-blue-200 font-medium tracking-wider uppercase">
+                Admin Panel
+              </p>
             </div>
             {showSideNav && (
               <button
@@ -125,7 +131,9 @@ export default function DashboardLayout({
             <div className="bg-white/10 backdrop-blur-sm rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 border border-white/10">
               {smsBalance ? (
                 <div className="flex items-center justify-between">
-                  <span className="text-[12px] sm:text-xs text-blue-200 font-medium">SMS Balance</span>
+                  <span className="text-[12px] sm:text-sm text-blue-200 font-medium">
+                    SMS Balance
+                  </span>
                   <span className="text-sm sm:text-base text-emerald-400 font-bold">
                     ৳{smsBalance.toLocaleString()}
                   </span>
@@ -155,7 +163,10 @@ export default function DashboardLayout({
                       : "text-blue-100 hover:bg-white/10 hover:text-white",
                   )}
                 >
-                  <Icon size={18} className={clsx(isActive ? "text-brand" : "")} />
+                  <Icon
+                    size={18}
+                    className={clsx(isActive ? "text-brand" : "")}
+                  />
                   <span className="truncate">{link.name}</span>
                 </Link>
               );

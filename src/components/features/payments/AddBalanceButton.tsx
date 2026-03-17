@@ -11,7 +11,8 @@ import { PlusCircle, Search, Wallet, User } from "lucide-react";
 export default function AddBalanceButton() {
   const [showModal, setShowModal] = useState(false);
   const [staffs, setStaffs] = useState<Partial<StaffsType>[]>([]);
-  const [selectedStaff, setSelectedStaff] = useState<Partial<StaffsType> | null>(null);
+  const [selectedStaff, setSelectedStaff] =
+    useState<Partial<StaffsType> | null>(null);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [serviceId, setServiceId] = useState("");
@@ -88,7 +89,10 @@ export default function AddBalanceButton() {
           {!selectedStaff ? (
             <div className="space-y-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                <Search
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  size={16}
+                />
                 <input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -97,7 +101,9 @@ export default function AddBalanceButton() {
                 />
               </div>
               {isLoading ? (
-                <div className="text-center py-8 text-gray-500">Loading staff...</div>
+                <div className="text-center py-8 text-gray-500">
+                  Loading staff...
+                </div>
               ) : (
                 <div className="max-h-80 overflow-y-auto space-y-2">
                   {filteredStaffs.map((staff) => (
@@ -110,8 +116,12 @@ export default function AddBalanceButton() {
                         <User size={18} className="text-brand" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-bold text-gray-900 text-sm truncate">{staff.name}</p>
-                        <p className="text-xs text-gray-500">{staff.staffId} · {staff.phone}</p>
+                        <p className="font-bold text-gray-900 text-sm truncate">
+                          {staff.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {staff.staffId} · {staff.phone}
+                        </p>
                       </div>
                       <span className="text-[10px] font-bold uppercase text-gray-400 bg-gray-50 px-2 py-1 rounded">
                         {staff.role}
@@ -119,7 +129,9 @@ export default function AddBalanceButton() {
                     </button>
                   ))}
                   {filteredStaffs.length === 0 && (
-                    <div className="text-center py-8 text-gray-400 text-sm">No staff found</div>
+                    <div className="text-center py-8 text-gray-400 text-sm">
+                      No staff found
+                    </div>
                   )}
                 </div>
               )}
@@ -131,20 +143,26 @@ export default function AddBalanceButton() {
                   <User size={20} className="text-brand" />
                 </div>
                 <div>
-                  <p className="font-bold text-gray-900">{selectedStaff.name}</p>
-                  <p className="text-xs text-gray-500">{selectedStaff.staffId} · {selectedStaff.role}</p>
+                  <p className="font-bold text-gray-900">
+                    {selectedStaff.name}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {selectedStaff.staffId} · {selectedStaff.role}
+                  </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setSelectedStaff(null)}
-                  className="ml-auto text-xs font-bold text-brand hover:underline"
+                  className="ml-auto text-sm font-bold text-brand hover:underline"
                 >
                   Change
                 </button>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Amount (৳)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Amount (৳)
+                </label>
                 <input
                   type="number"
                   value={amount}
@@ -157,7 +175,9 @@ export default function AddBalanceButton() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Service ID (optional)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Service ID (optional)
+                </label>
                 <input
                   type="text"
                   value={serviceId}
@@ -168,7 +188,9 @@ export default function AddBalanceButton() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Description (optional)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Description (optional)
+                </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}

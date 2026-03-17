@@ -84,7 +84,7 @@ export default function ServiceStepper({
               </h4>
               <p
                 className={clsx(
-                  "text-xs leading-relaxed",
+                  "text-sm leading-relaxed",
                   isLast ? "text-gray-700 font-medium" : "text-gray-400",
                 )}
               >

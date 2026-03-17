@@ -34,7 +34,7 @@ export default async function CustomerFeedbackPage() {
           </div>
           <Link
             href="/customer/profile"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 underline underline-offset-2"
+            className="text-sm font-semibold text-blue-600 hover:text-blue-700 underline underline-offset-2"
           >
             Back to Dashboard
           </Link>
@@ -64,7 +64,7 @@ export default async function CustomerFeedbackPage() {
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-4 sm:px-5 sm:py-4 flex items-start justify-between gap-3"
               >
                 <div className="flex-1 min-w-0 text-left">
-                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-1">
+                  <div className="flex items-center gap-2 text-sm text-gray-400 mb-1">
                     <span className="font-mono">#{service.serviceId}</span>
                     <span>•</span>
                     <span className="uppercase font-semibold">
@@ -74,7 +74,7 @@ export default async function CustomerFeedbackPage() {
                   <div className="font-semibold text-gray-900 truncate">
                     {service.productModel}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="text-sm text-gray-500 mt-1">
                     {new Date(service.createdAt).toLocaleString(undefined, {
                       year: "numeric",
                       month: "short",
@@ -85,16 +85,14 @@ export default async function CustomerFeedbackPage() {
                   </div>
                   <div className="mt-2">
                     <StatusBadge
-                      status={
-                        service.statusHistory?.[0]?.status || "completed"
-                      }
+                      status={service.statusHistory?.[0]?.status || "completed"}
                     />
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <Link
                     href={`/service-feedback?serviceId=${service.serviceId}`}
-                    className="inline-flex items-center justify-center bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-emerald-700 transition-colors"
+                    className="inline-flex items-center justify-center bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-emerald-700 transition-colors"
                   >
                     Give Feedback
                   </Link>
@@ -107,4 +105,3 @@ export default async function CustomerFeedbackPage() {
     </div>
   );
 }
-

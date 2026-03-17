@@ -8,7 +8,9 @@ interface StaffPaymentRequestFormProps {
   staffId: string;
 }
 
-export function StaffPaymentRequestForm({ staffId }: StaffPaymentRequestFormProps) {
+export function StaffPaymentRequestForm({
+  staffId,
+}: StaffPaymentRequestFormProps) {
   const [state, formAction, isPending] = useActionState(
     async (_prev: any, formData: FormData) => {
       const res = await requestPayment(_prev, formData);
@@ -16,7 +18,7 @@ export function StaffPaymentRequestForm({ staffId }: StaffPaymentRequestFormProp
       else if (res?.success === false) toast.error(res.message);
       return res ?? _prev;
     },
-    undefined
+    undefined,
   );
 
   return (
@@ -24,7 +26,7 @@ export function StaffPaymentRequestForm({ staffId }: StaffPaymentRequestFormProp
       <input type="hidden" name="staffId" value={staffId} />
 
       <div>
-        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+        <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-1.5">
           Amount (৳)
         </label>
         <input
@@ -38,7 +40,7 @@ export function StaffPaymentRequestForm({ staffId }: StaffPaymentRequestFormProp
       </div>
 
       <div>
-        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+        <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-1.5">
           Note (optional)
         </label>
         <textarea

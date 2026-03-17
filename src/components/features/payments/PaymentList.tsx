@@ -19,13 +19,18 @@ const statusColors: Record<string, string> = {
   credited: "bg-cyan-100 text-cyan-700 border-cyan-200",
 };
 
-async function PaymentList(params: SearchParams & { staffId?: string; hideStaff?: boolean }) {
+async function PaymentList(
+  params: SearchParams & { staffId?: string; hideStaff?: boolean },
+) {
   const { hideStaff = false, ...p } = params;
   const response = await getPayments(p);
   if (!response.success) {
     return (
       <tr>
-        <td colSpan={hideStaff ? 7 : 8} className="text-center py-4 text-red-500">
+        <td
+          colSpan={hideStaff ? 7 : 8}
+          className="text-center py-4 text-red-500"
+        >
           <p>{response.message}</p>
         </td>
       </tr>
@@ -35,7 +40,10 @@ async function PaymentList(params: SearchParams & { staffId?: string; hideStaff?
   if (response.data!.length === 0) {
     return (
       <tr className="border-b">
-        <td colSpan={hideStaff ? 7 : 8} className="text-center py-4 text-gray-600">
+        <td
+          colSpan={hideStaff ? 7 : 8}
+          className="text-center py-4 text-gray-600"
+        >
           <p>No data</p>
         </td>
       </tr>
@@ -46,7 +54,10 @@ async function PaymentList(params: SearchParams & { staffId?: string; hideStaff?
 
   return payments.map((payment: any) => {
     return (
-      <tr key={payment.paymentId} className="border-b hover:bg-gray-50/50 transition-colors">
+      <tr
+        key={payment.paymentId}
+        className="border-b hover:bg-gray-50/50 transition-colors"
+      >
         <td className="py-4 px-4 whitespace-nowrap">
           <div className="flex items-center gap-2">
             <span className="font-bold text-gray-900">{payment.paymentId}</span>
@@ -82,17 +93,20 @@ async function PaymentList(params: SearchParams & { staffId?: string; hideStaff?
           ৳ {payment.amount.toLocaleString()}
         </td>
         <td className="text-left py-4 px-4">
-          <span className={clsx(
-            "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase border tracking-widest",
-            statusColors[payment.status] || "bg-gray-100 text-gray-700 border-gray-200"
-          )}>
+          <span
+            className={clsx(
+              "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase border tracking-widest",
+              statusColors[payment.status] ||
+                "bg-gray-100 text-gray-700 border-gray-200",
+            )}
+          >
             {payment.status}
           </span>
         </td>
-        <td className="text-left py-4 px-4 font-bold text-gray-600 uppercase text-xs">
+        <td className="text-left py-4 px-4 font-bold text-gray-600 uppercase text-sm">
           {payment.paymentMethod}
         </td>
-        <td className="py-4 px-4 whitespace-nowrap text-gray-500 font-bold text-xs">
+        <td className="py-4 px-4 whitespace-nowrap text-gray-500 font-bold text-sm">
           {formatDate(payment.date)}
         </td>
         <td className="text-left py-4 px-4">
