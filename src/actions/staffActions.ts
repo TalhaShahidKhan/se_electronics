@@ -352,9 +352,6 @@ export const getStaffById = async (staffId: string) => {
 
     const staffData = await db.query.staffs.findFirst({
       where: eq(staffs.staffId, staffId),
-      with: {
-        bankInfo: true,
-      },
     });
 
     if (!staffData) return { success: false, message: "Staff not found" };
@@ -667,11 +664,8 @@ export const toggleStaffStatus = async (staffId: string, status: boolean) => {
     const session = await verifySession(false, "admin");
     if (!session) return { success: false, message: "Unauthorized" };
 
-    const staffData = await db.query.staffs.findFirst({
+    const staff = await db.query.staffs.findFirst({
       where: eq(staffs.staffId, staffId),
-      with: {
-        bankInfo: true,
-      },
     });
 
     if (!staff) return { success: false, message: "Staff not found" };
