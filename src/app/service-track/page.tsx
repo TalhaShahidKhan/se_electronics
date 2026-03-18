@@ -1,6 +1,9 @@
 import { getServiceById } from "@/actions";
-import { ImageWithLightbox } from "@/components";
-import { ServiceTrackingPageThemeColor, Timestamp } from "@/components";
+import {
+  ImageWithLightbox,
+  ServiceTrackingPageThemeColor,
+  Timestamp,
+} from "@/components";
 import { contactDetails } from "@/constants";
 import { verifySession } from "@/lib";
 import { AppError, renderText } from "@/utils";
@@ -412,31 +415,6 @@ export default async function ServiceTrackPage({
     <div className="bg-black h-screen overflow-y-auto">
       <ServiceTrackingPageThemeColor />
       <div className="mx-auto max-w-[600px] text-center pb-4">
-        <div className="flex justify-end px-4 pt-4">
-          {profileHref ? (
-            <Link
-              href={profileHref}
-              className="text-sm font-semibold bg-white/10 hover:bg-white/15 text-white border border-white/15 px-3 py-2 rounded-lg transition-colors"
-            >
-              Back to Profile
-            </Link>
-          ) : (
-            <div className="flex gap-2">
-              <Link
-                href="/customer/login"
-                className="text-sm font-semibold bg-white/10 hover:bg-white/15 text-white border border-white/15 px-3 py-2 rounded-lg transition-colors"
-              >
-                Customer Login
-              </Link>
-              <Link
-                href="/login"
-                className="text-sm font-semibold bg-white/10 hover:bg-white/15 text-white border border-white/15 px-3 py-2 rounded-lg transition-colors"
-              >
-                Admin/Staff Login
-              </Link>
-            </div>
-          )}
-        </div>
         {/* Header */}
         <div className="mb-3 bg-slate-900 text-white p-4 sm:rounded-lg">
           <div className="flex items-start justify-between gap-4 mb-4">

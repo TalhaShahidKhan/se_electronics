@@ -2,6 +2,7 @@
 
 import { customerLogout } from "@/actions/customerActions";
 import { CustomerLayout, MobilePageHeader } from "@/components/layout";
+import CustomerNotificationBell from "./CustomerNotificationBell";
 import Banner from "@/components/ui/Banner";
 import {
   Activity,
@@ -159,7 +160,6 @@ export default function CustomerDashboardClient({
 
   return (
     <CustomerLayout>
-      <MobilePageHeader title="Dashboard" Icon={User} showBackButton={false} />
       <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800 pb-24">
         {/* Banner */}
         <div className="w-full overflow-hidden shadow-md">
@@ -200,10 +200,13 @@ export default function CustomerDashboardClient({
               </div>
             </div>
 
-            {/* Optional Status */}
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[14px] font-bold uppercase tracking-wider">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-              Active
+            {/* Status & Notifications */}
+            <div className="flex flex-col items-end gap-3">
+              <CustomerNotificationBell variant="card" />
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[14px] font-bold uppercase tracking-wider">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                Active
+              </div>
             </div>
           </div>
 

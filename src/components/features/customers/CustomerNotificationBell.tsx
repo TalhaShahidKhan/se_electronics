@@ -7,7 +7,7 @@ import { getCustomerNotifications, markCustomerNotificationAsRead } from "@/acti
 import { formatDate } from "@/utils";
 import clsx from "clsx";
 
-export default function CustomerNotificationBell() {
+export default function CustomerNotificationBell({ variant = "header" }: { variant?: "header" | "card" }) {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const fetchNotifications = async () => {
@@ -26,11 +26,19 @@ export default function CustomerNotificationBell() {
   return (
     <Link
       href="/customer/notifications"
-      className="relative size-12 rounded-2xl flex items-center justify-center transition-all duration-300 bg-white/10 text-white hover:bg-white/20 border border-white/20 shadow-sm"
+      className={clsx(
+        "relative flex items-center justify-center transition-all duration-300 shadow-sm border",
+        variant === "header" 
+          ? "size-10 rounded-xl bg-white/10 text-white hover:bg-white/20 border-white/20" 
+          : "size-12 rounded-2xl bg-white text-[#0A1A3A] hover:bg-gray-100 border-gray-200"
+      )}
     >
-      <Bell size={24} />
+      <Bell size={variant === "header" ? 20 : 24} />
       {unreadCount > 0 && (
-        <span className="absolute -top-1 -right-1 size-6 bg-[#FF5252] text-white text-[10px] font-black rounded-full flex items-center justify-center border-4 border-brand shadow-lg">
+        <span className={clsx(
+          "absolute -top-1 -right-1 bg-[#FF3B30] text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 shadow-sm",
+          variant === "header" ? "size-4 border-[#0A1A3A]" : "size-6 border-white"
+        )}>
           {unreadCount}
         </span>
       )}
