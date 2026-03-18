@@ -127,28 +127,28 @@ export default function CustomerDashboardClient({
       href: `https://wa.me/8801310673600`,
       color: "text-green-500",
     },
-        {
+    {
       label: "Online Service",
       icon: Monitor,
       href: "/get-service",
       color: "text-brand",
       bg: "bg-brand/5",
     },
-        {
+    {
       label: "Subscription",
       icon: Zap,
       href: "/maintenance-plans",
       color: "text-indigo-500",
       bg: "bg-indigo-50",
     },
-        {
+    {
       label: "Location",
       icon: LocateIcon,
       href: "/location",
       color: "text-orange-500",
       bg: "bg-orange-50",
     },
-        {
+    {
       label: "My Service",
       icon: Boxes,
       href: "/customer/services",
@@ -159,11 +159,7 @@ export default function CustomerDashboardClient({
 
   return (
     <CustomerLayout>
-      <MobilePageHeader 
-        title="Dashboard" 
-        Icon={User}
-        showBackButton={false}
-      />
+      <MobilePageHeader title="Dashboard" Icon={User} showBackButton={false} />
       <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800 pb-24">
         {/* Banner */}
         <div className="w-full overflow-hidden shadow-md">
@@ -281,13 +277,13 @@ export default function CustomerDashboardClient({
               <p className="text-2xl font-black text-gray-900">
                 {stats?.totalServices || 0}
               </p>
-              <p className="text-[14px] uppercase font-black text-gray-400 tracking-widest">
+              <p className="text-[10px] uppercase font-black text-gray-400 tracking-widest">
                 Services
               </p>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4">
+          <div className="bg-white p-6 rounded-md shadow-sm border border-gray-100 flex items-center gap-4">
             <div className="size-12 rounded-md bg-indigo-50 flex items-center justify-center">
               <Clock className="text-indigo-500" size={24} />
             </div>
@@ -295,7 +291,7 @@ export default function CustomerDashboardClient({
               <p className="text-2xl font-black text-gray-900">
                 {stats?.activeSubscriptions || 0}
               </p>
-              <p className="text-[14px] uppercase font-black text-gray-400 tracking-widest">
+              <p className="text-[10px] uppercase font-black text-gray-400 tracking-widest">
                 Subscriptions
               </p>
             </div>

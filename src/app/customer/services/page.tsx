@@ -1,23 +1,23 @@
 import { verifyCustomerSession } from "@/actions/customerActions";
 import { getServiceHistoryById } from "@/actions/serviceActions";
 import { AppError } from "@/utils";
+import clsx from "clsx";
 import {
+  AlertCircle,
+  ArrowLeft,
   Calendar,
+  CheckCircle2,
+  Clock,
+  FileText,
+  MessageSquareText,
   Navigation,
   Plus,
   Settings,
-  Zap,
-  FileText,
-  MessageSquareText,
-  ArrowLeft,
-  Clock,
-  CheckCircle2,
   XCircle,
-  AlertCircle,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import clsx from "clsx";
 
 export default async function CustomerServicesPage() {
   const session = await verifyCustomerSession();
@@ -169,7 +169,7 @@ export default async function CustomerServicesPage() {
                           )}
                         </div>
                         <div>
-                          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                          <p className="text-[12px] font-black text-gray-400 uppercase tracking-widest">
                             {service.type === "install"
                               ? "Installation"
                               : "Maintenance"}
@@ -195,7 +195,7 @@ export default async function CustomerServicesPage() {
                       <h3 className="text-xl font-black text-gray-900 ">
                         {service.productModel}
                       </h3>
-                      <div className="flex flex-wrap items-center gap-x-4  text-gray-400 text-lg font-bold uppercase tracking-tight">
+                      <div className="flex flex-wrap items-center gap-x-4  text-gray-400 text-lg  uppercase tracking-tight">
                         <span className="flex items-center gap-1.5">
                           <AlertCircle size={14} className="text-brand-300" />
                           Id : {service.serviceId}

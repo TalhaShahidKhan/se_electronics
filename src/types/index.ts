@@ -36,6 +36,8 @@ export type CustomerData = {
   phone: string;
   address: string;
   invoiceNumber: string;
+  vipCardNumber?: string | null;
+  vipStatus?: Statuses | null;
   createdAt: Date;
   updatedAt: Date;
   invoice: InvoicesType;

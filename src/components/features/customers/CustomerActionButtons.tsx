@@ -1,11 +1,12 @@
 "use client";
 
-import { deleteCustomer, sendInvoiceDownloadLink } from "@/actions";
+import { deleteCustomer, sendInvoiceDownloadLink, updateCustomerVipStatus } from "@/actions";
 import { getProducts } from "@/actions/productActions";
 import { ProductSelectionModal } from "@/components";
 import { CustomerData, Product } from "@/types";
 import { useRef, useState } from "react";
 import { Id, toast } from "react-toastify";
+import clsx from "clsx";
 import CustomerForm from "./CustomerForm";
 import CustomerViewModal from "./CustomerViewModal";
 
@@ -178,6 +179,27 @@ export default function CustomerActionButtons({
           />
         </svg>
       </button>
+      <button
+        title={customerData.vipStatus === "approved" ? "VIP Member" : "Promote to VIP"}
+        onClick={async () => {
+           if (customerData.vipStatus === "approved") {
+              toast.info("Customer is already a VIP");
+              return;
+           }
+           if (confirm(`Promote ${customerData.name} to VIP?`)) {
+              const res = await updateCustomerVipStatus(customerData.customerId, "approved");
+              if (res.success) toast.success(res.message);
+              else toast.error(res.message);
+           }
+        }}
+        className={clsx(customerData.vipStatus === "approved" ? "text-amber-500" : "text-gray-400 hover:text-amber-400")}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a2 2 0 01-1.414-.586l-4.828-4.828A2 2 0 015.172 14.172L12 7.343l6.828 6.829a2 2 0 01.586 1.414l-4.828 4.828A2 2 0 0112 21z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.343l4.243-4.243a2 2 0 012.828 0l2.122 2.122a2 2 0 010 2.828l-4.243 4.243M12 7.343L7.757 3.1a2 2 0 00-2.828 0L2.807 5.222a2 2 0 000 2.828l4.243 4.243" />
+        </svg>
+      </button>
+
       <button
         title="Delete"
         onClick={deleteCustomerHandler}

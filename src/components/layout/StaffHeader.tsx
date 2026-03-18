@@ -10,8 +10,8 @@ interface StaffHeaderProps {
 
 export function StaffHeader({ balance }: StaffHeaderProps) {
   return (
-    <header className="hidden md:block sticky top-0 z-50 bg-brand text-white shadow-lg">
-      <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 bg-[#0A1A3A] text-white shadow-lg overflow-hidden">
+      <div className="max-w-4xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between gap-4">
         <StaffBalanceBar amount={balance} />
         <div className="flex items-center justify-center">
           <Link

@@ -6,7 +6,7 @@ import { createSession, decrypt, deleteSession, verifySession } from "@/lib";
 import { SearchParams } from "@/types";
 import { generateInvoiceNumber, generateRandomId } from "@/utils";
 import { CustomerDataSchema, CustomerLoginSchema } from "@/validationSchemas";
-import { eq, ilike, or } from "drizzle-orm";
+import { and, eq, ilike, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { RedirectType, redirect } from "next/navigation";
@@ -503,6 +503,102 @@ export const applyForVipCard = async () => {
     revalidatePath("/customer/vip-card");
     
     return { success: true, message: "Application submitted successfully" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong" };
+  }
+};
+export const getVipCustomers = async ({
+  query,
+  page = "1",
+  limit = "20",
+  status,
+}: SearchParams & { status?: "pending" | "approved" | "rejected" | "processing" }) => {
+  try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    const q = `%${query}%`;
+    const offset = (Number(page) - 1) * Number(limit);
+
+    const whereFilters = [
+      status ? eq(customers.vipStatus, status) : or(eq(customers.vipStatus, "pending"), eq(customers.vipStatus, "approved"), eq(customers.vipStatus, "processing")),
+      query
+        ? or(
+            ilike(customers.name, q),
+            ilike(customers.phone, q),
+            ilike(customers.customerId, q),
+            ilike(customers.vipCardNumber, q),
+          )
+        : undefined,
+    ].filter(Boolean);
+
+    const data = await db.query.customers.findMany({
+      where: and(...whereFilters as any),
+      limit: Number(limit),
+      offset: offset,
+      orderBy: (customers, { desc }) => [desc(customers.updatedAt)],
+    });
+
+    return { success: true, data };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Could not fetch VIP customers" };
+  }
+};
+
+export const updateCustomerVipStatus = async (
+  customerId: string,
+  status: "approved" | "rejected" | "processing" | "pending",
+  cardNumber?: string
+) => {
+  try {
+    const session = await verifySession(false, "admin");
+    if (!session) return { success: false, message: "Unauthorized" };
+
+    let finalCardNumber = cardNumber;
+    if (status === "approved" && !finalCardNumber) {
+      // Generate unique 16-digit card number if not provided
+      finalCardNumber = Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join("");
+      
+      // Check for uniqueness
+      const existing = await db.query.customers.findFirst({
+        where: eq(customers.vipCardNumber, finalCardNumber),
+      });
+      if (existing) {
+        // Simple retry once
+        finalCardNumber = Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join("");
+      }
+    }
+
+    await db.update(customers)
+      .set({ 
+        vipStatus: status,
+        ...(status === "approved" ? { vipCardNumber: finalCardNumber } : {}),
+        ...(status === "rejected" ? { vipCardNumber: null } : {})
+      })
+      .where(eq(customers.customerId, customerId));
+
+    // Notify customer
+    const customer = await db.query.customers.findFirst({
+        where: eq(customers.customerId, customerId),
+        columns: { phone: true, name: true }
+    });
+
+    if (customer && status === "approved") {
+      const { sendSMS } = await import("@/lib/sms");
+      const message = `Congratulations ${customer.name}! Your VIP Card has been approved. Card Number: ${finalCardNumber}. Enjoy exclusive benefits at SE Electronics.`;
+      await sendSMS(customer.phone, message);
+    }
+
+    revalidatePath("/vips");
+    revalidatePath("/customers");
+    revalidatePath("/customer/vip-card");
+
+    return { 
+        success: true, 
+        message: status === "approved" ? `VIP Card Approved: ${finalCardNumber}` : "Status updated" 
+    };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Something went wrong" };

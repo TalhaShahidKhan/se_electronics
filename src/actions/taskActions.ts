@@ -124,7 +124,7 @@ export async function getStaffTasks() {
 
     // Find staffId from session userId (id)
     const staff = await db.query.staffs.findFirst({
-      where: eq(staffs.id, session.userId as string),
+      where: eq(staffs.staffId, session.userId as string),
     });
 
     if (!staff) return { success: false, message: "Staff not found." };
@@ -173,7 +173,7 @@ export async function updateStaffSMSPreferences(data: any) {
 
     await db.update(staffs)
       .set(validated)
-      .where(eq(staffs.id, session.userId as string));
+      .where(eq(staffs.staffId, session.userId as string));
 
     return { success: true, message: "Preferences updated." };
   } catch (error) {

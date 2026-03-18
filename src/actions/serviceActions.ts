@@ -288,8 +288,13 @@ export async function createService(prevState: any, formData: FormData) {
     const originSource = includesMedia ? "public_form" : "dashboard";
 
     if (originSource === "dashboard") {
-      const session = await verifySession(false, "admin");
-      if (!session) return { success: false, message: "Unauthorized" };
+      const session = await verifySession(false);
+      if (
+        !session ||
+        (session.role !== "admin" && session.role !== "customer")
+      ) {
+        return { success: false, message: "Unauthorized" };
+      }
     }
 
     if (includesMedia) {
@@ -390,9 +395,10 @@ export async function createService(prevState: any, formData: FormData) {
       });
     });
 
-    // Revalidate admin service lists
+    // Revalidate service lists for admin and customer
     revalidatePath("/services/repairs");
     revalidatePath("/services/installations");
+    revalidatePath("/customer/services");
 
     if (originSource === "public_form") {
       // Sending applicant and the admin SMS of the online applicatoin if the form is submitted from public form

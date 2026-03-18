@@ -1,7 +1,5 @@
-"use client";
-
-import { ArrowLeft, LucideIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { LucideIcon } from "lucide-react";
+import { BackButton } from "./BackButton";
 
 interface MobilePageHeaderProps {
   title: string;
@@ -13,6 +11,7 @@ interface MobilePageHeaderProps {
 /**
  * A mobile-first page header component that matches the premium dashboard aesthetic.
  * Features a dark brand top strip, white background, and an icon/back button in a rounded box.
+ * It is a Server Component to efficiently handle icons passed from other Server Components.
  */
 export function MobilePageHeader({ 
   title, 
@@ -20,30 +19,11 @@ export function MobilePageHeader({
   Icon,
   showBackButton = true 
 }: MobilePageHeaderProps) {
-  const router = useRouter();
-
-  const handleBack = () => {
-    if (backHref) {
-      router.push(backHref);
-    } else {
-      router.back();
-    }
-  };
-
   return (
-    <div className="md:hidden flex flex-col w-full bg-white sticky top-0 z-40">
-      {/* Top Brand Strip - matching the dark bar in screenshot */}
-      <div className="h-2 bg-[#0A1A3A] w-full" />
-      
+    <div className="md:hidden flex flex-col w-full bg-white sticky top-14 z-40">
       <div className="px-4 py-4 flex items-center gap-4 bg-white border-b border-gray-100/50 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)]">
         {showBackButton ? (
-          <button 
-            onClick={handleBack}
-            aria-label="Go back"
-            className="flex items-center justify-center size-10 min-w-10 bg-gray-100 rounded-xl text-[#0A1A3A] hover:bg-gray-200 active:scale-90 transition-all shadow-sm"
-          >
-            <ArrowLeft size={20} strokeWidth={3} />
-          </button>
+          <BackButton backHref={backHref} />
         ) : Icon ? (
           <div className="flex items-center justify-center size-10 min-w-10 bg-gray-100 rounded-xl text-[#0A1A3A] shadow-sm">
             <Icon size={20} strokeWidth={3} />

@@ -57,7 +57,14 @@ export default async function CustomerList(params: SearchParams) {
         </div>
       </td>
       <td className="py-4 px-4 whitespace-nowrap">
-        <span className="font-bold text-gray-900 text-sm sm:text-base">{customer.name}</span>
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-gray-900 text-sm sm:text-base">{customer.name}</span>
+          {customer.vipStatus === "approved" && (
+            <span className="px-1.5 py-0.5 bg-brand/10 text-brand text-[10px] font-black rounded uppercase tracking-wider">
+              VIP
+            </span>
+          )}
+        </div>
       </td>
       <td className="py-4 px-4 whitespace-nowrap text-gray-700 font-bold text-sm sm:text-base">
         {customer.phone}
