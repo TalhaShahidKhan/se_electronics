@@ -9,29 +9,37 @@ interface StaffPaymentRequestProps {
   completedServices?: any[];
 }
 
-export default function StaffPaymentRequest({ staffId, completedServices = [] }: StaffPaymentRequestProps) {
+export default function StaffPaymentRequest({
+  staffId,
+  completedServices = [],
+}: StaffPaymentRequestProps) {
   const [selectedService, setSelectedService] = useState("");
-  const [state, formAction, isPending] = useActionState(async (_prev: any, formData: FormData) => {
-    const res = await requestPayment(_prev, formData);
-    if (res.success) {
-      toast.success(res.message);
-      setSelectedService("");
-    } else {
-      toast.error(res.message);
-    }
-    return res;
-  }, undefined);
+  const [state, formAction, isPending] = useActionState(
+    async (_prev: any, formData: FormData) => {
+      const res = await requestPayment(_prev, formData);
+      if (res.success) {
+        toast.success(res.message);
+        setSelectedService("");
+      } else {
+        toast.error(res.message);
+      }
+      return res;
+    },
+    undefined,
+  );
 
   const hasCompletedServices = completedServices.length > 0;
 
   return (
     <form action={formAction} className="space-y-3">
       <input type="hidden" name="staffId" value={staffId} />
-      {!hasCompletedServices && <input type="hidden" name="serviceId" value="" />}
+      {!hasCompletedServices && (
+        <input type="hidden" name="serviceId" value="" />
+      )}
 
       {hasCompletedServices && (
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+          <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-1.5">
             Select Service (optional)
           </label>
           <select
@@ -43,7 +51,8 @@ export default function StaffPaymentRequest({ staffId, completedServices = [] }:
             <option value="">-- None / Request from balance --</option>
             {completedServices.map((service: any) => (
               <option key={service.serviceId} value={service.serviceId}>
-                #{service.serviceId.substring(0, 8)} - {service.customerName} ({service.productModel})
+                #{service.serviceId.substring(0, 8)} - {service.customerName} (
+                {service.productModel})
               </option>
             ))}
           </select>
@@ -52,7 +61,7 @@ export default function StaffPaymentRequest({ staffId, completedServices = [] }:
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+          <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-1.5">
             Amount (৳)
           </label>
           <input
@@ -65,7 +74,7 @@ export default function StaffPaymentRequest({ staffId, completedServices = [] }:
           />
         </div>
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+          <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-1.5">
             Payment Method
           </label>
           <select
@@ -83,7 +92,7 @@ export default function StaffPaymentRequest({ staffId, completedServices = [] }:
       </div>
 
       <div>
-        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+        <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-1.5">
           Note (Optional)
         </label>
         <textarea

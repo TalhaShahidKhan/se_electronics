@@ -15,7 +15,7 @@ import {
   User,
   Wallet,
   Wrench,
-  ShieldAlert
+  ShieldAlert,
 } from "lucide-react";
 
 import Banner from "@/components/ui/Banner";
@@ -86,7 +86,7 @@ export default function StaffDashboardClient({
         {/* <div className="bg-gradient-to-br from-brand via-brand-800 to-brand-700 rounded-md p-6 sm:p-8 text-white shadow-xl relative">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs uppercase font-black tracking-widest mb-2">
+              <p className="text-sm uppercase font-black tracking-widest mb-2">
                 Active Staff Member
               </p>
               <h3 className="text-2xl sm:text-4xl font-black">
@@ -116,13 +116,21 @@ export default function StaffDashboardClient({
           speed={50}
           gradient={false}
           pauseOnHover={true}
-          className={`py-1 rounded-md ${activeComplaints.length > 0 ? 'bg-rose-50 border border-rose-200' : ''}`}
+          className={`py-1 rounded-md ${activeComplaints.length > 0 ? "bg-rose-50 border border-rose-200" : ""}`}
         >
           {activeComplaints.length > 0 ? (
             activeComplaints.map((c, i) => (
-              <Link key={c.complaintId} href={`/staff/complaints/${c.complaintId}`} className="flex items-center hover:opacity-80 transition-opacity">
+              <Link
+                key={c.complaintId}
+                href={`/staff/complaints/${c.complaintId}`}
+                className="flex items-center hover:opacity-80 transition-opacity"
+              >
                 <span className="text-rose-700 font-extrabold text-sm tracking-wide">
-                  ⚠️ COMPLAINT ALERT: {c.customer?.name || "A Customer"} has filed a report against you. Subject: {c.subject} | ID: {c.complaintId} | Status: {c.status.replace('_', ' ').toUpperCase()} • CLICK TO VIEW DETAILS
+                  ⚠️ COMPLAINT ALERT: {c.customer?.name || "A Customer"} has
+                  filed a report against you. Subject: {c.subject} | ID:{" "}
+                  {c.complaintId} | Status:{" "}
+                  {c.status.replace("_", " ").toUpperCase()} • CLICK TO VIEW
+                  DETAILS
                 </span>
                 <span className="mx-8 text-rose-400">•</span>
               </Link>
@@ -130,15 +138,18 @@ export default function StaffDashboardClient({
           ) : (
             <>
               <span className="text-slate-900 font-extrabold text-sm tracking-wide">
-                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক
+                করুন
               </span>
               <span className="mx-6 text-slate-800">•</span>
               <span className="text-slate-900 font-extrabold text-sm tracking-wide">
-                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক
+                করুন
               </span>
               <span className="mx-6 text-slate-800">•</span>
               <span className="text-slate-800 font-extrabold text-sm tracking-wide">
-                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক করুন
+                আপনার ইলেকট্রিশিয়ান আই ডি কার্ড টি ডাউনলোড করতে লিংকটি ক্লিক
+                করুন
               </span>
               <span className="mx-6 text-slate-800">•</span>
             </>
@@ -153,7 +164,7 @@ export default function StaffDashboardClient({
               <p className="text-2xl font-black text-violet-600">
                 {stats?.successfulServices || 0}
               </p>
-              <p className="text-xs uppercase font-black text-violet-600">
+              <p className="text-sm uppercase font-black text-violet-600">
                 Complete Service
               </p>
             </div>
@@ -165,7 +176,7 @@ export default function StaffDashboardClient({
               <p className="text-2xl font-black text-green-600">
                 {experienceYears}
               </p>
-              <p className="text-xs text-green-600 uppercase font-black ">
+              <p className="text-sm text-green-600 uppercase font-black ">
                 Servicing Center
               </p>
             </div>
@@ -177,7 +188,7 @@ export default function StaffDashboardClient({
               <p className="text-2xl font-black text-red-500">
                 {staffData.cancle || "0"}
               </p>
-              <p className="text-xs uppercase font-black text-red-500">
+              <p className="text-sm uppercase font-black text-red-500">
                 Cancle
               </p>
             </div>
@@ -195,7 +206,10 @@ export default function StaffDashboardClient({
               >
                 <div
                   className={`${action.bg} ${action.color} p-8 rounded-3xl shadow-sm animate-in zoom-in-90 duration-300`}
-                  style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'both' }}
+                  style={{
+                    animationDelay: `${i * 50}ms`,
+                    animationFillMode: "both",
+                  }}
                 >
                   <action.icon size={32} />
                 </div>
@@ -234,7 +248,7 @@ export default function StaffDashboardClient({
                 color: "text-rose-500",
                 bg: "bg-rose-50",
               },
-               {
+              {
                 label: "Complaints",
                 icon: ShieldAlert,
                 href: "/staff/feedbacks", // For now redirecting to feedback or I can make a list page
@@ -254,7 +268,7 @@ export default function StaffDashboardClient({
                 className="flex flex-col items-center gap-2"
               >
                 <action.icon className={action.color} size={26} />
-                <span className="text-xs font-black text-gray-500 uppercase">
+                <span className="text-sm font-black text-gray-500 uppercase">
                   {action.label}
                 </span>
               </Link>
@@ -295,13 +309,13 @@ export default function StaffDashboardClient({
                 href: "https://wa.me/8801310673600",
                 color: "text-green-500",
               },
-               {
-                 label: "Complaints",
-                 icon: ShieldAlert,
-                 href: "/staff/feedbacks",
-                 color: "text-red-600",
-               },
-               {
+              {
+                label: "Complaints",
+                icon: ShieldAlert,
+                href: "/staff/feedbacks",
+                color: "text-red-600",
+              },
+              {
                 label: "Tracking",
                 icon: Activity,
                 href: "/staff/tracking",
@@ -326,7 +340,7 @@ export default function StaffDashboardClient({
                 className="flex flex-col items-center gap-2"
               >
                 <action.icon className={action.color} size={26} />
-                <span className="text-xs font-black text-gray-500 uppercase">
+                <span className="text-sm font-black text-gray-500 uppercase">
                   {action.label}
                 </span>
               </Link>

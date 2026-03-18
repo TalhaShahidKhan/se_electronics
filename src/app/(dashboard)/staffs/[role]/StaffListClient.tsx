@@ -21,11 +21,17 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
             {/* Status Indicator */}
             <div className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4">
               {staff.isActiveStaff ? (
-                <div className="bg-emerald-50 text-emerald-600 p-1 sm:p-1.5 rounded-full" title="Active">
+                <div
+                  className="bg-emerald-50 text-emerald-600 p-1 sm:p-1.5 rounded-full"
+                  title="Active"
+                >
                   <ShieldCheck size={12} className="sm:w-4 sm:h-4" />
                 </div>
               ) : (
-                <div className="bg-rose-50 text-rose-600 p-1 sm:p-1.5 rounded-full" title="Blocked">
+                <div
+                  className="bg-rose-50 text-rose-600 p-1 sm:p-1.5 rounded-full"
+                  title="Blocked"
+                >
                   <ShieldAlert size={12} className="sm:w-4 sm:h-4" />
                 </div>
               )}
@@ -34,16 +40,18 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
             {/* Profile Image */}
             <div className="relative mx-auto mb-3 sm:mb-4 md:mb-5">
               <div className="size-20 sm:size-28 md:size-32 lg:size-36 rounded-xl sm:rounded-2xl md:rounded-[2rem] overflow-hidden __center mx-auto border-2 sm:border-4 border-gray-50 group-hover:border-brand/10 transition-colors bg-gray-50">
-                <Image 
-                  src={staff.photoUrl || "/placeholder-avatar.png"} 
-                  alt={staff.name} 
-                  width={160} 
-                  height={160} 
+                <Image
+                  src={staff.photoUrl || "/placeholder-avatar.png"}
+                  alt={staff.name}
+                  width={160}
+                  height={160}
                   className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
               <div className="absolute -bottom-1.5 sm:-bottom-2 left-1/2 -translate-x-1/2 bg-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-sm border border-gray-100 flex items-center gap-1.5">
-                <span className="text-[12px] sm:text-[12px] font-black text-brand uppercase tracking-widest">{staff.staffId}</span>
+                <span className="text-[12px] sm:text-[12px] font-black text-brand uppercase tracking-widest">
+                  {staff.staffId}
+                </span>
               </div>
             </div>
 
@@ -60,12 +68,22 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
 
               <div className="flex flex-col gap-1 sm:gap-1.5 md:gap-2 pt-1.5 sm:pt-2 border-t border-gray-50">
                 <div className="flex items-center justify-center gap-1 sm:gap-2 text-gray-500">
-                  <Phone size={10} className="text-brand/40 sm:w-3.5 sm:h-3.5" />
-                  <span className="text-[10px] sm:text-xs md:text-sm font-bold">{staff.phone}</span>
+                  <Phone
+                    size={10}
+                    className="text-brand/40 sm:w-3.5 sm:h-3.5"
+                  />
+                  <span className="text-[10px] sm:text-sm md:text-sm font-bold">
+                    {staff.phone}
+                  </span>
                 </div>
                 <div className="flex items-center justify-center gap-1 sm:gap-2 text-gray-500">
-                  <MapPin size={10} className="text-brand/40 sm:w-3.5 sm:h-3.5" />
-                  <span className="text-[10px] sm:text-xs md:text-sm font-bold truncate max-w-[80px] sm:max-w-[120px] md:max-w-[150px]">{staff.currentDistrict}</span>
+                  <MapPin
+                    size={10}
+                    className="text-brand/40 sm:w-3.5 sm:h-3.5"
+                  />
+                  <span className="text-[10px] sm:text-sm md:text-sm font-bold truncate max-w-[80px] sm:max-w-[120px] md:max-w-[150px]">
+                    {staff.currentDistrict}
+                  </span>
                 </div>
               </div>
 
@@ -73,7 +91,9 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
               <div className="pt-1 sm:pt-2">
                 <div className="w-full py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl md:rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-brand group-hover:text-white transition-all flex items-center justify-center gap-1 sm:gap-2">
                   <Eye size={12} className="sm:w-4 sm:h-4" />
-                  <span className="text-[8px] sm:text-[10px] md:text-xs font-black uppercase tracking-wider sm:tracking-widest">View Details</span>
+                  <span className="text-[8px] sm:text-[10px] md:text-sm font-black uppercase tracking-wider sm:tracking-widest">
+                    View Details
+                  </span>
                 </div>
               </div>
             </div>

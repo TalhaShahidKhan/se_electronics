@@ -1,18 +1,35 @@
 "use client";
 
-import { getStaffNotices, markNoticeAsRead, acknowledgeNotice } from "@/actions";
+import {
+  getStaffNotices,
+  markNoticeAsRead,
+  acknowledgeNotice,
+} from "@/actions";
 import { Spinner, Modal } from "@/components/ui";
 import { NoticeRecipientType } from "@/types";
 import { formatDate } from "@/utils";
 import { useState, useEffect } from "react";
-import { Bell, CheckCircle2, ChevronRight, Info, AlertTriangle, Zap, Eye, Calendar, Clock, Inbox, UserCheck } from "lucide-react";
+import {
+  Bell,
+  CheckCircle2,
+  ChevronRight,
+  Info,
+  AlertTriangle,
+  Zap,
+  Eye,
+  Calendar,
+  Clock,
+  Inbox,
+  UserCheck,
+} from "lucide-react";
 import { toast } from "react-toastify";
 import clsx from "clsx";
 
 export default function StaffNoticeList() {
   const [notifications, setNotifications] = useState<NoticeRecipientType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedNotification, setSelectedNotification] = useState<NoticeRecipientType | null>(null);
+  const [selectedNotification, setSelectedNotification] =
+    useState<NoticeRecipientType | null>(null);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -30,8 +47,12 @@ export default function StaffNoticeList() {
     if (!notification.isRead) {
       const res = await markNoticeAsRead(notification.id);
       if (res.success) {
-        setNotifications(prev => 
-          prev.map(n => n.id === notification.id ? { ...n, isRead: true, readAt: new Date() } : n)
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n.id === notification.id
+              ? { ...n, isRead: true, readAt: new Date() }
+              : n,
+          ),
         );
       }
     }
@@ -41,8 +62,17 @@ export default function StaffNoticeList() {
     const res = await acknowledgeNotice(id);
     if (res.success) {
       toast.success(res.message);
-      setNotifications(prev => 
-        prev.map(n => n.id === id ? { ...n, isAcknowledged: true, acknowledgedAt: new Date(), isRead: true } : n)
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.id === id
+            ? {
+                ...n,
+                isAcknowledged: true,
+                acknowledgedAt: new Date(),
+                isRead: true,
+              }
+            : n,
+        ),
       );
       setSelectedNotification(null);
     } else {
@@ -50,9 +80,14 @@ export default function StaffNoticeList() {
     }
   };
 
-  if (isLoading) return <div className="h-64 __center"><Spinner /></div>;
+  if (isLoading)
+    return (
+      <div className="h-64 __center">
+        <Spinner />
+      </div>
+    );
 
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
     <div className="space-y-6">
@@ -64,7 +99,7 @@ export default function StaffNoticeList() {
           </div>
           <div>
             <h2 className="text-xl font-black text-gray-900">Notice Center</h2>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-0.5">
+            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mt-0.5">
               {unreadCount} Unread Announcements
             </p>
           </div>
@@ -79,51 +114,65 @@ export default function StaffNoticeList() {
             onClick={() => handleRead(notification)}
             className={clsx(
               "group relative flex items-center gap-6 p-6 bg-white rounded-[2rem] border transition-all text-left",
-              notification.isRead ? "border-gray-50 opacity-75" : "border-brand/20 shadow-md ring-2 ring-brand/5"
+              notification.isRead
+                ? "border-gray-50 opacity-75"
+                : "border-brand/20 shadow-md ring-2 ring-brand/5",
             )}
           >
             {/* Priority Indicator */}
-            <div className={clsx(
-              "shrink-0 size-14 rounded-2xl flex items-center justify-center text-white shadow-lg",
-              {
-                "bg-blue-500 shadow-blue-200": notification.notice?.priority === "low",
-                "bg-emerald-500 shadow-emerald-200": notification.notice?.priority === "normal",
-                "bg-orange-500 shadow-orange-200": notification.notice?.priority === "high",
-                "bg-rose-500 shadow-rose-200": notification.notice?.priority === "urgent",
-              }
-            )}>
-              {notification.notice?.priority === "urgent" ? <Zap size={24} /> : 
-               notification.notice?.priority === "high" ? <AlertTriangle size={24} /> : 
-               <Info size={24} />}
+            <div
+              className={clsx(
+                "shrink-0 size-14 rounded-2xl flex items-center justify-center text-white shadow-lg",
+                {
+                  "bg-blue-500 shadow-blue-200":
+                    notification.notice?.priority === "low",
+                  "bg-emerald-500 shadow-emerald-200":
+                    notification.notice?.priority === "normal",
+                  "bg-orange-500 shadow-orange-200":
+                    notification.notice?.priority === "high",
+                  "bg-rose-500 shadow-rose-200":
+                    notification.notice?.priority === "urgent",
+                },
+              )}
+            >
+              {notification.notice?.priority === "urgent" ? (
+                <Zap size={24} />
+              ) : notification.notice?.priority === "high" ? (
+                <AlertTriangle size={24} />
+              ) : (
+                <Info size={24} />
+              )}
             </div>
 
             {/* Content Preview */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-1">
-                <h3 className={clsx(
-                  "text-base font-black truncate",
-                  notification.isRead ? "text-gray-600" : "text-gray-900"
-                )}>
+                <h3
+                  className={clsx(
+                    "text-base font-black truncate",
+                    notification.isRead ? "text-gray-600" : "text-gray-900",
+                  )}
+                >
                   {notification.notice?.title}
                 </h3>
                 {!notification.isRead && (
-                   <span className="size-2 rounded-full bg-brand animate-pulse" />
+                  <span className="size-2 rounded-full bg-brand animate-pulse" />
                 )}
               </div>
               <p className="text-sm text-gray-500 line-clamp-1 font-medium leading-relaxed">
                 {notification.notice?.content}
               </p>
               <div className="flex items-center gap-4 mt-2">
-                 <div className="flex items-center gap-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                    <Calendar size={12} />
-                    {formatDate(notification.createdAt)}
-                 </div>
-                 {notification.isAcknowledged && (
-                    <div className="flex items-center gap-1.5 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
-                       <UserCheck size={12} />
-                       Acknowledged
-                    </div>
-                 )}
+                <div className="flex items-center gap-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  <Calendar size={12} />
+                  {formatDate(notification.createdAt)}
+                </div>
+                {notification.isAcknowledged && (
+                  <div className="flex items-center gap-1.5 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                    <UserCheck size={12} />
+                    Acknowledged
+                  </div>
+                )}
               </div>
             </div>
 
@@ -139,7 +188,9 @@ export default function StaffNoticeList() {
           <div className="size-24 rounded-[2rem] bg-gray-50 flex items-center justify-center mb-6">
             <Inbox size={40} className="text-gray-300" />
           </div>
-          <h3 className="text-xl font-black text-gray-900 mb-2">No Notices Yet</h3>
+          <h3 className="text-xl font-black text-gray-900 mb-2">
+            No Notices Yet
+          </h3>
           <p className="text-gray-400 max-w-sm font-medium leading-relaxed">
             All good! You've received all notices from the administration.
           </p>
@@ -148,60 +199,66 @@ export default function StaffNoticeList() {
 
       {/* Notice Detail Modal */}
       {selectedNotification && (
-        <Modal 
-          isVisible 
-          onClose={() => setSelectedNotification(null)} 
+        <Modal
+          isVisible
+          onClose={() => setSelectedNotification(null)}
           title={selectedNotification.notice?.title}
           width="600"
         >
           <div className="p-8">
-             <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                   <div className={clsx(
-                     "px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-[0.15em]",
-                     {
-                       "bg-blue-50 text-blue-600": selectedNotification.notice?.priority === "low",
-                       "bg-emerald-50 text-emerald-600": selectedNotification.notice?.priority === "normal",
-                       "bg-orange-50 text-orange-600": selectedNotification.notice?.priority === "high",
-                       "bg-rose-50 text-rose-600": selectedNotification.notice?.priority === "urgent",
-                     }
-                   )}>
-                     {selectedNotification.notice?.priority} Priority
-                   </div>
-                   <span className="text-xs font-bold text-gray-400">
-                     {formatDate(selectedNotification.createdAt)}
-                   </span>
-                </div>
-             </div>
-
-             <div className="prose prose-sm max-w-none mb-10">
-                <p className="text-gray-700 leading-[1.8] text-base whitespace-pre-wrap font-medium">
-                  {selectedNotification.notice?.content}
-                </p>
-             </div>
-
-             <div className="flex flex-col gap-4">
-                {!selectedNotification.isAcknowledged ? (
-                   <button
-                    onClick={() => handleAcknowledge(selectedNotification.id)}
-                    className="w-full py-5 bg-brand text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-xl shadow-brand/20 flex items-center justify-center gap-3"
-                   >
-                     <CheckCircle2 size={20} />
-                     Acknowledge Notice
-                   </button>
-                ) : (
-                   <div className="w-full py-5 bg-emerald-50 text-emerald-700 rounded-2xl font-black uppercase tracking-widest text-sm border-2 border-emerald-100 flex items-center justify-center gap-3">
-                     <CheckCircle2 size={20} />
-                     Already Acknowledged
-                   </div>
-                )}
-                <button
-                  onClick={() => setSelectedNotification(null)}
-                  className="w-full py-4 text-gray-500 font-bold hover:text-gray-700 transition-colors"
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-3">
+                <div
+                  className={clsx(
+                    "px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-[0.15em]",
+                    {
+                      "bg-blue-50 text-blue-600":
+                        selectedNotification.notice?.priority === "low",
+                      "bg-emerald-50 text-emerald-600":
+                        selectedNotification.notice?.priority === "normal",
+                      "bg-orange-50 text-orange-600":
+                        selectedNotification.notice?.priority === "high",
+                      "bg-rose-50 text-rose-600":
+                        selectedNotification.notice?.priority === "urgent",
+                    },
+                  )}
                 >
-                  Close Notice
+                  {selectedNotification.notice?.priority} Priority
+                </div>
+                <span className="text-sm font-bold text-gray-400">
+                  {formatDate(selectedNotification.createdAt)}
+                </span>
+              </div>
+            </div>
+
+            <div className="prose prose-sm max-w-none mb-10">
+              <p className="text-gray-700 leading-[1.8] text-base whitespace-pre-wrap font-medium">
+                {selectedNotification.notice?.content}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {!selectedNotification.isAcknowledged ? (
+                <button
+                  onClick={() => handleAcknowledge(selectedNotification.id)}
+                  className="w-full py-5 bg-brand text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-xl shadow-brand/20 flex items-center justify-center gap-3"
+                >
+                  <CheckCircle2 size={20} />
+                  Acknowledge Notice
                 </button>
-             </div>
+              ) : (
+                <div className="w-full py-5 bg-emerald-50 text-emerald-700 rounded-2xl font-black uppercase tracking-widest text-sm border-2 border-emerald-100 flex items-center justify-center gap-3">
+                  <CheckCircle2 size={20} />
+                  Already Acknowledged
+                </div>
+              )}
+              <button
+                onClick={() => setSelectedNotification(null)}
+                className="w-full py-4 text-gray-500 font-bold hover:text-gray-700 transition-colors"
+              >
+                Close Notice
+              </button>
+            </div>
           </div>
         </Modal>
       )}

@@ -4,7 +4,7 @@ import { getStaffProfileStats } from "@/actions/staffActions";
 import { StaffLayout } from "@/components/layout/StaffLayout";
 import { PaymentDataType } from "@/types";
 import clsx from "clsx";
-import { ArrowLeft, ChevronRight, CreditCard, Wallet } from "lucide-react";
+import { ArrowLeft, ChevronRight, CreditCard, Wallet, Settings } from "lucide-react";
 import Link from "next/link";
 import { MobilePageHeader } from "@/components/layout";
 
@@ -43,7 +43,28 @@ export default async function StaffPaymentHubPage() {
             </h1>
           </div>
 
-          <div className="w-full">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-3 lg:gap-4">
+            <Link
+              href="/staff/payment/settings"
+              className="bg-white p-4 lg:p-6 rounded-2xl lg:rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-3 lg:gap-5 group hover:shadow-md transition-all active:scale-[0.98]"
+            >
+              <div className="size-10 lg:size-14 rounded-xl lg:rounded-2xl bg-brand/5 text-brand flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Settings className="w-5 h-5 lg:w-7 lg:h-7" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h2 className="font-black text-gray-900 lg:text-lg text-sm">
+                  Settings
+                </h2>
+                <p className="hidden lg:block text-sm sm:text-sm font-bold text-gray-400 mt-1 truncate">
+                  Configure Wallet
+                </p>
+              </div>
+              <ChevronRight
+                className="text-gray-300 group-hover:text-brand transition-colors hidden lg:block"
+                size={20}
+              />
+            </Link>
+
             <Link
               href="/staff/payment/request"
               className="w-full border-2 border-gray-200  p-6 lg:p-10 rounded-[2rem] lg:rounded-[3rem] shadow-xl flex items-center justify-between gap-6 group hover:shadow-2xl hover:-translate-y-0.5 transition-all active:scale-[0.99] relative overflow-hidden text-black"
@@ -73,7 +94,7 @@ export default async function StaffPaymentHubPage() {
           {/* Payment History Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between px-1">
-              <h2 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">
+              <h2 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em]">
                 Payout History
               </h2>
             </div>
@@ -133,7 +154,7 @@ export default async function StaffPaymentHubPage() {
 
                     <div className="flex justify-between items-end -mt-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs lg:text-sm font-bold text-gray-500">
+                        <span className="text-sm lg:text-sm font-bold text-gray-500">
                           {new Date(
                             payment.date || payment.createdAt!,
                           ).toLocaleDateString("en-US", {

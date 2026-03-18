@@ -10,10 +10,7 @@ import Modal from "@/components/ui/Modal";
 import { contactDetails } from "@/constants";
 
 export default function StaffLoginPage() {
-  const [state, loginAction, isPending] = useActionState(
-    staffLogin,
-    undefined,
-  );
+  const [state, loginAction, isPending] = useActionState(staffLogin, undefined);
   const [username, setUsername] = useState("");
   const [showBlockedModal, setShowBlockedModal] = useState(false);
 
@@ -89,7 +86,7 @@ export default function StaffLoginPage() {
             </div>
 
             {state && !state.success && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-center">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-xl text-sm font-semibold text-center">
                 {state.message}
               </div>
             )}

@@ -155,7 +155,7 @@ export default function MessagesPage() {
                 </h3>
                 <div className="flex items-center gap-2 mb-4">
                   <Mail size={12} className="text-gray-400" />
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-tighter">
+                  <span className="text-sm font-bold text-gray-400 uppercase tracking-tighter">
                     From: {msg.customer.name}
                   </span>
                 </div>
@@ -206,7 +206,7 @@ export default function MessagesPage() {
 
             <div className="p-8 overflow-y-auto flex-1">
               <div className="mb-6">
-                <p className="text-xs font-black text-gray-400 uppercase mb-2 tracking-widest">
+                <p className="text-sm font-black text-gray-400 uppercase mb-2 tracking-widest">
                   Customer Subject & Message
                 </p>
                 <div className="p-4 bg-gray-50 rounded-2xl border border-gray-200 border-l-4 border-l-blue-500">

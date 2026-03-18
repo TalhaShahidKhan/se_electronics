@@ -26,7 +26,7 @@ export function StaffPaymentSettingsForm({
   initialBankInfo,
 }: StaffPaymentSettingsFormProps) {
   const [method, setMethod] = useState<PaymentMethod>(
-    (initialPaymentPreference as PaymentMethod) || "bkash"
+    (initialPaymentPreference as PaymentMethod) || "bkash",
   );
   const [walletNumber, setWalletNumber] = useState(initialWalletNumber ?? "");
   const [bankInfo, setBankInfo] = useState<BankInfo>({
@@ -38,7 +38,7 @@ export function StaffPaymentSettingsForm({
 
   const [state, formAction, isPending] = useActionState(
     updateMyProfileForm,
-    undefined
+    undefined,
   );
 
   useEffect(() => {
@@ -46,14 +46,15 @@ export function StaffPaymentSettingsForm({
     toast(state.message, { type: state.success ? "success" : "error" });
   }, [state]);
 
-  const isWallet = method === "bkash" || method === "nagad" || method === "rocket";
+  const isWallet =
+    method === "bkash" || method === "nagad" || method === "rocket";
 
   return (
     <form action={formAction} className="space-y-4">
       <input type="hidden" name="paymentPreference" value={method} />
 
       <div>
-        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+        <label className="block text-sm font-bold text-gray-500 uppercase tracking-widest mb-1.5">
           Preferred payment method
         </label>
         <select
@@ -70,7 +71,7 @@ export function StaffPaymentSettingsForm({
 
       {isWallet ? (
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+          <label className="block text-sm font-bold text-gray-500 uppercase tracking-widest mb-1.5">
             {METHOD_LABELS[method]} number
           </label>
           <input
@@ -91,7 +92,7 @@ export function StaffPaymentSettingsForm({
           <input type="hidden" name="walletNumber" value="" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+              <label className="block text-sm font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                 Bank name
               </label>
               <input
@@ -107,7 +108,7 @@ export function StaffPaymentSettingsForm({
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+              <label className="block text-sm font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                 Account holder name
               </label>
               <input
@@ -115,7 +116,10 @@ export function StaffPaymentSettingsForm({
                 name="accountHolderName"
                 value={bankInfo.accountHolderName}
                 onChange={(e) =>
-                  setBankInfo((p) => ({ ...p, accountHolderName: e.target.value }))
+                  setBankInfo((p) => ({
+                    ...p,
+                    accountHolderName: e.target.value,
+                  }))
                 }
                 placeholder="Your name"
                 required
@@ -123,7 +127,7 @@ export function StaffPaymentSettingsForm({
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+              <label className="block text-sm font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                 Account number
               </label>
               <input
@@ -139,7 +143,7 @@ export function StaffPaymentSettingsForm({
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+              <label className="block text-sm font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                 Branch name
               </label>
               <input
@@ -161,7 +165,7 @@ export function StaffPaymentSettingsForm({
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-brand text-white font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
+        className="w-full bg-brand text-white font-bold py-2.5 rounded-xl text-sm uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
       >
         {isPending ? "Saving..." : "Save payment details"}
       </button>

@@ -1,18 +1,15 @@
-import { BankInfo, Feedback, StaffServiveReport } from "@/types";
 import { relations } from "drizzle-orm";
 import {
   boolean,
-  doublePrecision,
-  index,
-  integer,
-  json,
-  numeric,
-  pgEnum,
   pgTable,
   text,
   timestamp,
-  uuid,
   varchar,
+  integer,
+  pgEnum,
+  uuid,
+  json,
+  index,
 } from "drizzle-orm/pg-core";
 
 export const productTypeEnum = pgEnum("productType", [
@@ -21,37 +18,6 @@ export const productTypeEnum = pgEnum("productType", [
   "stabilizer",
   "others",
 ]);
-
-export const serviceTypeEnum = pgEnum("serviceType", ["install", "repair"]);
-
-export const serviceStatusEnum = pgEnum("serviceStatus", [
-  "pending",
-  "in_progress",
-  "appointment_retry",
-  "staff_departed",
-  "staff_arrived",
-  "service_center",
-  "service_center_received",
-  "completed",
-  "canceled",
-]);
-
-export const applicationStatusEnum = pgEnum("applicationStatus", [
-  "pending",
-  "processing",
-  "approved",
-  "rejected",
-]);
-
-export const applicationTypesEnum = pgEnum("applicationTypes", [
-  "service_application",
-  "staff_application",
-  "subscription_application",
-  "vip_card_application",
-]);
-
-export const staffRoleEnum = pgEnum("staffRole", ["technician", "electrician"]);
-
 export const paymentTypesEnum = pgEnum("paymentTypes", [
   "cash",
   "bkash",
@@ -59,62 +25,60 @@ export const paymentTypesEnum = pgEnum("paymentTypes", [
   "rocket",
   "bank",
 ]);
-
-export const agreementTypesEnum = pgEnum("agreementTypes", [
-  "application_declaration",
-]);
-
-export const paymentStatusEnum = pgEnum("paymentStatus", [
+export const serviceTypeEnum = pgEnum("serviceType", ["install", "repair"]);
+export const serviceStatusEnum = pgEnum("serviceStatus", [
   "requested",
   "pending",
-  "processing",
-  "approved",
-  "rejected",
+  "in_progress",
+  "appointment_retry",
+  "service_center",
   "completed",
-  "credited",
+  "canceled",
+  "staff_arrived",
+  "staff_departed",
+  "service_center_received",
 ]);
-
-export const reportStatusEnum = pgEnum("reportStatus", [
-  "pending",
-  "processing",
-  "resolved",
-  "dismissed",
-  "under_trial",
-  "hearing",
-  "completed",
-]);
-
-export const statusTypesEnum = pgEnum("statusTypes", ["system", "custom"]);
-
-export const createdFromTypesEnum = pgEnum("serviceSourceTypes", [
+export const staffRoleEnum = pgEnum("staffRole", ["technician", "electrician"]);
+export const createdFromTypesEnum = pgEnum("createdFromTypes", [
   "public_form",
   "dashboard",
 ]);
-
-export const resolvedByTypesEnum = pgEnum("resolvedByTypes", [
-  "staff_member",
-  "service_center",
+export const statusTypesEnum = pgEnum("statusTypes", ["system", "custom"]);
+export const applicationTypesEnum = pgEnum("applicationTypes", [
+  "service_application",
+  "staff_application",
+  "subscription_application",
 ]);
-
+export const docTypesEnum = pgEnum("docTypes", [
+  "invoice",
+  "payment",
+  "id-card",
+  "certificate",
+  "complaint",
+  "hearing-notice",
+  "completion-notice",
+]);
+export const subscriptionTypesEnum = pgEnum("subscriptionTypes", [
+  "monthly",
+  "yearly",
+]);
+export const paymentStatusEnum = pgEnum("paymentStatus", [
+  "processing",
+  "approved",
+  "rejected",
+  "credited",
+]);
 export const noticePriorityEnum = pgEnum("noticePriority", [
   "low",
   "normal",
   "high",
   "urgent",
 ]);
-
 export const noticeTargetEnum = pgEnum("noticeTarget", [
   "single",
   "multiple",
   "all",
 ]);
-
-export const subscriptionTypesEnum = pgEnum("subscriptionTypes", [
-  "battery_maintenance",
-  "ips_and_battery_maintenance",
-  "full_maintenance",
-]);
-
 export const taskStatusEnum = pgEnum("taskStatus", [
   "pending",
   "in_progress",
@@ -131,10 +95,12 @@ export const smsLogStatusEnum = pgEnum("smsLogStatus", ["sent", "failed"]);
 
 export const admins = pgTable("admins", {
   id: uuid().defaultRandom().primaryKey(),
-  username: varchar({ length: 255 }).unique().notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  username: varchar("username", { length: 255 }).unique().notNull(),
   password: text().notNull(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
+  role: varchar("role", { length: 50 }).default("admin").notNull(),
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true })
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
@@ -144,17 +110,12 @@ export const customers = pgTable(
   "customers",
   {
     id: uuid().defaultRandom().primaryKey(),
-    customerId: varchar({ length: 255 }).unique().notNull(),
-    name: varchar({ length: 255 }).notNull(),
-    phone: varchar({ length: 255 }).notNull(),
-    address: varchar({ length: 255 }).notNull(),
-    invoiceNumber: varchar({ length: 255 }).unique().notNull(),
-    isActiveCustomer: boolean().default(true).notNull(),
-    profileCompleted: boolean().default(false).notNull(),
-    vipCardNumber: varchar({ length: 16 }).unique(),
-    vipStatus: applicationStatusEnum().default("pending"),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp({ withTimezone: true })
+    customerId: varchar("customerId", { length: 255 }).unique().notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    phone: varchar("phone", { length: 255 }).notNull(),
+    address: text().notNull(),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
@@ -162,558 +123,392 @@ export const customers = pgTable(
   (table) => [
     index("customer_id_idx").on(table.customerId),
     index("customer_phone_idx").on(table.phone),
-    index("invoice_number_fk_idx").on(table.invoiceNumber),
   ],
 );
 
-export const customersRelations = relations(customers, ({ many, one }) => ({
-  invoice: one(invoices, {
-    fields: [customers.invoiceNumber],
-    references: [invoices.invoiceNumber],
-  }),
-  services: many(services),
-  feedbacks: many(feedbacks),
-  notifications: many(customerNotifications),
-}));
+export const products = pgTable(
+  "products",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    type: productTypeEnum("type").notNull(),
+    invoiceId: varchar("invoiceId", { length: 255 })
+      .references(() => invoices.invoiceNumber, { onDelete: "cascade" })
+      .notNull(),
+    model: varchar("model", { length: 255 }).notNull(),
+    quantity: integer("quantity").notNull(),
+    unitPrice: integer("unitPrice").notNull(),
+    warrantyStartDate: timestamp("warrantyStartDate", {
+      withTimezone: true,
+    }).notNull(),
+    warrantyDurationMonths: integer("warrantyDurationMonths").notNull(),
+  },
+  (table) => [index("product_invoice_id_idx").on(table.invoiceId)],
+);
 
 export const invoices = pgTable(
   "invoices",
   {
     id: uuid().defaultRandom().primaryKey(),
-    invoiceNumber: varchar({ length: 255 }).unique().notNull(),
-    customerId: varchar({ length: 255 })
+    invoiceNumber: varchar("invoiceNumber", { length: 255 }).unique().notNull(),
+    customerName: varchar("customerName", { length: 255 }).notNull(),
+    customerAddress: text().notNull(),
+    customerId: varchar("customerId", { length: 255 })
       .references(() => customers.customerId, { onDelete: "cascade" })
       .notNull(),
-    customerName: varchar({ length: 255 }).notNull(),
-    customerPhone: varchar({ length: 255 }).notNull(),
-    customerAddress: text().notNull(),
-    date: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    paymentType: paymentTypesEnum().notNull(),
-    subtotal: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
-    total: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
-    dueAmount: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp({ withTimezone: true })
+    date: timestamp("date", { withTimezone: true }).notNull(),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
+    paymentType: paymentTypesEnum("paymentType").notNull(),
+    subtotal: integer("subtotal").notNull(),
+    total: integer("total").notNull(),
+    dueAmount: integer("dueAmount").notNull(),
+    customerPhone: varchar("customerPhone", { length: 255 }).notNull(),
   },
-  (table) => [
-    index("invoice_number_idx").on(table.invoiceNumber),
-    index("invoice_customer_id_idx").on(table.customerId),
-  ],
-);
-
-export const invoiceRelations = relations(invoices, ({ one, many }) => ({
-  customer: one(customers, {
-    fields: [invoices.customerId],
-    references: [customers.customerId],
-  }),
-  products: many(products),
-}));
-
-export const products = pgTable("products", {
-  id: uuid().defaultRandom().primaryKey(),
-  invoiceId: uuid()
-    .references(() => invoices.id, { onDelete: "cascade" })
-    .notNull(),
-  type: productTypeEnum().notNull(),
-  model: varchar({ length: 255 }).notNull(),
-  quantity: integer().default(1).notNull(),
-  unitPrice: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
-  warrantyStartDate: timestamp({ withTimezone: true }).notNull(),
-  warrantyDurationMonths: integer().notNull(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-});
-
-export const productsRelations = relations(products, ({ one }) => ({
-  invoice: one(invoices, {
-    fields: [products.invoiceId],
-    references: [invoices.id],
-  }),
-}));
-
-export const services = pgTable(
-  "services",
-  {
-    id: uuid().defaultRandom().primaryKey(),
-    serviceId: varchar({ length: 255 }).unique().notNull(),
-    customerId: varchar({ length: 255 }).references(
-      () => customers.customerId,
-      { onDelete: "set null" },
-    ),
-    customerName: varchar({ length: 255 }).notNull(),
-    customerPhone: varchar({ length: 255 }).notNull(),
-    customerAddress: varchar({ length: 255 }).notNull(),
-    customerAddressDistrict: varchar({ length: 255 }),
-    customerAddressPoliceStation: varchar({ length: 255 }),
-    customerAddressPostOffice: varchar({ length: 255 }),
-    staffId: varchar({ length: 255 }).references(() => staffs.staffId, {
-      onDelete: "set null",
-    }),
-    staffRole: staffRoleEnum(),
-    staffName: varchar({ length: 255 }),
-    staffPhone: varchar({ length: 255 }),
-    staffReport: json().$type<StaffServiveReport>(),
-    type: serviceTypeEnum().default("repair"),
-    productType: productTypeEnum().notNull(),
-    productModel: varchar({ length: 255 }).notNull(),
-    ipsBrand: varchar({ length: 255 }),
-    productFrontPhotoKey: varchar({ length: 255 }),
-    productBackPhotoKey: varchar({ length: 255 }),
-    warrantyCardPhotoKey: varchar({ length: 255 }),
-    powerRating: varchar({ length: 255 }),
-    memoNumber: varchar({ length: 255 }),
-    reportedIssue: text(),
-    createdFrom: createdFromTypesEnum().notNull(),
-    resolvedBy: resolvedByTypesEnum(),
-    isActive: boolean().default(false).notNull(),
-    ipAddress: varchar({ length: 255 }),
-    userAgent: text(),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp({ withTimezone: true })
-      .defaultNow()
-      .$onUpdate(() => new Date())
-      .notNull(),
-  },
-  (table) => [
-    index("service_id_idx").on(table.serviceId),
-    index("service_customer_id_idx").on(table.customerId),
-    index("service_staff_id_idx").on(table.staffId),
-    index("service_is_active_idx").on(table.isActive),
-    index("service_type_idx").on(table.type),
-    index("service_customer_phone_idx").on(table.customerPhone),
-    index("service_active_type_idx").on(table.isActive, table.type),
-  ],
-);
-
-export const servicesRelations = relations(services, ({ many, one }) => ({
-  statusHistory: many(serviceStatusHistory),
-  customer: one(customers, {
-    fields: [services.customerId],
-    references: [customers.customerId],
-  }),
-  appointedStaff: one(staffs, {
-    fields: [services.staffId],
-    references: [staffs.staffId],
-  }),
-  application: one(applications, {
-    fields: [services.serviceId],
-    references: [applications.applicantId],
-  }),
-}));
-
-export const serviceStatusHistory = pgTable(
-  "serviceStatusHistory",
-  {
-    id: uuid().defaultRandom().primaryKey(),
-    serviceId: varchar({ length: 255 })
-      .references(() => services.serviceId, { onDelete: "cascade" })
-      .notNull(),
-    status: serviceStatusEnum(),
-    statusType: statusTypesEnum().default("system").notNull(),
-    customLabel: varchar({ length: 255 }),
-    customNote: text(),
-    cancelReason: text(),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp({ withTimezone: true })
-      .defaultNow()
-      .$onUpdate(() => new Date())
-      .notNull(),
-  },
-  (table) => [
-    index("status_history_service_id_idx").on(table.serviceId),
-    index("status_history_status_idx").on(table.status),
-  ],
-);
-
-export const serviceStatusHistoryRelations = relations(
-  serviceStatusHistory,
-  ({ one }) => ({
-    service: one(services, {
-      fields: [serviceStatusHistory.serviceId],
-      references: [services.serviceId],
-    }),
-  }),
-);
-
-export const subscriptions = pgTable(
-  "subscriptions",
-  {
-    id: uuid().defaultRandom().primaryKey(),
-    subscriptionId: varchar({ length: 255 }).unique().notNull(),
-    name: varchar({ length: 255 }).notNull(),
-    phone: varchar({ length: 255 }).notNull(),
-    streetAddress: text().notNull(),
-    district: varchar({ length: 100 }).notNull(),
-    policeStation: varchar({ length: 100 }),
-    postOffice: varchar({ length: 100 }),
-    subscriptionDuration: integer().notNull(),
-    subscriptionType: subscriptionTypesEnum().notNull(),
-    batteryType: varchar({ length: 255 }).notNull(),
-    ipsBrand: varchar({ length: 255 }),
-    ipsPowerRating: varchar({ length: 255 }),
-    paymentType: paymentTypesEnum().notNull(),
-    basePrice: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
-    discountAmount: numeric({
-      precision: 10,
-      scale: 2,
-      mode: "number",
-    }).default(0),
-    surchargeAmount: numeric({
-      precision: 10,
-      scale: 2,
-      mode: "number",
-    }).default(0),
-    totalFee: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
-    walletNumber: varchar({ length: 255 }),
-    transactionId: varchar({ length: 255 }),
-    bankInfo: json().$type<BankInfo>(),
-    isActive: boolean().default(false).notNull(),
-    ipAddress: varchar({ length: 255 }).notNull(),
-    userAgent: text().notNull(),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp({ withTimezone: true })
-      .defaultNow()
-      .$onUpdate(() => new Date())
-      .notNull(),
-  },
-  (table) => [
-    index("subscription_id_idx").on(table.subscriptionId),
-    index("subscriber_name_idx").on(table.name),
-    index("subscriber_phone_idx").on(table.phone),
-    index("subscriber_address_idx").on(table.district),
-  ],
+  (table) => [index("invoice_number_idx").on(table.invoiceNumber)],
 );
 
 export const staffs = pgTable(
   "staffs",
   {
     id: uuid().defaultRandom().primaryKey(),
-    staffId: varchar({ length: 255 }).unique().notNull(),
-    username: varchar({ length: 255 }).unique(), // nullable initially for existing data
-    password: text(), // nullable initially for existing data
-    name: varchar({ length: 255 }).notNull(),
-    fatherName: varchar({ length: 255 }).notNull(),
-    phone: varchar({ length: 255 }).notNull(),
+    staffId: varchar("staffId", { length: 255 }).unique().notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    fatherName: varchar("fatherName", { length: 255 }).notNull(),
+    phone: varchar("phone", { length: 255 }).unique().notNull(),
+    role: staffRoleEnum("role").notNull(),
     currentStreetAddress: text().notNull(),
-    currentDistrict: varchar({ length: 100 }).notNull(),
-    currentPoliceStation: varchar({ length: 100 }),
-    currentPostOffice: varchar({ length: 100 }),
+    currentDistrict: varchar("currentDistrict", { length: 255 }).notNull(),
+    currentPoliceStation: varchar("currentPoliceStation", { length: 255 }),
+    currentPostOffice: varchar("currentPostOffice", { length: 255 }),
     permanentStreetAddress: text().notNull(),
-    permanentDistrict: varchar({ length: 100 }).notNull(),
-    permanentPoliceStation: varchar({ length: 100 }),
-    permanentPostOffice: varchar({ length: 100 }),
-    photoKey: varchar({ length: 255 }).notNull(),
-    nidFrontPhotoKey: varchar({ length: 255 }).notNull(),
-    nidBackPhotoKey: varchar({ length: 255 }).notNull(),
-    skills: text(), // JSON array of skills as text
-    bio: text(), // Short biography/summary
-    hasRepairExperience: boolean().default(false).notNull(),
-    repairExperienceYears: integer().default(0),
-    hasInstallationExperience: boolean().default(false).notNull(),
-    installationExperienceYears: integer().default(0),
-    role: staffRoleEnum().notNull(),
-    isVerified: boolean().default(false).notNull(),
-    isActiveStaff: boolean().default(true).notNull(), // can login if active
-    profileCompleted: boolean().default(false).notNull(), // profile setup complete
-    rating: numeric({ precision: 3, scale: 2, mode: "number" }).default(0), // calculated average
-    totalServices: integer().default(0), // total services handled
-    successfulServices: integer().default(0), // completed successfully
-    canceledServices: integer().default(0), // services canceled
-    paymentPreference: paymentTypesEnum().notNull(),
-    walletNumber: varchar({ length: 255 }),
-    bankInfo: json().$type<BankInfo>(),
-    docs: text(), // JSON array of document URLs/keys
-    createdFrom: createdFromTypesEnum().notNull(),
-    smsNotificationEnabled: boolean().default(true).notNull(),
-    smsWorkingHoursOnly: boolean().default(true).notNull(),
-    smsFrequency: smsFrequencyEnum().default("immediate").notNull(),
-    smsOptOut: boolean().default(false).notNull(),
-    ipAddress: varchar({ length: 255 }),
-    userAgent: text(),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp({ withTimezone: true })
+    permanentDistrict: varchar("permanentDistrict", { length: 255 }).notNull(),
+    permanentPoliceStation: varchar("permanentPoliceStation", { length: 255 }),
+    permanentPostOffice: varchar("permanentPostOffice", { length: 255 }),
+    photoKey: text().notNull(),
+    nidFrontPhotoKey: text().notNull(),
+    nidBackPhotoKey: text().notNull(),
+    hasRepairExperience: boolean("hasRepairExperience").notNull(),
+    repairExperienceYears: integer("repairExperienceYears"),
+    hasInstallationExperience: boolean("hasInstallationExperience").notNull(),
+    installationExperienceYears: integer("installationExperienceYears"),
+    isVerified: boolean("isVerified").default(false).notNull(),
+    paymentPreference: paymentTypesEnum("paymentPreference").notNull(),
+    walletNumber: varchar("walletNumber", { length: 255 }),
+    bankInfo: json("bankInfo"),
+    docs: json("docs"),
+    skills: json("skills"),
+    bio: text("bio"),
+    profileCompleted: boolean("profileCompleted").default(false).notNull(),
+    rating: integer("rating"),
+    totalServices: integer("totalServices"),
+    successfulServices: integer("successfulServices"),
+    canceledServices: integer("canceledServices"),
+    isActiveStaff: boolean("isActiveStaff").default(true),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+    createdFrom: createdFromTypesEnum("createdFrom").notNull(),
+    smsNotificationEnabled: boolean("smsNotificationEnabled")
+      .default(true)
+      .notNull(),
+    smsWorkingHoursOnly: boolean("smsWorkingHoursOnly").default(true).notNull(),
+    smsFrequency: smsFrequencyEnum("smsFrequency").default("immediate").notNull(),
+    smsOptOut: boolean("smsOptOut").default(false).notNull(),
+    ipAddress: varchar("ipAddress", { length: 255 }),
+    userAgent: text("userAgent"),
+  },
+  (table) => [
+    index("staff_id_idx").on(table.staffId),
+    index("staff_phone_idx").on(table.phone),
+    index("staff_role_idx").on(table.role),
+  ],
+);
+
+export const services = pgTable(
+  "services",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    serviceId: varchar("serviceId", { length: 255 }).unique().notNull(),
+    customerId: varchar("customerId", { length: 255 }),
+    customerName: varchar("customerName", { length: 255 }).notNull(),
+    customerPhone: varchar("customerPhone", { length: 255 }).notNull(),
+    customerAddress: text().notNull(),
+    customerAddressDistrict: varchar("customerAddressDistrict", {
+      length: 255,
+    }),
+    customerAddressPoliceStation: varchar("customerAddressPoliceStation", {
+      length: 255,
+    }),
+    customerAddressPostOffice: varchar("customerAddressPostOffice", {
+      length: 255,
+    }),
+    staffId: varchar("staffId", { length: 255 }),
+    staffRole: staffRoleEnum("staffRole"),
+    staffName: varchar("staffName", { length: 255 }),
+    staffPhone: varchar("staffPhone", { length: 255 }),
+    staffReport: json("staffReport"),
+    type: serviceTypeEnum("type").notNull(),
+    statusHistory: json("statusHistory").notNull(),
+    productType: productTypeEnum("productType").notNull(),
+    productModel: varchar("productModel", { length: 255 }).notNull(),
+    ipsBrand: varchar("ipsBrand", { length: 255 }),
+    productFrontPhotoKey: text("productFrontPhotoKey"),
+    productBackPhotoKey: text("productBackPhotoKey"),
+    warrantyCardPhotoKey: text("warrantyCardPhotoKey"),
+    powerRating: varchar("powerRating", { length: 255 }),
+    memoNumber: varchar("memoNumber", { length: 255 }),
+    reportedIssue: text("reportedIssue"),
+    createdFrom: createdFromTypesEnum("createdFrom").notNull(),
+    isActive: boolean("isActive").default(true).notNull(),
+    ipAddress: varchar("ipAddress", { length: 255 }),
+    userAgent: text("userAgent"),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
   },
   (table) => [
-    index("staff_id_idx").on(table.staffId),
-    index("staff_username_idx").on(table.username),
-    index("staff_phone_idx").on(table.phone),
-    index("staff_is_verified_idx").on(table.isVerified),
-    index("staff_role_idx").on(table.role),
-    index("staff_verified_role_idx").on(table.isVerified, table.role),
-    index("staff_active_idx").on(table.isActiveStaff),
+    index("service_id_idx").on(table.serviceId),
+    index("service_staff_id_idx").on(table.staffId),
+    index("service_customer_id_idx").on(table.customerId),
   ],
 );
 
-export const staffsRelations = relations(staffs, ({ many, one }) => ({
-  services: many(services),
-  payments: many(payments),
-  agreements: many(userAgreements),
-  notifications: many(staffNotifications),
-  tasks: many(tasks),
-  smsLogs: many(smsLogs),
-  application: one(applications, {
-    fields: [staffs.id],
-    references: [applications.applicantId],
-  }),
-}));
+export const feedbacks = pgTable(
+  "feedbacks",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    customerId: varchar("customerId", { length: 255 }),
+    serviceId: varchar("serviceId", { length: 255 })
+      .references(() => services.serviceId, { onDelete: "cascade" })
+      .notNull(),
+    feedbacks: json("feedbacks"),
+    rating: integer("rating"),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("feedback_service_id_idx").on(table.serviceId),
+    index("feedback_customer_id_idx").on(table.customerId),
+  ],
+);
+
+export const payments = pgTable(
+  "payments",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    paymentId: varchar("paymentId", { length: 255 }).unique().notNull(),
+    invoiceNumber: varchar("invoiceNumber", { length: 255 }),
+    serviceId: varchar("serviceId", { length: 255 }),
+    staffId: varchar("staffId", { length: 255 })
+      .references(() => staffs.staffId, { onDelete: "cascade" })
+      .notNull(),
+    paymentMethod: paymentTypesEnum("paymentMethod").notNull(),
+    senderWalletNumber: varchar("senderWalletNumber", { length: 255 }),
+    receiverWalletNumber: varchar("receiverWalletNumber", { length: 255 }),
+    transactionId: varchar("transactionId", { length: 255 }),
+    senderBankInfo: json("senderBankInfo"),
+    receiverBankInfo: json("receiverBankInfo"),
+    amount: integer("amount").notNull(),
+    description: text("description"),
+    status: paymentStatusEnum("status").notNull(),
+    statusHistory: json("statusHistory"),
+    date: timestamp("date", { withTimezone: true }).notNull(),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("payment_id_idx").on(table.paymentId),
+    index("payment_staff_id_idx").on(table.staffId),
+    index("payment_invoice_number_idx").on(table.invoiceNumber),
+  ],
+);
 
 export const applications = pgTable(
   "applications",
   {
     id: uuid().defaultRandom().primaryKey(),
-    applicationId: varchar({ length: 255 }).unique().notNull(),
-    applicantId: varchar({ length: 255 }).unique().notNull(),
-    status: applicationStatusEnum().default("pending").notNull(),
-    type: applicationTypesEnum().notNull(),
-    rejectReason: text(),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp({ withTimezone: true })
+    applicationId: varchar("applicationId", { length: 255 }).unique().notNull(),
+    applicantId: varchar("applicantId", { length: 255 }).notNull(),
+    type: applicationTypesEnum("type").notNull(),
+    status: serviceStatusEnum("status").default("pending").notNull(),
+    statusHistory: json("statusHistory"),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
   },
   (table) => [
     index("application_id_idx").on(table.applicationId),
-    index("applicant_id_idx").on(table.applicantId),
-    index("application_status_idx").on(table.status),
-    index("application_type_idx").on(table.type),
+    index("application_applicant_id_idx").on(table.applicantId),
   ],
 );
 
-export const applicationsRelations = relations(applications, ({ one }) => ({
-  staff: one(staffs, {
-    fields: [applications.applicantId],
-    references: [staffs.staffId],
-  }),
-  service: one(services, {
-    fields: [applications.applicantId],
-    references: [services.serviceId],
-  }),
-  subscriber: one(subscriptions, {
-    fields: [applications.applicantId],
-    references: [subscriptions.subscriptionId],
-  }),
-  customer: one(customers, {
-    fields: [applications.applicantId],
-    references: [customers.customerId],
-  }),
-}));
+export const authTokens = pgTable(
+  "authTokens",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    token: varchar("token", { length: 255 }).unique().notNull(),
+    docType: docTypesEnum("docType").notNull(),
+    docId: varchar("docId", { length: 255 }).notNull(),
+    expiresAt: timestamp("expiresAt", { withTimezone: true }).notNull(),
+    isValid: boolean("isValid").default(true).notNull(),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index("auth_token_idx").on(table.token)],
+);
 
 export const agreements = pgTable("agreements", {
   id: uuid().defaultRandom().primaryKey(),
-  type: agreementTypesEnum().notNull(),
-  title: varchar({ length: 255 }),
+  title: varchar("title", { length: 255 }).notNull(),
   content: text().notNull(),
-  version: varchar({ length: 10 }).default("1.0"),
-  isActive: boolean().default(true),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
+  version: varchar("version", { length: 50 }).notNull(),
+  isActive: boolean("isActive").default(false).notNull(),
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
 });
 
-export const agreementsRelations = relations(agreements, ({ many }) => ({
-  users: many(userAgreements),
-}));
-
-export const userAgreements = pgTable("userAgreements", {
-  id: uuid().defaultRandom().primaryKey(),
-  userId: varchar({ length: 255 }).notNull(),
-  agreementId: uuid()
-    .references(() => agreements.id, { onDelete: "cascade" })
-    .notNull(),
-  agreedAt: timestamp({ withTimezone: true }).defaultNow(),
-  ipAddress: varchar({ length: 255 }).notNull(),
-  userAgent: text().notNull(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-});
-
-export const userAgreementsRelations = relations(userAgreements, ({ one }) => ({
-  user: one(staffs, {
-    fields: [userAgreements.userId],
-    references: [staffs.staffId],
-  }),
-  agreement: one(agreements, {
-    fields: [userAgreements.agreementId],
-    references: [agreements.id],
-  }),
-}));
-
-export const payments = pgTable("payments", {
-  id: uuid().defaultRandom().primaryKey(),
-  paymentId: varchar({ length: 255 }).unique().notNull(),
-  staffId: varchar({ length: 255 })
-    .references(() => staffs.staffId, { onDelete: "cascade" })
-    .notNull(),
-  invoiceNumber: varchar({ length: 255 }).unique().notNull(),
-  paymentMethod: paymentTypesEnum().notNull(),
-  senderWalletNumber: varchar({ length: 255 }),
-  senderBankInfo: json().$type<BankInfo>(),
-  receiverWalletNumber: varchar({ length: 255 }),
-  receiverBankInfo: json().$type<BankInfo>(),
-  amount: numeric({ precision: 12, scale: 2, mode: "number" }).notNull(),
-  serviceId: varchar({ length: 255 }).references(() => services.serviceId, {
-    onDelete: "set null",
-  }),
-  status: paymentStatusEnum().default("pending").notNull(),
-  transactionId: varchar({ length: 255 }).unique(),
-  description: text(),
-  date: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-});
-
-export const paymentsRelations = relations(payments, ({ one }) => ({
-  staff: one(staffs, {
-    fields: [payments.staffId],
-    references: [staffs.staffId],
-  }),
-  service: one(services, {
-    fields: [payments.serviceId],
-    references: [services.serviceId],
-  }),
-}));
-
-export const staffComplaints = pgTable("staffComplaints", {
-  id: uuid().defaultRandom().primaryKey(),
-  complaintId: varchar({ length: 255 }).unique().notNull(),
-  customerId: varchar({ length: 255 })
-    .references(() => customers.customerId, { onDelete: "cascade" })
-    .notNull(),
-  staffId: varchar({ length: 255 })
-    .references(() => staffs.staffId, { onDelete: "cascade" })
-    .notNull(),
-  serviceId: varchar({ length: 255 }).references(() => services.serviceId, {
-    onDelete: "set null",
-  }),
-  subject: varchar({ length: 255 }).notNull(),
-  description: text().notNull(),
-  evidencePhotoKey: varchar({ length: 255 }),
-  status: reportStatusEnum().default("under_trial").notNull(),
-  adminNote: text(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-});
-
-export const staffComplaintsRelations = relations(
-  staffComplaints,
-  ({ one }) => ({
-    customer: one(customers, {
-      fields: [staffComplaints.customerId],
-      references: [customers.customerId],
-    }),
-    staff: one(staffs, {
-      fields: [staffComplaints.staffId],
-      references: [staffs.staffId],
-    }),
-    service: one(services, {
-      fields: [staffComplaints.serviceId],
-      references: [services.serviceId],
-    }),
-  }),
+export const userAgreements = pgTable(
+  "userAgreements",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    userId: varchar("userId", { length: 255 }).notNull(),
+    agreementId: uuid("agreementId")
+      .references(() => agreements.id, { onDelete: "cascade" })
+      .notNull(),
+    ipAddress: varchar("ipAddress", { length: 255 }).notNull(),
+    userAgent: text("userAgent").notNull(),
+    agreedAt: timestamp("agreedAt", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index("user_agreement_user_id_idx").on(table.userId)],
 );
 
-export const feedbacks = pgTable("feedbacks", {
-  id: uuid().defaultRandom().primaryKey(),
-  serviceId: varchar({ length: 255 })
-    .references(() => services.serviceId, { onDelete: "cascade" })
-    .unique()
-    .notNull(),
-  customerId: varchar({ length: 255 }).references(() => customers.customerId, {
-    onDelete: "cascade",
-  }),
-  feedbacks: json().$type<Feedback[]>(),
-  rating: doublePrecision(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-});
+export const subscribers = pgTable(
+  "subscribers",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    subscriptionId: varchar("subscriptionId", { length: 255 })
+      .unique()
+      .notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    phone: varchar("phone", { length: 255 }).notNull(),
+    streetAddress: text().notNull(),
+    district: varchar("district", { length: 255 }).notNull(),
+    policeStation: varchar("policeStation", { length: 255 }).notNull(),
+    postOffice: varchar("postOffice", { length: 255 }).notNull(),
+    subscriptionDuration: integer("subscriptionDuration").notNull(),
+    subscriptionType: subscriptionTypesEnum("subscriptionType").notNull(),
+    batteryType: varchar("batteryType", { length: 255 }).notNull(),
+    ipsBrand: varchar("ipsBrand", { length: 255 }),
+    ipsPowerRating: varchar("ipsPowerRating", { length: 255 }),
+    paymentType: paymentTypesEnum("paymentType").notNull(),
+    walletNumber: varchar("walletNumber", { length: 255 }),
+    transactionId: varchar("transactionId", { length: 255 }),
+    bankName: varchar("bankName", { length: 255 }),
+    accountHolderName: varchar("accountHolderName", { length: 255 }),
+    accountNumber: varchar("accountNumber", { length: 255 }),
+    branchName: varchar("branchName", { length: 255 }),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("subscriber_id_idx").on(table.subscriptionId),
+    index("subscriber_phone_idx").on(table.phone),
+  ],
+);
 
-export const contactMessages = pgTable("contactMessages", {
-  id: uuid().defaultRandom().primaryKey(),
-  messageId: varchar({ length: 255 }).unique().notNull(),
-  customerId: varchar({ length: 255 })
-    .references(() => customers.customerId, { onDelete: "cascade" })
-    .notNull(),
-  subject: varchar({ length: 255 }).notNull(),
-  message: text().notNull(),
-  isRead: boolean().default(false).notNull(),
-  adminReply: text(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-});
+export const notices = pgTable(
+  "notices",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    noticeId: varchar("noticeId", { length: 255 }).unique().notNull(),
+    title: varchar("title", { length: 255 }).notNull(),
+    content: text().notNull(),
+    priority: noticePriorityEnum("priority").default("normal").notNull(),
+    targetType: noticeTargetEnum("targetType").default("all").notNull(),
+    isDraft: boolean("isDraft").default(false).notNull(),
+    scheduledAt: timestamp("scheduledAt", { withTimezone: true }),
+    expiresAt: timestamp("expiresAt", { withTimezone: true }),
+    createdBy: varchar("createdBy", { length: 255 }),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("notice_id_idx").on(table.noticeId)],
+);
 
-export const adminNotifications = pgTable("adminNotifications", {
-  id: uuid().defaultRandom().primaryKey(),
-  type: varchar({ length: 50 }).notNull(), // 'complaint', 'service', etc.
-  message: text().notNull(),
-  link: varchar({ length: 255 }),
-  isRead: boolean().default(false).notNull(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-});
+export const noticeRecipients = pgTable(
+  "noticeRecipients",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    noticeId: varchar("noticeId", { length: 255 })
+      .references(() => notices.noticeId, { onDelete: "cascade" })
+      .notNull(),
+    staffId: varchar("staffId", { length: 255 })
+      .references(() => staffs.staffId, { onDelete: "cascade" })
+      .notNull(),
+    isRead: boolean("isRead").default(false).notNull(),
+    readAt: timestamp("readAt", { withTimezone: true }),
+    isAcknowledged: boolean("isAcknowledged").default(false).notNull(),
+    acknowledgedAt: timestamp("acknowledgedAt", { withTimezone: true }),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("notice_recipient_notice_id_idx").on(table.noticeId),
+    index("notice_recipient_staff_id_idx").on(table.staffId),
+  ],
+);
 
-export const staffNotifications = pgTable("staffNotifications", {
-  id: uuid().defaultRandom().primaryKey(),
-  staffId: varchar({ length: 255 })
-    .references(() => staffs.staffId, { onDelete: "cascade" })
-    .notNull(),
-  type: varchar({ length: 50 }).notNull(),
-  message: text().notNull(),
-  link: varchar({ length: 255 }),
-  isRead: boolean().default(false).notNull(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-});
-
-export const customerNotifications = pgTable("customerNotifications", {
-  id: uuid().defaultRandom().primaryKey(),
-  customerId: varchar({ length: 255 })
-    .references(() => customers.customerId, { onDelete: "cascade" })
-    .notNull(),
-  type: varchar({ length: 50 }).notNull(),
-  message: text().notNull(),
-  link: varchar({ length: 255 }),
-  isRead: boolean().default(false).notNull(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-});
+export const staffNotifications = pgTable(
+  "staffNotifications",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    staffId: varchar("staffId", { length: 255 })
+      .references(() => staffs.staffId, { onDelete: "cascade" })
+      .notNull(),
+    type: varchar("type", { length: 100 }).notNull(),
+    message: text().notNull(),
+    link: text("link"),
+    isRead: boolean("isRead").default(false).notNull(),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index("staff_notification_staff_id_idx").on(table.staffId)],
+);
 
 export const tasks = pgTable(
   "tasks",
   {
     id: uuid().defaultRandom().primaryKey(),
-    taskId: varchar({ length: 255 }).unique().notNull(),
-    staffId: varchar({ length: 255 })
+    taskId: varchar("taskId", { length: 255 }).unique().notNull(),
+    staffId: varchar("staffId", { length: 255 })
       .references(() => staffs.staffId, { onDelete: "cascade" })
       .notNull(),
-    title: varchar({ length: 255 }).notNull(),
+    title: varchar("title", { length: 255 }).notNull(),
     description: text().notNull(),
-    priority: noticePriorityEnum().default("normal").notNull(),
-    dueDate: timestamp({ withTimezone: true }),
-    status: taskStatusEnum().default("pending").notNull(),
-    files: json().$type<string[]>(),
-    comments: json().$type<any[]>(),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp({ withTimezone: true })
+    priority: noticePriorityEnum("priority").default("normal").notNull(),
+    dueDate: timestamp("dueDate", { withTimezone: true }),
+    status: taskStatusEnum("status").default("pending").notNull(),
+    files: json("files").$type<string[]>(),
+    comments: json("comments").$type<any[]>(),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true })
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
@@ -730,15 +525,15 @@ export const smsLogs = pgTable(
   "smsLogs",
   {
     id: uuid().defaultRandom().primaryKey(),
-    staffId: varchar({ length: 255 }).references(() => staffs.staffId, {
+    staffId: varchar("staffId", { length: 255 }).references(() => staffs.staffId, {
       onDelete: "set null",
     }),
-    phoneNumber: varchar({ length: 255 }).notNull(),
-    message: text().notNull(),
-    status: smsLogStatusEnum().notNull(),
-    error: text(),
-    carrier: varchar({ length: 255 }),
-    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+    phoneNumber: varchar("phoneNumber", { length: 255 }).notNull(),
+    message: text("message").notNull(),
+    status: smsLogStatusEnum("status").notNull(),
+    error: text("error"),
+    carrier: varchar("carrier", { length: 255 }),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
     index("sms_log_staff_id_idx").on(table.staffId),
@@ -767,107 +562,97 @@ export const staffNotificationsRelations = relations(
       fields: [staffNotifications.staffId],
       references: [staffs.staffId],
     }),
-  })
-);
-
-export const customerNotificationsRelations = relations(
-  customerNotifications,
-  ({ one }) => ({
-    customer: one(customers, {
-      fields: [customerNotifications.customerId],
-      references: [customers.customerId],
-    }),
-  })
-);
-export const contactMessagesRelations = relations(
-  contactMessages,
-  ({ one }) => ({
-    customer: one(customers, {
-      fields: [contactMessages.customerId],
-      references: [customers.customerId],
-    }),
   }),
 );
-
-export const feedbacksRelations = relations(feedbacks, ({ one }) => ({
-  service: one(services, {
-    fields: [feedbacks.serviceId],
-    references: [services.serviceId],
-  }),
-  customer: one(customers, {
-    fields: [feedbacks.customerId],
-    references: [customers.customerId],
-  }),
-}));
-
-export const notices = pgTable("notices", {
-  id: uuid().defaultRandom().primaryKey(),
-  noticeId: varchar({ length: 255 }).unique().notNull(),
-  title: varchar({ length: 255 }).notNull(),
-  content: text().notNull(), // Rich-text
-  priority: noticePriorityEnum().default("normal").notNull(),
-  targetType: noticeTargetEnum().default("all").notNull(),
-  isDraft: boolean().default(false).notNull(),
-  scheduledAt: timestamp({ withTimezone: true }),
-  expiresAt: timestamp({ withTimezone: true }),
-  createdBy: uuid().references(() => admins.id, { onDelete: "set null" }),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-});
-
-export const noticeRecipients = pgTable("noticeRecipients", {
-  id: uuid().defaultRandom().primaryKey(),
-  noticeId: uuid()
-    .references(() => notices.id, { onDelete: "cascade" })
-    .notNull(),
-  staffId: varchar({ length: 255 })
-    .references(() => staffs.staffId, { onDelete: "cascade" }),
-  customerId: varchar({ length: 255 })
-    .references(() => customers.customerId, { onDelete: "cascade" }),
-  isRead: boolean().default(false).notNull(),
-  readAt: timestamp({ withTimezone: true }),
-  isAcknowledged: boolean().default(false).notNull(),
-  acknowledgedAt: timestamp({ withTimezone: true }),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-});
-
-export const noticesRelations = relations(notices, ({ many, one }) => ({
-  recipients: many(noticeRecipients),
-  creator: one(admins, {
-    fields: [notices.createdBy],
-    references: [admins.id],
-  }),
-}));
 
 export const noticeRecipientsRelations = relations(
   noticeRecipients,
   ({ one }) => ({
     notice: one(notices, {
       fields: [noticeRecipients.noticeId],
-      references: [notices.id],
+      references: [notices.noticeId],
     }),
     staff: one(staffs, {
       fields: [noticeRecipients.staffId],
       references: [staffs.staffId],
     }),
-    customer: one(customers, {
-      fields: [noticeRecipients.customerId],
-      references: [customers.customerId],
-    }),
   }),
 );
 
-export const authTokens = pgTable("authTokens", {
-  id: uuid().defaultRandom().primaryKey(),
-  token: text().unique().notNull(),
-  payload: json().$type<any>(),
-  expiresAt: timestamp({ withTimezone: true }).notNull(),
-  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp({ withTimezone: true })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-});
+export const noticesRelations = relations(notices, ({ many }) => ({
+  recipients: many(noticeRecipients),
+}));
+
+export const customersRelations = relations(customers, ({ many }) => ({
+  invoices: many(invoices),
+  services: many(services),
+}));
+
+export const invoicesRelations = relations(invoices, ({ one, many }) => ({
+  customer: one(customers, {
+    fields: [invoices.customerId],
+    references: [customers.customerId],
+  }),
+  products: many(products),
+}));
+
+export const productsRelations = relations(products, ({ one }) => ({
+  invoice: one(invoices, {
+    fields: [products.invoiceId],
+    references: [invoices.invoiceNumber],
+  }),
+}));
+
+export const staffsRelations = relations(staffs, ({ many, one }) => ({
+  services: many(services),
+  payments: many(payments),
+  agreements: many(userAgreements),
+  notifications: many(staffNotifications),
+  tasks: many(tasks),
+  smsLogs: many(smsLogs),
+  application: one(applications, {
+    fields: [staffs.id],
+    references: [applications.applicantId],
+  }),
+}));
+
+export const servicesRelations = relations(services, ({ one, many }) => ({
+  staff: one(staffs, {
+    fields: [services.staffId],
+    references: [staffs.staffId],
+  }),
+  customer: one(customers, {
+    fields: [services.customerId],
+    references: [customers.customerId],
+  }),
+  payments: many(payments),
+}));
+
+export const paymentsRelations = relations(payments, ({ one }) => ({
+  staff: one(staffs, {
+    fields: [payments.staffId],
+    references: [staffs.staffId],
+  }),
+  service: one(services, {
+    fields: [payments.serviceId],
+    references: [services.serviceId],
+  }),
+}));
+
+export const applicationsRelations = relations(applications, ({ one }) => ({
+  staff: one(staffs, {
+    fields: [applications.applicantId],
+    references: [staffs.id],
+  }),
+}));
+
+export const userAgreementsRelations = relations(userAgreements, ({ one }) => ({
+  agreement: one(agreements, {
+    fields: [userAgreements.agreementId],
+    references: [agreements.id],
+  }),
+  staff: one(staffs, {
+    fields: [userAgreements.userId],
+    references: [staffs.staffId],
+  }),
+}));

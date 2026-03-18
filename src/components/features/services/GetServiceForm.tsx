@@ -160,7 +160,7 @@ export default function GetServiceForm({
                 )}
 
                 <div className="flex items-start gap-3 mb-2">
-                  <span className="bg-brand text-white rounded-full flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-xs sm:text-sm font-bold z-10 ">
+                  <span className="bg-brand text-white rounded-full flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-sm sm:text-sm font-bold z-10 ">
                     {index + 1}
                   </span>
 

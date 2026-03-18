@@ -1,15 +1,13 @@
-'use client'
+"use client";
 
-import { formatDate } from "@/utils"
+import { formatDate } from "@/utils";
 
 interface ClientTimestampProps {
-    timestamp: string | Date
+  timestamp: string | Date;
 }
 
 export default function Timestamp({ timestamp }: ClientTimestampProps) {
-    return (
-        <span className="text-xs opacity-60">
-            {formatDate(timestamp, true)}
-        </span>
-    )
+  return (
+    <span className="text-sm opacity-60">{formatDate(timestamp, true)}</span>
+  );
 }

@@ -26,7 +26,7 @@ export default function CustomerDashboardActions({
         {assignedStaff && (
           <button
             onClick={() => setShowReportModal(true)}
-            className="text-red-500 hover:text-red-700 text-xs font-semibold underline underline-offset-2 text-left"
+            className="text-red-500 hover:text-red-700 text-sm font-semibold underline underline-offset-2 text-left"
           >
             Report this staff
           </button>

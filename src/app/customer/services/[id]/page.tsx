@@ -1,5 +1,5 @@
-import { getServiceById } from "@/actions";
-import { verifyCustomerSession } from "@/actions/customerActions";
+import { getServiceById } from "@/actions";   // this is srvice data
+import { verifyCustomerSession } from "@/actions/customerActions";  
 import { formatDate } from "@/utils";
 
 import {
@@ -13,6 +13,7 @@ import {
   CreditCard,
   Wrench,
   Clock,
+  CardSim,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -26,12 +27,36 @@ export default async function ServiceDetailsPage({
   const { id } = await params;
 
   const session = await verifyCustomerSession();
-
+// const session: {
+// 
+// this is sessin data from api 
   if (!session.isAuth || !session.customer) {
     redirect("/customer/login");
   }
 
   const response = await getServiceById(id);
+// const session: {
+//     isAuth: boolean;
+//     userId?: undefined;
+//     username?: undefined;
+//     role?: undefined;
+//     customer?: undefined;
+// } | {
+//     isAuth: boolean;
+//     userId: {};
+//     username: unknown;
+//     role: string;
+//     customer: {
+//         id: string;
+//         name: string;
+//         customerId: string;
+//         phone: string;
+//         address: string;
+//         vipCardNumber: string | null;
+//         vipStatus: "pending" | "processing" | "approved" | "rejected" | null;
+//     };
+// }
+
 
   if (!response.success) {
     if (response.message === "Service not found") {
@@ -52,7 +77,17 @@ export default async function ServiceDetailsPage({
   if (!service) {
     notFound();
   }
+const latestStatus =
+  service.statusHistory[service.statusHistory.length - 1]?.status;
 
+  const createdDate = new Date(service.createdAt);
+
+// Add 24 months
+const expireDate = new Date(createdDate);
+expireDate.setMonth(expireDate.getMonth() + 24);
+
+// Check status
+const isExpired = new Date() > expireDate;
   return (
     <div className="min-h-screen bg-gray-50 pb-10">
 
@@ -68,7 +103,7 @@ export default async function ServiceDetailsPage({
             <ArrowLeft size={20} />
           </Link>
 
-          <h1 className="font-bold text-lg md:text-xl">
+          <h1 className="font-bold text-md md:text-xl">
             Service Details
           </h1>
         </div>
@@ -86,29 +121,35 @@ export default async function ServiceDetailsPage({
             </p>
           </div>
 
+
+{/* dynamic this from api section */}
           <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
 
-            <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">
-              Completed
+            {/* <span className="bg-green-100 text-green-700 text-md px-2 py-1 rounded">
+              {response.data.isActive ? 'Valid' : "expired"} 
+            </span> */}
+            <span className="bg-green-100 text-green-700 text-md px-2 py-1 rounded">
+              {latestStatus} 
             </span>
 
-            <div className="flex items-center gap-1 text-xs">
+
+            <div className="flex items-center gap-1 text-md">
               <CreditCard size={14} className="text-green-600" />
-              Cash on Delivery (COD)
+              Payment
             </div>
 
-            <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">
+            <span className="bg-green-100 text-green-700 text-md px-2 py-1 rounded">
               Paid
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs mt-2">
+          <div className="flex items-center gap-2 text-md mt-2">
             <Calendar size={14} />
             Service Date : {formatDate(service.createdAt!)}
           </div>
         </div>
 
-        {/* WARRANTY */}
+        {/* dynamic this section from api WARRANTY */}
         <div className="bg-white border border-gray-300 rounded-xl p-4 text-sm">
 
           <div className="flex justify-between items-center">
@@ -117,9 +158,17 @@ export default async function ServiceDetailsPage({
               Warranty
             </p>
 
-            <span className="bg-red-100 text-red-600 text-xs px-2 py-1 rounded">
-              Expired
-            </span>
+<span
+  className={`text-md px-2 py-1 rounded ${
+    isExpired
+      ? "bg-red-100 text-red-600"
+      : "bg-green-100 text-green-700"
+  }`}
+>
+  {isExpired
+    ? "Expired"
+    : `Valid `}
+</span>
           </div>
 
         </div>
@@ -127,13 +176,23 @@ export default async function ServiceDetailsPage({
         {/* CUSTOMER INFO */}
         <div className="bg-white border border-gray-300 rounded-xl p-4 text-sm">
 
-          <p className="font-semibold mb-3">Customer Information</p>
+          <p className="font-semibold mb-3">Customer Information 
+            
+            <p>
+              {/* here will show the status like the photo */}
+              {/* warrenty expired or not from api */}
+            </p>
+          </p>
 
-          <div className="space-y-2 text-gray-700 text-xs md:text-sm">
+          <div className="space-y-2 text-gray-700 text-md md:text-sm">
 
             <p className="flex items-center gap-2">
               <User size={15} className="text-blue-500" />
               {service.customerName}
+            </p>
+            <p className="flex items-center gap-2">
+              <CardSim size={15} className="text-blue-500" />
+              {"Customer Id: " + service.customerId}
             </p>
 
             <p className="flex items-center gap-2">
@@ -150,6 +209,10 @@ export default async function ServiceDetailsPage({
               <MapPin size={15} className="text-red-500" />
               {service.customerAddress}
             </p>
+            <p className="flex items-center gap-2  justify-between">
+              
+              <p>{ 'product Model ' + service.productModel}</p> <p className="text-red-400">Expire in {expireDate.toLocaleDateString()}</p>
+            </p>
 
           </div>
         </div>
@@ -162,7 +225,7 @@ export default async function ServiceDetailsPage({
               Technician Information
             </p>
 
-            <div className="space-y-2 text-gray-700 text-xs md:text-sm">
+            <div className="space-y-2 text-gray-700 text-md md:text-sm">
 
               <p className="flex items-center gap-2">
                 <User size={15} className="text-indigo-500" />
@@ -170,15 +233,22 @@ export default async function ServiceDetailsPage({
               </p>
 
               <p className="flex items-center gap-2">
+                <CardSim size={15} className="text-green-500" />
+                {"Technician Id " + service.staffId}
+              </p>
+              <p className="flex items-center gap-2">
                 <Phone size={15} className="text-green-500" />
                 {service.appointedStaff.phone}
               </p>
 
               <p className="flex items-center gap-2">
-                <Wrench size={15} className="text-orange-500" />
+                <User size={15} className="text-orange-500" />
                 {service.staffRole}
               </p>
-
+            <p className="flex items-center gap-2">
+              <MapPin size={15} className="text-red-500" />
+              { "Service Area "+service.customerAddress}
+            </p>
             </div>
           </div>
         )}
@@ -190,7 +260,7 @@ export default async function ServiceDetailsPage({
             Current Servicing Center
           </p>
 
-          <div className="space-y-2 text-xs md:text-sm text-gray-700">
+          <div className="space-y-2 text-md md:text-sm text-gray-700">
 
             <p className="flex items-center gap-2">
               <MapPin size={15} className="text-red-500" />
@@ -210,17 +280,19 @@ export default async function ServiceDetailsPage({
 
           <div className="flex justify-between items-center mb-3">
 
-            <p className="font-semibold text-red-500">
-              ⚠ Ovijog
+            <p className="font-semibold ">
+              <span className="text-red-500 text-md">⚠</span> Ovijog
             </p>
 
-            <button className="text-xs bg-black text-white px-3 py-1 rounded">
+
+{/* new complain left side  will like the photo corner . customer info status corner also  */}
+            <Link href={'/customer/complain'} className="text-md bg-black text-white px-3 py-1 rounded">
               New Complain
-            </button>
+            </Link>
 
           </div>
 
-          <div className="text-xs md:text-sm text-gray-700 space-y-2">
+          <div className="text-md md:text-sm text-gray-700 space-y-2">
 
             <p>
               Complaining ID#{" "}

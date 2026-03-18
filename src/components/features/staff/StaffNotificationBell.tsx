@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import { Bell, Check, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { getStaffNotifications, markStaffNotificationAsRead } from "@/actions/staffActions";
+import {
+  getStaffNotifications,
+  markStaffNotificationAsRead,
+} from "@/actions/staffActions";
 import { formatDate } from "@/utils";
 import clsx from "clsx";
 
@@ -30,7 +33,7 @@ export default function StaffNotificationBell() {
     const res = await markStaffNotificationAsRead(id);
     if (res.success) {
       setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
       );
       setUnreadCount((prev) => Math.max(0, prev - 1));
     }
@@ -69,7 +72,9 @@ export default function StaffNotificationBell() {
                   <div className="p-3 bg-gray-50 rounded-full">
                     <Bell className="text-gray-300" size={32} />
                   </div>
-                  <p className="text-sm text-gray-500 font-medium">No notifications yet</p>
+                  <p className="text-sm text-gray-500 font-medium">
+                    No notifications yet
+                  </p>
                 </div>
               ) : (
                 notifications.map((n) => (
@@ -77,7 +82,7 @@ export default function StaffNotificationBell() {
                     key={n.id}
                     className={clsx(
                       "p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors last:border-0 relative",
-                      !n.isRead && "bg-brand/5"
+                      !n.isRead && "bg-brand/5",
                     )}
                   >
                     {!n.isRead && (
@@ -85,7 +90,7 @@ export default function StaffNotificationBell() {
                     )}
                     <div className="flex justify-between items-start gap-3">
                       <div className="flex-1">
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter mb-1">
+                        <p className="text-sm font-bold text-gray-400 uppercase tracking-tighter mb-1">
                           {n.type} • {formatDate(n.createdAt)}
                         </p>
                         <p className="text-sm text-gray-800 leading-snug font-medium mb-2">
@@ -118,13 +123,13 @@ export default function StaffNotificationBell() {
                 ))
               )}
             </div>
-            
-            <Link 
-                href="/staff/notifications" 
-                onClick={() => setIsOpen(false)}
-                className="block p-3 text-center text-xs font-bold text-gray-500 bg-gray-50 hover:bg-gray-100 transition-colors border-t border-gray-100"
+
+            <Link
+              href="/staff/notifications"
+              onClick={() => setIsOpen(false)}
+              className="block p-3 text-center text-sm font-bold text-gray-500 bg-gray-50 hover:bg-gray-100 transition-colors border-t border-gray-100"
             >
-                View All
+              View All
             </Link>
           </div>
         </>

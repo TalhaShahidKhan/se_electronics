@@ -52,6 +52,21 @@ export type Product = {
   warrantyDurationMonths: number;
 };
 
+export type Application = {
+  id: string;
+  applicationId: string;
+  applicantId: string;
+  type: ApplicationTypes;
+  status: Statuses;
+  statusHistory: any;
+  createdAt: Date;
+  updatedAt: Date;
+  applicantName: string;
+  applicantPhone: string;
+  applicantDistrict: string;
+  rejectReason: string | null;
+};
+
 export type FormState =
   | {
       success: boolean;

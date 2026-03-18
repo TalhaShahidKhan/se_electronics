@@ -158,20 +158,15 @@ export const ServiceDataSchema = z.object({
   powerRating: z.string().optional().nullable(),
   reportedIssue: z.string().optional().nullable(),
 
-  productFrontPhoto: z.file().optional(),
-  productBackPhoto: z.file().optional(),
-  warrantyCardPhoto: z.file().optional(),
-  // productFrontPhoto: z.file().min(1).mime(['image/jpeg', 'image/png', 'image/webp']),
-  // productBackPhoto: z.file().min(1).mime(['image/jpeg', 'image/png', 'image/webp']),
-  // warrantyCardPhoto: z.file().min(1).mime(['image/jpeg', 'image/png', 'image/webp']),
+  productFrontPhoto: z.any().optional(),
+  productBackPhoto: z.any().optional(),
+  warrantyCardPhoto: z.any().optional(),
 
   memoNumber: z.string().optional().nullable(),
   createdFrom: z.enum(createdFromTypesEnum.enumValues).optional(),
 });
 
 export const UpdateServiceDataSchema = ServiceDataSchema.extend({
-  // statusId: z.uuid().optional(),
-  // serviceId: z.string(),
   serviceStatus: z.enum([
     ...serviceStatusEnum.enumValues,
     "custom",
@@ -181,9 +176,9 @@ export const UpdateServiceDataSchema = ServiceDataSchema.extend({
   customLabel: z.string().optional(),
   customNote: z.string().optional(),
   cancelReason: z.string().optional(),
-  productFrontPhoto: z.file().optional(),
-  productBackPhoto: z.file().optional(),
-  warrantyCardPhoto: z.file().optional(),
+  productFrontPhoto: z.any().optional(),
+  productBackPhoto: z.any().optional(),
+  warrantyCardPhoto: z.any().optional(),
 }).transform((data) => {
   const { warrantyCardPhoto, productFrontPhoto, productBackPhoto } = data;
   if (warrantyCardPhoto && warrantyCardPhoto.size === 0) {

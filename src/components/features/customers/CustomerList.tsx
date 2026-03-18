@@ -52,7 +52,7 @@ export default async function CustomerList(params: SearchParams) {
               <CopyButton content={customer.invoiceNumber} />
             </div>
           ) : (
-            <span className="text-xs sm:text-sm text-gray-400 italic">No Invoice</span>
+            <span className="text-sm sm:text-sm text-gray-400 italic">No Invoice</span>
           )}
         </div>
       </td>
@@ -75,7 +75,7 @@ export default async function CustomerList(params: SearchParams) {
       >
         ৳{customer.invoice?.total.toLocaleString() || 0}
       </td>
-      <td className="py-4 px-4 whitespace-nowrap text-gray-500 text-xs sm:text-sm font-bold">
+      <td className="py-4 px-4 whitespace-nowrap text-gray-500 text-sm sm:text-sm font-bold">
         {customer.invoice?.date ? formatDate(customer.invoice.date) : "N/A"}
       </td>
       <td className="py-4 px-4 whitespace-nowrap sticky right-0 bg-white group-hover:bg-gray-50 transition-colors shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">

@@ -32,7 +32,7 @@ export function WalletSettingsForm({
       <input type="hidden" name="paymentPreference" value="bkash" />
 
       <div>
-        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+        <label className="block text-sm font-bold text-gray-500 uppercase tracking-widest mb-1.5">
           bKash Number
         </label>
         <input
@@ -52,7 +52,7 @@ export function WalletSettingsForm({
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-brand text-white font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
+        className="w-full bg-brand text-white font-bold py-2.5 rounded-xl text-sm uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
       >
         {isPending ? "Saving..." : "Save bKash number"}
       </button>

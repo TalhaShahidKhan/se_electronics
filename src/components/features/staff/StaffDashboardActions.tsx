@@ -18,7 +18,7 @@ export default function StaffDashboardActions({
     <>
       <button
         onClick={() => setShowPaymentModal(true)}
-        className="text-green-600 hover:text-green-800 text-xs font-bold underline underline-offset-2"
+        className="text-green-600 hover:text-green-800 text-sm font-bold underline underline-offset-2"
       >
         Request Payment
       </button>
