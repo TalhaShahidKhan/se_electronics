@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 import Banner from "@/components/ui/Banner";
-import { StaffLayout } from "@/components/layout/StaffLayout";
+import { StaffLayout, MobilePageHeader } from "@/components/layout";
 import { staffLogout } from "@/actions";
 
 interface StaffDashboardClientProps {
@@ -71,6 +71,11 @@ export default function StaffDashboardClient({
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="Dashboard" 
+        Icon={User}
+        showBackButton={false}
+      />
       <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800 pb-24">
         {/* Banner */}
         <div className="w-full overflow-hidden shadow-md">

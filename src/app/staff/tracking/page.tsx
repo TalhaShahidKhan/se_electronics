@@ -4,8 +4,9 @@ import { getMyServices, getStaffProfileStats } from "@/actions/staffActions";
 import { StaffLayout } from "@/components/layout/StaffLayout";
 import clsx from "clsx";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, BarChart3 } from "lucide-react";
 import { TrendingUp, Clock, CheckCircle, XCircle } from "lucide-react";
+import { MobilePageHeader } from "@/components/layout";
 
 export default async function StaffTrackingPage() {
   const session = await verifyStaffSession();
@@ -48,15 +49,11 @@ export default async function StaffTrackingPage() {
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
       <div className="w-full max-w-7xl mx-auto">
-        {/* Mobile Header */}
-        <div className="bg-[#0A1A3A] text-white px-4 py-3 flex items-center gap-3 ">
-          {/* Back Button */}
-          <Link href="/staff/profile">
-            <ArrowLeft size={18} />
-          </Link>
-
-          <h1 className="font-semibold">Tracking & History</h1>
-        </div>
+        <MobilePageHeader 
+          title="Tracking & History" 
+          backHref="/staff/profile" 
+          Icon={BarChart3}
+        />
 
         <div className="p-4 md:p-6 space-y-6">
           {/* Stats */}

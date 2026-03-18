@@ -1,10 +1,9 @@
 import { verifyStaffSession } from "@/actions";
 import { getStaffProfileStats } from "@/actions/staffActions";
-import { StaffLayout, MobilePageHeader } from "@/components/layout";
-import { Bell } from "lucide-react";
-import StaffNotificationList from "@/components/features/notifications/StaffNotificationList";
+import { StaffLayout } from "@/components/layout/StaffLayout";
+import StaffTaskList from "@/components/features/tasks/StaffTaskList";
 
-export default async function StaffNotificationsPage() {
+export default async function StaffTasksPage() {
   const session = await verifyStaffSession();
   if (!session.isAuth) return null;
 
@@ -14,14 +13,8 @@ export default async function StaffNotificationsPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <MobilePageHeader 
-        title="Notifications" 
-        backHref="/staff/profile" 
-        Icon={Bell}
-      />
-      
-      <div className="p-4 lg:p-6">
-        <StaffNotificationList />
+      <div className="p-4 sm:p-6 lg:p-8">
+        <StaffTaskList />
       </div>
     </StaffLayout>
   );

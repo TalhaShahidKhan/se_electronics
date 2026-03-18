@@ -24,6 +24,7 @@ import {
   PhoneCall,
 } from "lucide-react";
 import Link from "next/link";
+import { MobilePageHeader } from "@/components/layout";
 import { notFound } from "next/navigation";
 
 export default async function StaffInvoiceDetailsPage({
@@ -55,6 +56,12 @@ export default async function StaffInvoiceDetailsPage({
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="Invoice Details" 
+        backHref="/staff/payment" 
+        Icon={FileText}
+      />
+      
       {/* ─────────────── DESKTOP VIEW ─────────────── */}
       <div className="hidden lg:block">
         <div className="p-4 sm:p-6 max-w-4xl mx-auto space-y-8">
@@ -399,16 +406,7 @@ export default async function StaffInvoiceDetailsPage({
       </div>
 
       {/* ─────────────── MOBILE VIEW (Steadfast-style) ─────────────── */}
-      <div className="lg:hidden bg-gray-100 min-h-screen pb-24">
-        {/* Top Bar */}
-        <div className="bg-brand text-white px-4 py-3 flex items-center gap-3 shadow-md">
-          <Link href="/staff/payment">
-            <ChevronLeft size={22} />
-          </Link>
-          <h2 className="font-bold tracking-tight">Payment Details</h2>
-        </div>
-
-        <div className="p-3 space-y-3">
+      <div className="lg:hidden bg-gray-100 min-h-screen pb-24 space-y-3 p-3">
           {/* ── Invoice Header Block ── */}
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <p className="text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
@@ -762,7 +760,6 @@ export default async function StaffInvoiceDetailsPage({
             )}
           </div>
         </div>
-      </div>
-    </StaffLayout>
-  );
-}
+      </StaffLayout>
+    );
+  }

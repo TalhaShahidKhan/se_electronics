@@ -1,7 +1,7 @@
 import { verifyStaffSession } from "@/actions";
 import { getStaffFeedbacks } from "@/actions/feedbackActions";
 import { getStaffProfileStats } from "@/actions/staffActions";
-import { StaffLayout } from "@/components/layout/StaffLayout";
+import { StaffLayout, MobilePageHeader } from "@/components/layout";
 import { MessageSquare, Star } from "lucide-react";
 
 export default async function StaffFeedbacksPage() {
@@ -19,9 +19,15 @@ export default async function StaffFeedbacksPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="Feedbacks" 
+        backHref="/staff/profile" 
+        Icon={Star}
+      />
+      
       <div className="p-4 space-y-6">
-        {/* Page Title */}
-        <div className="flex items-center gap-3 mb-2">
+        {/* Page Title (Desktop Only) */}
+        <div className="hidden md:flex items-center gap-3 mb-2">
           <div className="p-2 bg-yellow-100/50 rounded-xl text-yellow-600">
             <Star size={20} fill="currentColor" />
           </div>

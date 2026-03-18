@@ -4,6 +4,8 @@ import FormalComplainForm from "./FormalComplainForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getCustomerById } from "@/actions";
+import { MobilePageHeader } from "@/components/layout";
+import { PlusCircle } from "lucide-react";
 
 export default async function NewComplaintPage() {
     const session = await verifyCustomerSession();
@@ -25,18 +27,26 @@ export default async function NewComplaintPage() {
     const staffs = staffRes.success ? (staffRes.data || []) : [];
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 flex justify-center">
-            <div className="max-w-4xl w-full">
-                <div className="mb-6 flex items-center gap-4">
-                    <Link href="/customer/complain" className="p-3 bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 hover:shadow-md transition-all active:scale-95">
-                        <ArrowLeft size={24} className="text-gray-600" />
-                    </Link>
-                    <h1 className="text-2xl font-black text-gray-900 border-b-2 border-brand/20 pb-1">
-                        File New Complaint
-                    </h1>
-                </div>
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+            <MobilePageHeader 
+                title="New Complaint" 
+                backHref="/customer/complain" 
+                Icon={PlusCircle}
+            />
+
+            <div className="flex-1 py-12 px-4 flex justify-center w-full">
+                <div className="max-w-4xl w-full">
+                    <div className="hidden md:flex mb-6 items-center gap-4">
+                        <Link href="/customer/complain" className="p-3 bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 hover:shadow-md transition-all active:scale-95">
+                            <ArrowLeft size={24} className="text-gray-600" />
+                        </Link>
+                        <h1 className="text-2xl font-black text-gray-900 border-b-2 border-brand/20 pb-1">
+                            File New Complaint
+                        </h1>
+                    </div>
 
                 <FormalComplainForm customer={customerData} customerId={session.customer.customerId} staffs={staffs} />
+                </div>
             </div>
         </div>
     );

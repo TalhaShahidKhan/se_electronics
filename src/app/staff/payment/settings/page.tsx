@@ -1,7 +1,7 @@
 import { verifyStaffSession } from "@/actions";
 import { getStaffById, getStaffProfileStats } from "@/actions/staffActions";
 import { StaffPaymentSettingsForm } from "@/components/features/staff/StaffPaymentSettingsForm";
-import { StaffLayout } from "@/components/layout/StaffLayout";
+import { StaffLayout, MobilePageHeader } from "@/components/layout";
 import { Settings, Wallet } from "lucide-react";
 
 export default async function StaffPaymentSettingsPage() {
@@ -27,9 +27,15 @@ export default async function StaffPaymentSettingsPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="Payout Settings" 
+        backHref="/staff/payment" 
+        Icon={Settings}
+      />
+
       <div className="p-4 space-y-6">
-        {/* Page Title */}
-        <div className="flex items-center gap-3 mb-2">
+        {/* Page Title (Desktop Only) */}
+        <div className="hidden md:flex items-center gap-3 mb-2">
           <div className="p-2 bg-brand/10 rounded-xl text-brand">
             <Settings size={20} />
           </div>

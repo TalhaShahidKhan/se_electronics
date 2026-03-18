@@ -386,17 +386,16 @@ export const getStaffMediaUrls = async (keys: string[]) => {
   }
 };
 
-export const createStaff = async (prevState: any, formData: FormData) => {
+export const createStaff = async (_prevState: any, formData: FormData) => {
   try {
     const formDataObject = Object.fromEntries(formData);
     const validatedStaffData = StaffDataSchema.safeParse(formDataObject);
 
     if (!validatedStaffData.success) {
-      console.error(z.treeifyError(validatedStaffData.error).properties);
+      console.error("Validation failed:", validatedStaffData.error.flatten());
       return {
         success: false,
         message: "অনুগ্রহ করে সকল প্রয়োজনীয় তথ্য গুলো পূরণ করুন।",
-        // payload: formDataObject
       };
     }
 
@@ -407,7 +406,8 @@ export const createStaff = async (prevState: any, formData: FormData) => {
       agreed,
       token,
       sendConfirmationSMS,
-      ...staffData
+      bankInfo,
+      ...restStaffData
     } = validatedStaffData.data;
 
     const originSource = token ? "public_form" : "dashboard";
@@ -415,6 +415,17 @@ export const createStaff = async (prevState: any, formData: FormData) => {
     if (originSource === "dashboard") {
       const session = await verifySession(false, "admin");
       if (!session) return { success: false, message: "Unauthorized" };
+    }
+
+    // Explicit file validation
+    if (!(photo instanceof File) || photo.size === 0) {
+      return { success: false, message: "প্রোফাইল ছবি আবশ্যক" };
+    }
+    if (!(nidFrontPhoto instanceof File) || nidFrontPhoto.size === 0) {
+      return { success: false, message: "এনআইডি সামনের ছবি আবশ্যক" };
+    }
+    if (!(nidBackPhoto instanceof File) || nidBackPhoto.size === 0) {
+      return { success: false, message: "এনআইডি পিছনের ছবি আবশ্যক" };
     }
 
     if (token) {
@@ -429,15 +440,16 @@ export const createStaff = async (prevState: any, formData: FormData) => {
       }
     }
 
-    let applicationId;
     const staffId = generateRandomId();
-
     const photoKey = `media/staff/${staffId}/profile_${uuidv4()}.webp`;
     const nidFrontPhotoKey = `media/staff/${staffId}/nid-front_${uuidv4()}.webp`;
     const nidBackPhotoKey = `media/staff/${staffId}/nid-back_${uuidv4()}.webp`;
 
+    let applicationId: string | undefined;
+
     await db.transaction(async (tx) => {
-      let ipAddress, userAgent;
+      let ipAddress: string | null = null;
+      let userAgent: string | null = null;
 
       if (originSource === "public_form") {
         const headersList = await headers();
@@ -450,21 +462,21 @@ export const createStaff = async (prevState: any, formData: FormData) => {
       }
 
       await tx.insert(staffs).values({
-        ...staffData,
-        staffId: staffId,
+        ...restStaffData,
+        staffId,
         photoKey,
         nidFrontPhotoKey,
         nidBackPhotoKey,
-        docs: validatedStaffData.data.docs
-          ? JSON.stringify(validatedStaffData.data.docs)
-          : "[]",
-        role: staffData.hasInstallationExperience
+        bankInfo: bankInfo || null,
+        walletNumber: restStaffData.walletNumber || null,
+        docs: restStaffData.docs ? JSON.stringify(restStaffData.docs) : "[]",
+        role: restStaffData.hasInstallationExperience
           ? "electrician"
           : "technician",
-        isVerified: originSource === "public_form" ? false : true,
+        isVerified: originSource !== "public_form",
         createdFrom: originSource,
-        ipAddress: ipAddress,
-        userAgent: userAgent,
+        ipAddress,
+        userAgent,
       } as typeof staffs.$inferInsert);
 
       if (originSource === "public_form") {
@@ -476,19 +488,19 @@ export const createStaff = async (prevState: any, formData: FormData) => {
           applicationId = res.data;
         }
 
-        // fetching latest agreement
         const agreementId = await tx.query.agreements.findFirst({
           where: eq(agreements.isActive, true),
-          columns: {
-            id: true,
-          },
+          columns: { id: true },
         });
-        await tx.insert(userAgreements).values({
-          userId: staffId,
-          agreementId: agreementId!.id,
-          ipAddress: ipAddress as string,
-          userAgent: userAgent as string,
-        });
+
+        if (agreementId) {
+          await tx.insert(userAgreements).values({
+            userId: staffId,
+            agreementId: agreementId.id,
+            ipAddress: ipAddress || "unknown",
+            userAgent: userAgent || "unknown",
+          });
+        }
 
         if (token) {
           await deleteAuthToken(token);
@@ -496,6 +508,7 @@ export const createStaff = async (prevState: any, formData: FormData) => {
       }
     });
 
+    // Process and upload images after DB success
     const [photoBuffer, nidFrontPhotoBuffer, nidBackPhotoBuffer] =
       await Promise.all([
         compressImage(Buffer.from(await photo.arrayBuffer()), "portrait"),
@@ -504,11 +517,7 @@ export const createStaff = async (prevState: any, formData: FormData) => {
       ]);
 
     await Promise.all([
-      putObject({
-        Key: photoKey,
-        Body: photoBuffer,
-        ContentType: "image/webp",
-      }),
+      putObject({ Key: photoKey, Body: photoBuffer, ContentType: "image/webp" }),
       putObject({
         Key: nidFrontPhotoKey,
         Body: nidFrontPhotoBuffer,
@@ -523,18 +532,18 @@ export const createStaff = async (prevState: any, formData: FormData) => {
 
     if (sendConfirmationSMS) {
       await sendSMS(
-        staffData.phone,
+        restStaffData.phone,
         renderText(ApplicationMessages.staff.APPROVAL, {
-          applicant_name: staffData.name,
+          applicant_name: restStaffData.name,
         }),
       );
     }
 
     if (originSource === "public_form" && applicationId) {
       await sendSMS(
-        staffData.phone,
+        restStaffData.phone,
         renderText(ApplicationMessages.staff.SUBMISSION, {
-          applicant_name: staffData.name,
+          applicant_name: restStaffData.name,
           tracking_link: generateUrl("application-tracking", {
             trackingId: applicationId,
           }),
@@ -542,117 +551,111 @@ export const createStaff = async (prevState: any, formData: FormData) => {
       );
     }
 
-    revalidatePath("/staffs");
-    revalidatePath("/applications");
+    revalidatePath("/staffs", "layout");
+    revalidatePath("/applications", "layout");
 
     return {
       success: true,
       message: "Added successfully",
-      data: { name: staffData.name },
+      data: { name: restStaffData.name },
     };
   } catch (error) {
-    console.error(error);
+    console.error("Create staff error:", error);
     return { success: false, message: "Something went wrong" };
   }
 };
 
-export const updateStaff = async (staffId: string, data: FormData) => {
+export const updateStaff = async (staffId: string, formData: FormData) => {
   try {
     const session = await verifySession(false, "admin");
     if (!session) return { success: false, message: "Unauthorized" };
 
-    const formDataObject = Object.fromEntries(data);
+    const formDataObject = Object.fromEntries(formData);
     const validatedStaffData = UpdateStaffDataSchema.parse(formDataObject);
-    const { photo, nidFrontPhoto, nidBackPhoto, ...restStaffData } =
+
+    const { photo, nidFrontPhoto, nidBackPhoto, bankInfo, ...restStaffData } =
       validatedStaffData;
 
     // Build update payload and generate new media keys when new files are uploaded
-    const updatePayload: typeof staffs.$inferInsert = {
-      ...(restStaffData as any),
-      docs: validatedStaffData.docs
-        ? JSON.stringify(validatedStaffData.docs)
-        : undefined,
+    const updatePayload: Partial<typeof staffs.$inferInsert> = {
+      ...restStaffData,
+      bankInfo: bankInfo || null,
+      walletNumber: restStaffData.walletNumber || null,
+      docs: restStaffData.docs ? JSON.stringify(restStaffData.docs) : undefined,
       role: restStaffData.hasInstallationExperience
         ? "electrician"
         : "technician",
     };
 
-    if (photo) {
+    if (photo instanceof File && photo.size > 0) {
       updatePayload.photoKey = `media/staff/${staffId}/profile_${uuidv4()}.webp`;
     }
-    if (nidFrontPhoto) {
+    if (nidFrontPhoto instanceof File && nidFrontPhoto.size > 0) {
       updatePayload.nidFrontPhotoKey = `media/staff/${staffId}/nid-front_${uuidv4()}.webp`;
     }
-    if (nidBackPhoto) {
+    if (nidBackPhoto instanceof File && nidBackPhoto.size > 0) {
       updatePayload.nidBackPhotoKey = `media/staff/${staffId}/nid-back_${uuidv4()}.webp`;
     }
 
-    const staffData = await db
+    await db
       .update(staffs)
       .set(updatePayload)
-      .where(eq(staffs.staffId, staffId))
-      .returning({
-        photoKey: staffs.photoKey,
-        nidFrontPhotoKey: staffs.nidFrontPhotoKey,
-        nidBackPhotoKey: staffs.nidBackPhotoKey,
-      });
+      .where(eq(staffs.staffId, staffId));
 
-    const promisesArray: Promise<unknown>[] = [];
+    // Handle file uploads if present
+    const uploadPromises: Promise<any>[] = [];
 
-    if (photo) {
-      const photoBuffer = Buffer.from(await photo.arrayBuffer());
-      promisesArray.push(
-        putObject({
-          Key: staffData[0].photoKey,
-          Body: photoBuffer,
-          ContentType: photo.type,
-        }),
+    if (photo instanceof File && photo.size > 0) {
+      uploadPromises.push(
+        (async () => {
+          const photoBuffer = Buffer.from(await photo.arrayBuffer());
+          const compressed = await compressImage(photoBuffer, "portrait");
+          await putObject({
+            Key: updatePayload.photoKey!,
+            Body: compressed,
+            ContentType: "image/webp",
+          });
+        })(),
       );
     }
 
-    if (nidFrontPhoto) {
-      const nidFrontPhotoBuffer = Buffer.from(
-        await nidFrontPhoto.arrayBuffer(),
-      );
-      promisesArray.push(
-        putObject({
-          Key: staffData[0].nidFrontPhotoKey,
-          Body: nidFrontPhotoBuffer,
-          ContentType: nidFrontPhoto.type,
-        }),
-      );
-    }
-
-    if (nidBackPhoto) {
-      const nidBackPhotoBuffer = Buffer.from(await nidBackPhoto.arrayBuffer());
-      promisesArray.push(
-        putObject({
-          Key: staffData[0].nidBackPhotoKey,
-          Body: nidBackPhotoBuffer,
-          ContentType: nidBackPhoto.type,
-        }),
+    if (nidFrontPhoto instanceof File && nidFrontPhoto.size > 0) {
+      uploadPromises.push(
+        (async () => {
+          const nidFrontBuffer = Buffer.from(await nidFrontPhoto.arrayBuffer());
+          const compressed = await compressImage(nidFrontBuffer, "nid");
+          await putObject({
+            Key: updatePayload.nidFrontPhotoKey!,
+            Body: compressed,
+            ContentType: "image/webp",
+          });
+        })(),
       );
     }
 
-    if (promisesArray.length > 0) {
-      await Promise.all(promisesArray);
+    if (nidBackPhoto instanceof File && nidBackPhoto.size > 0) {
+      uploadPromises.push(
+        (async () => {
+          const nidBackBuffer = Buffer.from(await nidBackPhoto.arrayBuffer());
+          const compressed = await compressImage(nidBackBuffer, "nid");
+          await putObject({
+            Key: updatePayload.nidBackPhotoKey!,
+            Body: compressed,
+            ContentType: "image/webp",
+          });
+        })(),
+      );
     }
 
-    revalidatePath("/staffs");
+    if (uploadPromises.length > 0) {
+      await Promise.all(uploadPromises);
+    }
+
+    revalidatePath("/staffs", "layout");
     return { success: true, message: "Updated successfully" };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      console.error(z.flattenError(error).fieldErrors);
-      return {
-        success: false,
-        message: "অনুগ্রহ করে সকল প্রয়োজনীয় তথ্য গুলো পূরণ করুন।",
-      };
-    }
-    console.error(error);
-    return {
-      success: false,
-      message: "Could not update staff. Something went wrong",
-    };
+    console.error("Update staff error:", error);
+    return { success: false, message: "Something went wrong" };
   }
 };
 
@@ -761,6 +764,7 @@ export async function staffLogin(prevState: any, credentials: FormData) {
     if (!staff.isActiveStaff) {
       return {
         success: false,
+        isBlocked: true,
         message: "আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে। অনুগ্রহ করে এডমিনের সাথে যোগাযোগ করুন।",
       };
     }

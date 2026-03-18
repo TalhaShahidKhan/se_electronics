@@ -50,12 +50,9 @@ const BaseStaffDataSchema = z.object({
   permanentPoliceStation: z.string().min(1),
   permanentPostOffice: z.string().min(1),
 
-  photo: z.file().min(1).mime(["image/jpeg", "image/png", "image/webp"]),
-  nidFrontPhoto: z
-    .file()
-    .min(1)
-    .mime(["image/jpeg", "image/png", "image/webp"]),
-  nidBackPhoto: z.file().min(1).mime(["image/jpeg", "image/png", "image/webp"]),
+  photo: z.any(),
+  nidFrontPhoto: z.any(),
+  nidBackPhoto: z.any(),
 
   hasRepairExperience: z.stringbool(),
   repairExperienceYears: z.coerce.number().optional(),
@@ -98,9 +95,9 @@ export const StaffDataSchema = BaseStaffDataSchema.extend({
 });
 
 export const UpdateStaffDataSchema = BaseStaffDataSchema.extend({
-  photo: z.file().optional(),
-  nidFrontPhoto: z.file().optional(),
-  nidBackPhoto: z.file().optional(),
+  photo: z.any().optional(),
+  nidFrontPhoto: z.any().optional(),
+  nidBackPhoto: z.any().optional(),
   docs: z.array(z.string()).optional(),
 }).transform((data) => {
   const {
@@ -113,7 +110,6 @@ export const UpdateStaffDataSchema = BaseStaffDataSchema.extend({
     nidBackPhoto,
     ...restData
   } = data;
-  const mimeTypes = ["image/jpeg", "image/png", "image/webp"];
   return {
     ...restData,
     ...(restData.paymentPreference === "bank" && {
@@ -124,15 +120,11 @@ export const UpdateStaffDataSchema = BaseStaffDataSchema.extend({
         branchName: branchName!,
       },
     }),
-    ...(photo &&
-      mimeTypes.includes(photo.type) &&
-      photo.size > 0 && { photo: photo }),
-    ...(nidFrontPhoto &&
-      mimeTypes.includes(nidFrontPhoto.type) &&
-      nidFrontPhoto.size > 0 && { nidFrontPhoto: nidFrontPhoto }),
-    ...(nidBackPhoto &&
-      mimeTypes.includes(nidBackPhoto.type) &&
-      nidBackPhoto.size > 0 && { nidBackPhoto: nidBackPhoto }),
+    ...(photo instanceof File && photo.size > 0 && { photo }),
+    ...(nidFrontPhoto instanceof File &&
+      nidFrontPhoto.size > 0 && { nidFrontPhoto }),
+    ...(nidBackPhoto instanceof File &&
+      nidBackPhoto.size > 0 && { nidBackPhoto }),
   };
 });
 
@@ -357,6 +349,22 @@ export const NoticeSchema = z.object({
   scheduledAt: z.coerce.date().nullable().optional(),
   expiresAt: z.coerce.date().nullable().optional(),
   recipientIds: z.array(z.string()).optional(), // For single/multiple targets
+});
+
+export const TaskSchema = z.object({
+  staffId: z.string().min(1, "Staff selection is required"),
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  priority: z.enum(noticePriorityEnum.enumValues),
+  dueDate: z.coerce.date().nullable().optional(),
+  files: z.array(z.string()).optional(),
+});
+
+export const StaffSMSPreferencesSchema = z.object({
+  smsNotificationEnabled: z.boolean(),
+  smsWorkingHoursOnly: z.boolean(),
+  smsFrequency: z.enum(["immediate", "daily_digest"]),
+  smsOptOut: z.boolean(),
 });
 
 

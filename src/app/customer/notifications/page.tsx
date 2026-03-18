@@ -7,7 +7,7 @@ import { getCustomerNotifications, markCustomerNotificationAsRead } from "@/acti
 import { getCustomerNotices, markNoticeAsRead } from "@/actions/noticeActions";
 import { formatDate } from "@/utils";
 import clsx from "clsx";
-import { CustomerLayout } from "@/components/layout/CustomerLayout";
+import { CustomerLayout, MobilePageHeader } from "@/components/layout";
 
 export default function CustomerNotificationsPage() {
   const [notifications, setNotifications] = useState<any[]>([]);
@@ -51,8 +51,15 @@ export default function CustomerNotificationsPage() {
 
   return (
     <CustomerLayout>
+      <MobilePageHeader 
+        title="Notifications" 
+        backHref="/customer/profile" 
+        Icon={Bell}
+      />
+
       <div className="p-4 sm:p-6 max-w-4xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
+        {/* Header (Desktop Only) */}
+        <div className="hidden md:flex items-center gap-4 mb-8">
             <Link href="/customer/profile" className="p-2 rounded-xl bg-white border border-gray-100 shadow-sm hover:bg-gray-50 text-gray-400 hover:text-brand transition-all">
                 <ArrowLeft size={20} />
             </Link>

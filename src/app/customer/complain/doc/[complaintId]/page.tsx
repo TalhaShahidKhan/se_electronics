@@ -2,7 +2,8 @@ import { getComplaintById } from "@/actions/complaintActions";
 import { verifyCustomerSession } from "@/actions/customerActions";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Download, CheckCircle, Clock } from "lucide-react";
+import { ArrowLeft, Download, CheckCircle, Clock, ShieldAlert } from "lucide-react";
+import { MobilePageHeader } from "@/components/layout";
 import { formatDate } from "@/utils";
 
 export default async function ComplaintDocPage({
@@ -33,9 +34,16 @@ export default async function ComplaintDocPage({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6 px-3 sm:px-4 flex justify-center">
-      <div className="w-full max-w-5xl">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <MobilePageHeader 
+        title="Document View" 
+        backHref="/customer/complain" 
+        Icon={ShieldAlert}
+      />
+
+      <div className="py-6 px-3 sm:px-4 flex justify-center flex-1">
+        <div className="w-full max-w-5xl">
+          <div className="hidden md:flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
           <Link
             href="/customer/complain"
             className="flex items-center gap-2 text-brand hover:text-brand/80 font-bold transition-colors"
@@ -270,8 +278,8 @@ export default async function ComplaintDocPage({
             </div>
 
         </div>
-
       </div>
     </div>
+  </div>
   );
 }

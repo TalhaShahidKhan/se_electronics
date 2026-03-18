@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import clsx from "clsx";
+import { MobilePageHeader } from "@/components/layout";
 
 export default async function CustomerServicesPage() {
   const session = await verifyCustomerSession();
@@ -37,8 +38,14 @@ export default async function CustomerServicesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col pb-12">
-      {/* Premium Dark Header */}
-      <header className="sticky top-0 z-50 bg-brand text-white shadow-xl">
+      <MobilePageHeader 
+        title="My Services" 
+        backHref="/customer/profile" 
+        Icon={Settings}
+      />
+
+      {/* Premium Dark Header (Desktop Only) */}
+      <header className="hidden md:block sticky top-0 z-50 bg-brand text-white shadow-xl">
         <div className="max-w-xl mx-auto px-4 h-20 flex items-center gap-4 relative">
           <Link
             href="/customer/profile"

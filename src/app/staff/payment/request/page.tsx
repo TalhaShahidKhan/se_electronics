@@ -6,6 +6,7 @@ import { StaffLayout } from "@/components/layout/StaffLayout";
 import clsx from "clsx";
 import { CreditCard, Wallet, AlertCircle, ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { MobilePageHeader } from "@/components/layout";
 
 function maskNumber(value: string) {
   if (!value || value.length < 4) return "****";
@@ -35,6 +36,12 @@ export default async function StaffPaymentRequestPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="Request Payout" 
+        backHref="/staff/payment" 
+        Icon={ShoppingBag}
+      />
+
       <div className="p-4 sm:p-6 space-y-8">
         {/* Large Balance Display */}
         <div className="bg-gradient-to-br from-brand via-brand-800 to-brand-700 rounded-[2.5rem] p-8 sm:p-12 text-white shadow-xl overflow-hidden relative group text-center">
@@ -59,8 +66,8 @@ export default async function StaffPaymentRequestPage() {
           <div className="absolute -left-12 -top-12 size-48 bg-brand-light/20 rounded-full blur-2xl" />
         </div>
 
-        {/* Page Title & Form Section */}
-        <div className="space-y-6">
+        {/* Page Title & Form Section (Desktop Only) */}
+        <div className="hidden md:block space-y-6">
           <div className="flex items-center gap-3 px-2">
             <div className="p-2.5 bg-brand/5 rounded-2xl text-brand">
               <ShoppingBag size={24} />

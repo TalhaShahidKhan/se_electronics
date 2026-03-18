@@ -2,6 +2,8 @@ import { verifyCustomerSession } from "@/actions/customerActions";
 import { getServiceHistoryById } from "@/actions/serviceActions";
 import { StatusBadge } from "@/components";
 import Link from "next/link";
+import { MobilePageHeader } from "@/components/layout";
+import { Star } from "lucide-react";
 
 export default async function CustomerFeedbackPage() {
   const session = await verifyCustomerSession();
@@ -21,9 +23,15 @@ export default async function CustomerFeedbackPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-3xl mx-auto space-y-6">
-        <div className="flex items-center justify-between gap-3 mb-2">
+    <div className="min-h-screen bg-gray-50 flex flex-col selection:bg-blue-200">
+      <MobilePageHeader 
+        title="Give Feedback" 
+        backHref="/customer/profile" 
+        Icon={Star}
+      />
+
+      <div className="flex-1 max-w-3xl mx-auto py-8 px-4 w-full">
+        <div className="hidden md:flex items-center justify-between gap-3 mb-2">
           <div>
             <h1 className="text-2xl font-extrabold text-gray-900">
               Give Feedback

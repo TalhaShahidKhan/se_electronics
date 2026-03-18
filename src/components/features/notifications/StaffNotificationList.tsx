@@ -60,8 +60,8 @@ export default function StaffNotificationList() {
 
   return (
     <div className="space-y-6">
-      {/* Header Info */}
-      <div className="flex justify-between items-center bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+      {/* Header Info (Desktop Only) */}
+      <div className="hidden md:flex justify-between items-center bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="size-12 rounded-2xl bg-brand/5 flex items-center justify-center">
             <Bell size={24} className="text-brand" />

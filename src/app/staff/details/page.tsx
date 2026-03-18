@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { StaffLayout } from "@/components/layout/StaffLayout";
+import { StaffLayout, MobilePageHeader } from "@/components/layout";
 
 export default async function StaffDetailsPage() {
   const session = await verifyStaffSession();
@@ -184,9 +184,15 @@ export default async function StaffDetailsPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="Staff Profile" 
+        backHref="/staff/profile" 
+        Icon={User}
+      />
+
       <div className="min-h-screen bg-gray-100 ">
-        {/* HEADER */}
-        <div className="bg-brand text-white px-4 sm:px-6 py-5 sm:py-6 mt-5 rounded-t-md shadow-sm mx-2">
+        {/* HEADER (Desktop Only) */}
+        <div className="hidden md:block bg-brand text-white px-4 sm:px-6 py-5 sm:py-6 mt-5 rounded-t-md shadow-sm mx-2">
           <div className="max-w-6xl mx-auto flex  justify-between items-center gap-4">
             {/* Title */}
             <h1 className="text-lg sm:text-xl font-bold tracking-wide">

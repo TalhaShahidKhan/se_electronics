@@ -116,6 +116,10 @@ export type StaffsType = {
   successfulServices: number | null;
   canceledServices: number | null;
   isActiveStaff: boolean | null;
+  smsNotificationEnabled: boolean;
+  smsWorkingHoursOnly: boolean;
+  smsFrequency: SMSFrequency;
+  smsOptOut: boolean;
 };
 
 export type StaffServiveReport = {
@@ -293,6 +297,37 @@ export type StarRatingProps = {
 
 export type NoticePriority = "low" | "normal" | "high" | "urgent";
 export type NoticeTarget = "single" | "multiple" | "all";
+export type TaskStatus = "pending" | "in_progress" | "completed" | "cancelled";
+export type SMSFrequency = "immediate" | "daily_digest";
+export type SMSLogStatus = "sent" | "failed";
+
+export type TaskType = {
+  id: string;
+  taskId: string;
+  staffId: string;
+  title: string;
+  description: string;
+  priority: NoticePriority;
+  dueDate: Date | null;
+  status: TaskStatus;
+  files: string[] | null;
+  comments: any[] | null;
+  createdAt: Date;
+  updatedAt: Date;
+  staff?: StaffsType;
+};
+
+export type SMSLogType = {
+  id: string;
+  staffId: string | null;
+  phoneNumber: string;
+  message: string;
+  status: SMSLogStatus;
+  error: string | null;
+  carrier: string | null;
+  createdAt: Date;
+  staff?: StaffsType;
+};
 
 export type NoticeType = {
   id: string;

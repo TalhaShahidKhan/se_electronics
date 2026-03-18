@@ -115,6 +115,20 @@ export const subscriptionTypesEnum = pgEnum("subscriptionTypes", [
   "full_maintenance",
 ]);
 
+export const taskStatusEnum = pgEnum("taskStatus", [
+  "pending",
+  "in_progress",
+  "completed",
+  "cancelled",
+]);
+
+export const smsFrequencyEnum = pgEnum("smsFrequency", [
+  "immediate",
+  "daily_digest",
+]);
+
+export const smsLogStatusEnum = pgEnum("smsLogStatus", ["sent", "failed"]);
+
 export const admins = pgTable("admins", {
   id: uuid().defaultRandom().primaryKey(),
   username: varchar({ length: 255 }).unique().notNull(),
@@ -416,6 +430,10 @@ export const staffs = pgTable(
     bankInfo: json().$type<BankInfo>(),
     docs: text(), // JSON array of document URLs/keys
     createdFrom: createdFromTypesEnum().notNull(),
+    smsNotificationEnabled: boolean().default(true).notNull(),
+    smsWorkingHoursOnly: boolean().default(true).notNull(),
+    smsFrequency: smsFrequencyEnum().default("immediate").notNull(),
+    smsOptOut: boolean().default(false).notNull(),
     ipAddress: varchar({ length: 255 }),
     userAgent: text(),
     createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
@@ -440,6 +458,8 @@ export const staffsRelations = relations(staffs, ({ many, one }) => ({
   payments: many(payments),
   agreements: many(userAgreements),
   notifications: many(staffNotifications),
+  tasks: many(tasks),
+  smsLogs: many(smsLogs),
   application: one(applications, {
     fields: [staffs.id],
     references: [applications.applicantId],
@@ -676,6 +696,69 @@ export const customerNotifications = pgTable("customerNotifications", {
   isRead: boolean().default(false).notNull(),
   createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
 });
+
+export const tasks = pgTable(
+  "tasks",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    taskId: varchar({ length: 255 }).unique().notNull(),
+    staffId: varchar({ length: 255 })
+      .references(() => staffs.staffId, { onDelete: "cascade" })
+      .notNull(),
+    title: varchar({ length: 255 }).notNull(),
+    description: text().notNull(),
+    priority: noticePriorityEnum().default("normal").notNull(),
+    dueDate: timestamp({ withTimezone: true }),
+    status: taskStatusEnum().default("pending").notNull(),
+    files: json().$type<string[]>(),
+    comments: json().$type<any[]>(),
+    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp({ withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("task_id_idx").on(table.taskId),
+    index("task_staff_id_idx").on(table.staffId),
+    index("task_status_idx").on(table.status),
+    index("task_priority_idx").on(table.priority),
+  ],
+);
+
+export const smsLogs = pgTable(
+  "smsLogs",
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    staffId: varchar({ length: 255 }).references(() => staffs.staffId, {
+      onDelete: "set null",
+    }),
+    phoneNumber: varchar({ length: 255 }).notNull(),
+    message: text().notNull(),
+    status: smsLogStatusEnum().notNull(),
+    error: text(),
+    carrier: varchar({ length: 255 }),
+    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("sms_log_staff_id_idx").on(table.staffId),
+    index("sms_log_status_idx").on(table.status),
+  ],
+);
+
+export const tasksRelations = relations(tasks, ({ one }) => ({
+  staff: one(staffs, {
+    fields: [tasks.staffId],
+    references: [staffs.staffId],
+  }),
+}));
+
+export const smsLogsRelations = relations(smsLogs, ({ one }) => ({
+  staff: one(staffs, {
+    fields: [smsLogs.staffId],
+    references: [staffs.staffId],
+  }),
+}));
 
 export const staffNotificationsRelations = relations(
   staffNotifications,

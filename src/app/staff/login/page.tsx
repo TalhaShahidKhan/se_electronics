@@ -2,9 +2,12 @@
 
 import { staffLogin } from "@/actions";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { AlertTriangle, PhoneCall, ShieldAlert } from "lucide-react";
 import { toast } from "react-toastify";
 import { useActionState } from "react";
+import Modal from "@/components/ui/Modal";
+import { contactDetails } from "@/constants";
 
 export default function StaffLoginPage() {
   const [state, loginAction, isPending] = useActionState(
@@ -12,6 +15,13 @@ export default function StaffLoginPage() {
     undefined,
   );
   const [username, setUsername] = useState("");
+  const [showBlockedModal, setShowBlockedModal] = useState(false);
+
+  useEffect(() => {
+    if (state && !state.success && (state as any).isBlocked) {
+      setShowBlockedModal(true);
+    }
+  }, [state]);
 
   const handleSubmit = () => {
     if (!username.trim()) {
@@ -99,6 +109,54 @@ export default function StaffLoginPage() {
           </div>
         </div>
       </div>
+
+      {/* Blocked Account Modal */}
+      <Modal
+        isVisible={showBlockedModal}
+        onClose={() => setShowBlockedModal(false)}
+        title="Account Blocked"
+        width="500"
+      >
+        <div className="flex flex-col items-center text-center py-4">
+          <div className="size-20 bg-red-50 rounded-full flex items-center justify-center mb-6 animate-bounce">
+            <ShieldAlert size={40} className="text-red-500" />
+          </div>
+          
+          <h2 className="text-2xl font-black text-gray-900 mb-3 uppercase tracking-tight">
+            অ্যাক্সেস সংরক্ষিত
+          </h2>
+          
+          <p className="text-gray-600 font-medium leading-relaxed mb-8 px-4">
+            আপনার অ্যাকাউন্টটি বর্তমানে ব্লক করা আছে। পুনরায় সক্রিয় করতে আমাদের এডমিন প্যানেলের সাথে যোগাযোগ করুন।
+          </p>
+
+          <div className="w-full space-y-3">
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">
+              Contact Administrator
+            </p>
+            
+            <a 
+              href={`tel:${contactDetails.customerCare}`}
+              className="flex items-center justify-center gap-4 w-full bg-brand text-white font-black py-5 px-6 rounded-2xl shadow-xl shadow-brand/20 hover:shadow-2xl hover:bg-brand-700 transition-all active:scale-[0.98] group"
+            >
+              <div className="bg-white/20 p-2 rounded-lg group-hover:rotate-12 transition-transform">
+                <PhoneCall size={20} />
+              </div>
+              <div className="text-left">
+                <p className="text-[10px] uppercase opacity-70 leading-none mb-1">Call Admin Now</p>
+                <p className="text-lg leading-none">{contactDetails.customerCare}</p>
+              </div>
+            </a>
+
+            <button
+              onClick={() => setShowBlockedModal(false)}
+              className="w-full py-4 text-gray-400 font-bold uppercase tracking-widest text-[11px] hover:text-gray-600 transition-colors"
+            >
+              Close and Try Again
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

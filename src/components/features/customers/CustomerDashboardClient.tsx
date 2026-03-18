@@ -1,7 +1,7 @@
 "use client";
 
 import { customerLogout } from "@/actions/customerActions";
-import { CustomerLayout } from "@/components/layout/CustomerLayout";
+import { CustomerLayout, MobilePageHeader } from "@/components/layout";
 import Banner from "@/components/ui/Banner";
 import {
   Activity,
@@ -129,6 +129,11 @@ export default function CustomerDashboardClient({
 
   return (
     <CustomerLayout>
+      <MobilePageHeader 
+        title="Dashboard" 
+        Icon={User}
+        showBackButton={false}
+      />
       <div className="flex flex-col gap-6 p-4 sm:p-6 text-gray-800 pb-24">
         {/* Banner */}
         <div className="w-full overflow-hidden shadow-md">

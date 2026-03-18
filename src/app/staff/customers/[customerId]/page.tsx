@@ -11,6 +11,7 @@ import {
     ArrowRight
 } from "lucide-react";
 import Link from "next/link";
+import { MobilePageHeader } from "@/components/layout";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/utils";
 import { verifyStaffSession } from "@/actions/staffActions";
@@ -38,9 +39,15 @@ export default async function StaffCustomerProfilePage({
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="Customer Profile" 
+        backHref="/staff/services" 
+        Icon={User}
+      />
+
       <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto pb-24">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        {/* Header (Desktop Only) */}
+        <div className="hidden md:flex items-center gap-4 mb-8">
             <Link 
                 href="/staff/services" 
                 className="p-2 rounded-xl bg-white border border-gray-100 shadow-sm text-gray-400 hover:text-brand transition-all active:scale-95"

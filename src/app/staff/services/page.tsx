@@ -5,6 +5,7 @@ import { StaffLayout } from "@/components/layout/StaffLayout";
 import clsx from "clsx";
 import { Wrench } from "lucide-react";
 import Link from "next/link";
+import { MobilePageHeader } from "@/components/layout";
 
 export default async function StaffServicesPage() {
   const session = await verifyStaffSession();
@@ -35,9 +36,15 @@ export default async function StaffServicesPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="My Services" 
+        backHref="/staff/profile" 
+        Icon={Wrench}
+      />
+      
       <div className="p-4 space-y-6">
-        {/* Page Title */}
-        <div className="flex items-center gap-3 mb-2">
+        {/* Page Title (Desktop Only) */}
+        <div className="hidden md:flex items-center gap-3 mb-2">
           <div className="p-2 bg-brand/10 rounded-xl text-brand">
             <Wrench size={20} />
           </div>

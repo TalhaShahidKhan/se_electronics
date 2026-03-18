@@ -1,5 +1,6 @@
 export { default as ConnectivityAlert } from "./ConnectivityAlert";
 export { default as CopyButton } from "./CopyButton";
+export { default as DashboardLoading } from "./DashboardLoading";
 export { default as DelayedLoading } from "./DelayedLoading";
 export { default as ImageWithLightbox } from "./ImageWithLightbox";
 export { default as InputField } from "./InputField";

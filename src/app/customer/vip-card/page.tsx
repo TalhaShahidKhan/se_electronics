@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Crown, CheckCircle2, MessageCircle, Clock, CheckCircle } from "lucide-react";
 import { contactDetails } from "@/constants";
 import { revalidatePath } from "next/cache";
+import { MobilePageHeader } from "@/components/layout";
 
 export default async function VipCardPage() {
     const session = await verifyCustomerSession();
@@ -38,9 +39,16 @@ export default async function VipCardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#fafafa] py-12 px-4 selection:bg-blue-200">
-            <div className="max-w-2xl mx-auto">
-                <div className="flex items-center gap-4 mb-8">
+        <div className="min-h-screen bg-[#fafafa] flex flex-col selection:bg-blue-200">
+            <MobilePageHeader 
+                title="VIP Membership" 
+                backHref="/customer/profile" 
+                Icon={Crown}
+            />
+
+            <div className="max-w-2xl mx-auto py-12 px-4 w-full">
+                {/* Header (Desktop Only) */}
+                <div className="hidden md:flex items-center gap-4 mb-8">
                     <Link href="/customer/profile" className="p-3 bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 hover:shadow-md transition-all active:scale-95">
                         <ArrowLeft size={24} className="text-gray-600" />
                     </Link>

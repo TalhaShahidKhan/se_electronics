@@ -6,6 +6,7 @@ import { formatDate } from "@/utils";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CheckCircle, ShieldAlert, User, Calendar, MessageSquare, AlertTriangle } from "lucide-react";
 import Link from "next/link";
+import { MobilePageHeader } from "@/components/layout";
 
 export default async function StaffComplaintDetailsPage({
   params,
@@ -37,9 +38,15 @@ export default async function StaffComplaintDetailsPage({
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
+      <MobilePageHeader 
+        title="Complaint Details" 
+        backHref="/staff/profile" 
+        Icon={ShieldAlert}
+      />
+
       <div className="p-4 sm:p-6 space-y-6">
-        {/* Header */}
-        <div className="flex items-center gap-4">
+        {/* Header (Desktop Only) */}
+        <div className="hidden md:flex items-center gap-4">
           <Link 
             href="/staff/profile" 
             className="p-3 bg-white rounded-2xl shadow-sm border border-gray-100 text-gray-400 hover:text-brand transition-colors"

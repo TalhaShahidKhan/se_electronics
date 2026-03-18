@@ -3,6 +3,8 @@ import { getComplaintsByCustomer } from "@/actions/complaintActions";
 import Link from "next/link";
 import { PlusCircle, FileText, Home, ExternalLink, ArrowRight, CheckCircle } from "lucide-react";
 import { formatDate } from "@/utils";
+import { MobilePageHeader } from "@/components/layout";
+import { ShieldAlert } from "lucide-react";
 
 export default async function ComplainDashboardPage() {
     const session = await verifyCustomerSession();
@@ -24,11 +26,17 @@ export default async function ComplainDashboardPage() {
     const lastComplaint = complaints.length > 0 ? complaints[0] : null;
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
-            <div className="max-w-6xl mx-auto space-y-6">
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+            <MobilePageHeader 
+                title="Complaints" 
+                backHref="/customer/profile" 
+                Icon={ShieldAlert}
+            />
+
+            <div className="flex-1 py-8 px-4 max-w-6xl mx-auto space-y-6 w-full">
                 
-                {/* Header Title */}
-                <h1 className="text-2xl sm:text-3xl font-black text-brand border-b-2 border-brand/20 pb-4 mb-6">
+                {/* Header Title (Desktop Only) */}
+                <h1 className="hidden md:block text-2xl sm:text-3xl font-black text-brand border-b-2 border-brand/20 pb-4 mb-6">
                     Complaint Dashboard
                 </h1>
 

@@ -3,6 +3,7 @@ import { getComplaintsByCustomer } from "@/actions/complaintActions";
 import Link from "next/link";
 import { ArrowLeft, Download, FileText, Clock, CheckCircle2, ExternalLink } from "lucide-react";
 import { formatDate } from "@/utils";
+import { MobilePageHeader } from "@/components/layout";
 
 export default async function ComplaintHistoryPage() {
     const session = await verifyCustomerSession();
@@ -21,9 +22,16 @@ export default async function ComplaintHistoryPage() {
     const complaints = res.success ? (res.data || []) : [];
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
-            <div className="max-w-4xl mx-auto">
-                <div className="mb-8 flex items-center justify-between">
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+            <MobilePageHeader 
+                title="Complaint History" 
+                backHref="/customer/complain" 
+                Icon={FileText}
+            />
+
+            <div className="flex-1 py-8 px-4 max-w-4xl mx-auto w-full">
+                {/* Header (Desktop Only) */}
+                <div className="hidden md:flex mb-8 items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Link href="/customer/profile" className="p-2 bg-white rounded-xl shadow-sm border border-gray-100 hover:bg-gray-50 transition-all">
                             <ArrowLeft size={24} className="text-gray-600" />

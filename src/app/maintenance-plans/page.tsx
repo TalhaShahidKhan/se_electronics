@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import geoData from "@/assets/data/geo-data.json";
+import { MobilePageHeader } from "@/components/layout";
+import { Zap } from "lucide-react";
 
 const subscriptionDurations = [1, 3, 6, 12, 18, 24, 30, 36];
 
