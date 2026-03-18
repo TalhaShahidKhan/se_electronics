@@ -33,8 +33,6 @@ import { createContext, useState } from "react";
 
 const links = [
   { name: "Dashboard", href: "/", icon: HomeIcon },
-  { name: "Tasks", href: "/tasks", icon: ListTodo },
-  { name: "SMS Logs", href: "/sms-logs", icon: Smartphone },
   { name: "Customers", href: "/customers", icon: Users },
   { name: "Invoices", href: "/invoices", icon: FileText },
   { name: "Service List", href: "/services/repairs", icon: Wrench },

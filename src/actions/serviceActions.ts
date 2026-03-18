@@ -7,6 +7,7 @@ import {
   products,
   serviceStatusHistory,
   services,
+  tasks,
 } from "@/db/schema";
 import { SMSError, sendEmail, sendSMS, verifySession } from "@/lib";
 import { deleteObject, getObjectUrl, putObject } from "@/lib/s3";
@@ -608,6 +609,17 @@ export const appointStaff = async (
 
     // Notify Staff
     if (validatedData.staffId) {
+      // 1. Create a task for the staff member
+      await db.insert(tasks).values({
+        taskId: generateRandomId(),
+        staffId: validatedData.staffId,
+        title: validatedData.serviceType === "install" ? "ইন্সটলেশন কাজ" : "সার্ভিসিং কাজ",
+        description: staffMessage,
+        priority: "normal",
+        status: "pending",
+      });
+
+      // 2. Send a short SMS and notification
       const shortStaffSMS = `নতুন সার্ভিস নিয়োগ করা হয়েছে (ID: ${validatedData.serviceId})। বিস্তারিত আপনার ড্যাশবোর্ডে দেখুন।`;
       promises.push(notifyStaff({
         staffId: validatedData.staffId,
@@ -615,7 +627,7 @@ export const appointStaff = async (
         type: "service_appointed",
         message: staffMessage,
         shortMessage: shortStaffSMS,
-        link: `/staff/services/${validatedData.serviceId}`,
+        link: `/staff/tasks`, // Updated link to point to tasks page
       }));
     } else {
       promises.push(sendSMS(validatedData.staffPhone, staffMessage));
@@ -625,6 +637,7 @@ export const appointStaff = async (
 
     revalidatePath("/services");
     revalidatePath("/installations");
+    revalidatePath("/staff/tasks"); // Added revalidation for staff tasks page
 
     return { success: true, message: "Appointed" };
   } catch (error) {

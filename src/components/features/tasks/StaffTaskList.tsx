@@ -215,7 +215,7 @@ export default function StaffTaskList() {
                 <FileText size={14} className="text-brand" />
                 Task Description
               </h4>
-              <div className="p-6 rounded-[2rem] bg-white border border-gray-100 shadow-sm min-h-32 text-gray-700 leading-relaxed font-medium">
+              <div className="p-6 rounded-[2rem] bg-white border border-gray-100 shadow-sm min-h-32 text-gray-700 leading-relaxed font-medium whitespace-pre-wrap">
                 {selectedTask.description}
               </div>
             </div>

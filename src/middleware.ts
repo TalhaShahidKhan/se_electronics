@@ -12,8 +12,6 @@ const adminProtectedRoutes = [
     '/payments',
     '/invoices',
     '/applications',
-    '/tasks',
-    '/sms-logs'
 ];
 
 const staffProtectedRoutes = [

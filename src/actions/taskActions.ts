@@ -105,7 +105,6 @@ export async function createTask(data: any) {
     );
 
     revalidatePath("/staff/tasks", "layout");
-    revalidatePath("/tasks", "layout");
 
     return { success: true, message: "Task created and staff notified." };
   } catch (error) {
@@ -152,7 +151,6 @@ export async function updateTaskStatus(taskId: string, status: TaskStatus) {
     await db.update(tasks).set({ status }).where(eq(tasks.taskId, taskId));
 
     revalidatePath("/staff/tasks", "layout");
-    revalidatePath("/tasks", "layout");
 
     return { success: true, message: "Task status updated." };
   } catch (error) {
@@ -203,48 +201,6 @@ export async function getTaskDetails(taskId: string) {
   }
 }
 
-/**
- * Get all tasks (Admin)
- */
-export async function getAllTasks() {
-  try {
-    const session = await verifySession(false, "admin");
-    if (!session) return { success: false, message: "Unauthorized" };
 
-    const data = await db.query.tasks.findMany({
-      with: {
-        staff: true,
-      },
-      orderBy: [desc(tasks.createdAt)],
-    });
-
-    return { success: true, data };
-  } catch (error) {
-    console.error("Error fetching all tasks:", error);
-    return { success: false, message: "Could not fetch all tasks." };
-  }
-}
-
-/**
- * Get SMS logs (Admin)
- */
-export async function getSMSLogs() {
-  try {
-    const session = await verifySession(false, "admin");
-    if (!session) return { success: false, message: "Unauthorized" };
-
-    const data = await db.query.smsLogs.findMany({
-      with: {
-        staff: true,
-      },
-      orderBy: [desc(smsLogs.createdAt)],
-    });
-
-    return { success: true, data };
-  } catch (error) {
-    console.error("Error fetching SMS logs:", error);
-    return { success: false, message: "Could not fetch SMS logs." };
-  }
-}
 
 

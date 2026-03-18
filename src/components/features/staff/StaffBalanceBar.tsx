@@ -1,8 +1,8 @@
 "use client";
 
-import { Wallet, ChevronRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export function StaffBalanceBar({ amount }: { amount: number }) {
   const [revealed, setRevealed] = useState(false);
@@ -25,7 +25,7 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
 
   return (
     <div className="flex items-center">
-      <div className="bg-white rounded-full h-9 shadow-md border border-brand/10 overflow-hidden relative min-w-[150px] sm:min-w-[170px]">
+      <div className="bg-white rounded-full h-9 shadow-md border border-brand/10 overflow-hidden relative min-w-[170px] sm:min-w-[170px]">
         <div className="flex items-center h-full w-full relative">
           {/* Tap for Balance Button */}
           {!revealed ? (
@@ -34,7 +34,7 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
               className="absolute inset-0 flex items-center gap-3 px-4 z-20 bg-white transition-opacity duration-300 hover:bg-gray-50 active:scale-95"
             >
               <div className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0 bg-[#0A1A3A]">
-                <div className="w-3 h-3  text-white text-sm font-extrabold -mt-2">
+                <div className="w-3 h-3  text-brand text-sm font-extrabold -mt-2">
                   ৳
                 </div>
               </div>
@@ -47,7 +47,7 @@ export function StaffBalanceBar({ amount }: { amount: number }) {
             /* Revealed Balance Content */
             <div className="flex items-center justify-between w-full h-full px-1 pl-4 animate-in fade-in slide-in-from-right-2 duration-300">
               <div className="size-6 rounded-full bg-brand/5 flex items-center justify-center shrink-0 bg-[#0A1A3A]">
-                <div className="w-3 h-3  text-white text-sm font-extrabold -mt-2">
+                <div className="w-3 h-3  text-brand text-sm font-extrabold -mt-2">
                   ৳
                 </div>
               </div>
