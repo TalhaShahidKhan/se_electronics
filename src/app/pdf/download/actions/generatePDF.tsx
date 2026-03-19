@@ -1,12 +1,19 @@
 "use server";
 
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { AppError } from "@/utils";
 import path from "path";
 import fs from "fs";
-
-type PayoutPreference = "bkash" | "nagad" | "rocket" | "bank";
+import { 
+  CertificateTemplateData, 
+  CompletionNoticeTemplateData, 
+  ComplaintTemplateData, 
+  HearingNoticeTemplateData, 
+  IdCardTemplateData, 
+  InvoiceTemplateData, 
+  PaymentReceiptTemplateData 
+} from "./pdfTypes";
+import { DocType } from "@/types";
 
 const productMap: Record<string, string> = {
   ips: "আইপিএস (IPS)",
@@ -21,12 +28,41 @@ async function convertToBase64(filePath: string): Promise<string> {
   let mimeType = "image/jpeg";
   if (extensionName === ".png") mimeType = "image/png";
   else if (extensionName === ".svg") mimeType = "image/svg+xml";
+  else if (extensionName === ".ttf") mimeType = "font/ttf";
 
   return `data:${mimeType};base64,${fileBuffer.toString("base64")}`;
 }
 
-export async function generatePDF(type: string, id: string) {
+export default async function generatePDF({ 
+  docType, 
+  id, 
+  token 
+}: { 
+  docType: DocType; 
+  id: string; 
+  token?: string; 
+}) {
   try {
+    // Dynamic import of react-dom/server to fix Vercel build issues in Server Actions
+    const { renderToStaticMarkup } = await import("react-dom/server");
+
+    let finalDocType = docType;
+    let finalId = id;
+    let payload: any = null;
+
+    if (token) {
+      const { verifyAuthToken } = await import("@/actions/authActions");
+      const tokenResult = await verifyAuthToken(token);
+      if (!tokenResult.isValid) {
+        throw new AppError("ডাউনলোড লিংকটির মেয়াদ শেষ বা অকার্যকর।");
+      }
+      payload = tokenResult.payload;
+      if (payload) {
+        finalDocType = payload.type || docType;
+        finalId = payload.id || id || payload.staffId;
+      }
+    }
+
     let html = "";
     let options: any = {
       format: "A4",
@@ -34,60 +70,44 @@ export async function generatePDF(type: string, id: string) {
       margin: { top: "0", right: "0", bottom: "0", left: "0" },
     };
 
-    switch (type) {
-      case "invoice-due":
-      case "invoice-paid": {
+    switch (finalDocType) {
+      case "invoice": {
         const InvoiceTemplate = (
           await import("@/components/features/invoices/InvoiceTemplate")
         ).default;
-        const { getInvoiceWithDetails } = (await import(
-          "@/actions/invoiceActions"
-        )) as any;
-        const invoice = await getInvoiceWithDetails(id);
-        if (!invoice) throw new AppError("ইনভয়েসটি পাওয়া যায়নি।");
+        const { getInvoiceByNumber } = await import("@/actions/invoiceActions");
+        const response = await getInvoiceByNumber(finalId);
+        
+        if (!response.success || !response.data) {
+          throw new AppError("ইনভয়েসটি পাওয়া যায়নি।");
+        }
+        const invoice = response.data;
 
+        const isDue = invoice.dueAmount > 0;
         const templatePath = path.join(
           process.cwd(),
           "src",
           "assets",
           "images",
-          type === "invoice-due"
-            ? "customer-invoice-due.jpg"
-            : "customer-invoice-paid.jpg",
+          isDue ? "customer-invoice-due.jpg" : "customer-invoice-paid.jpg",
         );
         const backgroundBase64 = await convertToBase64(templatePath);
 
-        const data = {
-          invoiceId: invoice.invoiceId,
-          date: invoice.createdAt,
-          customer: {
-            name: invoice.customer?.name || "",
-            address: invoice.customer?.address || "",
-            phone: invoice.customer?.phone || "",
-          },
-          items: invoice.items.map((item: any) => ({
-            description: item.description,
-            quantity: item.quantity,
-            price: item.price,
-            total: item.total,
-          })),
-          subtotal: invoice.subtotal,
-          discount: invoice.discount,
-          total: invoice.total,
-          status: invoice.status,
-          backgroundImage: backgroundBase64,
+        const data: InvoiceTemplateData = {
+          ...invoice,
+          bgImage: backgroundBase64,
         };
 
-        html = renderToStaticMarkup(<InvoiceTemplate data={data as any} />);
+        html = renderToStaticMarkup(<InvoiceTemplate data={data} />);
         break;
       }
 
-      case "payment-receipt": {
+      case "payment": {
         const PaymentReceiptTemplate = (
           await import("@/components/features/payments/PaymentReceiptTemplate")
         ).default;
-        const { getPaymentById } = (await import("@/actions/paymentActions")) as any;
-        const payment = await getPaymentById(id);
+        const { getPaymentById } = await import("@/actions/paymentActions");
+        const payment = await getPaymentById(finalId);
         if (!payment) throw new AppError("পেমেন্টটি পাওয়া যায়নি।");
 
         const templatePath = path.join(
@@ -99,7 +119,7 @@ export async function generatePDF(type: string, id: string) {
         );
         const backgroundBase64 = await convertToBase64(templatePath);
 
-        const data = {
+        const data: PaymentReceiptTemplateData = {
           bgImage: backgroundBase64,
           invoiceNumber: payment.invoiceNumber,
           date: payment.date,
@@ -119,9 +139,7 @@ export async function generatePDF(type: string, id: string) {
           serviceId: payment.serviceId,
         };
 
-        html = renderToStaticMarkup(
-          <PaymentReceiptTemplate data={data as any} />,
-        );
+        html = renderToStaticMarkup(<PaymentReceiptTemplate data={data} />);
         break;
       }
 
@@ -129,8 +147,8 @@ export async function generatePDF(type: string, id: string) {
         const IdCardTemplate = (
           await import("@/components/features/staff/IdCardTemplate")
         ).default;
-        const { getStaffById } = (await import("@/actions/staffActions")) as any;
-        const response = await getStaffById(id);
+        const { getStaffById } = await import("@/actions/staffActions");
+        const response = await getStaffById(finalId);
         if (!response.success || !response.data) throw new AppError("স্টাফকে পাওয়া যায়নি।");
         const staff = response.data;
 
@@ -152,21 +170,22 @@ export async function generatePDF(type: string, id: string) {
         const frontBase64 = await convertToBase64(frontTemplatePath);
         const backBase64 = await convertToBase64(backTemplatePath);
         
-        // Profile picture base64
-        let profilePicBase64 = "";
-        if (staff.photoUrl) {
-           profilePicBase64 = staff.photoUrl;
-        }
+        const { qrcode, barcode } = await import("@/lib/id-gen");
+        const qrCodeData = await qrcode(staff.staffId);
+        const barcodeData = await barcode(staff.staffId);
 
-        const data = {
+        const data: IdCardTemplateData = {
           ...staff,
           role: staff.role === "technician" ? "Technician" : "Electrician",
-          backgroundFront: frontBase64,
-          backgroundBack: backBase64,
+          frontBgImage: frontBase64,
+          backBgImage: backBase64,
           issueDate: new Date(),
+          qrcode: qrCodeData,
+          barcode: barcodeData,
+          photoUrl: staff.photoUrl || "",
         };
 
-        html = renderToStaticMarkup(<IdCardTemplate data={data as any} />);
+        html = renderToStaticMarkup(<IdCardTemplate data={data} />);
         options = {
           width: "85.6mm",
           height: "54mm",
@@ -180,10 +199,15 @@ export async function generatePDF(type: string, id: string) {
         const CertificateTemplate = (
           await import("@/components/features/staff/CertificateTemplate")
         ).default;
-        const { getStaffById } = (await import("@/actions/staffActions")) as any;
-        const response = await getStaffById(id);
-        if (!response.success || !response.data) throw new AppError("স্টাফকে পাওয়া যায়নি।");
-        const staff = response.data;
+        
+        let staffInfo: any = payload; // Certificate data is often passed via payload in token
+        
+        if (!staffInfo || finalDocType !== "certificate" || !staffInfo.shopName) {
+           const { getStaffById } = await import("@/actions/staffActions");
+           const response = await getStaffById(finalId);
+           if (!response.success || !response.data) throw new AppError("স্টাফকে পাওয়া যায়নি।");
+           staffInfo = response.data;
+        }
 
         const templatePath = path.join(
           process.cwd(),
@@ -194,14 +218,25 @@ export async function generatePDF(type: string, id: string) {
         );
         const backgroundBase64 = await convertToBase64(templatePath);
 
-        const data = {
-          ...staff,
-          role: staff.role === "technician" ? "Technician" : "Electrician",
+        const fontsPath = path.join(process.cwd(), "src", "assets", "fonts");
+        const font1 = await convertToBase64(path.join(fontsPath, "oldenglishtextmt.ttf"));
+        const font2 = await convertToBase64(path.join(fontsPath, "edwardianscriptitc.ttf"));
+        const font3 = await convertToBase64(path.join(fontsPath, "brockScript.ttf"));
+
+        const { qrcode } = await import("@/lib/id-gen");
+        const qrCodeData = await qrcode(staffInfo.staffId || staffInfo.shopId);
+
+        const data: any = {
+          ...staffInfo,
           bgImage: backgroundBase64,
           issueDate: new Date(),
+          qrcode: qrCodeData,
+          font1, 
+          font2, 
+          font3
         };
 
-        html = renderToStaticMarkup(<CertificateTemplate data={data as any} />);
+        html = renderToStaticMarkup(<CertificateTemplate data={data} />);
         options = {
           format: "A4",
           landscape: true,
@@ -216,7 +251,7 @@ export async function generatePDF(type: string, id: string) {
           await import("@/components/features/complaints/ComplaintTemplate")
         ).default;
         const { getComplaintById } = await import("@/actions/complaintActions");
-        const response = await getComplaintById(id);
+        const response = await getComplaintById(finalId);
         if (!response.success || !response.data)
           throw new AppError("অভিযোগটি পাওয়া যায়নি।");
         const c = response.data!;
@@ -225,7 +260,7 @@ export async function generatePDF(type: string, id: string) {
           path.join(process.cwd(), "public", "logo.jpg"),
         ).catch(() => undefined);
 
-        const data = {
+        const data: ComplaintTemplateData = {
           complaintId: c.complaintId,
           customer: {
             name: c.customer?.name || "",
@@ -250,7 +285,7 @@ export async function generatePDF(type: string, id: string) {
           logo: logoBase64,
         };
 
-        html = renderToStaticMarkup(<ComplaintTemplate data={data as any} />);
+        html = renderToStaticMarkup(<ComplaintTemplate data={data} />);
         break;
       }
 
@@ -259,7 +294,7 @@ export async function generatePDF(type: string, id: string) {
           await import("@/components/features/complaints/HearingNoticeTemplate")
         ).default;
         const { getComplaintById } = await import("@/actions/complaintActions");
-        const response = await getComplaintById(id);
+        const response = await getComplaintById(finalId);
         if (!response.success || !response.data)
           throw new AppError("অভিযোগটি পাওয়া যায়নি।");
         const c = response.data!;
@@ -271,7 +306,7 @@ export async function generatePDF(type: string, id: string) {
         const issueDateBn = new Date().toLocaleDateString("bn-BD");
         const receiptNum = c.complaintId.replace(/\D/g, "").slice(0, 5) || "14285";
 
-        const data = {
+        const data: HearingNoticeTemplateData = {
           complaintId: c.complaintId,
           customer: {
             name: c.customer?.name || "",
@@ -292,7 +327,7 @@ export async function generatePDF(type: string, id: string) {
           logo: logoBase64,
         };
 
-        html = renderToStaticMarkup(<HearingNoticeTemplate data={data as any} />);
+        html = renderToStaticMarkup(<HearingNoticeTemplate data={data} />);
         break;
       }
 
@@ -301,7 +336,7 @@ export async function generatePDF(type: string, id: string) {
           await import("@/components/features/complaints/CompletionNoticeTemplate")
         ).default;
         const { getComplaintById } = await import("@/actions/complaintActions");
-        const response = await getComplaintById(id);
+        const response = await getComplaintById(finalId);
         if (!response.success || !response.data)
           throw new AppError("অভিযোগটি পাওয়া যায়নি।");
         const c = response.data!;
@@ -313,7 +348,7 @@ export async function generatePDF(type: string, id: string) {
         const resolvedDateBn = new Date().toLocaleDateString("bn-BD");
         const receiptNo = c.complaintId.replace(/\D/g, "").slice(0, 5) || "14285";
 
-        const data = {
+        const data: CompletionNoticeTemplateData = {
           complaintId: c.complaintId,
           customer: {
             name: c.customer?.name || "",
@@ -334,57 +369,20 @@ export async function generatePDF(type: string, id: string) {
           logo: logoBase64,
         };
 
-        html = renderToStaticMarkup(<CompletionNoticeTemplate data={data as any} />);
+        html = renderToStaticMarkup(<CompletionNoticeTemplate data={data} />);
         break;
       }
 
-      case "staff-payment": {
-           const StaffPaymentTemplate = (await import("@/components/features/payments/PaymentReceiptTemplate")).default;
-           const { getPaymentById } = (await import("@/actions/paymentActions")) as any;
-           const payment = await getPaymentById(id);
-           if (!payment || !payment.staff) throw new AppError("পেমেন্ট খুঁজে পাওয়া যায়নি।");
-
-           const templatePath = path.join(
-             process.cwd(),
-             "src",
-             "assets",
-             "images",
-             "payment-receipt.jpg",
-           );
-           const backgroundBase64 = await convertToBase64(templatePath);
-
-           const data = {
-                bgImage: backgroundBase64,
-                invoiceNumber: payment.invoiceNumber,
-                date: payment.date,
-                description: payment.description,
-                staffId: payment.staffId,
-                transactionId: payment.transactionId,
-                paymentId: payment.paymentId,
-                paymentMethod: payment.paymentMethod,
-                senderWalletNumber: payment.senderWalletNumber,
-                senderBankInfo: payment.senderBankInfo,
-                receiverWalletNumber: payment.receiverWalletNumber,
-                receiverBankInfo: payment.receiverBankInfo,
-                amount: payment.amount,
-                staff: {
-                    name: payment.staff?.name || "",
-                },
-                serviceId: payment.serviceId,
-           };
-           html = renderToStaticMarkup(<StaffPaymentTemplate data={data as any} />);
-           break;
-      }
-
       default:
-        throw new AppError("অকার্যকর ড্রকুমেন্ট টাইপ।");
+        throw new AppError("অকার্যকর ডকুমেন্ট টাইপ।");
     }
 
     const puppeteer = (await import("puppeteer-core")).default;
     const chromium = (await import("@sparticuz/chromium")).default;
 
     let browser;
-    if (process.env.NODE_ENV === "production") {
+    // Chromium setup for Vercel/Production
+    if (process.env.NODE_ENV === "production" || process.env.VERCEL) {
       browser = await puppeteer.launch({
         args: (chromium as any).args,
         defaultViewport: (chromium as any).defaultViewport,
@@ -392,10 +390,13 @@ export async function generatePDF(type: string, id: string) {
         headless: (chromium as any).headless,
       });
     } else {
+      // Local development Chrome paths
       const chromePaths = [
         path.join(process.env.LOCALAPPDATA || "", "Google", "Chrome", "Application", "chrome.exe"),
         "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
         "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+        "/usr/bin/google-chrome",
+        "/usr/bin/chromium-browser",
       ];
       let executablePath = null;
       for (const p of chromePaths) {
@@ -404,7 +405,7 @@ export async function generatePDF(type: string, id: string) {
           break;
         }
       }
-      if (!executablePath) throw new AppError("Chrome browser was not found.");
+      if (!executablePath) throw new AppError("Chrome browser was not found locally.");
       browser = await puppeteer.launch({ executablePath, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
     }
 
@@ -431,9 +432,15 @@ export async function generatePDF(type: string, id: string) {
     await page.setContent(fullHtml, { waitUntil: "networkidle0" });
     const pdf = await page.pdf(options);
     await browser.close();
-    return { success: true, data: Buffer.from(pdf).toString("base64") };
+    
+    // Return Uint8Array as expected by DocDownloadPage
+    return { 
+       success: true, 
+       pdfBuffer: new Uint8Array(pdf),
+       docType: finalDocType 
+    };
   } catch (error: any) {
     console.error("PDF generation error:", error);
-    return { success: false, error: error.message || "পিডিএফ তৈরি করতে সমস্যা হয়েছে।" };
+    return { success: false, message: error.message || "পিডিএফ তৈরি করতে সমস্যা হয়েছে।" };
   }
 }
