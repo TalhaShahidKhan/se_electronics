@@ -1,8 +1,7 @@
 "use client";
 
 import { customerLogout } from "@/actions/customerActions";
-import { CustomerLayout, MobilePageHeader } from "@/components/layout";
-import CustomerNotificationBell from "./CustomerNotificationBell";
+import { CustomerLayout } from "@/components/layout";
 import Banner from "@/components/ui/Banner";
 import {
   Activity,
@@ -25,6 +24,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
+import CustomerNotificationBell from "./CustomerNotificationBell";
 
 interface CustomerDashboardClientProps {
   customer: {
@@ -300,55 +300,6 @@ export default function CustomerDashboardClient({
             </div>
           </div>
         </div>
-
-        {/* VIP Card Display */}
-        {customer.vipStatus === "approved" && (
-          <Link
-            href="/customer/vip-card"
-            className="block perspective-1000 group"
-          >
-            <div className="bg-[#1d4ed8] rounded-xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden group border-4 border-white/20 animate-in slide-in-from-bottom-4 duration-500">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-white/10 transition-all duration-700"></div>
-
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-10">
-                  <div>
-                    <p className="text-blue-100 font-bold uppercase tracking-[0.2em] text-[14px] mb-1">
-                      SE Electronics
-                    </p>
-                    <h2 className="text-xl font-black tracking-tight text-white/90">
-                      VIP PREMIER
-                    </h2>
-                  </div>
-                  <Crown size={28} className="text-white opacity-80" />
-                </div>
-
-                <div className="mb-8 font-mono">
-                  <p className="text-blue-100/60 text-[8px] uppercase tracking-[0.3em] mb-2">
-                    Member Number
-                  </p>
-                  <p className="text-xl sm:text-2xl font-bold tracking-[0.2em]">
-                    {customer.vipCardNumber?.match(/.{1,4}/g)?.join(" ")}
-                  </p>
-                </div>
-
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-blue-100/60 text-[8px] uppercase tracking-[0.3em] mb-1">
-                      Cardholder
-                    </p>
-                    <p className="text-sm font-bold uppercase tracking-wider">
-                      {customer.name}
-                    </p>
-                  </div>
-                  <div className="text-[14px] font-black italic tracking-widest bg-white/10 px-3 py-1 rounded-lg border border-white/10">
-                    ELITE
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        )}
 
         {/* Desktop Action Grid */}
         <div className="hidden sm:block bg-white rounded-3xl p-8 shadow-sm border border-gray-100">

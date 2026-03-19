@@ -20,10 +20,11 @@ export default function PaymentForm({
   const [paymentData, setPaymentData] = useState<Partial<PaymentDataType>>({
     ...paymentInfo,
     date: paymentInfo?.date || new Date(),
+    paymentMethod: paymentInfo?.paymentMethod || (paymentInfo as any)?.staff?.paymentPreference || "bkash",
     receiverWalletNumber:
-      paymentInfo?.receiverWalletNumber || paymentInfo?.staff?.walletNumber || "",
+      paymentInfo?.receiverWalletNumber || (paymentInfo as any)?.staff?.walletNumber || "",
     receiverBankInfo:
-      paymentInfo?.receiverBankInfo || paymentInfo?.staff?.bankInfo || null,
+      paymentInfo?.receiverBankInfo || (paymentInfo as any)?.staff?.bankInfo || null,
   });
 
 
@@ -115,24 +116,9 @@ export default function PaymentForm({
             <label className="text-sm">
               Payment Method
               <select
-                disabled={mode === "update"}
+                disabled={true}
                 value={paymentMethod}
-                onChange={(e) => {
-                  const method = e.target.value as any;
-                  setPaymentData((prev) => ({
-                    ...prev,
-                    paymentMethod: method,
-                    receiverWalletNumber:
-                      method === "bank"
-                        ? ""
-                        : prev.staff?.walletNumber || prev.receiverWalletNumber || "",
-                    receiverBankInfo:
-                      method === "bank"
-                        ? prev.staff?.bankInfo || prev.receiverBankInfo || null
-                        : null,
-                  }));
-                }}
-                className="__input p-0 px-2 mt-1"
+                className="__input p-0 px-2 mt-1 appearance-none bg-gray-50 opacity-70 cursor-not-allowed"
               >
                 <option value="bkash">বিকাশ</option>
                 <option value="nagad">নগদ</option>

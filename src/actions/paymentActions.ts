@@ -123,6 +123,22 @@ export const getPaymentHistoryById = async (staffId: string) => {
   }
 };
 
+export const getPaymentById = async (paymentId: string) => {
+  try {
+    const paymentData = await db.query.payments.findFirst({
+      where: eq(payments.paymentId, paymentId),
+      with: {
+        staff: true,
+        service: true,
+      },
+    });
+    return paymentData;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 export const getPaymentByNumber = async (invoiceNumber: string) => {
   try {
     const paymentData = await db.query.payments.findFirst({
