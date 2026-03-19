@@ -100,17 +100,23 @@ export async function generatePDF(type: string, id: string) {
         const backgroundBase64 = await convertToBase64(templatePath);
 
         const data = {
-          receiptId: payment.paymentId,
-          date: payment.createdAt,
+          bgImage: backgroundBase64,
+          invoiceNumber: payment.invoiceNumber,
+          date: payment.date,
+          description: payment.description,
+          staffId: payment.staffId,
+          transactionId: payment.transactionId,
+          paymentId: payment.paymentId,
+          paymentMethod: payment.paymentMethod,
+          senderWalletNumber: payment.senderWalletNumber,
+          senderBankInfo: payment.senderBankInfo,
+          receiverWalletNumber: payment.receiverWalletNumber,
+          receiverBankInfo: payment.receiverBankInfo,
+          amount: payment.amount,
           staff: {
             name: payment.staff?.name || "",
-            role: payment.staff?.role || "",
           },
-          amount: payment.amount,
-          method: payment.method,
-          transactionId: payment.transactionId,
-          status: payment.status,
-          backgroundImage: backgroundBase64,
+          serviceId: payment.serviceId,
         };
 
         html = renderToStaticMarkup(
@@ -337,10 +343,34 @@ export async function generatePDF(type: string, id: string) {
            const { getPaymentById } = (await import("@/actions/paymentActions")) as any;
            const payment = await getPaymentById(id);
            if (!payment || !payment.staff) throw new AppError("পেমেন্ট খুঁজে পাওয়া যায়নি।");
+
+           const templatePath = path.join(
+             process.cwd(),
+             "src",
+             "assets",
+             "images",
+             "payment-receipt.jpg",
+           );
+           const backgroundBase64 = await convertToBase64(templatePath);
+
            const data = {
-                receiptId: payment.paymentId, date: payment.createdAt, staff: { name: payment.staff.name, role: payment.staff.role },
-                amount: payment.amount, method: payment.method as PayoutPreference, walletNumber: payment.receiverWalletNumber,
-                bankInfo: payment.receiverBankInfo, transactionId: payment.transactionId, status: payment.status
+                bgImage: backgroundBase64,
+                invoiceNumber: payment.invoiceNumber,
+                date: payment.date,
+                description: payment.description,
+                staffId: payment.staffId,
+                transactionId: payment.transactionId,
+                paymentId: payment.paymentId,
+                paymentMethod: payment.paymentMethod,
+                senderWalletNumber: payment.senderWalletNumber,
+                senderBankInfo: payment.senderBankInfo,
+                receiverWalletNumber: payment.receiverWalletNumber,
+                receiverBankInfo: payment.receiverBankInfo,
+                amount: payment.amount,
+                staff: {
+                    name: payment.staff?.name || "",
+                },
+                serviceId: payment.serviceId,
            };
            html = renderToStaticMarkup(<StaffPaymentTemplate data={data as any} />);
            break;
