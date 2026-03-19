@@ -11,11 +11,7 @@ export default async function GetServicePage({ searchParams }: { searchParams: P
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
-            <MobilePageHeader 
-                title="Online Service" 
-                backHref="/customer/profile" 
-                Icon={Settings}
-            />
+
             <div className="flex-1">
                 <GetServiceForm
                     preferredStaffId={preferredStaffId}

@@ -184,9 +184,9 @@ export default async function StaffDetailsPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <MobilePageHeader 
-        title="Staff Profile" 
-        backHref="/staff/profile" 
+      <MobilePageHeader
+        title="Staff Profile"
+        backHref="/staff/profile"
         Icon={User}
       />
 
@@ -198,21 +198,10 @@ export default async function StaffDetailsPage() {
             <h1 className="text-lg sm:text-xl font-bold tracking-wide">
               Staff Profile
             </h1>
-
-            {/* Logout */}
-            <form action={staffLogout}>
-              <button
-                type="submit"
-                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-red-500 hover:bg-red-600 active:scale-95 transition-all text-white text-sm font-bold shadow-sm"
-              >
-                <LogOut size={18} />
-                Logout
-              </button>
-            </form>
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 mt-12 pb-10 space-y-6 ">
+        <div className="max-w-6xl mx-auto px-4 mt-4 pb-10 space-y-4 ">
           {/* PROFILE CARD */}
           <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow">
@@ -256,7 +245,7 @@ export default async function StaffDetailsPage() {
 
           {/* PERFORMANCE STATS */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-green-100 border border-green-400  p-3 rounded-md shadow-sm  text-center">
+            <div className="bg-green-50/70 border border-green-400  p-3 rounded-md shadow-sm  text-center">
               <p className="text-2xl font-bold text-green-600">
                 {staffData.totalServices}
               </p>
@@ -265,7 +254,7 @@ export default async function StaffDetailsPage() {
               </p>
             </div>
 
-            <div className="bg-violet-100 border border-violet-400  p-3 rounded-md shadow-sm  text-center">
+            <div className="bg-violet-50/70 border border-violet-400  p-3 rounded-md shadow-sm  text-center">
               <p className="text-2xl font-bold text-violet-600">
                 {staffData.successfulServices}
               </p>
@@ -274,7 +263,7 @@ export default async function StaffDetailsPage() {
               </p>
             </div>
 
-            <div className="bg-red-100 border border-red-400  p-3 rounded-md shadow-sm  text-center">
+            <div className="bg-red-50/70 border border-red-400  p-3 rounded-md shadow-sm  text-center">
               <p className="text-2xl font-bold text-red-500">
                 {staffData.canceledServices}
               </p>
@@ -283,7 +272,7 @@ export default async function StaffDetailsPage() {
               </p>
             </div>
 
-            <div className="bg-orange-100 border border-orange-400  p-3 rounded-md shadow-sm  text-center">
+            <div className="bg-orange-50/50 border border-orange-400  p-3 rounded-md shadow-sm  text-center">
               <p className="text-2xl font-bold text-orange-500">
                 {staffData.rating}
               </p>
@@ -388,6 +377,18 @@ export default async function StaffDetailsPage() {
                 className="rounded-lg border"
               />
             </div>
+          </div>
+          {/* Logout */}
+          <div className="">
+            <form action={staffLogout}>
+              <button
+                type="submit"
+                className="flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-red-500 hover:bg-red-600 active:scale-95 transition-all text-white text-sm font-bold shadow-sm"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            </form>
           </div>
         </div>
       </div>

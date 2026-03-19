@@ -173,27 +173,27 @@ export default function CustomerDashboardClient({
 
           {/* Header */}
           <div className="flex items-start justify-between gap-4 relative z-10">
-            <div className="flex items-center gap-4 min-w-0">
+            <div className="flex items-center gap-3 min-w-0">
               {/* Avatar */}
-              <div className="size-14 sm:size-16 -mt-8 rounded-md bg-brand/5 flex items-center justify-center shadow-inner">
-                <User className="text-brand" size={28} />
+              <div className="size-14 -mt-14 rounded-md bg-brand/5 flex items-center justify-center shadow-inner">
+                <User className="text-brand" size={24} />
               </div>
 
               <div className="min-w-0">
                 {/* Badge */}
-                <div className="inline-flex items-center px-3 py-1.5 rounded-nd bg-[#ECFDF5] border border-[#10B981]/25  text-[14px] font-extrabold uppercase tracking-[0.25em] mb-2 shadow-sm text-[#10B981]">
+                <div className="inline-flex items-center px-3 py-1.5 rounded-nd bg-[#ECFDF5] border border-[#10B981]/25  text-sm font-extrabold uppercase tracking-[0.25em] mb-2 shadow-sm text-[#10B981]">
                   ● Active Customer
                 </div>
 
                 {/* Name */}
-                <h2 className="text-xl sm:text-3xl font-extrabold text-gray-900 truncate leading-tight">
+                <h2 className="text-lg font-extrabold text-gray-900 truncate leading-tight">
                   {customer.name}
                 </h2>
 
                 {/* ID */}
-                <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                <p className="text-lg font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   ID:
-                  <span className="text-gray-900 font-bold tracking-normal">
+                  <span className="text-gray-900  tracking-normal">
                     {customer.customerId}
                   </span>
                 </p>
@@ -214,14 +214,14 @@ export default function CustomerDashboardClient({
           <div className="my-2 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
           {/* Info Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm font-semibold">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm font-semibold">
             {/* Phone */}
             <div className="flex items-center gap-3 px-4 py-1 rounded-2xl  border border-gray-100 hover:bg-gray-100 transition-all duration-200">
               <div className="p-2 rounded-xl bg-brand/5">
                 <PhoneCall size={16} className="text-brand" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[14px] uppercase text-gray-400 font-bold tracking-widest">
+                <span className="text-[14px] uppercase text-gray-400 font-semibold tracking-widest">
                   Phone
                 </span>
                 <span className="text-gray-700 text-lg truncate">
@@ -236,7 +236,7 @@ export default function CustomerDashboardClient({
                 <MapPin size={16} className="text-brand" />
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="text-[14px] uppercase text-gray-400 font-bold tracking-widest">
+                <span className="text-[14px] uppercase text-gray-400 font-semibold tracking-widest">
                   Address
                 </span>
                 <span className="text-gray-700 text-lg truncate">
@@ -250,7 +250,7 @@ export default function CustomerDashboardClient({
           {customer.vipStatus === "approved" && (
             <div className="mt-6 flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-yellow-100">
+                <div className="p-2 rounded-md bg-yellow-100">
                   <Crown size={18} className="text-yellow-600" />
                 </div>
                 <div>
@@ -263,7 +263,7 @@ export default function CustomerDashboardClient({
                 </div>
               </div>
 
-              <span className="text-[14px] font-black text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full tracking-widest">
+              <span className="text-[13px] font-black text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full tracking-widest">
                 ELITE
               </span>
             </div>
@@ -272,7 +272,7 @@ export default function CustomerDashboardClient({
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6">
-          <div className="bg-white p-6 rounded-md shadow-sm border  flex items-center gap-4">
+          <div className="bg-white p-5 rounded-md shadow-sm border  flex items-center gap-4">
             <div className="size-12 rounded-2xl bg-emerald-50 flex items-center justify-center">
               <CheckCircle className="text-emerald-500" size={24} />
             </div>
@@ -280,13 +280,13 @@ export default function CustomerDashboardClient({
               <p className="text-2xl font-black text-gray-900">
                 {stats?.totalServices || 0}
               </p>
-              <p className="text-[10px] uppercase font-black text-gray-400 tracking-widest">
+              <p className="text-[11px] uppercase font-black text-gray-400 tracking-widest">
                 Services
               </p>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-md shadow-sm border border-gray-100 flex items-center gap-4">
+          <div className="bg-white p-5 rounded-md shadow-sm border border-gray-100 flex items-center gap-4">
             <div className="size-12 rounded-md bg-indigo-50 flex items-center justify-center">
               <Clock className="text-indigo-500" size={24} />
             </div>
@@ -294,7 +294,7 @@ export default function CustomerDashboardClient({
               <p className="text-2xl font-black text-gray-900">
                 {stats?.activeSubscriptions || 0}
               </p>
-              <p className="text-[10px] uppercase font-black text-gray-400 tracking-widest">
+              <p className="text-[11px] uppercase font-black text-gray-400 tracking-widest">
                 Subscriptions
               </p>
             </div>
@@ -307,7 +307,7 @@ export default function CustomerDashboardClient({
             href="/customer/vip-card"
             className="block perspective-1000 group"
           >
-            <div className="bg-[#1d4ed8] rounded-[2rem] p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden group border-4 border-white/20 animate-in slide-in-from-bottom-4 duration-500">
+            <div className="bg-[#1d4ed8] rounded-xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden group border-4 border-white/20 animate-in slide-in-from-bottom-4 duration-500">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-white/10 transition-all duration-700"></div>
 
               <div className="relative z-10">
@@ -385,7 +385,7 @@ export default function CustomerDashboardClient({
         </div>
 
         {/* Secondary Grid */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-md p-6 sm:p-10 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-8 sm:hidden">
             <h3 className="text-[14px] font-black text-gray-400 uppercase tracking-[0.2em]">
               Quick Actions
@@ -406,7 +406,7 @@ export default function CustomerDashboardClient({
                     size={24}
                   />
                 </div>
-                <span className="text-[14px] sm:text-sm font-black text-gray-500 uppercase tracking-tighter text-center line-clamp-1 group-hover:text-gray-900 transition-colors">
+                <span className="text-[13px] sm:text-sm font-black text-gray-500 uppercase tracking-tighter text-center line-clamp-1 group-hover:text-gray-900 transition-colors">
                   {action.label}
                 </span>
               </Link>
@@ -416,7 +416,7 @@ export default function CustomerDashboardClient({
 
         {/* Logout Button */}
         <form action={customerLogout} className="mt-4">
-          <button className="w-full py-4 rounded-2xl bg-gray-100 text-gray-500 font-black uppercase tracking-widest hover:bg-rose-50 hover:text-rose-500 transition-all text-sm flex items-center justify-center gap-3">
+          <button className="w-full py-4 rounded-md bg-gray-200 text-gray-500 font-black uppercase tracking-widest hover:bg-rose-50 hover:text-rose-500 transition-all text-sm flex items-center justify-center gap-3">
             <LogOut size={16} />
             Logout Account
           </button>
