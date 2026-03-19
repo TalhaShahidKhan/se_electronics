@@ -214,7 +214,21 @@ export default async function StaffDetailsPage() {
 
         <div className="max-w-6xl mx-auto px-4 mt-12 pb-10 space-y-6 ">
           {/* PROFILE CARD */}
-          <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col md:flex-row items-center gap-6">
+          <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col md:flex-row items-center gap-6 relative">
+            {/* Logout Button for Mobile/All Devices */}
+            <div className="absolute top-4 right-4">
+              <form action={staffLogout}>
+                <button
+                  type="submit"
+                  className="p-3 rounded-2xl bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors border border-rose-100 flex items-center gap-2 shadow-sm"
+                  title="Logout"
+                >
+                  <LogOut size={20} />
+                  <span className="text-xs font-black uppercase tracking-widest hidden sm:block">Logout</span>
+                </button>
+              </form>
+            </div>
+
             <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow">
               <Image
                 src={staffData.photoUrl}

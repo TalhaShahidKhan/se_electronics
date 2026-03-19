@@ -43,31 +43,10 @@ export default async function StaffPaymentHubPage() {
             </h1>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-3 lg:gap-4">
-            <Link
-              href="/staff/payment/settings"
-              className="bg-white p-4 lg:p-6 rounded-2xl lg:rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-3 lg:gap-5 group hover:shadow-md transition-all active:scale-[0.98]"
-            >
-              <div className="size-10 lg:size-14 rounded-xl lg:rounded-2xl bg-brand/5 text-brand flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Settings className="w-5 h-5 lg:w-7 lg:h-7" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="font-black text-gray-900 lg:text-lg text-sm">
-                  Settings
-                </h2>
-                <p className="hidden lg:block text-sm sm:text-sm font-bold text-gray-400 mt-1 truncate">
-                  Configure Wallet
-                </p>
-              </div>
-              <ChevronRight
-                className="text-gray-300 group-hover:text-brand transition-colors hidden lg:block"
-                size={20}
-              />
-            </Link>
-
+          <div className="grid grid-cols-1 gap-3 lg:gap-4">
             <Link
               href="/staff/payment/request"
-              className="w-full border-2 border-gray-200  p-6 lg:p-10 rounded-[2rem] lg:rounded-[3rem] shadow-xl flex items-center justify-between gap-6 group hover:shadow-2xl hover:-translate-y-0.5 transition-all active:scale-[0.99] relative overflow-hidden text-black"
+              className="w-full border-2 border-gray-200 p-6 lg:p-10 rounded-[2rem] lg:rounded-[3rem] shadow-xl flex items-center justify-between gap-6 group hover:shadow-2xl hover:-translate-y-0.5 transition-all active:scale-[0.99] relative overflow-hidden text-black"
             >
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24 blur-3xl group-hover:bg-white/10 transition-all duration-700"></div>
 
@@ -90,6 +69,7 @@ export default async function StaffPaymentHubPage() {
               </div>
             </Link>
           </div>
+
 
           {/* Payment History Section */}
           <div className="space-y-4">
