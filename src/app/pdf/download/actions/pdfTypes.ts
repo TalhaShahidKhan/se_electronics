@@ -26,8 +26,11 @@ export interface PaymentReceiptTemplateData {
   serviceId?: string | null;
 }
 
-export interface IdCardTemplateData extends StaffsType {
-  role: "Technician" | "Electrician";
+export interface IdCardTemplateData extends Omit<StaffsType, "role" | "photoUrl" | "currentPoliceStation" | "currentPostOffice"> {
+  role: "technician" | "electrician";
+  photoUrl: string;
+  currentPoliceStation: string;
+  currentPostOffice: string;
   frontBgImage: string;
   backBgImage: string;
   issueDate: Date;
@@ -35,8 +38,8 @@ export interface IdCardTemplateData extends StaffsType {
   barcode: string;
 }
 
-export interface CertificateTemplateData extends StaffsType {
-  role: "Technician" | "Electrician";
+export interface CertificateTemplateData extends Omit<StaffsType, "role"> {
+  role: "technician" | "electrician";
   bgImage: string;
   issueDate: Date;
 }

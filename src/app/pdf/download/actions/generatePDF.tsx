@@ -176,13 +176,14 @@ export default async function generatePDF({
 
         const data: IdCardTemplateData = {
           ...staff,
-          role: staff.role === "technician" ? "Technician" : "Electrician",
+          currentPoliceStation: staff.currentPoliceStation || "",
+          currentPostOffice: staff.currentPostOffice || "",
+          photoUrl: staff.photoUrl || "",
           frontBgImage: frontBase64,
           backBgImage: backBase64,
           issueDate: new Date(),
           qrcode: qrCodeData,
           barcode: barcodeData,
-          photoUrl: staff.photoUrl || "",
         };
 
         html = renderToStaticMarkup(<IdCardTemplate data={data} />);
