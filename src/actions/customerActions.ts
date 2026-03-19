@@ -104,18 +104,20 @@ export async function verifyCustomerSession() {
   }
 
   try {
-    const customer = await db.query.customers.findFirst({
-      where: eq(customers.customerId, session.userId as string),
-      columns: {
-        id: true,
-        customerId: true,
-        name: true,
-        phone: true,
-        address: true,
-        vipCardNumber: true,
-        vipStatus: true,
-      },
-    });
+    const [customer] = await db
+      .select({
+        id: customers.id,
+        customerId: customers.customerId,
+        name: customers.name,
+        phone: customers.phone,
+        address: customers.address,
+        vipCardNumber: customers.vipCardNumber,
+        vipStatus: customers.vipStatus,
+      })
+      .from(customers)
+      .where(eq(customers.customerId, session.userId as string))
+      .limit(1);
+
 
     if (!customer) {
       return { isAuth: false };
@@ -384,11 +386,13 @@ export const getCustomerNotifications = async () => {
     const { customerNotifications } = await import("@/db/schema");
     const { desc } = await import("drizzle-orm");
 
-    const notifications = await db.query.customerNotifications.findMany({
-      where: eq(customerNotifications.customerId, session.userId as string),
-      orderBy: [desc(customerNotifications.createdAt)],
-      limit: 10,
-    });
+    const notifications = await db
+      .select()
+      .from(customerNotifications)
+      .where(eq(customerNotifications.customerId, session.userId as string))
+      .orderBy(desc(customerNotifications.createdAt))
+      .limit(10);
+
 
     return { success: true, data: notifications };
   } catch (error) {

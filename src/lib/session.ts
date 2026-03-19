@@ -67,10 +67,11 @@ export const verifySession = cache(async (shouldRedirect = true, expectedRole?: 
 
     // Active check for blocked staff
     if (session.role === 'staff') {
-        const staff = await db.query.staffs.findFirst({
-            where: eq(staffs.staffId, session.userId as string),
-            columns: { isActiveStaff: true }
-        });
+        const [staff] = await db.select({ isActiveStaff: staffs.isActiveStaff })
+            .from(staffs)
+            .where(eq(staffs.staffId, session.userId as string))
+            .limit(1);
+
 
         if (!staff || !staff.isActiveStaff) {
             const cookieStore = await cookies();

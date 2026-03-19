@@ -44,7 +44,11 @@ export const getPayments = async ({
           name: staffs.name,
           phone: staffs.phone,
           role: staffs.role,
+          paymentPreference: staffs.paymentPreference,
+          walletNumber: staffs.walletNumber,
+          bankInfo: staffs.bankInfo,
         },
+
       })
       .from(payments)
       .where(filters)

@@ -9,9 +9,9 @@ import { ApplicationTypes, SearchParams } from "@/types"
 import { generateRandomId, generateUrl, renderText, generateVipCardNumber } from "@/utils"
 import { and, desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
-import { deleteSubscriber } from "./subscriptionActions"
-import { deleteStaff } from "./staffActions"
-import { deleteService } from "./serviceActions"
+// import { deleteSubscriber } from "./subscriptionActions"
+// import { deleteStaff } from "./staffActions"
+// import { deleteService } from "./serviceActions"
 
 export const getApplications = async ({ query, type, page = '1', limit = '20' }: SearchParams & { type?: ApplicationTypes }) => {
     await verifySession()
@@ -323,18 +323,24 @@ export const deleteApplication = async (applicationId: string) => {
             .returning({ applicantId: applications.applicantId, type: applications.type })
 
         switch (applicationData[0].type) {
-            case 'service_application':
+            case 'service_application': {
+                const { deleteService } = await import("./serviceActions");
                 await deleteService(applicationData[0].applicantId)
                 revalidatePath('/services')
                 break;
-            case 'staff_application':
+            }
+            case 'staff_application': {
+                const { deleteStaff } = await import("./staffActions");
                 await deleteStaff(applicationData[0].applicantId)
                 revalidatePath('/staffs')
                 break;
-            case 'subscription_application':
+            }
+            case 'subscription_application': {
+                const { deleteSubscriber } = await import("./subscriptionActions");
                 await deleteSubscriber(applicationData[0].applicantId)
                 revalidatePath('/subscriptions')
                 break;
+            }
         }
 
         revalidatePath('/applications')

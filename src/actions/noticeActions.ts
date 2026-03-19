@@ -140,13 +140,24 @@ export const getStaffNotices = async () => {
     const session = await verifySession(false, "staff");
     if (!session) return { success: false, message: "Unauthorized" };
 
-    const data = await db.query.noticeRecipients.findMany({
-      where: eq(noticeRecipients.staffId, session.userId as string),
-      with: {
-        notice: true
-      },
-      orderBy: [desc(noticeRecipients.createdAt)]
-    });
+    const data = await db
+      .select({
+        id: noticeRecipients.id,
+        noticeId: noticeRecipients.noticeId,
+        staffId: noticeRecipients.staffId,
+        customerId: noticeRecipients.customerId,
+        isRead: noticeRecipients.isRead,
+        readAt: noticeRecipients.readAt,
+        isAcknowledged: noticeRecipients.isAcknowledged,
+        acknowledgedAt: noticeRecipients.acknowledgedAt,
+        createdAt: noticeRecipients.createdAt,
+        notice: notices,
+      })
+      .from(noticeRecipients)
+      .leftJoin(notices, eq(noticeRecipients.noticeId, notices.id))
+      .where(eq(noticeRecipients.staffId, session.userId as string))
+      .orderBy(desc(noticeRecipients.createdAt));
+
 
     return { success: true, data };
   } catch (error) {
@@ -159,13 +170,24 @@ export const getCustomerNotices = async () => {
     const session = await verifySession(false, "customer");
     if (!session) return { success: false, message: "Unauthorized" };
 
-    const data = await db.query.noticeRecipients.findMany({
-      where: eq(noticeRecipients.customerId, session.userId as string),
-      with: {
-        notice: true
-      },
-      orderBy: [desc(noticeRecipients.createdAt)]
-    });
+    const data = await db
+      .select({
+        id: noticeRecipients.id,
+        noticeId: noticeRecipients.noticeId,
+        staffId: noticeRecipients.staffId,
+        customerId: noticeRecipients.customerId,
+        isRead: noticeRecipients.isRead,
+        readAt: noticeRecipients.readAt,
+        isAcknowledged: noticeRecipients.isAcknowledged,
+        acknowledgedAt: noticeRecipients.acknowledgedAt,
+        createdAt: noticeRecipients.createdAt,
+        notice: notices,
+      })
+      .from(noticeRecipients)
+      .leftJoin(notices, eq(noticeRecipients.noticeId, notices.id))
+      .where(eq(noticeRecipients.customerId, session.userId as string))
+      .orderBy(desc(noticeRecipients.createdAt));
+
 
     return { success: true, data };
   } catch (error) {

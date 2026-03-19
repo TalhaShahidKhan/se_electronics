@@ -20,7 +20,12 @@ export default function PaymentForm({
   const [paymentData, setPaymentData] = useState<Partial<PaymentDataType>>({
     ...paymentInfo,
     date: paymentInfo?.date || new Date(),
+    receiverWalletNumber:
+      paymentInfo?.receiverWalletNumber || paymentInfo?.staff?.walletNumber || "",
+    receiverBankInfo:
+      paymentInfo?.receiverBankInfo || paymentInfo?.staff?.bankInfo || null,
   });
+
 
   const [isPending, setIsPending] = useState(false);
 
@@ -110,17 +115,34 @@ export default function PaymentForm({
             <label className="text-sm">
               Payment Method
               <select
-                disabled
+                disabled={mode === "update"}
                 value={paymentMethod}
+                onChange={(e) => {
+                  const method = e.target.value as any;
+                  setPaymentData((prev) => ({
+                    ...prev,
+                    paymentMethod: method,
+                    receiverWalletNumber:
+                      method === "bank"
+                        ? ""
+                        : prev.staff?.walletNumber || prev.receiverWalletNumber || "",
+                    receiverBankInfo:
+                      method === "bank"
+                        ? prev.staff?.bankInfo || prev.receiverBankInfo || null
+                        : null,
+                  }));
+                }}
                 className="__input p-0 px-2 mt-1"
               >
                 <option value="bkash">বিকাশ</option>
                 <option value="nagad">নগদ</option>
                 <option value="rocket">রকেট</option>
                 <option value="bank">ব্যাংক</option>
+                <option value="cash">নগদ (Cash)</option>
               </select>
             </label>
           </div>
+
 
           <InputField
             required={!paymentInfo}
@@ -137,10 +159,11 @@ export default function PaymentForm({
           <>
             <div className="flex flex-col sm:flex-row gap-4">
               <InputField
-                
-                // defaultValue={paymentData?.receiverBankInfo?.bankName}
+                readOnly
+                value={paymentData?.receiverBankInfo?.bankName ?? ""}
                 label="Receiver Bank Name"
               />
+
 
               <InputField
                 value={paymentData?.senderBankInfo?.bankName ?? ""}
@@ -154,11 +177,12 @@ export default function PaymentForm({
             <div className="flex flex-col sm:flex-row gap-4">
               <InputField
                 readOnly
-                defaultValue={
-                  paymentData?.receiverBankInfo?.accountHolderName
+                value={
+                  paymentData?.receiverBankInfo?.accountHolderName ?? ""
                 }
                 label="Receiver Account Name"
               />
+
 
               <InputField
                 value={paymentData?.senderBankInfo?.accountHolderName ?? ""}
@@ -172,9 +196,10 @@ export default function PaymentForm({
             <div className="flex flex-col sm:flex-row gap-4">
               <InputField
                 readOnly
-                defaultValue={paymentData?.receiverBankInfo?.accountNumber}
+                value={paymentData?.receiverBankInfo?.accountNumber ?? ""}
                 label="Receiver Account Number"
               />
+
 
               <InputField
                 value={paymentData?.senderBankInfo?.accountNumber ?? ""}
@@ -188,9 +213,10 @@ export default function PaymentForm({
             <div className="flex flex-col sm:flex-row gap-4">
               <InputField
                 readOnly
-                defaultValue={paymentData?.receiverBankInfo?.branchName}
+                value={paymentData?.receiverBankInfo?.branchName ?? ""}
                 label="Receiver Branch Name"
               />
+
 
               <InputField
                 value={paymentData?.senderBankInfo?.branchName ?? ""}
@@ -201,12 +227,12 @@ export default function PaymentForm({
               />
             </div>
           </>
-        ) : (
+        ) : paymentMethod !== "cash" ? (
           /* WALLET PAYMENT */
           <div className="flex flex-col sm:flex-row gap-4">
             <InputField
               readOnly
-              defaultValue={paymentData?.receiverWalletNumber ?? ""}
+              value={paymentData?.receiverWalletNumber ?? ""}
               label="Receiver Wallet Number"
               type="tel"
             />
@@ -218,17 +244,19 @@ export default function PaymentForm({
               type="tel"
             />
           </div>
-        )}
+        ) : null}
+
 
         {/* Transaction + Date */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {paymentMethod !== "bank" && (
+          {paymentMethod !== "bank" && paymentMethod !== "cash" && (
             <InputField
               value={paymentData.transactionId ?? ""}
               onChange={(e) => inputChangeHandler(e, "transactionId")}
               label="Transaction ID"
             />
           )}
+
 
           <InputField
             value={

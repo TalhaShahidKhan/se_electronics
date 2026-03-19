@@ -41,7 +41,8 @@ import { cookies, headers } from "next/headers";
 import { RedirectType, redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import z, { ZodError, flattenError } from "zod";
-import { createApplication } from "./applicationActions";
+// import { createApplication } from "./applicationActions";
+// import { deleteAuthToken, saveAuthToken, verifyAuthToken } from "./authActions";
 import { deleteAuthToken, saveAuthToken, verifyAuthToken } from "./authActions";
 
 export const sendRegistrationLink = async (phoneNumber: string) => {
@@ -480,6 +481,7 @@ export const createStaff = async (_prevState: any, formData: FormData) => {
       } as typeof staffs.$inferInsert);
 
       if (originSource === "public_form") {
+        const { createApplication } = await import("./applicationActions");
         const res = await createApplication({
           applicantId: staffId,
           type: "staff_application",
@@ -1134,11 +1136,13 @@ export const getStaffNotifications = async () => {
     const { staffNotifications } = await import("@/db/schema");
     const { desc } = await import("drizzle-orm");
 
-    const notifications = await db.query.staffNotifications.findMany({
-      where: eq(staffNotifications.staffId, session.userId as string),
-      orderBy: [desc(staffNotifications.createdAt)],
-      limit: 10,
-    });
+    const notifications = await db
+      .select()
+      .from(staffNotifications)
+      .where(eq(staffNotifications.staffId, session.userId as string))
+      .orderBy(desc(staffNotifications.createdAt))
+      .limit(10);
+
 
     return { success: true, data: notifications };
   } catch (error) {

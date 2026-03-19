@@ -8,6 +8,13 @@
       "when": 1773824503757,
       "tag": "0000_hesitant_star_brand",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1773895478193,
+      "tag": "0001_smooth_gwen_stacy",
+      "breakpoints": true
     }
   ]
 }

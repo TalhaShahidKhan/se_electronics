@@ -1,1 +1,0 @@
-src/app/(dashboard)/layout.tsx(4,11): error TS2739: Type '{ children: ReactNode; }' is missing the following properties from type '{ children: ReactNode; username: string; smsBalance: number | null; }': username, smsBalance
