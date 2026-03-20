@@ -4,19 +4,10 @@ import {
   getStaffProfileStats,
   staffLogout,
 } from "@/actions/staffActions";
+import { MobilePageHeader, StaffLayout } from "@/components/layout";
 import { getObjectUrl } from "@/lib/s3";
-import {
-  Briefcase,
-  FileText,
-  LogOut,
-  MapPin,
-  PhoneCall,
-  User,
-  Wallet,
-} from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { StaffLayout, MobilePageHeader } from "@/components/layout";
 
 export default async function StaffDetailsPage() {
   const session = await verifyStaffSession();
@@ -203,7 +194,11 @@ export default async function StaffDetailsPage() {
 
         <div className="max-w-6xl mx-auto px-4 mt-4 pb-10 space-y-4 ">
           {/* PROFILE CARD */}
+<<<<<<< HEAD
           <div className="bg-white rounded-md shadow-sm p-6 flex flex-col md:flex-row items-center gap-6">
+=======
+          <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col md:flex-row items-center gap-6 relative">
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
             <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow">
               <Image
                 src={staffData.photoUrl}

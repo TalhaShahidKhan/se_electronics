@@ -964,6 +964,15 @@ export async function setStaffCredentials(
       return { success: false, message: "Username already taken" };
     }
 
+    const staffData = await db.query.staffs.findFirst({
+      where: eq(staffs.staffId, staffId),
+      columns: { name: true, phone: true },
+    });
+
+    if (!staffData) {
+      return { success: false, message: "Staff not found" };
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await db
@@ -971,8 +980,20 @@ export async function setStaffCredentials(
       .set({ username, password: hashedPassword, profileCompleted: true })
       .where(eq(staffs.staffId, staffId));
 
+    // Send SMS with credentials
+    const loginUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/staff/login`;
+    const message = ApplicationMessages.staff.CREDENTIALS.replace(
+      "{staff_name}",
+      staffData.name
+    )
+      .replace("{username}", username)
+      .replace("{password}", password)
+      .replace("{login_url}", loginUrl);
+
+    await sendSMS(staffData.phone, message);
+
     revalidatePath("/staffs");
-    return { success: true, message: "Login credentials set successfully" };
+    return { success: true, message: "Login credentials set and SMS sent" };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Failed to set credentials" };

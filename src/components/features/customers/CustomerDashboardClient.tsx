@@ -1,8 +1,7 @@
 "use client";
 
 import { customerLogout } from "@/actions/customerActions";
-import { CustomerLayout, MobilePageHeader } from "@/components/layout";
-import CustomerNotificationBell from "./CustomerNotificationBell";
+import { CustomerLayout } from "@/components/layout";
 import Banner from "@/components/ui/Banner";
 import {
   Activity,
@@ -25,6 +24,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
+import CustomerNotificationBell from "./CustomerNotificationBell";
 
 interface CustomerDashboardClientProps {
   customer: {
@@ -301,6 +301,7 @@ export default function CustomerDashboardClient({
           </div>
         </div>
 
+<<<<<<< HEAD
         {/* VIP Card Display */}
         {customer.vipStatus === "approved" && (
           <Link
@@ -350,6 +351,8 @@ export default function CustomerDashboardClient({
           </Link>
         )}
 
+=======
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
         {/* Desktop Action Grid */}
         <div className="hidden sm:block bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-8">

@@ -12,6 +12,14 @@ import {
 } from "@/db/schema";
 import { z } from "zod";
 
+// Local helper to handle boolean values sent as strings from forms
+const formBool = () =>
+  z.preprocess((val) => {
+    if (val === "true" || val === "on" || val === true) return true;
+    if (val === "false" || val === "off" || val === false || val === "" || val === null || val === undefined) return false;
+    return !!val;
+  }, z.boolean());
+
 export const CustomerDataSchema = z.object({
   name: z.string().min(1),
   phone: z.string().min(1),
@@ -54,10 +62,10 @@ const BaseStaffDataSchema = z.object({
   nidFrontPhoto: z.any(),
   nidBackPhoto: z.any(),
 
-  hasRepairExperience: z.stringbool(),
+  hasRepairExperience: formBool(),
   repairExperienceYears: z.coerce.number().optional(),
 
-  hasInstallationExperience: z.stringbool(),
+  hasInstallationExperience: formBool(),
   installationExperienceYears: z.coerce.number().optional(),
 
   paymentPreference: z.enum(paymentTypesEnum.enumValues),
@@ -70,8 +78,8 @@ const BaseStaffDataSchema = z.object({
 });
 
 export const StaffDataSchema = BaseStaffDataSchema.extend({
-  sendConfirmationSMS: z.stringbool().optional(),
-  agreed: z.stringbool().optional(),
+  sendConfirmationSMS: formBool().optional(),
+  agreed: formBool().optional(),
   token: z.string().optional(),
 }).transform((data) => {
   const {
@@ -172,7 +180,7 @@ export const UpdateServiceDataSchema = ServiceDataSchema.extend({
     "custom",
     "new_note",
   ]),
-  sendCompletionSMS: z.stringbool().optional(),
+  sendCompletionSMS: formBool().optional(),
   customLabel: z.string().optional(),
   customNote: z.string().optional(),
   cancelReason: z.string().optional(),

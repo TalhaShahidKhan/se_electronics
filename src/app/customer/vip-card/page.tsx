@@ -166,6 +166,7 @@ export default async function VipCardPage() {
           </div>
         )}
 
+<<<<<<< HEAD
         <div className="mt-12 bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100">
           <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
             <CheckCircle className="text-blue-600" size={20} />
@@ -193,15 +194,171 @@ export default async function VipCardPage() {
             <p className="text-sm text-gray-400 mb-8 leading-relaxed font-medium">
               If you have any questions about our VIP program or your
               application, our support team is ready to help.
+=======
+        <div className="mt-12 bg-white rounded-[2rem] p-8 sm:p-12 shadow-sm border border-gray-100">
+          <div className="text-center mb-12">
+            <span className="text-3xl mb-4 block">🌟</span>
+            <h2 className="text-2xl font-black text-gray-900 mb-4">এস ই ইলেকট্রনিক্স – ভিআইপি মেম্বারশিপ বেনিফিট</h2>
+            <p className="text-gray-600 leading-relaxed max-w-lg mx-auto font-medium">
+              আপনার নিরবচ্ছিন্ন বিদ্যুৎ সেবা এবং মানসিক প্রশান্তি নিশ্চিত করতে এস ই ইলেকট্রনিক্স নিয়ে এলো বিশেষ VIP Member Card। এই কার্ডধারী গ্রাহকগণ আমাদের আইপিএস, ব্যাটারী এবং ভোল্টেজ স্ট্যাবিলাইজার সেবার ওপর বিশেষ অগ্রাধিকার ও সাশ্রয়ী সুবিধা উপভোগ করবেন।
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
             </p>
+          </div>
+
+          <div className="space-y-12">
+            {/* Special Benefits */}
+            <section>
+              <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <Crown size={20} className="text-orange-600" />
+                </div>
+                কার্ডধারীদের জন্য বিশেষ সুবিধাসমূহ
+              </h3>
+              <div className="grid gap-6">
+                <div className="p-6 bg-blue-50/50 rounded-2xl border border-blue-100 hover:shadow-md transition-shadow">
+                  <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
+                    <CheckCircle2 size={18} className="text-blue-600" />
+                    ১. সার্ভিসিং-এ ৫% নগদ ছাড় (Service Discount)
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                    আপনার ব্যবহৃত আইপিএস, ব্যাটারী কিংবা ভোল্টেজ স্ট্যাবিলাইজার-এর যেকোনো ধরণের মেরামত বা নিয়মিত সার্ভিসিং ফি-র ওপর সরাসরি ৫% ডিসকাউন্ট পাবেন। আমাদের দক্ষ টেকনিশিয়ান দ্বারা দ্রুত ও মানসম্মত সেবার নিশ্চয়তা দিচ্ছি।
+                  </p>
+                </div>
+                <div className="p-6 bg-purple-50/50 rounded-2xl border border-purple-100 hover:shadow-md transition-shadow">
+                  <h4 className="font-bold text-purple-900 mb-2 flex items-center gap-2">
+                    <CheckCircle2 size={18} className="text-purple-600" />
+                    ২. নতুন ক্রয়ে ৭% বিশেষ ছাড় (Purchase Discount)
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                    এই ভিআইপি কার্ড নাম্বারটি ব্যবহার করে আপনি নিজে অথবা আপনার রেফারেন্সে অন্য কেউ যদি নতুন আইপিএস, ব্যাটারী বা স্ট্যাবিলাইজার ক্রয় করেন, তবে মোট মূল্যের ওপর ৭% বিশেষ ছাড় প্রদান করা হবে। এটি আপনার প্রিয়জনদের জন্য সাশ্রয়ী কেনাকাটার একটি দারুণ সুযোগ!
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Other Services */}
+            <section className="bg-gray-50/50 p-8 rounded-3xl border border-gray-100">
+               <div className="grid sm:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <h5 className="font-black text-gray-900 uppercase tracking-wider text-[11px]">ইলেক্ট্রিক সার্ভিস</h5>
+                    <p className="text-[13px] text-gray-600 font-medium">নতুন আইপিএস ইনস্টলেশন বা ফিটিং।</p>
+                  </div>
+                  <div className="space-y-2">
+                    <h5 className="font-black text-gray-900 uppercase tracking-wider text-[11px]">বাসা বদল সার্ভিস</h5>
+                    <p className="text-[13px] text-gray-600 font-medium">বাসা বা অফিস পরিবর্তনের সময় ফ্যান, লাইট, এসি এবং ইলেকট্রিক ওয়্যারিং খোলা বা নতুন করে ফিটিং করা।</p>
+                  </div>
+                  <div className="space-y-2">
+                    <h5 className="font-black text-gray-900 uppercase tracking-wider text-[11px]">রক্ষণাবেক্ষণ প্যাকেজ</h5>
+                    <p className="text-[13px] text-gray-600 font-medium">ব্যাটারী রিফিল প্যাক এবং আইপিএস ও ব্যাটারীর "সম্পূর্ণ রক্ষণাবেক্ষণ (Full Maintenance) প্যাক"-এর ওপর ৫% ছাড়।</p>
+                  </div>
+               </div>
+            </section>
+
+            {/* Membership Services */}
+            <section>
+              <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <Crown size={20} className="text-green-600" />
+                </div>
+                আমাদের বিশেষ ভিআইপি মেম্বারশিপ সেবাসমূহ
+              </h3>
+              <ul className="grid sm:grid-cols-2 gap-4">
+                {[
+                  { t: "দক্ষ টেকনিশিয়ান", d: "অভিজ্ঞ ইলেকট্রিশিয়ান দ্বারা নিরাপদ ওয়্যারিং ও ফিটিং।" },
+                  { t: "ব্যাটারী কেয়ার", d: "ব্যাটারীর দীর্ঘস্থায়িত্ব নিশ্চিত করতে প্রফেশনাল রিফিল ও চেকআপ।" },
+                  { t: "হোম সার্ভিস", d: "সিলেট শহর ও এর আশেপাশে দ্রুত হোম ডেলিভারি ও সার্ভিস সুবিধা।" }
+                ].map((s, i) => (
+                  <li key={i} className="flex gap-4 p-4 bg-white rounded-2xl border border-gray-100">
+                    <CheckCircle2 size={20} className="text-green-600 flex-shrink-0" />
+                    <div>
+                      <h5 className="font-bold text-gray-900 text-sm mb-1">{s.t}</h5>
+                      <p className="text-[12px] text-gray-500 font-medium">{s.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            {/* Why Choose Us */}
+            <section className="bg-gray-900 rounded-[2rem] p-8 sm:p-12 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+              <div className="relative z-10">
+                <h3 className="text-2xl font-black mb-8 flex items-center gap-3">
+                  কেন আমাদের বেছে নেবেন?
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <div className="flex gap-3">
+                      <div className="size-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mt-1">✓</div>
+                      <p className="text-gray-300 font-medium text-sm">দ্রুত বিক্রয়োত্তর সেবা।</p>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="size-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mt-1">✓</div>
+                      <p className="text-gray-300 font-medium text-sm">অরিজিনাল পার্টসের নিশ্চয়তা।</p>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="size-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mt-1">✓</div>
+                      <p className="text-gray-300 font-medium text-sm">দক্ষ টেকনিশিয়ান দ্বারা সার্ভিসিং।</p>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex gap-3">
+                      <div className="size-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mt-1">✓</div>
+                      <div>
+                        <p className="text-white font-bold text-sm">নির্ভরযোগ্যতা</p>
+                        <p className="text-gray-400 text-[12px]">দীর্ঘস্থায়ী ব্যাটারী এবং সেনসিটিভ ডিভাইসের জন্য সেরা ভোল্টেজ স্ট্যাবিলাইজার।</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="size-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mt-1">✓</div>
+                      <div>
+                        <p className="text-white font-bold text-sm">দ্রুত সেবা</p>
+                        <p className="text-gray-400 text-[12px]">সিলেট শহর ও এর আশেপাশে আমাদের টেকনিশিয়ান টিম দ্রুত হোম সার্ভিস প্রদান করে।</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Terms and Conditions */}
+            <section className="bg-rose-50/50 p-8 rounded-3xl border border-rose-100">
+               <h3 className="text-lg font-bold text-rose-900 mb-6 flex items-center gap-2">
+                 <CheckCircle className="text-rose-600" size={20} />
+                 📌 নিয়ম ও শর্তাবলী:
+               </h3>
+               <ul className="space-y-4">
+                 {[
+                   "সার্ভিস গ্রহণ বা পণ্য ক্রয়ের সময় অবশ্যই ভিআইপি কার্ড বা কার্ড নাম্বারটি প্রদর্শন করতে হবে।",
+                   "ইলেকট্রিক ওয়্যারিং বা ফিটিং সার্ভিসের ক্ষেত্রে কাজ শুরুর আগেই কার্ড নাম্বারটি নিশ্চিত করতে হবে।",
+                   "অন্য কোনো রানিং অফারের সাথে এই ডিসকাউন্টটি যুক্ত করা যাবে না।"
+                 ].map((t, i) => (
+                   <li key={i} className="flex gap-3 text-[13px] text-gray-700 font-medium">
+                     <span className="text-rose-400 font-black">•</span>
+                     {t}
+                   </li>
+                 ))}
+               </ul>
+            </section>
+          </div>
+
+          <div className="mt-12 bg-gray-50 rounded-3xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 border border-gray-100">
+            <div className="space-y-1 text-center sm:text-left">
+              <h4 className="font-bold text-gray-900">Need Assistance?</h4>
+              <p className="text-sm text-gray-500 font-medium">Our support team is ready to help you with your VIP membership.</p>
+            </div>
             <a
               href={`https://wa.me/${contactDetails.whatsApp.replace(/\+/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
+<<<<<<< HEAD
               className="flex items-center justify-center gap-3 w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-black py-4 px-6 rounded-md shadow-lg transition-all active:scale-95 text-sm uppercase tracking-widest"
+=======
+              className="flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#128C7E] text-white font-black py-4 px-8 rounded-2xl shadow-lg transition-all active:scale-95 text-sm uppercase tracking-widest whitespace-nowrap"
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
             >
               <MessageCircle size={20} />
-              Contact Support via WhatsApp
+              WhatsApp Support
             </a>
           </div>
         </div>

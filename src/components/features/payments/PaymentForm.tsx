@@ -20,12 +20,17 @@ export default function PaymentForm({
   const [paymentData, setPaymentData] = useState<Partial<PaymentDataType>>({
     ...paymentInfo,
     date: paymentInfo?.date || new Date(),
+    paymentMethod: paymentInfo?.paymentMethod || (paymentInfo as any)?.staff?.paymentPreference || "bkash",
     receiverWalletNumber:
+<<<<<<< HEAD
       paymentInfo?.receiverWalletNumber ||
       paymentInfo?.staff?.walletNumber ||
       "",
+=======
+      paymentInfo?.receiverWalletNumber || (paymentInfo as any)?.staff?.walletNumber || "",
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
     receiverBankInfo:
-      paymentInfo?.receiverBankInfo || paymentInfo?.staff?.bankInfo || null,
+      paymentInfo?.receiverBankInfo || (paymentInfo as any)?.staff?.bankInfo || null,
   });
 
   const [isPending, setIsPending] = useState(false);
@@ -118,8 +123,9 @@ export default function PaymentForm({
             <label className="text-sm">
               Payment Method
               <select
-                disabled={mode === "update"}
+                disabled={true}
                 value={paymentMethod}
+<<<<<<< HEAD
                 onChange={(e) => {
                   const method = e.target.value as any;
                   setPaymentData((prev) => ({
@@ -138,6 +144,9 @@ export default function PaymentForm({
                   }));
                 }}
                 className="__input p-0 px-2 mt-1"
+=======
+                className="__input p-0 px-2 mt-1 appearance-none bg-gray-50 opacity-70 cursor-not-allowed"
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
               >
                 <option value="bkash">বিকাশ</option>
                 <option value="nagad">নগদ</option>
