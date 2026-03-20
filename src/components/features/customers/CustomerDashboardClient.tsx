@@ -107,7 +107,7 @@ export default function CustomerDashboardClient({
     {
       label: "Feedback",
       icon: Star,
-      href: "/customer/services",
+      href: "/customer/feedback",
       color: "text-pink-500",
     },
     {
@@ -173,15 +173,15 @@ export default function CustomerDashboardClient({
 
           {/* Header */}
           <div className="flex items-start justify-between gap-4 relative z-10">
-            <div className="flex items-center gap-3 min-w-0">
+            <div className="flex items-center gap-3 min-w-0 ml-4">
               {/* Avatar */}
-              <div className="size-14 -mt-14 rounded-md bg-brand/5 flex items-center justify-center shadow-inner">
-                <User className="text-brand" size={24} />
+              <div className="p-2 rounded-md bg-brand/5 mt-7">
+                <User className="text-brand" size={16} />
               </div>
 
               <div className="min-w-0">
                 {/* Badge */}
-                <div className="inline-flex items-center px-3 py-1.5 rounded-nd bg-[#ECFDF5] border border-[#10B981]/25  text-sm font-extrabold uppercase tracking-[0.25em] mb-2 shadow-sm text-[#10B981]">
+                <div className="inline-flex items-center text-xs px-3 py-1.5 rounded-md bg-[#ECFDF5] border border-[#10B981]/25  font-extrabold uppercase tracking-[0.25em] mb-2 shadow-sm text-[#10B981] ">
                   ● Active Customer
                 </div>
 
@@ -191,7 +191,7 @@ export default function CustomerDashboardClient({
                 </h2>
 
                 {/* ID */}
-                <p className="text-lg font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   ID:
                   <span className="text-gray-900  tracking-normal">
                     {customer.customerId}
@@ -201,7 +201,7 @@ export default function CustomerDashboardClient({
             </div>
 
             {/* Status & Notifications */}
-            <div className="flex flex-col items-end gap-3">
+            <div className="flex flex-col items-end gap-3 -mt-1">
               <CustomerNotificationBell variant="card" />
               <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[14px] font-bold uppercase tracking-wider">
                 <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
@@ -216,30 +216,30 @@ export default function CustomerDashboardClient({
           {/* Info Section */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm font-semibold">
             {/* Phone */}
-            <div className="flex items-center gap-3 px-4 py-1 rounded-2xl  border border-gray-100 hover:bg-gray-100 transition-all duration-200">
-              <div className="p-2 rounded-xl bg-brand/5">
+            <div className="flex items-center gap-3 px-4 py-1 rounded-md  border border-gray-100 hover:bg-gray-100 transition-all duration-200">
+              <div className="p-2 rounded-md bg-brand/5">
                 <PhoneCall size={16} className="text-brand" />
               </div>
               <div className="flex flex-col">
                 <span className="text-[14px] uppercase text-gray-400 font-semibold tracking-widest">
                   Phone
                 </span>
-                <span className="text-gray-700 text-lg truncate">
+                <span className="text-gray-700 text-sm truncate">
                   {customer.phone}
                 </span>
               </div>
             </div>
 
             {/* Address */}
-            <div className="flex items-center gap-3 px-4  rounded-2xl    hover:bg-gray-100 transition-all duration-200">
-              <div className="p-2 rounded-xl bg-brand/5">
+            <div className="flex items-center gap-3 px-4  rounded-md    hover:bg-gray-100 transition-all duration-200">
+              <div className="p-2 rounded-md bg-brand/5">
                 <MapPin size={16} className="text-brand" />
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-[14px] uppercase text-gray-400 font-semibold tracking-widest">
                   Address
                 </span>
-                <span className="text-gray-700 text-lg truncate">
+                <span className="text-gray-700 text-sm truncate">
                   {customer.address || "No address provided"}
                 </span>
               </div>
@@ -248,7 +248,7 @@ export default function CustomerDashboardClient({
 
           {/* Optional VIP Section */}
           {customer.vipStatus === "approved" && (
-            <div className="mt-6 flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+            <div className="mt-6 flex items-center justify-between p-4 rounded-md bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-300">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-md bg-yellow-100">
                   <Crown size={18} className="text-yellow-600" />
@@ -273,7 +273,7 @@ export default function CustomerDashboardClient({
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6">
           <div className="bg-white p-5 rounded-md shadow-sm border  flex items-center gap-4">
-            <div className="size-12 rounded-2xl bg-emerald-50 flex items-center justify-center">
+            <div className="size-12 rounded-md bg-emerald-50 flex items-center justify-center">
               <CheckCircle className="text-emerald-500" size={24} />
             </div>
             <div>
@@ -301,6 +301,58 @@ export default function CustomerDashboardClient({
           </div>
         </div>
 
+<<<<<<< HEAD
+        {/* VIP Card Display */}
+        {customer.vipStatus === "approved" && (
+          <Link
+            href="/customer/vip-card"
+            className="block perspective-1000 group"
+          >
+            <div className="bg-[#1d4ed8] rounded-md p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden group border-4 border-white/20 animate-in slide-in-from-bottom-4 duration-500">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-white/10 transition-all duration-700"></div>
+
+              <div className="relative z-10">
+                <div className="flex justify-between items-start mb-10">
+                  <div>
+                    <p className="text-blue-100 font-bold uppercase tracking-[0.2em] text-[14px] mb-1">
+                      SE Electronics
+                    </p>
+                    <h2 className="text-xl font-black tracking-tight text-white/90">
+                      VIP PREMIER
+                    </h2>
+                  </div>
+                  <Crown size={28} className="text-white opacity-80" />
+                </div>
+
+                <div className="mb-8 font-mono">
+                  <p className="text-blue-100/60 text-[8px] uppercase tracking-[0.3em] mb-2">
+                    Member Number
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold tracking-[0.2em]">
+                    {customer.vipCardNumber?.match(/.{1,4}/g)?.join(" ")}
+                  </p>
+                </div>
+
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="text-blue-100/60 text-[8px] uppercase tracking-[0.3em] mb-1">
+                      Cardholder
+                    </p>
+                    <p className="text-sm font-bold uppercase tracking-wider">
+                      {customer.name}
+                    </p>
+                  </div>
+                  <div className="text-[14px] font-black italic tracking-widest bg-white/10 px-3 py-1 rounded-md border border-white/10">
+                    ELITE
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        )}
+
+=======
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
         {/* Desktop Action Grid */}
         <div className="hidden sm:block bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-8">
@@ -351,7 +403,7 @@ export default function CustomerDashboardClient({
                 href={action.href}
                 className="flex flex-col items-center gap-3 transition-transform active:scale-95 group"
               >
-                <div className="size-12 sm:size-14 rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-brand/5 transition-colors">
+                <div className="size-12 sm:size-14 rounded-md bg-gray-50 flex items-center justify-center group-hover:bg-brand/5 transition-colors">
                   <action.icon
                     className={`${action.color} group-hover:scale-110 transition-transform`}
                     size={24}

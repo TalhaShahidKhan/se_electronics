@@ -60,7 +60,7 @@ export function StaffPaymentSettingsForm({
         <select
           value={method}
           onChange={(e) => setMethod(e.target.value as PaymentMethod)}
-          className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+          className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
         >
           <option value="bkash">{METHOD_LABELS.bkash}</option>
           <option value="nagad">{METHOD_LABELS.nagad}</option>
@@ -81,7 +81,7 @@ export function StaffPaymentSettingsForm({
             onChange={(e) => setWalletNumber(e.target.value)}
             placeholder="01XXXXXXXXX"
             required={isWallet}
-            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
           />
           <p className="mt-1 text-[11px] text-gray-500">
             পেমেন্ট এই নম্বরে পাঠানো হবে। সঠিক পার্সোনাল নাম্বার দিন।
@@ -104,7 +104,7 @@ export function StaffPaymentSettingsForm({
                 }
                 placeholder="e.g. DBBL, City Bank"
                 required
-                className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+                className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
               />
             </div>
             <div>
@@ -123,7 +123,7 @@ export function StaffPaymentSettingsForm({
                 }
                 placeholder="Your name"
                 required
-                className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+                className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
               />
             </div>
             <div>
@@ -139,7 +139,7 @@ export function StaffPaymentSettingsForm({
                 }
                 placeholder="1234567890"
                 required
-                className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+                className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
               />
             </div>
             <div>
@@ -155,7 +155,7 @@ export function StaffPaymentSettingsForm({
                 }
                 placeholder="e.g. Sylhet Branch"
                 required
-                className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+                className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
               />
             </div>
           </div>
@@ -165,7 +165,7 @@ export function StaffPaymentSettingsForm({
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-brand text-white font-bold py-2.5 rounded-xl text-sm uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
+        className="w-full bg-brand text-white font-bold py-2.5 rounded-md text-sm uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
       >
         {isPending ? "Saving..." : "Save payment details"}
       </button>

@@ -56,12 +56,12 @@ export default async function StaffInvoiceDetailsPage({
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <MobilePageHeader 
-        title="Invoice Details" 
-        backHref="/staff/payment" 
+      <MobilePageHeader
+        title="Invoice Details"
+        backHref="/staff/payment"
         Icon={FileText}
       />
-      
+
       {/* ─────────────── DESKTOP VIEW ─────────────── */}
       <div className="hidden lg:block">
         <div className="p-4 sm:p-6 max-w-4xl mx-auto space-y-8">
@@ -71,14 +71,14 @@ export default async function StaffInvoiceDetailsPage({
               href="/staff/payment"
               className="flex items-center gap-2 text-gray-500 hover:text-brand font-black text-sm uppercase tracking-widest transition-colors group"
             >
-              <div className="size-8 rounded-xl bg-gray-100 flex items-center justify-center group-hover:bg-brand/10 transition-colors">
+              <div className="size-8 rounded-md bg-gray-100 flex items-center justify-center group-hover:bg-brand/10 transition-colors">
                 <ChevronLeft size={18} />
               </div>
               Back to Payments
             </Link>
             <div
               className={clsx(
-                "px-4 py-2 rounded-2xl text-sm font-black uppercase tracking-[0.2em] shadow-sm border",
+                "px-4 py-2 rounded-md text-sm font-black uppercase tracking-[0.2em] shadow-sm border",
                 payment.status === "completed"
                   ? "bg-emerald-50 text-emerald-700 border-emerald-100"
                   : payment.status === "processing"
@@ -97,7 +97,7 @@ export default async function StaffInvoiceDetailsPage({
             <div className="bg-brand p-8 sm:p-12 text-white relative overflow-hidden">
               <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                 <div className="space-y-2">
-                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-white/10 text-white/90 text-[10px] font-black uppercase tracking-[0.3em] mb-2">
+                  <div className="inline-flex items-center px-3 py-1 rounded-md bg-white/10 text-white/90 text-[10px] font-black uppercase tracking-[0.3em] mb-2">
                     Official Receipt
                   </div>
                   <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
@@ -183,7 +183,7 @@ export default async function StaffInvoiceDetailsPage({
                   </h3>
                   <div className="bg-gray-50 rounded-3xl p-6 space-y-4 border border-gray-100">
                     <div className="flex items-center gap-4">
-                      <div className="size-12 rounded-2xl bg-white flex items-center justify-center text-brand shadow-sm">
+                      <div className="size-12 rounded-md bg-white flex items-center justify-center text-brand shadow-sm">
                         <Briefcase size={20} />
                       </div>
                       <div>
@@ -243,7 +243,7 @@ export default async function StaffInvoiceDetailsPage({
                           SE ELECTRONICS
                         </p>
                       </div>
-                      <div className="size-12 rounded-2xl bg-white flex items-center justify-center text-brand shadow-sm">
+                      <div className="size-12 rounded-md bg-white flex items-center justify-center text-brand shadow-sm">
                         <Smartphone size={20} />
                       </div>
                     </div>
@@ -300,7 +300,7 @@ export default async function StaffInvoiceDetailsPage({
                         </div>
                         <Link
                           href={`/staff/customers/${payment.service.customerId}`}
-                          className="px-4 py-2 bg-white rounded-xl text-[10px] font-black text-brand uppercase tracking-tighter border border-brand/20 shadow-sm hover:bg-brand hover:text-white transition-all"
+                          className="px-4 py-2 bg-white rounded-md text-[10px] font-black text-brand uppercase tracking-tighter border border-brand/20 shadow-sm hover:bg-brand hover:text-white transition-all"
                         >
                           View Profile
                         </Link>
@@ -407,309 +407,304 @@ export default async function StaffInvoiceDetailsPage({
 
       {/* ─────────────── MOBILE VIEW (Steadfast-style) ─────────────── */}
       <div className="lg:hidden bg-gray-100 min-h-screen pb-24 space-y-3 p-3">
-          {/* ── Invoice Header Block ── */}
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <p className="text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
-              INVOICE
+        {/* ── Invoice Header Block ── */}
+        <div className="bg-white rounded-md p-4 shadow-sm">
+          <p className="text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
+            INVOICE
+          </p>
+          <div className="flex items-center justify-between mb-2">
+            <p className="font-black text-gray-900 text-base">
+              {payment.invoiceNumber}
             </p>
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-black text-gray-900 text-base">
-                {payment.invoiceNumber}
-              </p>
-              <span
-                className={clsx(
-                  "text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg shadow-sm border",
-                  payment.status === "completed"
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-100"
-                    : payment.status === "processing"
-                      ? "bg-blue-50 text-blue-700 border-blue-100"
-                      : payment.status === "rejected"
-                        ? "bg-rose-50 text-rose-700 border-rose-100"
-                        : "bg-amber-50 text-amber-700 border-amber-100",
-                )}
-              >
-                {payment.status}
+            <span
+              className={clsx(
+                "text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md shadow-sm border",
+                payment.status === "completed"
+                  ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                  : payment.status === "processing"
+                    ? "bg-blue-50 text-blue-700 border-blue-100"
+                    : payment.status === "rejected"
+                      ? "bg-rose-50 text-rose-700 border-rose-100"
+                      : "bg-amber-50 text-amber-700 border-amber-100",
+              )}
+            >
+              {payment.status}
+            </span>
+          </div>
+          <p className="text-sm text-gray-400 font-bold">
+            {formatDate(payment.date || payment.createdAt!)}
+          </p>
+        </div>
+
+        {/* ── Payment Information Block ── */}
+        <div className="bg-white rounded-md p-5 shadow-sm">
+          <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+            <CreditCard size={16} className="text-brand" />
+            Payment Information
+          </h3>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500 font-bold">Amount Delivered</span>
+              <span className="font-black text-gray-900">
+                ৳{(payment.amount + 190 + 34).toLocaleString()}
               </span>
             </div>
-            <p className="text-sm text-gray-400 font-bold">
-              {formatDate(payment.date || payment.createdAt!)}
-            </p>
-          </div>
 
-          {/* ── Payment Information Block ── */}
-          <div className="bg-white rounded-xl p-5 shadow-sm">
-            <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-              <CreditCard size={16} className="text-brand" />
-              Payment Information
-            </h3>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500 font-bold">
-                  Amount Delivered
-                </span>
-                <span className="font-black text-gray-900">
-                  ৳{(payment.amount + 190 + 34).toLocaleString()}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500 font-bold">Due Bills</span>
-                <span className="font-black text-rose-500">-৳190</span>
-              </div>
-
-              <div className="flex items-center justify-between text-sm border-t border-gray-50 pt-2">
-                <span className="text-gray-500 font-bold">Sub-Total</span>
-                <span className="font-black text-gray-900">
-                  ৳{(payment.amount + 34).toLocaleString()}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500 font-bold">
-                  COD Charge & Fees
-                </span>
-                <span className="font-black text-rose-500">-৳34</span>
-              </div>
-              <div className="border-t border-dashed border-gray-400 my-4"></div>
-              {/* Final Total */}
-              <div className="border-t border-dashed border-gray-200  " />
-              <div className="flex items-center justify-between">
-                {String(session.username)}
-                <span className="text-sm font-black text-gray-900">
-                  Total Settlement
-                </span>
-                <span className="text-xl font-black text-brand">
-                  ৳{payment.amount?.toLocaleString()}
-                </span>
-              </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500 font-bold">Due Bills</span>
+              <span className="font-black text-rose-500">-৳190</span>
             </div>
-          </div>
 
-          {/* ── Recipient Information (Customer) ── */}
-          {payment.service && (
-            <div className="bg-white rounded-xl p-5 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-16 h-16 bg-brand/5 rounded-full -mr-8 -mt-8 grayscale" />
-              <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-                <User size={16} className="text-brand" />
-                Customer Information
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-base font-black text-gray-900 mb-1">
-                    {payment.service.customerName}
-                  </p>
-                  <p className="text-sm text-gray-500 font-bold leading-relaxed">
-                    {payment.service.customerAddress},{" "}
-                    {payment.service.customerAddressDistrict}
-                  </p>
-                  <p className="text-sm text-brand font-black mt-1">
-                    {payment.service.customerPhone}
-                  </p>
-                </div>
-
-                <div className="pt-2 border-t border-gray-50 flex gap-3">
-                  <Link
-                    href={`/staff/customers/${payment.service.customerId}`}
-                    className="flex-1 text-center py-2.5 rounded-xl bg-gray-50 text-gray-600 font-black text-[10px] uppercase tracking-widest border border-gray-100 hover:bg-brand/5 hover:text-brand hover:border-brand/20 transition-all active:scale-95"
-                  >
-                    View Profile
-                  </Link>
-                  <Link
-                    href={`tel:${payment.service.customerPhone}`}
-                    className="p-2.5 rounded-xl bg-brand text-white shadow-lg shadow-brand/20 active:scale-95"
-                  >
-                    <PhoneCall size={16} />
-                  </Link>
-                </div>
-              </div>
+            <div className="flex items-center justify-between text-sm border-t border-gray-50 pt-2">
+              <span className="text-gray-500 font-bold">Sub-Total</span>
+              <span className="font-black text-gray-900">
+                ৳{(payment.amount + 34).toLocaleString()}
+              </span>
             </div>
-          )}
 
-          {/* ── Recipient (Staff) Info ── */}
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-400 md:border-none">
-            <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-              {/* <Briefcase size={16} className="text-brand" /> */}
-              Recipient Information
-            </h3>
-            <p className="font-black text-gray-900 text-base">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500 font-bold">COD Charge & Fees</span>
+              <span className="font-black text-rose-500">-৳34</span>
+            </div>
+            <div className="border-t border-dashed border-gray-400 my-4"></div>
+            {/* Final Total */}
+            <div className="border-t border-dashed border-gray-200  " />
+            <div className="flex items-center justify-between">
               {String(session.username)}
-            </p>
-            <p className="text-sm text-gray-400 font-bold uppercase tracking-tighter mt-1">
-              Staff Member • {payment.paymentMethod}
-            </p>
-
-            {payment.paymentMethod === "bank" ? (
-              <div className="mt-3  bg-gray-50 rounded-xl border border-gray-100">
-                <p className="text-sm font-black text-gray-400 uppercase mb-1">
-                  Bank Account
-                </p>
-                <p className="text-sm font-bold text-gray-700">
-                  {payment.receiverBankInfo?.bankName}
-                </p>
-                <p className="text-sm font-black text-gray-900">
-                  {payment.receiverBankInfo?.accountNumber}
-                </p>
-              </div>
-            ) : (
-              <div>
-                <div className=" flex justify-start gap-2 items-center  bg-gray-50 rounded-xl border border-gray-100">
-                  <p className="text-sm font-black text-gray-400 uppercase mb-1">
-                    Wallet Number
-                  </p>
-                  <p className="text-sm font-black text-gray-900">
-                    {payment.receiverWalletNumber || "N/A"}
-                  </p>
-                </div>
-                <div className="flex justify-start gap-2 items-center  bg-gray-50 rounded-xl border border-gray-100">
-                  <p className="text-sm font-black text-gray-400 uppercase ">
-                    Amount
-                  </p>
-                  <p className="text-sm font-black text-gray-500">
-                    {payment.amount || "N/A"}
-                  </p>
-                </div>
-                <div className="flex justify-start gap-2 items-center  bg-gray-50 rounded-xl border border-gray-100">
-                  <p className="text-sm font-black text-gray-400 uppercase ">
-                    Trx Id :
-                  </p>
-                  <p className="text-sm font-black text-gray-500">
-                    {payment.transactionId || "N/A"}
-                  </p>
-                </div>
-              </div>
-            )}
+              <span className="text-sm font-black text-gray-900">
+                Total Settlement
+              </span>
+              <span className="text-xl font-black text-brand">
+                ৳{payment.amount?.toLocaleString()}
+              </span>
+            </div>
           </div>
+        </div>
 
-          {/* ── Service Information Block ── */}
-          {payment.service && (
-            <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-brand ">
-              <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-                <Activity size={16} className="text-brand" />
-                Service details
-              </h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400 font-bold uppercase tracking-widest">
-                    Service Type
-                  </span>
-                  <span className=" font-black uppercase text-brand">
-                    {payment.service.type}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400 font-bold uppercase tracking-widest">
-                    Product
-                  </span>
-                  <span className="text-gray-900 font-black text-right">
-                    {payment.service.productType} •{" "}
-                    {payment.service.productModel}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400 font-bold uppercase tracking-widest">
-                    Tracking ID
-                  </span>
-                  <Link
-                    href={`/service-track?trackingId=${payment.service.serviceId}`}
-                    className="text-brand font-black underline"
-                  >
-                    #{payment.service.serviceId.substring(0, 12)}...
-                  </Link>
-                </div>
+        {/* ── Recipient Information (Customer) ── */}
+        {payment.service && (
+          <div className="bg-white rounded-md p-5 shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-16 h-16 bg-brand/5 rounded-full -mr-8 -mt-8 grayscale" />
+            <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+              <User size={16} className="text-brand" />
+              Customer Information
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <p className="text-base font-black text-gray-900 mb-1">
+                  {payment.service.customerName}
+                </p>
+                <p className="text-sm text-gray-500 font-bold leading-relaxed">
+                  {payment.service.customerAddress},{" "}
+                  {payment.service.customerAddressDistrict}
+                </p>
+                <p className="text-sm text-brand font-black mt-1">
+                  {payment.service.customerPhone}
+                </p>
+              </div>
+
+              <div className="pt-2 border-t border-gray-50 flex gap-3">
+                <Link
+                  href={`/staff/customers/${payment.service.customerId}`}
+                  className="flex-1 text-center py-2.5 rounded-md bg-gray-50 text-gray-600 font-black text-[10px] uppercase tracking-widest border border-gray-100 hover:bg-brand/5 hover:text-brand hover:border-brand/20 transition-all active:scale-95"
+                >
+                  View Profile
+                </Link>
+                <Link
+                  href={`tel:${payment.service.customerPhone}`}
+                  className="p-2.5 rounded-md bg-brand text-white shadow-lg shadow-brand/20 active:scale-95"
+                >
+                  <PhoneCall size={16} />
+                </Link>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* ── Sender Information Block ── */}
-          <div className="bg-white rounded-md md:border-none border border-gray-500 p-5 shadow-sm opacity-75">
-            <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-              {/* <Building2 size={16} /> */}
-              Sender Information
-            </h3>
-            <div className="flex justify-start gap-3 items-center">
-              <p className="font-black text-gray-800 text-sm">SE ELECTRONICS</p>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-0.5">
-                Corporate Office
+        {/* ── Recipient (Staff) Info ── */}
+        <div className="bg-white rounded-md p-5 shadow-sm border border-gray-400 md:border-none">
+          <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+            {/* <Briefcase size={16} className="text-brand" /> */}
+            Recipient Information
+          </h3>
+          <p className="font-black text-gray-900 text-base">
+            {String(session.username)}
+          </p>
+          <p className="text-sm text-gray-400 font-bold uppercase tracking-tighter mt-1">
+            Staff Member • {payment.paymentMethod}
+          </p>
+
+          {payment.paymentMethod === "bank" ? (
+            <div className="mt-3  bg-gray-50 rounded-md border border-gray-100">
+              <p className="text-sm font-black text-gray-400 uppercase mb-1">
+                Bank Account
+              </p>
+              <p className="text-sm font-bold text-gray-700">
+                {payment.receiverBankInfo?.bankName}
+              </p>
+              <p className="text-sm font-black text-gray-900">
+                {payment.receiverBankInfo?.accountNumber}
               </p>
             </div>
-
-            {payment.paymentMethod === "bank" ? (
-              <div className="mt-3 text-sm space-y-0.5 font-bold text-gray-500">
-                <p>{payment.senderBankInfo?.bankName || "Corporate Bank"}</p>
-                <p>{payment.senderBankInfo?.accountNumber || "********4590"}</p>
-              </div>
-            ) : (
-              <div>
-                <p className="text-sm font-bold text-gray-500 mt-2">
-                  Merchant: {payment.senderWalletNumber || "N/A"}
+          ) : (
+            <div>
+              <div className=" flex justify-start gap-2 items-center  bg-gray-50 rounded-md border border-gray-100">
+                <p className="text-sm font-black text-gray-400 uppercase mb-1">
+                  Wallet Number
                 </p>
-                <p className="text-sm font-bold text-gray-500 mt-2">
-                  Payment Method: {payment.paymentMethod || "N/A"}
-                </p>
-                <p className="text-sm font-bold text-gray-500 mt-2">
-                  Trx ID: {payment.transactionId || "N/A"}
+                <p className="text-sm font-black text-gray-900">
+                  {payment.receiverWalletNumber || "N/A"}
                 </p>
               </div>
-            )}
-          </div>
+              <div className="flex justify-start gap-2 items-center  bg-gray-50 rounded-md border border-gray-100">
+                <p className="text-sm font-black text-gray-400 uppercase ">
+                  Amount
+                </p>
+                <p className="text-sm font-black text-gray-500">
+                  {payment.amount || "N/A"}
+                </p>
+              </div>
+              <div className="flex justify-start gap-2 items-center  bg-gray-50 rounded-md border border-gray-100">
+                <p className="text-sm font-black text-gray-400 uppercase ">
+                  Trx Id :
+                </p>
+                <p className="text-sm font-black text-gray-500">
+                  {payment.transactionId || "N/A"}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
 
-          <div className="bg-white rounded-md md:border-none border border-gray-500 p-5 shadow-sm opacity-75">
+        {/* ── Service Information Block ── */}
+        {payment.service && (
+          <div className="bg-white rounded-md p-5 shadow-sm border-l-4 border-brand ">
             <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-              {/* <Building2 size={16} /> */}
-              Service Information
+              <Activity size={16} className="text-brand" />
+              Service details
             </h3>
-
-            {payment.paymentMethod === "bank" ? (
-              <div className="mt-3 text-sm space-y-0.5 font-bold text-gray-500">
-                <p>{payment.senderBankInfo?.bankName || "Corporate Bank"}</p>
-                <p>{payment.senderBankInfo?.accountNumber || "********4590"}</p>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400 font-bold uppercase tracking-widest">
+                  Service Type
+                </span>
+                <span className=" font-black uppercase text-brand">
+                  {payment.service.type}
+                </span>
               </div>
-            ) : (
-              <div className="space-y-2">
-                {/* Service ID + Status */}
-                <div className="flex justify-between items-center">
-                  <p className="text-sm font-bold text-gray-500">
-                    Service Id: {payment.serviceId || "N/A"}
-                  </p>
-
-                  <div
-                    className={clsx(
-                      "px-2 py-1 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-sm border",
-                      payment.status === "completed"
-                        ? "bg-emerald-50 text-emerald-700 border-emerald-100"
-                        : payment.status === "processing"
-                          ? "bg-blue-50 text-blue-700 border-blue-100"
-                          : payment.status === "rejected"
-                            ? "bg-rose-50 text-rose-700 border-rose-100"
-                            : "bg-amber-50 text-amber-700 border-amber-100",
-                    )}
-                  >
-                    {payment.status}
-                  </div>
-                </div>
-
-                {/* Customer + COD */}
-                <div className="flex justify-between">
-                  <p className="text-sm font-bold text-gray-500">
-                    Customer: {String(session.username)}
-                  </p>
-
-                  <span className="text-sm font-bold text-gray-500">
-                    COD: {payment.amount?.toLocaleString()}
-                  </span>
-                </div>
-
-                {/* Date */}
-                <p className="text-sm font-bold text-gray-500">
-                  Date:{" "}
-                  <span>{formatDate(payment.date || payment.createdAt!)}</span>
-                </p>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400 font-bold uppercase tracking-widest">
+                  Product
+                </span>
+                <span className="text-gray-900 font-black text-right">
+                  {payment.service.productType} • {payment.service.productModel}
+                </span>
               </div>
-            )}
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400 font-bold uppercase tracking-widest">
+                  Tracking ID
+                </span>
+                <Link
+                  href={`/service-track?trackingId=${payment.service.serviceId}`}
+                  className="text-brand font-black underline"
+                >
+                  #{payment.service.serviceId.substring(0, 12)}...
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Sender Information Block ── */}
+        <div className="bg-white rounded-md md:border-none border border-gray-500 p-5 shadow-sm opacity-75">
+          <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+            {/* <Building2 size={16} /> */}
+            Sender Information
+          </h3>
+          <div className="flex justify-start gap-3 items-center">
+            <p className="font-black text-gray-800 text-sm">SE ELECTRONICS</p>
+            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-0.5">
+              Corporate Office
+            </p>
           </div>
 
-          {/* createdAt: Date;
+          {payment.paymentMethod === "bank" ? (
+            <div className="mt-3 text-sm space-y-0.5 font-bold text-gray-500">
+              <p>{payment.senderBankInfo?.bankName || "Corporate Bank"}</p>
+              <p>{payment.senderBankInfo?.accountNumber || "********4590"}</p>
+            </div>
+          ) : (
+            <div>
+              <p className="text-sm font-bold text-gray-500 mt-2">
+                Merchant: {payment.senderWalletNumber || "N/A"}
+              </p>
+              <p className="text-sm font-bold text-gray-500 mt-2">
+                Payment Method: {payment.paymentMethod || "N/A"}
+              </p>
+              <p className="text-sm font-bold text-gray-500 mt-2">
+                Trx ID: {payment.transactionId || "N/A"}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white rounded-md md:border-none border border-gray-500 p-5 shadow-sm opacity-75">
+          <h3 className="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+            {/* <Building2 size={16} /> */}
+            Service Information
+          </h3>
+
+          {payment.paymentMethod === "bank" ? (
+            <div className="mt-3 text-sm space-y-0.5 font-bold text-gray-500">
+              <p>{payment.senderBankInfo?.bankName || "Corporate Bank"}</p>
+              <p>{payment.senderBankInfo?.accountNumber || "********4590"}</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {/* Service ID + Status */}
+              <div className="flex justify-between items-center">
+                <p className="text-sm font-bold text-gray-500">
+                  Service Id: {payment.serviceId || "N/A"}
+                </p>
+
+                <div
+                  className={clsx(
+                    "px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-[0.2em] shadow-sm border",
+                    payment.status === "completed"
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                      : payment.status === "processing"
+                        ? "bg-blue-50 text-blue-700 border-blue-100"
+                        : payment.status === "rejected"
+                          ? "bg-rose-50 text-rose-700 border-rose-100"
+                          : "bg-amber-50 text-amber-700 border-amber-100",
+                  )}
+                >
+                  {payment.status}
+                </div>
+              </div>
+
+              {/* Customer + COD */}
+              <div className="flex justify-between">
+                <p className="text-sm font-bold text-gray-500">
+                  Customer: {String(session.username)}
+                </p>
+
+                <span className="text-sm font-bold text-gray-500">
+                  COD: {payment.amount?.toLocaleString()}
+                </span>
+              </div>
+
+              {/* Date */}
+              <p className="text-sm font-bold text-gray-500">
+                Date:{" "}
+                <span>{formatDate(payment.date || payment.createdAt!)}</span>
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* createdAt: Date;
     updatedAt: Date;
     id: string;
     date: Date;
@@ -737,29 +732,29 @@ export default async function StaffInvoiceDetailsPage({
     senderBankInfo: BankInfo | null;
     receiverBankInfo: BankInfo | null;
 } */}
-          {/* ====================================================== */}
+        {/* ====================================================== */}
 
-          {/* ── Action Buttons ── */}
-          <div className="pt-4 grid grid-cols-2 gap-3">
-            <InvoicePreviewButton
-              paymentData={payment}
-              className="flex items-center justify-center gap-2 bg-white text-gray-900 py-4 rounded-2xl text-sm font-black border border-gray-200 shadow-sm active:scale-95"
+        {/* ── Action Buttons ── */}
+        <div className="pt-4 grid grid-cols-2 gap-3">
+          <InvoicePreviewButton
+            paymentData={payment}
+            className="flex items-center justify-center gap-2 bg-white text-gray-900 py-4 rounded-md text-sm font-black border border-gray-200 shadow-sm active:scale-95"
+          >
+            <Eye size={16} />
+            Preview
+          </InvoicePreviewButton>
+          {payment.status === "completed" && (
+            <a
+              target="_blank"
+              href={`/pdf/download?type=payment&id=${payment.invoiceNumber}`}
+              className="flex items-center justify-center gap-2 bg-brand text-white py-4 rounded-md text-sm font-black shadow-lg shadow-brand/20 active:scale-95"
             >
-              <Eye size={16} />
-              Preview
-            </InvoicePreviewButton>
-            {payment.status === "completed" && (
-              <a
-                target="_blank"
-                href={`/pdf/download?type=payment&id=${payment.invoiceNumber}`}
-                className="flex items-center justify-center gap-2 bg-brand text-white py-4 rounded-2xl text-sm font-black shadow-lg shadow-brand/20 active:scale-95"
-              >
-                <Download size={16} />
-                Download
-              </a>
-            )}
-          </div>
+              <Download size={16} />
+              Download
+            </a>
+          )}
         </div>
-      </StaffLayout>
-    );
-  }
+      </div>
+    </StaffLayout>
+  );
+}

@@ -36,9 +36,9 @@ export default async function StaffPaymentRequestPage() {
 
   return (
     <StaffLayout balance={stats?.availableBalance || 0}>
-      <MobilePageHeader 
-        title="Request Payout" 
-        backHref="/staff/payment" 
+      <MobilePageHeader
+        title="Request Payout"
+        backHref="/staff/payment"
         Icon={ShoppingBag}
       />
 
@@ -46,11 +46,11 @@ export default async function StaffPaymentRequestPage() {
         {/* Large Balance Display */}
         <div className="bg-gradient-to-br from-brand via-brand-800 to-brand-700 rounded-[2.5rem] p-8 sm:p-12 text-white shadow-xl overflow-hidden relative group text-center">
           <div className="relative z-10 flex flex-col items-center gap-2">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-white/10 text-white/90 text-sm font-black uppercase tracking-[0.25em] mb-4">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-md bg-white/10 text-white/90 text-sm font-black uppercase tracking-[0.25em] mb-4">
               Available Balance
             </div>
             <div className="flex items-center gap-4">
-              <div className="size-12 sm:size-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl">
+              <div className="size-12 sm:size-16 rounded-md bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl">
                 <span className="text-2xl sm:text-3xl font-black text-white">
                   ৳
                 </span>
@@ -71,7 +71,7 @@ export default async function StaffPaymentRequestPage() {
         {/* Page Title & Form Section (Desktop Only) */}
         <div className="hidden md:block space-y-6">
           <div className="flex items-center gap-3 px-2">
-            <div className="p-2.5 bg-brand/5 rounded-2xl text-brand">
+            <div className="p-2.5 bg-brand/5 rounded-md text-brand">
               <ShoppingBag size={24} />
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
@@ -81,7 +81,7 @@ export default async function StaffPaymentRequestPage() {
         </div>
 
         {!canRequest && (
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-4">
+          <div className="bg-amber-50 border border-amber-200 rounded-md p-5 flex gap-4">
             <div className="shrink-0 p-2 bg-amber-100 rounded-full h-fit">
               <AlertCircle size={20} className="text-amber-600" />
             </div>
@@ -95,7 +95,7 @@ export default async function StaffPaymentRequestPage() {
               </p>
               <Link
                 href="/staff/payment/settings"
-                className="inline-flex items-center gap-2 mt-4 text-sm font-bold text-white bg-amber-600 px-4 py-2 rounded-xl hover:bg-amber-700 transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 mt-4 text-sm font-bold text-white bg-amber-600 px-4 py-2 rounded-md hover:bg-amber-700 transition-colors shadow-sm"
               >
                 Go to Settings
               </Link>
@@ -104,8 +104,8 @@ export default async function StaffPaymentRequestPage() {
         )}
 
         {canRequest && (
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-gray-50/50 border border-gray-100">
+          <div className="bg-white rounded-md p-6 shadow-sm border border-gray-100 space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-md bg-gray-50/50 border border-gray-100">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Wallet className="w-4 h-4 text-brand" />
@@ -132,7 +132,7 @@ export default async function StaffPaymentRequestPage() {
               </div>
               <Link
                 href="/staff/payment/settings"
-                className="px-4 py-2 bg-white border border-gray-100 rounded-xl text-[10px] font-bold text-gray-500 hover:bg-gray-50 transition-colors text-center"
+                className="px-4 py-2 bg-white border border-gray-100 rounded-md text-[10px] font-bold text-gray-500 hover:bg-gray-50 transition-colors text-center"
               >
                 CHANGE METHOD
               </Link>

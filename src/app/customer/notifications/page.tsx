@@ -71,7 +71,7 @@ export default function CustomerNotificationsPage() {
         <div className="flex items-center gap-4 mb-8">
           <Link
             href="/customer/profile"
-            className="p-2 rounded-xl bg-white border border-gray-100 shadow-sm hover:bg-gray-50 text-gray-400 hover:text-brand transition-all"
+            className="p-2 rounded-md bg-white border border-gray-100 shadow-sm hover:bg-gray-50 text-gray-400 hover:text-brand transition-all"
           >
             <ArrowLeft size={20} />
           </Link>
@@ -117,7 +117,7 @@ export default function CustomerNotificationsPage() {
                   <div className="flex gap-5">
                     <div
                       className={clsx(
-                        "shrink-0 size-12 rounded-2xl flex items-center justify-center text-white shadow-lg",
+                        "shrink-0 size-12 rounded-md flex items-center justify-center text-white shadow-lg",
                         isNotice ? "bg-amber-500" : "bg-brand",
                       )}
                     >

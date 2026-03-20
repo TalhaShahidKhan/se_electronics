@@ -11,7 +11,7 @@ export function CustomerHeader() {
     return (
       <header className="bg-[#0A1A3A] text-white shadow-2xl rounded-b-[2rem] border-b-4 border-white/5 animate-in slide-in-from-top duration-500">
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-center">
-          <h1 className="text-lg md:text-xl font-black tracking-[0.2em] uppercase text-center drop-shadow-md">
+          <h1 className="text-[15px] font-black tracking-[0.2em] uppercase text-center drop-shadow-md">
             Welcome to SE Electronics
           </h1>
         </div>

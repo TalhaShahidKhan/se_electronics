@@ -316,23 +316,23 @@ export default function StaffProfileModal({
               </div>
             </div>
             <div>
-              <div className="font-semibold mb-2 p-1 bg-brand/10 text-brand rounded-lg px-3">
+              <div className="font-semibold mb-2 p-1 bg-brand/10 text-brand rounded-md px-3">
                 Quick Actions
               </div>
-              <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-4">
+              <div className="p-4 bg-gray-50 rounded-md border border-gray-100 space-y-4">
                 <StaffActionButtons staffData={staffData as StaffsType} variant="details" />
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-gray-200">
                   <Link 
                     href={`/staffs/service-history/${staffData.staffId}`}
-                    className="flex items-center justify-center gap-2 p-4 bg-white hover:bg-gray-100 text-gray-700 rounded-2xl transition-colors border border-gray-200 font-black uppercase text-[10px] tracking-widest shadow-sm"
+                    className="flex items-center justify-center gap-2 p-4 bg-white hover:bg-gray-100 text-gray-700 rounded-md transition-colors border border-gray-200 font-black uppercase text-[10px] tracking-widest shadow-sm"
                   >
                     <Wrench size={18} className="text-brand" />
                     View Service History
                   </Link>
                   <Link 
                     href={`/staffs/payment-history/${staffData.staffId}`}
-                    className="flex items-center justify-center gap-2 p-4 bg-white hover:bg-gray-100 text-gray-700 rounded-2xl transition-colors border border-gray-200 font-black uppercase text-[10px] tracking-widest shadow-sm"
+                    className="flex items-center justify-center gap-2 p-4 bg-white hover:bg-gray-100 text-gray-700 rounded-md transition-colors border border-gray-200 font-black uppercase text-[10px] tracking-widest shadow-sm"
                   >
                     <CreditCardIcon size={18} className="text-brand" />
                     View Payment History
@@ -385,7 +385,7 @@ export default function StaffProfileModal({
                         href={doc}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-blue-50 px-4 py-2 rounded-lg text-sm text-blue-600 font-semibold hover:bg-blue-100 transition-colors"
+                        className="bg-blue-50 px-4 py-2 rounded-md text-sm text-blue-600 font-semibold hover:bg-blue-100 transition-colors"
                       >
                         Document {idx + 1}
                       </a>

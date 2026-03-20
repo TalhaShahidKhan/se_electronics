@@ -59,9 +59,9 @@ export default function RegistrationPage({ token }: { token: string }) {
 
   if (showRequirements) {
     return (
-      <div className="max-w-xl mx-auto mt-6 sm:mt-10 bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-gray-100">
+      <div className="max-w-xl mx-auto mt-6 sm:mt-10 bg-white p-6 sm:p-10 rounded-md shadow-sm border border-gray-100">
         <div className="mb-8">
-          <div className="w-16 h-16 bg-brand/5 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <div className="w-16 h-16 bg-brand/5 rounded-md flex items-center justify-center mb-6 mx-auto">
             <FileText className="text-brand" size={32} />
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-brand mb-2 text-center leading-tight">
@@ -75,9 +75,9 @@ export default function RegistrationPage({ token }: { token: string }) {
             {requirementsList.map((item) => (
               <div
                 key={item.id}
-                className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100"
+                className="flex items-start gap-3 p-4 bg-gray-50 rounded-md border border-gray-100"
               >
-                <span className="bg-emerald-500 text-white rounded-lg flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-sm sm:text-sm font-bold">
+                <span className="bg-emerald-500 text-white rounded-md flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-sm sm:text-sm font-bold">
                   ✓
                 </span>
                 <span className="text-sm sm:text-base font-bold text-gray-700 leading-tight">
@@ -88,7 +88,7 @@ export default function RegistrationPage({ token }: { token: string }) {
           </div>
         </div>
 
-        <div className="mb-8 p-4 sm:p-6 bg-brand/5 rounded-xl border border-brand/10">
+        <div className="mb-8 p-4 sm:p-6 bg-brand/5 rounded-md border border-brand/10">
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
@@ -104,7 +104,7 @@ export default function RegistrationPage({ token }: { token: string }) {
         </div>
 
         <button
-          className="w-full py-4 sm:py-5 bg-brand text-white rounded-2xl font-black text-lg sm:text-xl hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50"
+          className="w-full py-4 sm:py-5 bg-brand text-white rounded-md font-black text-lg sm:text-xl hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50"
           disabled={!isAgreed}
           onClick={() => setShowRequirements(false)}
         >
@@ -139,7 +139,7 @@ export default function RegistrationPage({ token }: { token: string }) {
         </p>
         <Link
           href="/"
-          className="px-10 py-4 bg-brand text-white rounded-2xl font-black text-lg hover:bg-brand-800 transition-all shadow-lg shadow-brand/20"
+          className="px-10 py-4 bg-brand text-white rounded-md font-black text-lg hover:bg-brand-800 transition-all shadow-lg shadow-brand/20"
         >
           হোম পেজে ফিরে যান
         </Link>
@@ -150,7 +150,7 @@ export default function RegistrationPage({ token }: { token: string }) {
   return (
     <div className="p-4 sm:p-6">
       <div className="mx-auto max-w-[1000px]">
-        <div className="mb-6 flex flex-col gap-1 bg-white p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm text-center">
+        <div className="mb-6 flex flex-col gap-1 bg-white p-6 sm:p-8 rounded-md border border-gray-100 shadow-sm text-center">
           <h1 className="text-2xl sm:text-3xl font-black text-brand leading-tight">
             এস ই ইলেকট্রনিকস সার্ভিস এজেন্ট নিয়োগ আবেদন
           </h1>
@@ -174,7 +174,7 @@ export default function RegistrationPage({ token }: { token: string }) {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-md border border-gray-100 shadow-sm overflow-hidden">
           <div className="bg-gray-50 p-4 border-b border-gray-100">
             <p className="text-sm font-bold text-gray-600 text-center">
               দয়া করে নিচের প্রতিটি ফিল্ড সঠিক তথ্য দিয়ে পূরণ করুন

@@ -41,22 +41,26 @@ export function StaffBottomNav() {
             href={item.href}
             className={clsx(
               "flex flex-col items-center gap-1 p-2 min-w-16 transition-all duration-300 relative",
-              isActive ? "text-brand" : "text-gray-400 hover:text-brand"
+              isActive ? "text-brand" : "text-gray-400 hover:text-brand",
             )}
           >
             {isActive && (
               <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-brand rounded-full" />
             )}
-            <div className={clsx(
-              "p-1.5 rounded-xl transition-all duration-300",
-              isActive ? "bg-brand/10" : ""
-            )}>
+            <div
+              className={clsx(
+                "p-1.5 rounded-md transition-all duration-300",
+                isActive ? "bg-brand/10" : "",
+              )}
+            >
               <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
             </div>
-            <span className={clsx(
-              "text-[10px] uppercase tracking-widest font-black",
-              isActive ? "opacity-100" : "opacity-60"
-            )}>
+            <span
+              className={clsx(
+                "text-[10px] uppercase tracking-widest font-black",
+                isActive ? "opacity-100" : "opacity-60",
+              )}
+            >
               {item.label}
             </span>
           </Link>

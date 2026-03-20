@@ -71,7 +71,7 @@ export default function AddBalanceButton() {
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm font-semibold"
+        className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-md hover:bg-teal-700 transition-colors text-sm font-semibold"
       >
         <Wallet size={16} />
         Add Balance
@@ -97,7 +97,7 @@ export default function AddBalanceButton() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search staff by name, ID or phone..."
-                  className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+                  className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
               </div>
               {isLoading ? (
@@ -110,7 +110,7 @@ export default function AddBalanceButton() {
                     <button
                       key={staff.staffId}
                       onClick={() => setSelectedStaff(staff)}
-                      className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-brand/20 hover:bg-brand/5 transition-all text-left"
+                      className="w-full flex items-center gap-3 p-3 rounded-md border border-gray-100 hover:border-brand/20 hover:bg-brand/5 transition-all text-left"
                     >
                       <div className="size-10 rounded-full bg-brand/10 flex items-center justify-center">
                         <User size={18} className="text-brand" />
@@ -138,7 +138,7 @@ export default function AddBalanceButton() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="flex items-center gap-3 p-4 bg-brand/5 rounded-xl border border-brand/10">
+              <div className="flex items-center gap-3 p-4 bg-brand/5 rounded-md border border-brand/10">
                 <div className="size-12 rounded-full bg-brand/10 flex items-center justify-center">
                   <User size={20} className="text-brand" />
                 </div>
@@ -170,7 +170,7 @@ export default function AddBalanceButton() {
                   min="1"
                   required
                   placeholder="Enter amount to add"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
               </div>
 
@@ -183,7 +183,7 @@ export default function AddBalanceButton() {
                   value={serviceId}
                   onChange={(e) => setServiceId(e.target.value)}
                   placeholder="e.g., SERV-123456"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand"
                 />
               </div>
 
@@ -196,14 +196,14 @@ export default function AddBalanceButton() {
                   onChange={(e) => setDescription(e.target.value)}
                   rows={2}
                   placeholder="e.g., Service charge for job #123"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand resize-none"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand resize-none"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting || !amount}
-                className="w-full bg-teal-600 text-white font-bold py-3 rounded-xl text-sm uppercase tracking-wider hover:bg-teal-700 disabled:bg-teal-300 transition-all flex items-center justify-center gap-2"
+                className="w-full bg-teal-600 text-white font-bold py-3 rounded-md text-sm uppercase tracking-wider hover:bg-teal-700 disabled:bg-teal-300 transition-all flex items-center justify-center gap-2"
               >
                 <PlusCircle size={18} />
                 {isSubmitting ? "Adding..." : `Add ৳${amount || "0"} Balance`}

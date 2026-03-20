@@ -39,7 +39,7 @@ export default function ErrorUI({
                 <div className="space-y-3">
                     <button
                         onClick={() => startTransition(() => reset())}
-                        className="w-full bg-[#E53E3E] hover:bg-red-600 text-white rounded-xl py-4 font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-red-100"
+                        className="w-full bg-[#E53E3E] hover:bg-red-600 text-white rounded-md py-4 font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-red-100"
                     >
                         <RefreshCw className={`size-5 ${isPending ? 'animate-spin' : ''}`} />
                         আবার চেষ্টা করুন
@@ -47,7 +47,7 @@ export default function ErrorUI({
                 </div>
 
                 {/* Help Section */}
-                <div className="bg-white border border-gray-100 rounded-2xl p-6 text-left shadow-sm mt-8">
+                <div className="bg-white border border-gray-100 rounded-md p-6 text-left shadow-sm mt-8">
                     <div className="text-center">
                         <div className="mb-4 text-gray-900 font-bold">
                             সাহায্য প্রয়োজন?

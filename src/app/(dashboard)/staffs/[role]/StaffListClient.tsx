@@ -16,7 +16,7 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
           <div
             key={staff.id}
             onClick={() => setSelectedStaff(staff)}
-            className="group bg-white border border-gray-100 rounded-2xl sm:rounded-[2rem] p-3 sm:p-4 md:p-5 text-center transition-all hover:shadow-xl hover:shadow-brand/5 hover:border-brand/20 cursor-pointer relative overflow-hidden active:scale-[0.98]"
+            className="group bg-white border border-gray-100 rounded-md sm:rounded-[2rem] p-3 sm:p-4 md:p-5 text-center transition-all hover:shadow-xl hover:shadow-brand/5 hover:border-brand/20 cursor-pointer relative overflow-hidden active:scale-[0.98]"
           >
             {/* Status Indicator */}
             <div className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4">
@@ -39,7 +39,7 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
 
             {/* Profile Image */}
             <div className="relative mx-auto mb-3 sm:mb-4 md:mb-5">
-              <div className="size-20 sm:size-28 md:size-32 lg:size-36 rounded-xl sm:rounded-2xl md:rounded-[2rem] overflow-hidden __center mx-auto border-2 sm:border-4 border-gray-50 group-hover:border-brand/10 transition-colors bg-gray-50">
+              <div className="size-20 sm:size-28 md:size-32 lg:size-36 rounded-md sm:rounded-md md:rounded-[2rem] overflow-hidden __center mx-auto border-2 sm:border-4 border-gray-50 group-hover:border-brand/10 transition-colors bg-gray-50">
                 <Image
                   src={staff.photoUrl || "/placeholder-avatar.png"}
                   alt={staff.name}
@@ -89,7 +89,7 @@ export default function StaffListClient({ staffs }: { staffs: StaffsType[] }) {
 
               {/* View Details Hint */}
               <div className="pt-1 sm:pt-2">
-                <div className="w-full py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl md:rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-brand group-hover:text-white transition-all flex items-center justify-center gap-1 sm:gap-2">
+                <div className="w-full py-2 sm:py-2.5 md:py-3 rounded-md sm:rounded-md md:rounded-md bg-gray-50 text-gray-400 group-hover:bg-brand group-hover:text-white transition-all flex items-center justify-center gap-1 sm:gap-2">
                   <Eye size={12} className="sm:w-4 sm:h-4" />
                   <span className="text-[8px] sm:text-[10px] md:text-sm font-black uppercase tracking-wider sm:tracking-widest">
                     View Details

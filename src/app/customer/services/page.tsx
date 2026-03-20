@@ -229,7 +229,7 @@ export default async function CustomerServicesPage() {
                         </span>
                       </Link>
 
-                      <Link
+                      {/* <Link
                         href={
                           isCompleted
                             ? `/service-feedback?serviceId=${service.serviceId}`
@@ -246,7 +246,7 @@ export default async function CustomerServicesPage() {
                         <span className="text-[9px] font-black uppercase tracking-widest">
                           Feedback
                         </span>
-                      </Link>
+                      </Link> */}
                     </div>
                   </div>
                 </div>

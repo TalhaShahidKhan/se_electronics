@@ -22,11 +22,16 @@ export default function PaymentForm({
     date: paymentInfo?.date || new Date(),
     paymentMethod: paymentInfo?.paymentMethod || (paymentInfo as any)?.staff?.paymentPreference || "bkash",
     receiverWalletNumber:
+<<<<<<< HEAD
+      paymentInfo?.receiverWalletNumber ||
+      paymentInfo?.staff?.walletNumber ||
+      "",
+=======
       paymentInfo?.receiverWalletNumber || (paymentInfo as any)?.staff?.walletNumber || "",
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
     receiverBankInfo:
       paymentInfo?.receiverBankInfo || (paymentInfo as any)?.staff?.bankInfo || null,
   });
-
 
   const [isPending, setIsPending] = useState(false);
 
@@ -34,7 +39,7 @@ export default function PaymentForm({
 
   const inputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    key: string
+    key: string,
   ) => {
     const value = event.target.value;
 
@@ -69,11 +74,13 @@ export default function PaymentForm({
       let res;
 
       if (mode === "create") {
-        res = await createPayment(paymentData as Parameters<typeof createPayment>[0]);
+        res = await createPayment(
+          paymentData as Parameters<typeof createPayment>[0],
+        );
       } else {
         res = await updatePayment(
           paymentData.paymentId!,
-          paymentData as Parameters<typeof updatePayment>[1]
+          paymentData as Parameters<typeof updatePayment>[1],
         );
       }
 
@@ -109,7 +116,7 @@ export default function PaymentForm({
         </button>
       )}
 
-      <div className="flex flex-col gap-6 rounded-lg">
+      <div className="flex flex-col gap-6 rounded-md">
         {/* Payment Method + Amount */}
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 text-start">
@@ -118,7 +125,28 @@ export default function PaymentForm({
               <select
                 disabled={true}
                 value={paymentMethod}
+<<<<<<< HEAD
+                onChange={(e) => {
+                  const method = e.target.value as any;
+                  setPaymentData((prev) => ({
+                    ...prev,
+                    paymentMethod: method,
+                    receiverWalletNumber:
+                      method === "bank"
+                        ? ""
+                        : prev.staff?.walletNumber ||
+                          prev.receiverWalletNumber ||
+                          "",
+                    receiverBankInfo:
+                      method === "bank"
+                        ? prev.staff?.bankInfo || prev.receiverBankInfo || null
+                        : null,
+                  }));
+                }}
+                className="__input p-0 px-2 mt-1"
+=======
                 className="__input p-0 px-2 mt-1 appearance-none bg-gray-50 opacity-70 cursor-not-allowed"
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
               >
                 <option value="bkash">বিকাশ</option>
                 <option value="nagad">নগদ</option>
@@ -128,7 +156,6 @@ export default function PaymentForm({
               </select>
             </label>
           </div>
-
 
           <InputField
             required={!paymentInfo}
@@ -150,7 +177,6 @@ export default function PaymentForm({
                 label="Receiver Bank Name"
               />
 
-
               <InputField
                 value={paymentData?.senderBankInfo?.bankName ?? ""}
                 onChange={(e) =>
@@ -163,12 +189,9 @@ export default function PaymentForm({
             <div className="flex flex-col sm:flex-row gap-4">
               <InputField
                 readOnly
-                value={
-                  paymentData?.receiverBankInfo?.accountHolderName ?? ""
-                }
+                value={paymentData?.receiverBankInfo?.accountHolderName ?? ""}
                 label="Receiver Account Name"
               />
-
 
               <InputField
                 value={paymentData?.senderBankInfo?.accountHolderName ?? ""}
@@ -186,7 +209,6 @@ export default function PaymentForm({
                 label="Receiver Account Number"
               />
 
-
               <InputField
                 value={paymentData?.senderBankInfo?.accountNumber ?? ""}
                 onChange={(e) =>
@@ -202,7 +224,6 @@ export default function PaymentForm({
                 value={paymentData?.receiverBankInfo?.branchName ?? ""}
                 label="Receiver Branch Name"
               />
-
 
               <InputField
                 value={paymentData?.senderBankInfo?.branchName ?? ""}
@@ -232,7 +253,6 @@ export default function PaymentForm({
           </div>
         ) : null}
 
-
         {/* Transaction + Date */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {paymentMethod !== "bank" && paymentMethod !== "cash" && (
@@ -242,7 +262,6 @@ export default function PaymentForm({
               label="Transaction ID"
             />
           )}
-
 
           <InputField
             value={
@@ -269,18 +288,14 @@ export default function PaymentForm({
         </div>
 
         {/* Submit */}
-        <button
-          disabled={isPending}
-          onClick={submitHandler}
-          className="__btn"
-        >
+        <button disabled={isPending} onClick={submitHandler} className="__btn">
           {mode === "create"
             ? isPending
               ? "Adding..."
               : "Add"
             : isPending
-            ? "Updating..."
-            : "Update"}
+              ? "Updating..."
+              : "Update"}
         </button>
       </div>
     </Modal>

@@ -156,7 +156,7 @@ export default async function StaffDetailsPage() {
   if (!staffData) {
     return (
       <div className="p-6 text-center">
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-2xl font-bold">
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md font-bold">
           Staff profile not found. Contact administrator.
         </div>
       </div>
@@ -194,7 +194,11 @@ export default async function StaffDetailsPage() {
 
         <div className="max-w-6xl mx-auto px-4 mt-4 pb-10 space-y-4 ">
           {/* PROFILE CARD */}
+<<<<<<< HEAD
+          <div className="bg-white rounded-md shadow-sm p-6 flex flex-col md:flex-row items-center gap-6">
+=======
           <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col md:flex-row items-center gap-6 relative">
+>>>>>>> a7c76ed425634fb351b15f71437eca260f3e5fb8
             <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow">
               <Image
                 src={staffData.photoUrl}
@@ -276,7 +280,7 @@ export default async function StaffDetailsPage() {
           {/* INFO GRID */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* CONTACT */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
+            <div className="bg-white p-6 rounded-md shadow-sm border space-y-3">
               <h3 className="text-sm font-bold text-gray-400 uppercase">
                 Contact
               </h3>
@@ -291,7 +295,7 @@ export default async function StaffDetailsPage() {
             </div>
 
             {/* EXPERIENCE */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
+            <div className="bg-white p-6 rounded-md shadow-sm border space-y-3">
               <h3 className="text-sm font-bold text-gray-400 uppercase">
                 Experience
               </h3>
@@ -312,7 +316,7 @@ export default async function StaffDetailsPage() {
             </div>
 
             {/* ADDRESSES */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
+            <div className="bg-white p-6 rounded-md shadow-sm border space-y-3">
               <h3 className="text-sm font-bold text-gray-400 uppercase">
                 Current Address
               </h3>
@@ -322,7 +326,7 @@ export default async function StaffDetailsPage() {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-sm border space-y-3">
+            <div className="bg-white p-6 rounded-md shadow-sm border space-y-3">
               <h3 className="text-md font-bold text-gray-400 uppercase">
                 Permanent Address
               </h3>
@@ -335,7 +339,7 @@ export default async function StaffDetailsPage() {
           </div>
 
           {/* PAYMENT */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="bg-white p-6 rounded-md shadow-sm border">
             <h3 className="text-sm font-bold text-gray-400 uppercase mb-3">
               Payment Method
             </h3>
@@ -346,7 +350,7 @@ export default async function StaffDetailsPage() {
           </div>
 
           {/* NID DOCUMENTS */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="bg-white p-6 rounded-md shadow-sm border">
             <h3 className="text-sm font-bold text-gray-400 uppercase mb-4">
               NID Documents
             </h3>
@@ -357,7 +361,7 @@ export default async function StaffDetailsPage() {
                 alt="NID Front"
                 width={300}
                 height={200}
-                className="rounded-lg border"
+                className="rounded-md border"
               />
 
               <Image
@@ -365,7 +369,7 @@ export default async function StaffDetailsPage() {
                 alt="NID Back"
                 width={300}
                 height={200}
-                className="rounded-lg border"
+                className="rounded-md border"
               />
             </div>
           </div>

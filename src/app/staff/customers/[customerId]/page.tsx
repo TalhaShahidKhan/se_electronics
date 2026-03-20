@@ -43,7 +43,7 @@ export default async function StaffCustomerProfilePage({
         <div className="flex items-center gap-4 mb-8">
           <Link
             href="/staff/services"
-            className="p-2 rounded-xl bg-white border border-gray-100 shadow-sm text-gray-400 hover:text-brand transition-all active:scale-95"
+            className="p-2 rounded-md bg-white border border-gray-100 shadow-sm text-gray-400 hover:text-brand transition-all active:scale-95"
           >
             <ChevronLeft size={20} />
           </Link>
@@ -70,14 +70,14 @@ export default async function StaffCustomerProfilePage({
                 <h2 className="text-xl font-black text-gray-900">
                   {customer.name}
                 </h2>
-                <span className="inline-block px-3 py-1 bg-brand/5 text-brand text-[10px] font-black uppercase tracking-widest rounded-lg mt-2">
+                <span className="inline-block px-3 py-1 bg-brand/5 text-brand text-[10px] font-black uppercase tracking-widest rounded-md mt-2">
                   Registered Customer
                 </span>
               </div>
 
               <div className="space-y-4 pt-6">
                 <div className="flex items-center gap-4">
-                  <div className="size-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500">
+                  <div className="size-10 rounded-md bg-blue-50 flex items-center justify-center text-blue-500">
                     <Phone size={18} />
                   </div>
                   <div>
@@ -91,7 +91,7 @@ export default async function StaffCustomerProfilePage({
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="size-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
+                  <div className="size-10 rounded-md bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
                     <MapPin size={18} />
                   </div>
                   <div>
@@ -105,7 +105,7 @@ export default async function StaffCustomerProfilePage({
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="size-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500">
+                  <div className="size-10 rounded-md bg-amber-50 flex items-center justify-center text-amber-500">
                     <Calendar size={18} />
                   </div>
                   <div>
@@ -124,14 +124,14 @@ export default async function StaffCustomerProfilePage({
             <div className="grid grid-cols-1 gap-3">
               <Link
                 href={`tel:${customer.phone}`}
-                className="w-full flex items-center justify-center gap-3 bg-brand text-white py-4 rounded-2xl font-black text-sm shadow-lg shadow-brand/20 active:scale-95"
+                className="w-full flex items-center justify-center gap-3 bg-brand text-white py-4 rounded-md font-black text-sm shadow-lg shadow-brand/20 active:scale-95"
               >
                 <Phone size={18} />
                 Call Customer
               </Link>
               <Link
                 href={`https://wa.me/${customer.phone.replace(/\D/g, "")}`}
-                className="w-full flex items-center justify-center gap-3 bg-emerald-500 text-white py-4 rounded-2xl font-black text-sm shadow-lg shadow-emerald-500/20 active:scale-95"
+                className="w-full flex items-center justify-center gap-3 bg-emerald-500 text-white py-4 rounded-md font-black text-sm shadow-lg shadow-emerald-500/20 active:scale-95"
               >
                 WhatsApp
               </Link>
@@ -148,7 +148,7 @@ export default async function StaffCustomerProfilePage({
 
               {customer.invoice ? (
                 <div className="space-y-4">
-                  <div className="p-5 rounded-2xl border border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="p-5 rounded-md border border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="space-y-1">
                       <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
                         Primary Invoice
@@ -163,7 +163,7 @@ export default async function StaffCustomerProfilePage({
                     </div>
                     <Link
                       href={`/staff/payment/${customer.invoice.invoiceNumber}`}
-                      className="px-5 py-2.5 rounded-xl bg-white text-gray-900 text-sm font-black shadow-sm border border-gray-200 flex items-center gap-2 hover:bg-gray-50 transition-all active:scale-95"
+                      className="px-5 py-2.5 rounded-md bg-white text-gray-900 text-sm font-black shadow-sm border border-gray-200 flex items-center gap-2 hover:bg-gray-50 transition-all active:scale-95"
                     >
                       Details <ArrowRight size={14} />
                     </Link>
@@ -185,7 +185,7 @@ export default async function StaffCustomerProfilePage({
                   Account Status
                 </p>
                 <div className="flex gap-4">
-                  <div className="flex-1 p-4 rounded-2xl bg-emerald-50 border border-emerald-100">
+                  <div className="flex-1 p-4 rounded-md bg-emerald-50 border border-emerald-100">
                     <p className="text-[10px] font-black text-emerald-600 uppercase mb-1">
                       Status
                     </p>
@@ -193,7 +193,7 @@ export default async function StaffCustomerProfilePage({
                       ACTIVE
                     </p>
                   </div>
-                  <div className="flex-1 p-4 rounded-2xl bg-brand/5 border border-brand/10">
+                  <div className="flex-1 p-4 rounded-md bg-brand/5 border border-brand/10">
                     <p className="text-[10px] font-black text-brand uppercase mb-1">
                       Balance
                     </p>

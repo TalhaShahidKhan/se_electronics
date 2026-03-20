@@ -95,7 +95,7 @@ async function PaymentList(
         <td className="text-left py-4 px-4">
           <span
             className={clsx(
-              "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase border tracking-widest",
+              "px-2.5 py-1 rounded-md text-[10px] font-black uppercase border tracking-widest",
               statusColors[payment.status] ||
                 "bg-gray-100 text-gray-700 border-gray-200",
             )}

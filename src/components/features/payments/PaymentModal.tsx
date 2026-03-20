@@ -61,7 +61,7 @@ export default function PaymentModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-md max-w-md w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div
           className="sticky top-0 p-6 rounded-t-lg z-50"
@@ -245,7 +245,7 @@ export default function PaymentModal({
                   name="walletNumber"
                   placeholder="01XXXXXXXXX"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:outline-none"
                 />
               </div>
               <div className="mb-4">
@@ -257,7 +257,7 @@ export default function PaymentModal({
                   name="transactionId"
                   placeholder="8N67MA4KO2"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:outline-none"
                 />
               </div>
             </>
@@ -272,7 +272,7 @@ export default function PaymentModal({
                   name="bankName"
                   placeholder="e.g., DBBL, City Bank"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
                 />
               </div>
               <div className="mb-4">
@@ -284,7 +284,7 @@ export default function PaymentModal({
                   name="accountHolderName"
                   placeholder="Your name"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
                 />
               </div>
               <div className="mb-4">
@@ -296,7 +296,7 @@ export default function PaymentModal({
                   name="accountNumber"
                   placeholder="1234567890"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
                 />
               </div>
               <div className="mb-4">
@@ -308,7 +308,7 @@ export default function PaymentModal({
                   name="branchName"
                   placeholder="e.g., Sylhet Branch"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
                 />
               </div>
             </>
@@ -317,7 +317,7 @@ export default function PaymentModal({
           <button
             disabled={isSubmitting}
             type="submit"
-            className="w-full text-white font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="w-full text-white font-semibold py-3 rounded-md hover:opacity-90 transition-opacity disabled:opacity-50"
             style={{ backgroundColor: colors.primary }}
           >
             {isSubmitting ? "Submitting..." : "Confirm Payment & Submit"}

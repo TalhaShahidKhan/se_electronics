@@ -102,7 +102,7 @@ export default function StaffNotificationList() {
       {/* Header Info (Desktop Only) */}
       <div className="hidden md:flex justify-between items-center bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="size-12 rounded-2xl bg-brand/5 flex items-center justify-center">
+          <div className="size-12 rounded-md bg-brand/5 flex items-center justify-center">
             <Bell size={24} className="text-brand" />
           </div>
           <div>
@@ -141,7 +141,7 @@ export default function StaffNotificationList() {
               href={link || "#"}
               onClick={() => handleMarkAsRead(item.id, item.itemType)}
               className={clsx(
-                "group relative flex items-center gap-4 p-4 lg:p-6 bg-white rounded-2xl lg:rounded-[2.5rem] border transition-all text-left",
+                "group relative flex items-center gap-4 p-4 lg:p-6 bg-white rounded-md lg:rounded-[2.5rem] border transition-all text-left",
                 item.isRead
                   ? "border-gray-50 opacity-80"
                   : "border-brand/20 shadow-md ring-2 ring-brand/5",
@@ -149,7 +149,7 @@ export default function StaffNotificationList() {
             >
               <div
                 className={clsx(
-                  "shrink-0 size-12 lg:size-14 rounded-xl lg:rounded-2xl flex items-center justify-center text-white shadow-lg",
+                  "shrink-0 size-12 lg:size-14 rounded-md lg:rounded-md flex items-center justify-center text-white shadow-lg",
                   item.itemType === "action"
                     ? item.type === "balance_added"
                       ? "bg-emerald-500"
@@ -196,7 +196,7 @@ export default function StaffNotificationList() {
                 </span>
               </div>
 
-              <div className="shrink-0 size-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all">
+              <div className="shrink-0 size-8 rounded-md bg-gray-50 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all">
                 <ChevronRight size={16} />
               </div>
             </Link>
@@ -206,7 +206,7 @@ export default function StaffNotificationList() {
 
       {notifications.length === 0 && (
         <div className="h-96 flex flex-col items-center justify-center bg-white rounded-[3rem] border border-gray-100 p-12 text-center">
-          <div className="size-20 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 text-gray-200">
+          <div className="size-20 rounded-md bg-gray-50 flex items-center justify-center mb-6 text-gray-200">
             <Inbox size={40} />
           </div>
           <h3 className="text-lg font-bold text-gray-900 mb-1">

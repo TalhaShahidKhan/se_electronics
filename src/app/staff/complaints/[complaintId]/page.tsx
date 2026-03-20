@@ -54,7 +54,7 @@ export default async function StaffComplaintDetailsPage({
         <div className="flex items-center gap-4">
           <Link
             href="/staff/profile"
-            className="p-3 bg-white rounded-2xl shadow-sm border border-gray-100 text-gray-400 hover:text-brand transition-colors"
+            className="p-3 bg-white rounded-md shadow-sm border border-gray-100 text-gray-400 hover:text-brand transition-colors"
           >
             <ArrowLeft size={20} />
           </Link>
@@ -75,7 +75,7 @@ export default async function StaffComplaintDetailsPage({
             <AlertTriangle size={80} className="text-red-600" />
           </div>
           <div className="relative z-10 flex flex-col sm:flex-row gap-6 items-start">
-            <div className="bg-white p-4 rounded-2xl shadow-sm">
+            <div className="bg-white p-4 rounded-md shadow-sm">
               <User className="text-red-500" size={32} />
             </div>
             <div className="flex-1">
@@ -85,7 +85,7 @@ export default async function StaffComplaintDetailsPage({
               <p className="text-sm font-bold text-red-600/80 mb-4">
                 {complaint.customer?.name} filed this report.
               </p>
-              <div className="bg-white/60 p-4 rounded-2xl border border-red-200">
+              <div className="bg-white/60 p-4 rounded-md border border-red-200">
                 <p className="text-sm font-black text-red-800 uppercase tracking-widest mb-2">
                   Subject: {complaint.subject}
                 </p>
@@ -118,7 +118,7 @@ export default async function StaffComplaintDetailsPage({
 
                 <div className="flex-1 flex items-center gap-4 w-full">
                   <div className="h-0.5 w-8 bg-emerald-100 hidden sm:block"></div>
-                  <div className="flex-1 bg-emerald-50/30 border border-emerald-100 rounded-2xl p-4 transition-colors">
+                  <div className="flex-1 bg-emerald-50/30 border border-emerald-100 rounded-md p-4 transition-colors">
                     <h4 className="font-bold text-emerald-800 text-[13px] uppercase tracking-widest leading-none">
                       Pending
                     </h4>
@@ -145,7 +145,7 @@ export default async function StaffComplaintDetailsPage({
                     className={`h-0.5 w-8 hidden sm:block ${isProcessing ? "bg-emerald-100" : "bg-gray-100"}`}
                   ></div>
                   <div
-                    className={`flex-1 border rounded-2xl p-4 transition-all ${isProcessing ? "bg-emerald-50/30 border-emerald-100" : "bg-gray-50 border-gray-100 opacity-60"}`}
+                    className={`flex-1 border rounded-md p-4 transition-all ${isProcessing ? "bg-emerald-50/30 border-emerald-100" : "bg-gray-50 border-gray-100 opacity-60"}`}
                   >
                     <h4
                       className={`font-bold text-[13px] uppercase tracking-widest leading-none ${isProcessing ? "text-emerald-800" : "text-gray-400"}`}
@@ -182,7 +182,7 @@ export default async function StaffComplaintDetailsPage({
                     className={`h-0.5 w-8 hidden sm:block ${isHearing ? "bg-emerald-100" : "bg-gray-100"}`}
                   ></div>
                   <div
-                    className={`flex-1 border rounded-2xl p-4 transition-all ${isHearing ? "bg-emerald-50/30 border-emerald-100" : "bg-gray-50 border-gray-100 opacity-60"}`}
+                    className={`flex-1 border rounded-md p-4 transition-all ${isHearing ? "bg-emerald-50/30 border-emerald-100" : "bg-gray-50 border-gray-100 opacity-60"}`}
                   >
                     <h4
                       className={`font-bold text-[13px] uppercase tracking-widest leading-none ${isHearing ? "text-emerald-800" : "text-gray-400"}`}
@@ -219,7 +219,7 @@ export default async function StaffComplaintDetailsPage({
                     className={`h-0.5 w-8 hidden sm:block ${isCompleted ? "bg-emerald-100" : "bg-gray-100"}`}
                   ></div>
                   <div
-                    className={`flex-1 border rounded-2xl p-4 transition-all ${isCompleted ? "bg-emerald-600 text-white shadow-xl shadow-emerald-100" : "bg-gray-50 border-gray-100 opacity-60 font-black"}`}
+                    className={`flex-1 border rounded-md p-4 transition-all ${isCompleted ? "bg-emerald-600 text-white shadow-xl shadow-emerald-100" : "bg-gray-50 border-gray-100 opacity-60 font-black"}`}
                   >
                     <h4
                       className={`font-bold text-[13px] uppercase tracking-widest leading-none ${isCompleted ? "text-white" : "text-gray-400"}`}
@@ -255,7 +255,7 @@ export default async function StaffComplaintDetailsPage({
                 Admin Resolution Details
               </h4>
             </div>
-            <div className="bg-white p-4 rounded-2xl border border-amber-100">
+            <div className="bg-white p-4 rounded-md border border-amber-100">
               <p className="text-sm text-gray-700 leading-relaxed font-bold italic">
                 "{complaint.adminNote}"
               </p>

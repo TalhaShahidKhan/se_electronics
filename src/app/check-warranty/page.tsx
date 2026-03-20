@@ -93,7 +93,7 @@ export default function CheckWarrantyPage() {
               গ্রাহকের তথ্য
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-gray-200">
+              <div className="flex items-start gap-3 p-4 bg-white rounded-md border border-gray-200">
                 <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
                   <span className="text-blue-600 font-bold text-lg">👤</span>
                 </div>
@@ -105,7 +105,7 @@ export default function CheckWarrantyPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-gray-200">
+              <div className="flex items-start gap-3 p-4 bg-white rounded-md border border-gray-200">
                 <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
                   <span className="text-green-600 font-bold text-lg">🆔</span>
                 </div>
@@ -119,7 +119,7 @@ export default function CheckWarrantyPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-gray-200">
+              <div className="flex items-start gap-3 p-4 bg-white rounded-md border border-gray-200">
                 <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
                   <span className="text-purple-600 font-bold text-lg">📞</span>
                 </div>
@@ -131,7 +131,7 @@ export default function CheckWarrantyPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-gray-200">
+              <div className="flex items-start gap-3 p-4 bg-white rounded-md border border-gray-200">
                 <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
                   <span className="text-orange-600 font-bold text-lg">📅</span>
                 </div>

@@ -31,7 +31,7 @@ export default function ContactAdminModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl animate-in fade-in zoom-in duration-200">
+      <div className="bg-white rounded-md p-6 w-full max-w-md shadow-xl animate-in fade-in zoom-in duration-200">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-gray-900">Contact Admin</h2>
           <button
@@ -69,7 +69,7 @@ export default function ContactAdminModal({
               onChange={(e) => setSubject(e.target.value)}
               placeholder="e.g. Question about my subscription"
               required
-              className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             />
           </div>
 
@@ -83,7 +83,7 @@ export default function ContactAdminModal({
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Your message to the admin..."
               required
-              className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none h-32 resize-none"
+              className="w-full px-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 outline-none h-32 resize-none"
             />
           </div>
 
@@ -91,14 +91,14 @@ export default function ContactAdminModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-gray-50 active:scale-95 transition-all"
+              className="flex-1 px-4 py-2 border border-gray-200 rounded-md text-gray-600 font-bold hover:bg-gray-50 active:scale-95 transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 active:scale-95 transition-all disabled:bg-blue-300"
+              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md font-bold hover:bg-blue-700 active:scale-95 transition-all disabled:bg-blue-300"
             >
               {isPending ? "Sending..." : "Send Message"}
             </button>

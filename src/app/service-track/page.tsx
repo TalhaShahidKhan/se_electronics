@@ -416,7 +416,7 @@ export default async function ServiceTrackPage({
       <ServiceTrackingPageThemeColor />
       <div className="mx-auto max-w-[600px] text-center pb-4">
         {/* Header */}
-        <div className="mb-3 bg-slate-900 text-white p-4 sm:rounded-lg">
+        <div className="mb-3 bg-slate-900 text-white p-4 sm:rounded-md">
           <div className="flex items-start justify-between gap-4 mb-4">
             {/* Left Column - Service Info */}
             <div className="flex-1 min-w-0">
@@ -520,7 +520,7 @@ export default async function ServiceTrackPage({
         </div>
 
         {/* Event History */}
-        <div className="flex flex-col gap-6 bg-slate-900 text-white p-4 sm:rounded-lg">
+        <div className="flex flex-col gap-6 bg-slate-900 text-white p-4 sm:rounded-md">
           <ul className="flex flex-col">
             {statusHistory.map(
               ({

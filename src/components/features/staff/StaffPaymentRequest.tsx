@@ -46,7 +46,7 @@ export default function StaffPaymentRequest({
             name="serviceId"
             value={selectedService}
             onChange={(e) => setSelectedService(e.target.value)}
-            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
           >
             <option value="">-- None / Request from balance --</option>
             {completedServices.map((service: any) => (
@@ -70,7 +70,7 @@ export default function StaffPaymentRequest({
             min="1"
             required
             placeholder="Enter amount"
-            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
           />
         </div>
         <div>
@@ -80,7 +80,7 @@ export default function StaffPaymentRequest({
           <select
             name="paymentMethod"
             required
-            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+            className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
           >
             <option value="bkash">bKash</option>
             <option value="nagad">Nagad</option>
@@ -99,14 +99,14 @@ export default function StaffPaymentRequest({
           name="description"
           rows={2}
           placeholder="Any additional notes..."
-          className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all resize-none"
+          className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all resize-none"
         />
       </div>
 
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-brand text-white font-bold py-3 rounded-xl text-sm uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
+        className="w-full bg-brand text-white font-bold py-3 rounded-md text-sm uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
       >
         {isPending ? "Submitting..." : "Request Payment"}
       </button>

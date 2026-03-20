@@ -111,13 +111,13 @@ export default function ComplaintsPage() {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="flex flex-wrap gap-2 bg-white p-1.5 rounded-md border border-gray-100 shadow-sm">
           {["all", "under_trial", "processing", "hearing", "completed"].map(
             (f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-2 rounded-xl text-sm sm:text-sm font-bold transition-all capitalize ${
+                className={`px-4 py-2 rounded-md text-sm sm:text-sm font-bold transition-all capitalize ${
                   filter === f
                     ? "bg-black text-white"
                     : "text-gray-500 hover:bg-gray-50"
@@ -138,7 +138,7 @@ export default function ComplaintsPage() {
         <input
           type="text"
           placeholder="Search by ID, Customer or Staff..."
-          className="w-full pl-12 pr-4 py-4 bg-white rounded-2xl border border-gray-100 shadow-sm outline-none focus:ring-2 focus:ring-red-500 transition-all font-medium"
+          className="w-full pl-12 pr-4 py-4 bg-white rounded-md border border-gray-100 shadow-sm outline-none focus:ring-2 focus:ring-red-500 transition-all font-medium"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -263,7 +263,7 @@ export default function ComplaintsPage() {
                 <div className="flex flex-wrap gap-2 mb-1">
                   <Link
                     href={`/pdf/download?type=complaint&id=${complaint.complaintId}`}
-                    className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-gray-600 hover:bg-brand-50 hover:text-brand transition-all flex justify-center items-center gap-2 shadow-sm"
+                    className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-md text-[10px] font-black text-gray-600 hover:bg-brand-50 hover:text-brand transition-all flex justify-center items-center gap-2 shadow-sm"
                     title="Download Complaint Document"
                   >
                     <Download size={14} /> DOC
@@ -273,7 +273,7 @@ export default function ComplaintsPage() {
                     complaint.status === "completed") && (
                     <Link
                       href={`/pdf/download?type=hearing-notice&id=${complaint.complaintId}`}
-                      className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-amber-600 hover:bg-amber-50 transition-all flex justify-center items-center gap-2 shadow-sm"
+                      className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-md text-[10px] font-black text-amber-600 hover:bg-amber-50 transition-all flex justify-center items-center gap-2 shadow-sm"
                       title="Download Hearing Notice"
                     >
                       <Download size={14} /> HEARING
@@ -283,7 +283,7 @@ export default function ComplaintsPage() {
                   {complaint.status === "completed" && (
                     <Link
                       href={`/pdf/download?type=completion-notice&id=${complaint.complaintId}`}
-                      className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-emerald-600 hover:bg-emerald-50 transition-all flex justify-center items-center gap-2 shadow-sm"
+                      className="flex-1 min-w-[120px] py-2 bg-white border border-gray-200 rounded-md text-[10px] font-black text-emerald-600 hover:bg-emerald-50 transition-all flex justify-center items-center gap-2 shadow-sm"
                       title="Download Resolution Letter"
                     >
                       <Download size={14} /> RESOLVED
@@ -299,7 +299,7 @@ export default function ComplaintsPage() {
                       setActionType("processing");
                       setAdminNotes("");
                     }}
-                    className="w-full py-3 bg-black rounded-xl text-sm font-bold text-white shadow-sm hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
+                    className="w-full py-3 bg-black rounded-md text-sm font-bold text-white shadow-sm hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
                   >
                     <FileText size={16} /> Mark as Processing / Review
                   </button>
@@ -311,7 +311,7 @@ export default function ComplaintsPage() {
                       setActionType("hearing");
                       setAdminNotes("");
                     }}
-                    className="w-full py-3 bg-amber-600 rounded-xl text-sm font-bold text-white shadow-sm hover:bg-amber-700 hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
+                    className="w-full py-3 bg-amber-600 rounded-md text-sm font-bold text-white shadow-sm hover:bg-amber-700 hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
                   >
                     <Gavel size={16} /> Issue Hearing Notice
                   </button>
@@ -323,7 +323,7 @@ export default function ComplaintsPage() {
                       setActionType("completed");
                       setAdminNotes(complaint.adminNote || "");
                     }}
-                    className="w-full py-3 bg-emerald-600 rounded-xl text-sm font-bold text-white shadow-sm hover:bg-emerald-700 hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
+                    className="w-full py-3 bg-emerald-600 rounded-md text-sm font-bold text-white shadow-sm hover:bg-emerald-700 hover:scale-[1.02] transition-all flex justify-center items-center gap-2"
                   >
                     <CheckCircle2 size={16} /> Complete & Resolve
                   </button>
@@ -333,7 +333,7 @@ export default function ComplaintsPage() {
                     <p className="font-black text-emerald-600 mb-1 uppercase tracking-tighter flex items-center gap-1">
                       <CheckCircle2 size={12} /> Resolution Details:
                     </p>
-                    <p className="text-gray-600 italic bg-white p-2 rounded-lg border border-gray-200">
+                    <p className="text-gray-600 italic bg-white p-2 rounded-md border border-gray-200">
                       {complaint.adminNote || "No notes provided"}
                     </p>
                   </div>
@@ -370,7 +370,7 @@ export default function ComplaintsPage() {
             </div>
 
             <div className="p-8 overflow-y-auto flex-1 bg-white">
-              <div className="mb-6 p-4 bg-red-50 rounded-2xl border border-red-100">
+              <div className="mb-6 p-4 bg-red-50 rounded-md border border-red-100">
                 <p className="text-sm font-black text-red-600 uppercase mb-2 tracking-widest">
                   Customer Issue Details
                 </p>
@@ -388,7 +388,7 @@ export default function ComplaintsPage() {
                     <span className="text-red-500">*</span>
                   </label>
                   <textarea
-                    className="w-full h-32 p-4 bg-gray-50 border border-gray-200 rounded-2xl outline-none focus:ring-2 focus:ring-black transition-all text-sm mb-2 resize-y text-gray-800"
+                    className="w-full h-32 p-4 bg-gray-50 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all text-sm mb-2 resize-y text-gray-800"
                     placeholder={
                       actionType === "hearing"
                         ? "Enter hearing date, time, venue or online link..."
@@ -405,7 +405,7 @@ export default function ComplaintsPage() {
               )}
 
               {actionType === "processing" && (
-                <p className="text-sm font-medium text-blue-800 bg-blue-50 p-4 rounded-xl border border-blue-100">
+                <p className="text-sm font-medium text-blue-800 bg-blue-50 p-4 rounded-md border border-blue-100">
                   Moving this complaint to <strong>Processing</strong> indicates
                   that you (the admin) have viewed the complaint and are
                   actively investigating it. The customer's dashboard will
@@ -420,7 +420,7 @@ export default function ComplaintsPage() {
                   setSelectedComplaint(null);
                   setActionType(null);
                 }}
-                className="flex-1 py-4 text-sm font-bold text-gray-600 hover:text-black hover:bg-gray-200 rounded-2xl transition-all"
+                className="flex-1 py-4 text-sm font-bold text-gray-600 hover:text-black hover:bg-gray-200 rounded-md transition-all"
               >
                 Cancel
               </button>
@@ -431,7 +431,7 @@ export default function ComplaintsPage() {
                   ((actionType === "hearing" || actionType === "completed") &&
                     !adminNotes.trim())
                 }
-                className={`flex-1 py-4 text-white rounded-2xl text-sm font-bold shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`flex-1 py-4 text-white rounded-md text-sm font-bold shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
                   actionType === "processing"
                     ? "bg-blue-600 hover:bg-blue-700"
                     : actionType === "hearing"

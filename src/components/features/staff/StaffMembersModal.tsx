@@ -116,7 +116,7 @@ export default function StaffMembersModal({
                   //     bankInfo: staff.bankInfo,
                   // })
                 }}
-                className="bg-white border p-6 rounded-lg cursor-pointer text-center"
+                className="bg-white border p-6 rounded-md cursor-pointer text-center"
               >
                 <div className="size-44 rounded-full overflow-hidden __center mx-auto">
                   <img src={staff.photoUrl} alt="" />

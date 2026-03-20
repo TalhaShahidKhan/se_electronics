@@ -37,7 +37,8 @@ export default function RegistrationForm({
     undefined,
   );
   const [updateResponse, updateStaffAction, isUpdating] = useActionState(
-    (_prevState: unknown, formData: FormData) => updateStaff(staffData!.staffId, formData),
+    (_prevState: unknown, formData: FormData) =>
+      updateStaff(staffData!.staffId, formData),
     undefined,
   );
   const [nidDocsImages, setNidDocsImages] = useState<{
@@ -80,7 +81,7 @@ export default function RegistrationForm({
   useEffect(() => {
     if (token) {
       getTOSContent("application_declaration")
-        .then((res) => setTosContent(res ?? ''))
+        .then((res) => setTosContent(res ?? ""))
         .catch((err) => console.error(err));
     }
   }, []);
@@ -88,7 +89,7 @@ export default function RegistrationForm({
   useEffect(() => {
     if (!isRegistering && createResponse) {
       if (createResponse.success) {
-        onRegistrationComplete?.(createResponse.data?.name ?? '');
+        onRegistrationComplete?.(createResponse.data?.name ?? "");
       } else {
         toast.error(createResponse.message);
       }
@@ -155,7 +156,7 @@ export default function RegistrationForm({
               name="currentDistrict"
               value={selectedCurrentDistrict}
               onChange={(e) => setSelectedCurrentDistrict(e.target.value)}
-              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="">নির্বাচন করুন</option>
               {districts.map((district) => (
@@ -178,7 +179,7 @@ export default function RegistrationForm({
               required
               name="currentPoliceStation"
               defaultValue={staffData?.currentPoliceStation || ""}
-              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="">নির্বাচন করুন</option>
               {currentThanas.map((thana) => (
@@ -218,7 +219,7 @@ export default function RegistrationForm({
               name="permanentDistrict"
               value={selectedPermanentDistrict}
               onChange={(e) => setSelectedPermanentDistrict(e.target.value)}
-              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="">নির্বাচন করুন</option>
               {districts.map((district) => (
@@ -241,7 +242,7 @@ export default function RegistrationForm({
               required
               name="permanentPoliceStation"
               defaultValue={staffData?.permanentPoliceStation || ""}
-              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="">নির্বাচন করুন</option>
               {permanentThanas.map((thana) => (
@@ -366,7 +367,7 @@ export default function RegistrationForm({
                 setPaymentPreference(e.target.value as typeof paymentPreference)
               }
               name="paymentPreference"
-              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
             >
               <option value="bkash">বিকাশ</option>
               <option value="nagad">নগদ</option>

@@ -43,7 +43,7 @@ export default function EditProfilePage() {
         <div className="flex flex-col gap-3">
           <button
             onClick={() => router.back()}
-            className="bg-black text-white px-8 py-3 rounded-2xl font-bold text-sm transition-transform active:scale-95"
+            className="bg-black text-white px-8 py-3 rounded-md font-bold text-sm transition-transform active:scale-95"
           >
             Go Back
           </button>

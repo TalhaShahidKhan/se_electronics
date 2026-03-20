@@ -172,8 +172,8 @@ export default async function VipCardPage() {
                 {vipStatus === "pending" || vipStatus === "processing"
                   ? "Your application is currently being reviewed by our administrative team. We will notify you once it's approved."
                   : vipStatus === "expired"
-                  ? "Your previous VIP card has expired. Re-apply now to continue enjoying exclusive benefits, priority support, and special discounts."
-                  : "Join our elite membership program to enjoy exclusive benefits, priority support, and special discounts on all services."}
+                    ? "Your previous VIP card has expired. Re-apply now to continue enjoying exclusive benefits, priority support, and special discounts."
+                    : "Join our elite membership program to enjoy exclusive benefits, priority support, and special discounts on all services."}
               </p>
 
               {vipStatus === "pending" || vipStatus === "processing" ? (

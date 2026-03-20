@@ -84,7 +84,7 @@ export default function NoticeList() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search notices by title or content..."
-            className="w-full pl-12 pr-4 py-3 bg-gray-50 border-2 border-transparent focus:border-brand focus:bg-white rounded-2xl transition-all outline-none text-sm font-bold"
+            className="w-full pl-12 pr-4 py-3 bg-gray-50 border-2 border-transparent focus:border-brand focus:bg-white rounded-md transition-all outline-none text-sm font-bold"
           />
         </div>
         <button
@@ -92,7 +92,7 @@ export default function NoticeList() {
             setEditingNotice(null);
             setShowForm(true);
           }}
-          className="w-full sm:w-auto px-6 py-3.5 bg-brand text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-lg shadow-brand/20 flex items-center justify-center gap-2"
+          className="w-full sm:w-auto px-6 py-3.5 bg-brand text-white rounded-md font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-lg shadow-brand/20 flex items-center justify-center gap-2"
         >
           <Plus size={18} />
           New Notice
@@ -128,13 +128,13 @@ export default function NoticeList() {
                     setEditingNotice(notice);
                     setShowForm(true);
                   }}
-                  className="p-2 text-gray-400 hover:text-brand hover:bg-brand/5 rounded-xl transition-all"
+                  className="p-2 text-gray-400 hover:text-brand hover:bg-brand/5 rounded-md transition-all"
                 >
                   <Edit3 size={16} />
                 </button>
                 <button
                   onClick={() => handleDelete(notice.id)}
-                  className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
+                  className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-all"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -196,7 +196,7 @@ export default function NoticeList() {
                 )}
               </div>
               {notice.isDraft && (
-                <span className="px-2 py-0.5 rounded-lg bg-gray-100 text-gray-500 uppercase">
+                <span className="px-2 py-0.5 rounded-md bg-gray-100 text-gray-500 uppercase">
                   Draft
                 </span>
               )}
@@ -219,7 +219,7 @@ export default function NoticeList() {
           </p>
           <button
             onClick={() => setShowForm(true)}
-            className="px-8 py-4 bg-brand text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-lg shadow-brand/20"
+            className="px-8 py-4 bg-brand text-white rounded-md font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-lg shadow-brand/20"
           >
             Send First Notice
           </button>

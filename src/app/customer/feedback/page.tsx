@@ -24,13 +24,20 @@ export default async function CustomerFeedbackPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col selection:bg-blue-200">
-      <MobilePageHeader 
-        title="Give Feedback" 
-        backHref="/customer/profile" 
-        Icon={Star}
-      />
-
-      <div className="flex-1 max-w-3xl mx-auto py-8 px-4 w-full">
+      <div className="flex-1 max-w-3xl mx-auto py-6 px-3 w-full">
+        <MobilePageHeader
+          title="Give Feedback"
+          backHref="/customer/profile"
+          Icon={Star}
+        />
+        {completedServices.length > 0 ? (
+          <p className="text-center text-xs mb-2">
+            আপনার ফিডব্যাক এর মতামত এর প্রেক্ষিতে আমাদের কোম্পানি SE ELECTRONICS
+            আরো ভালো সার্ভিস দেওয়ার আপ্রান চেষ্টা করবে
+          </p>
+        ) : (
+          ""
+        )}
         <div className="hidden md:flex items-center justify-between gap-3 mb-2">
           <div>
             <h1 className="text-2xl font-extrabold text-gray-900">
@@ -49,7 +56,7 @@ export default async function CustomerFeedbackPage() {
         </div>
 
         {completedServices.length === 0 ? (
-          <div className="bg-white border border-dashed border-gray-200 rounded-2xl p-10 text-center">
+          <div className="bg-white border border-dashed border-gray-200 rounded-md p-10 text-center">
             <h2 className="text-lg font-semibold text-gray-700 mb-2">
               No completed services yet
             </h2>
@@ -59,7 +66,7 @@ export default async function CustomerFeedbackPage() {
             </p>
             <Link
               href="/customer/tracking"
-              className="inline-flex items-center justify-center bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center bg-blue-600 text-white px-6 py-2.5 rounded-md text-sm font-semibold hover:bg-blue-700 transition-colors"
             >
               View service tracking
             </Link>
@@ -69,7 +76,7 @@ export default async function CustomerFeedbackPage() {
             {completedServices.map((service: any) => (
               <div
                 key={service.serviceId}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-4 sm:px-5 sm:py-4 flex items-start justify-between gap-3"
+                className="bg-white rounded-md border border-gray-100 shadow-sm px-4 py-4 sm:px-5 sm:py-4 flex items-start justify-between gap-3"
               >
                 <div className="flex-1 min-w-0 text-left">
                   <div className="flex items-center gap-2 text-sm text-gray-400 mb-1">
@@ -100,7 +107,7 @@ export default async function CustomerFeedbackPage() {
                 <div className="flex flex-col items-end gap-2">
                   <Link
                     href={`/service-feedback?serviceId=${service.serviceId}`}
-                    className="inline-flex items-center justify-center bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-emerald-700 transition-colors"
+                    className="inline-flex items-center justify-center bg-emerald-600 text-white px-3 py-1.5 rounded-md text-sm font-semibold hover:bg-emerald-700 transition-colors"
                   >
                     Give Feedback
                   </Link>
