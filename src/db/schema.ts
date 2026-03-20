@@ -264,6 +264,7 @@ export const services = pgTable(
     powerRating: varchar({ length: 255 }),
     memoNumber: varchar({ length: 255 }),
     reportedIssue: text(),
+    status: serviceStatusEnum().default("pending").notNull(), // current status of the service
     createdFrom: createdFromTypesEnum().notNull(),
     resolvedBy: resolvedByTypesEnum(),
     isActive: boolean().default(false).notNull(),

@@ -2,11 +2,10 @@ import { verifyStaffSession } from "@/actions";
 import { getStaffPaymentHistory } from "@/actions/paymentRequestActions";
 import { getStaffById, getStaffProfileStats } from "@/actions/staffActions";
 import { StaffPaymentRequestForm } from "@/components/features/staff/StaffPaymentRequestForm";
-import { StaffLayout } from "@/components/layout/StaffLayout";
-import clsx from "clsx";
-import { CreditCard, Wallet, AlertCircle, ShoppingBag } from "lucide-react";
-import Link from "next/link";
 import { MobilePageHeader } from "@/components/layout";
+import { StaffLayout } from "@/components/layout/StaffLayout";
+import { AlertCircle, ShoppingBag, Wallet } from "lucide-react";
+import Link from "next/link";
 
 function maskNumber(value: string) {
   if (!value || value.length < 4) return "****";
@@ -43,29 +42,31 @@ export default async function StaffPaymentRequestPage() {
       />
 
       <div className="p-4 sm:p-6 space-y-8">
-        {/* Large Balance Display */}
-        <div className="bg-gradient-to-br from-brand via-brand-800 to-brand-700 rounded-[2.5rem] p-8 sm:p-12 text-white shadow-xl overflow-hidden relative group text-center">
-          <div className="relative z-10 flex flex-col items-center gap-2">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-md bg-white/10 text-white/90 text-sm font-black uppercase tracking-[0.25em] mb-4">
-              Available Balance
+        {/* Compact Balance Display */}
+        <div className="bg-emerald-50 border-emerald-200 border-2 rounded-lg px-6 h-[7vh] min-h-[64px] text-white shadow-lg overflow-hidden relative group flex items-center justify-center gap-4 sm:gap-12">
+          <div className="relative z-10 flex items-end gap-4">
+            <div className="size-5   backdrop-blur-md flex items-center justify-center  shrink-0">
+              <span className="text-xl font-black text-brand/50">৳</span>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="size-12 sm:size-16 rounded-md bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl">
-                <span className="text-2xl sm:text-3xl font-black text-white">
-                  ৳
-                </span>
-              </div>
-              <h1 className="text-5xl sm:text-7xl font-black tracking-tight">
+            <div className="flex flex-col text-left">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/70 leading-none mb-1">
+                Available Balance
+              </span>
+              <h1 className="text-2xl text-brand sm:text-3xl font-black tracking-tight leading-none">
                 {(stats?.availableBalance || 0).toLocaleString()}
               </h1>
             </div>
-            <p className="text-sm sm:text-base text-white/60 font-bold mt-4 uppercase tracking-widest">
+          </div>
+
+          <div className="relative z-10 hidden sm:block">
+            <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] border-l border-white/10 pl-6 py-1">
               Ready for Withdrawal
             </p>
           </div>
+
           {/* Abstract background shapes */}
-          <div className="absolute -right-12 -bottom-12 size-64 bg-white/5 rounded-full blur-3xl" />
-          <div className="absolute -left-12 -top-12 size-48 bg-brand-light/20 rounded-full blur-2xl" />
+          <div className="absolute -right-8 -bottom-8 size-40 bg-white/5 rounded-full blur-2xl" />
+          <div className="absolute -left-12 -top-12 size-32 bg-brand-light/20 rounded-full blur-2xl opacity-50" />
         </div>
 
         {/* Page Title & Form Section (Desktop Only) */}

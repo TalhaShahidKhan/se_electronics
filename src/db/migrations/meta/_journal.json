@@ -15,6 +15,13 @@
       "when": 1773895478193,
       "tag": "0001_smooth_gwen_stacy",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1774027551945,
+      "tag": "0002_normal_puff_adder",
+      "breakpoints": true
     }
   ]
 }

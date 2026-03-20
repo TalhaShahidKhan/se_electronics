@@ -76,7 +76,7 @@ export default async function StaffTrackingPage() {
             <div className="bg-gray-100 rounded-md p-4 text-center">
               <CheckCircle className="mx-auto text-gray-700 mb-1" size={18} />
               <p className="font-bold text-lg">
-                {stats?.successfulServices || 0}
+                {stats?.completedServices || 0}
               </p>
               <p className="text-sm text-gray-500">COMPLETED</p>
             </div>

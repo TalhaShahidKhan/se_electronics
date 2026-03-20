@@ -162,6 +162,7 @@ export type ServicesType = {
   staffPhone: string | null;
   staffReport: StaffServiveReport | null;
   type: "install" | "repair";
+  status: Statuses;
   statusHistory: {
     customNote: string | null;
     customLabel: string | null;

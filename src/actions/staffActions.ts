@@ -35,7 +35,7 @@ import {
 } from "@/validationSchemas";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import { and, eq, ilike, or, sql } from "drizzle-orm";
+import { and, eq, ilike, notInArray, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { cookies, headers } from "next/headers";
 import { RedirectType, redirect } from "next/navigation";
@@ -1004,8 +1004,9 @@ export async function getStaffProfileStats(staffId: string) {
   try {
     const [
       totalServices,
-      successfulServices,
+      completedServices,
       canceledServices,
+      activeServices,
       ratingResult,
       staffPayments,
       addedResult,
@@ -1014,11 +1015,18 @@ export async function getStaffProfileStats(staffId: string) {
       db.$count(services, eq(services.staffId, staffId)),
       db.$count(
         services,
-        and(eq(services.staffId, staffId), eq(services.resolvedBy, "staff_member")),
+        and(eq(services.staffId, staffId), sql`status = 'completed'`),
       ),
       db.$count(
         services,
-        and(eq(services.staffId, staffId), eq(services.resolvedBy, "service_center")),
+        and(eq(services.staffId, staffId), sql`status = 'canceled'`),
+      ),
+      db.$count(
+        services,
+        and(
+          eq(services.staffId, staffId),
+          sql`status NOT IN ('completed', 'canceled')`,
+        ),
       ),
       db
         .select({ avg: sql<number>`AVG(${feedbacks.rating})` })
@@ -1057,8 +1065,9 @@ export async function getStaffProfileStats(staffId: string) {
       success: true,
       data: {
         totalServices,
-        successfulServices,
+        completedServices,
         canceledServices,
+        activeServices,
         rating: parseFloat(rating.toFixed(2)),
         payments: staffPayments,
         availableBalance,
@@ -1082,14 +1091,14 @@ export async function updateStaffStats(staffId: string) {
         services,
         and(
           eq(services.staffId, staffId),
-          eq(services.resolvedBy, "staff_member"),
+          sql`status = 'completed'`,
         ),
       );
       const canceledCount = await tx.$count(
         services,
         and(
           eq(services.staffId, staffId),
-          eq(services.resolvedBy, "service_center"),
+          sql`status = 'canceled'`,
         ),
       );
 

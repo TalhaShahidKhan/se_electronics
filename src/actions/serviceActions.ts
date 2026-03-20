@@ -540,6 +540,7 @@ export const appointStaff = async (
           staffId: validatedData.staffId ? validatedData.staffId : null,
           staffName: validatedData.staffName,
           staffPhone: validatedData.staffPhone,
+          status: "in_progress",
         })
         .where(eq(services.serviceId, validatedData.serviceId));
 
@@ -688,9 +689,11 @@ export const updateService = async (
       .update(services)
       .set({
         ...restData,
-        ...(serviceStatus !== currentServiceStatus && {
-          resolvedBy: serviceStatus === "completed" ? "service_center" : null,
-        }),
+        ...(serviceStatus !== currentServiceStatus &&
+          !["new_note", "custom"].includes(serviceStatus) && {
+            status: serviceStatus as any,
+            resolvedBy: serviceStatus === "completed" ? "service_center" : null,
+          }),
       })
       .where(eq(services.serviceId, serviceId))
       .returning({
@@ -896,6 +899,7 @@ export const reportService = async ({
         .update(services)
         .set({
           staffReport: serviceReport,
+          status: serviceStatus.status,
           ...(serviceReport.resolved && { resolvedBy: "staff_member" }),
         })
         .where(eq(services.serviceId, serviceStatus.serviceId));

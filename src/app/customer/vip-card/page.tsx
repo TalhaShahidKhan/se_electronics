@@ -85,7 +85,7 @@ export default async function VipCardPage() {
 
               <div className="relative z-10 h-full w-full p-5 sm:p-7 flex flex-col justify-between text-white drop-shadow-lg">
                 {/* Top Section */}
-                <div className="flex justify-between items-center font-black">
+                <div className="flex justify-between items-baseline font-black">
                   <div className="text-white text-lg sm:text-lg tracking-tight leading-none drop-shadow-md">
                     SE ELECTRONICS
                   </div>
@@ -113,7 +113,7 @@ export default async function VipCardPage() {
                 </div>
                 {/* Expiry (Bottom Middle/Right) */}
                 <div className="flex items-center gap-1.5 sm:gap-3 translate-y-1">
-                  <div className="flex flex-col text-[10px] text-blue-100/70 font-black leading-none uppercase text-right">
+                  <div className="flex flex-col text-[10px] text-white font-black leading-none uppercase text-right">
                     <span>EXPIRES IN</span>
                   </div>
                   <span className="text-[10px] font-bold text-white tracking-widest drop-shadow-md">

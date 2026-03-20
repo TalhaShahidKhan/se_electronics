@@ -197,14 +197,13 @@ export async function getComplaintById(complaintId: string) {
   }
 }
 
-export async function getComplaintsByStaff(staffId: string) {
+export async function getComplaintsByStaff(staffId: string, all: boolean = false) {
   try {
     const data = await db.query.staffComplaints.findMany({
       where: (complaints, { eq, and, ne }) =>
-        and(
-          eq(complaints.staffId, staffId),
-          ne(complaints.status, "completed")
-        ),
+        all
+          ? eq(complaints.staffId, staffId)
+          : and(eq(complaints.staffId, staffId), ne(complaints.status, "completed")),
       with: {
         customer: true,
       },
