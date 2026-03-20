@@ -1,11 +1,120 @@
 'use server'
 
 import { db } from "@/db/drizzle";
-import { customers, services, subscriptions, applications } from "@/db/schema";
+import { customers, services, subscriptions, applications, customerNotifications } from "@/db/schema";
 import { createSession, deleteSession, verifySession } from "@/lib";
-import { eq, and, count, or } from "drizzle-orm";
+import { eq, and, count, or, ilike } from "drizzle-orm";
+
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+
+/**
+ * Fetches VIP customers for admin management
+ */
+export const getVipCustomers = async ({ query = '', status = '' }: { query?: string, status?: string }) => {
+    try {
+        const session = await verifySession(false, 'admin');
+        if (!session) return { success: false, message: "Unauthorized access" };
+
+        const q = `%${query}%`;
+        const filters = and(
+            status ? eq(customers.vipStatus, status as any) : undefined,
+            query ? or(
+                ilike(customers.name, q),
+                ilike(customers.phone, q),
+                ilike(customers.customerId, q),
+                ilike(customers.vipCardNumber, q)
+            ) : undefined
+        );
+
+        const data = await db.query.customers.findMany({
+            where: filters,
+            orderBy: (customers, { desc }) => [desc(customers.updatedAt)]
+        });
+
+        return { success: true, data };
+    } catch (error) {
+        console.error("Error fetching VIP customers:", error);
+        return { success: false, message: "Could not fetch VIP customers" };
+    }
+}
+
+/**
+ * Updates a customer's VIP status and generates a card number if approved
+ */
+export const updateCustomerVipStatus = async (customerId: string, status: string) => {
+    try {
+        const session = await verifySession(false, 'admin');
+        if (!session) return { success: false, message: "Unauthorized" };
+
+        const updates: any = { vipStatus: status };
+        if (status === 'approved') {
+            const customer = await db.query.customers.findFirst({
+                where: eq(customers.customerId, customerId)
+            });
+            if (customer && !customer.vipCardNumber) {
+                const { generateVipCardNumber } = await import("@/utils");
+                updates.vipCardNumber = generateVipCardNumber();
+            }
+        }
+
+        await db.update(customers)
+            .set(updates)
+            .where(eq(customers.customerId, customerId));
+
+        revalidatePath('/vips');
+        revalidatePath('/customer/profile');
+        revalidatePath('/customer/vip-card');
+        
+        return { success: true, message: `Status updated successfully to ${status}` };
+    } catch (error) {
+        console.error("Error updating VIP status:", error);
+        return { success: false, message: "Failed to update status" };
+    }
+}
+
+/**
+ * Fetches notifications for the logged-in customer
+ */
+export async function getCustomerNotifications() {
+    try {
+        const session = await verifySession(false, 'customer');
+        if (!session || !session.isAuth) return { success: false, message: "Unauthorized" };
+
+        const notifications = await db.query.customerNotifications.findMany({
+            where: eq(customerNotifications.customerId, session.userId as string),
+            orderBy: (customerNotifications, { desc }) => [desc(customerNotifications.createdAt)]
+        });
+
+        return { success: true, data: notifications };
+    } catch (error) {
+        console.error("Error fetching customer notifications:", error);
+        return { success: false, message: "Failed to fetch notifications" };
+    }
+}
+
+/**
+ * Marks a specific notification as read for a customer
+ */
+export async function markCustomerNotificationAsRead(id: string) {
+    try {
+        const session = await verifySession(false, 'customer');
+        if (!session || !session.isAuth) return { success: false, message: "Unauthorized" };
+
+        await db.update(customerNotifications)
+            .set({ isRead: true })
+            .where(and(
+                eq(customerNotifications.id, id),
+                eq(customerNotifications.customerId, session.userId as string)
+            ));
+
+        revalidatePath('/customer/notifications');
+        return { success: true };
+    } catch (error) {
+        console.error("Error marking notification as read:", error);
+        return { success: false, message: "Failed to mark as read" };
+    }
+}
 
 export async function verifyCustomerSession() {
     const session = await verifySession(false, 'customer');

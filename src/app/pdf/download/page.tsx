@@ -31,7 +31,7 @@ export default function DocDownloadPage() {
             return
         }
 
-        const blob = new Blob([response.pdfBuffer], { type: 'application/pdf' })
+        const blob = new Blob([response.pdfBuffer!], { type: 'application/pdf' })
         const url = URL.createObjectURL(blob)
 
         const a = document.createElement('a')

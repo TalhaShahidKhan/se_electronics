@@ -1,4 +1,4 @@
-import { getCustomerById } from "@/actions/customerActions";
+import { getCustomerById } from "@/actions";
 import { getMyServices, getStaffProfileStats } from "@/actions/staffActions";
 import { StaffLayout } from "@/components/layout/StaffLayout";
 import {

@@ -11,4 +11,5 @@ export * from './staffActions'
 export * from './subscriptionActions'
 export * from './notificationActions'
 export * from './taskActions'
+export * from './customerAdminActions'
 
