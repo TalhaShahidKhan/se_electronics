@@ -9,12 +9,36 @@ export default async function StaffProfilePage() {
 
   if (!session.isAuth) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">
-          Access denied.{" "}
-          <Link href="/staff/login" className="text-brand font-bold">
-            Login
-          </Link>
+      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-4 selection:bg-brand/20">
+        <div className="max-w-md w-full bg-white rounded-md shadow-2xl border border-gray-100 overflow-hidden group">
+          <div className="bg-slate-900 p-8 text-center relative overflow-hidden">
+             {/* Background accents */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand/10 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none group-hover:bg-brand/20 transition-all duration-700"></div>
+            
+            <div className="relative z-10">
+              <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10 backdrop-blur-sm">
+                <svg className="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-black text-white mb-2">Staff Portal</h2>
+              <p className="text-slate-400 text-sm font-medium">Please sign in to access your dashboard and tasks.</p>
+            </div>
+          </div>
+          
+          <div className="p-8 space-y-4">
+            <form action={staffLogout} className="w-full">
+              <button
+                type="submit"
+                className="w-full bg-brand text-white font-black py-4 px-8 rounded-md shadow-lg shadow-brand/20 hover:shadow-xl transition-all active:scale-[0.98] uppercase tracking-widest text-sm flex items-center justify-center gap-3"
+              >
+                Sign In to Dashboard
+              </button>
+            </form>
+            <p className="text-center text-gray-400 text-xs font-medium">
+              Forgot credentials? Contact administrator
+            </p>
+          </div>
         </div>
       </div>
     );

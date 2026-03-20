@@ -1,4 +1,4 @@
-import { verifyCustomerSession } from "@/actions/customerActions";
+import { verifyCustomerSession, customerLogout } from "@/actions/customerActions";
 import { getCustomerProfileStats } from "@/actions/customerActions";
 import CustomerDashboardClient from "@/components/features/customers/CustomerDashboardClient";
 import Link from "next/link";
@@ -26,12 +26,14 @@ export default async function CustomerProfilePage() {
           </div>
           
           <div className="p-8 space-y-4">
-            <Link
-              href="/customer/login"
-              className="w-full bg-blue-600 text-white font-black py-4 px-8 rounded-md shadow-lg shadow-blue-600/20 hover:shadow-xl hover:bg-blue-700 transition-all active:scale-[0.98] uppercase tracking-widest text-sm flex items-center justify-center gap-3"
-            >
-              Sign In to Dashboard
-            </Link>
+            <form action={customerLogout} className="w-full">
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white font-black py-4 px-8 rounded-md shadow-lg shadow-blue-600/20 hover:shadow-xl hover:bg-blue-700 transition-all active:scale-[0.98] uppercase tracking-widest text-sm flex items-center justify-center gap-3"
+              >
+                Sign In to Dashboard
+              </button>
+            </form>
             <p className="text-center text-gray-400 text-xs font-medium">
               Don't have an ID? Contact our support
             </p>
