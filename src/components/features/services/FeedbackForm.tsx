@@ -103,7 +103,7 @@ export default function FeedbackForm({
   } else
     return (
       <div className="mx-auto max-w-[600px] text-center p-4">
-        <div className="h-full font-bold mb-4 flex flex-col gap-0.5 bg-[#e9f8ff] border-[#6EC1E4] border p-6 rounded-lg">
+        <div className="h-full font-bold mb-4 flex flex-col gap-0.5 bg-[#e9f8ff] border-[#6EC1E4] border p-6 rounded-md">
           <div className="text-2xl">কাস্টমার সার্ভিস ম্যানেজমেন্ট</div>
           <div className="text-lg">গ্রাহক সেবা মূল‌্যায়ন ফর্ম পূরণ করুন</div>
           <div className="text-lg">সার্ভিস নম্বর - {serviceId}</div>
@@ -115,7 +115,7 @@ export default function FeedbackForm({
             হেড অফিস : {contactDetails.headOffice}
           </div>
         </div>
-        <div className="flex flex-col gap-4 bg-[#e9f8ff] border-[#6EC1E4] border p-6 rounded-lg">
+        <div className="flex flex-col gap-4 bg-[#e9f8ff] border-[#6EC1E4] border p-6 rounded-md">
           {feedbackQuestions.map(({ question }, index) => (
             <div key={question} className="mt-6 flex flex-col gap-4">
               <p>

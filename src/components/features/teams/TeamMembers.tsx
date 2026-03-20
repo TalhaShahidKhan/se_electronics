@@ -84,8 +84,8 @@ export default function TeamMembers({
           }}
         >
           <div className="bg-white overflow-hidden w-full">
-            <div className="space-y-3 bg-blue-50/60 border border-blue-200 rounded-2xl p-6 text-primary text-center">
-              {/* <div className="bg-primary/15 border border-primary p-6  rounded-lg"> */}
+            <div className="space-y-3 bg-blue-50/60 border border-blue-200 rounded-md p-6 text-primary text-center">
+              {/* <div className="bg-primary/15 border border-primary p-6  rounded-md"> */}
               {/* <!-- Profile Image Placeholder --> */}
               <div className="size-48 rounded-full overflow-hidden __center mx-auto mb-5">
                 <ImageWithLightbox src={selectedProfile?.photoUrl} />
@@ -113,8 +113,8 @@ export default function TeamMembers({
             </div>
 
             <div className="grid grid-cols-3 gap-3 py-4">
-              <div className="flex flex-col items-center p-4 rounded-2xl bg-green-50 border border-green-200">
-                <div className="bg-green-100 rounded-xl p-2 mb-3 mx-a">
+              <div className="flex flex-col items-center p-4 rounded-md bg-green-50 border border-green-200">
+                <div className="bg-green-100 rounded-md p-2 mb-3 mx-a">
                   <CheckSquare className="size-5 text-green-600" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">
@@ -126,8 +126,8 @@ export default function TeamMembers({
                   সফল সার্ভিস
                 </span>
               </div>
-              <div className="flex flex-col items-center p-4 rounded-2xl bg-purple-50 border border-purple-200">
-                <div className="bg-purple-100 rounded-xl p-2 mb-3">
+              <div className="flex flex-col items-center p-4 rounded-md bg-purple-50 border border-purple-200">
+                <div className="bg-purple-100 rounded-md p-2 mb-3">
                   <Clock className="size-5 text-purple-600" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">
@@ -138,8 +138,8 @@ export default function TeamMembers({
                   বছরের দক্ষতা
                 </span>
               </div>
-              <div className="flex flex-col items-center p-4 rounded-2xl bg-amber-50 border border-amber-200">
-                <div className="bg-amber-100 rounded-xl p-2 mb-3">
+              <div className="flex flex-col items-center p-4 rounded-md bg-amber-50 border border-amber-200">
+                <div className="bg-amber-100 rounded-md p-2 mb-3">
                   <XCircle className="size-5 text-amber-600" />
                 </div>
                 <span className="text-2xl font-bold text-gray-900">
@@ -153,7 +153,7 @@ export default function TeamMembers({
               </div>
             </div>
 
-            <div className="space-y-3 bg-blue-50/60 border border-blue-200 rounded-2xl p-4">
+            <div className="space-y-3 bg-blue-50/60 border border-blue-200 rounded-md p-4">
               <h2 className="text-lg font-semibold text-gray-800 border-b border-blue-100 pb-2 mb-3">
                 সাধারণ তথ্য
               </h2>
@@ -205,7 +205,7 @@ export default function TeamMembers({
             </div>
 
             {/* About Us Section */}
-            <div className="my-4 space-y-3 bg-blue-50/60 border border-blue-200 rounded-2xl p-4">
+            <div className="my-4 space-y-3 bg-blue-50/60 border border-blue-200 rounded-md p-4">
               <div className="flex items-center gap-2 mb-4">
                 <div className="">
                   <Building2 size={20} />
@@ -237,8 +237,8 @@ export default function TeamMembers({
             </div>
 
             {/* Contact Section */}
-            <div className="space-y-3 bg-blue-50/60 border border-blue-200 rounded-2xl p-4 text-primary text-center">
-              {/* <div className="mt-4 bg-primary/15 p-6 text-center text-primary rounded-lg border border-primary"> */}
+            <div className="space-y-3 bg-blue-50/60 border border-blue-200 rounded-md p-4 text-primary text-center">
+              {/* <div className="mt-4 bg-primary/15 p-6 text-center text-primary rounded-md border border-primary"> */}
               <p className=" mb-3 font-medium">
                 জরুরী প্রয়োজনে কাস্টমার কেয়ারে কল করুন:
               </p>
@@ -250,7 +250,7 @@ export default function TeamMembers({
                 onClick={() =>
                   (window.location.href = `tel:${contactDetails.customerCare}`)
                 }
-                className="text-white w-full bg-primary font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                className="text-white w-full bg-primary font-semibold py-3 px-6 rounded-md flex items-center justify-center gap-2 transition-colors"
               >
                 <Phone size={20} />
                 সাহায্যের জন্য কল করুন
@@ -296,7 +296,7 @@ export default function TeamMembers({
             <div
               key={staff.id}
               onClick={() => handleProfileSelect(staff)}
-              className="bg-white border p-6 rounded-lg text-center cursor-pointer"
+              className="bg-white border p-6 rounded-md text-center cursor-pointer"
             >
               <div className="size-44 rounded-full overflow-hidden __center mx-auto">
                 <Image src={staff.photoUrl} alt="" width={176} height={176} />

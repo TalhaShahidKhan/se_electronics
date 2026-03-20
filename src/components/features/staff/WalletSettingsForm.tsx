@@ -42,7 +42,7 @@ export function WalletSettingsForm({
           onChange={(e) => setWalletNumber(e.target.value)}
           placeholder="01XXXXXXXXX"
           required
-          className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
+          className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-md text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all bg-white"
         />
         <p className="mt-1 text-[11px] text-gray-500">
           এই নম্বরেই আপনার পেমেন্ট পাঠানো হবে। সঠিক bKash পার্সোনাল নাম্বার দিন।
@@ -52,7 +52,7 @@ export function WalletSettingsForm({
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-brand text-white font-bold py-2.5 rounded-xl text-sm uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
+        className="w-full bg-brand text-white font-bold py-2.5 rounded-md text-sm uppercase tracking-wider hover:bg-brand-800 disabled:bg-brand/50 transition-all active:scale-[0.98]"
       >
         {isPending ? "Saving..." : "Save bKash number"}
       </button>

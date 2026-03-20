@@ -29,11 +29,11 @@ export default function CustomerNotificationBell({ variant = "header" }: { varia
       className={clsx(
         "relative flex items-center justify-center transition-all duration-300 shadow-sm border",
         variant === "header" 
-          ? "size-10 rounded-xl bg-white/10 text-white hover:bg-white/20 border-white/20" 
-          : "size-12 rounded-2xl bg-white text-[#0A1A3A] hover:bg-gray-100 border-gray-200"
+          ? "size-10 rounded-md bg-white/10 text-white hover:bg-white/20 border-white/20" 
+          : "size-12 rounded-md bg-white text-[#0A1A3A] hover:bg-gray-100 border-gray-200"
       )}
     >
-      <Bell size={variant === "header" ? 20 : 24} />
+      <Bell size={variant === "header" ? 20 : 24} /> 
       {unreadCount > 0 && (
         <span className={clsx(
           "absolute -top-1 -right-1 bg-[#FF3B30] text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 shadow-sm",

@@ -21,11 +21,12 @@ export default function PaymentForm({
     ...paymentInfo,
     date: paymentInfo?.date || new Date(),
     receiverWalletNumber:
-      paymentInfo?.receiverWalletNumber || paymentInfo?.staff?.walletNumber || "",
+      paymentInfo?.receiverWalletNumber ||
+      paymentInfo?.staff?.walletNumber ||
+      "",
     receiverBankInfo:
       paymentInfo?.receiverBankInfo || paymentInfo?.staff?.bankInfo || null,
   });
-
 
   const [isPending, setIsPending] = useState(false);
 
@@ -33,7 +34,7 @@ export default function PaymentForm({
 
   const inputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    key: string
+    key: string,
   ) => {
     const value = event.target.value;
 
@@ -68,11 +69,13 @@ export default function PaymentForm({
       let res;
 
       if (mode === "create") {
-        res = await createPayment(paymentData as Parameters<typeof createPayment>[0]);
+        res = await createPayment(
+          paymentData as Parameters<typeof createPayment>[0],
+        );
       } else {
         res = await updatePayment(
           paymentData.paymentId!,
-          paymentData as Parameters<typeof updatePayment>[1]
+          paymentData as Parameters<typeof updatePayment>[1],
         );
       }
 
@@ -108,7 +111,7 @@ export default function PaymentForm({
         </button>
       )}
 
-      <div className="flex flex-col gap-6 rounded-lg">
+      <div className="flex flex-col gap-6 rounded-md">
         {/* Payment Method + Amount */}
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 text-start">
@@ -125,7 +128,9 @@ export default function PaymentForm({
                     receiverWalletNumber:
                       method === "bank"
                         ? ""
-                        : prev.staff?.walletNumber || prev.receiverWalletNumber || "",
+                        : prev.staff?.walletNumber ||
+                          prev.receiverWalletNumber ||
+                          "",
                     receiverBankInfo:
                       method === "bank"
                         ? prev.staff?.bankInfo || prev.receiverBankInfo || null
@@ -142,7 +147,6 @@ export default function PaymentForm({
               </select>
             </label>
           </div>
-
 
           <InputField
             required={!paymentInfo}
@@ -164,7 +168,6 @@ export default function PaymentForm({
                 label="Receiver Bank Name"
               />
 
-
               <InputField
                 value={paymentData?.senderBankInfo?.bankName ?? ""}
                 onChange={(e) =>
@@ -177,12 +180,9 @@ export default function PaymentForm({
             <div className="flex flex-col sm:flex-row gap-4">
               <InputField
                 readOnly
-                value={
-                  paymentData?.receiverBankInfo?.accountHolderName ?? ""
-                }
+                value={paymentData?.receiverBankInfo?.accountHolderName ?? ""}
                 label="Receiver Account Name"
               />
-
 
               <InputField
                 value={paymentData?.senderBankInfo?.accountHolderName ?? ""}
@@ -200,7 +200,6 @@ export default function PaymentForm({
                 label="Receiver Account Number"
               />
 
-
               <InputField
                 value={paymentData?.senderBankInfo?.accountNumber ?? ""}
                 onChange={(e) =>
@@ -216,7 +215,6 @@ export default function PaymentForm({
                 value={paymentData?.receiverBankInfo?.branchName ?? ""}
                 label="Receiver Branch Name"
               />
-
 
               <InputField
                 value={paymentData?.senderBankInfo?.branchName ?? ""}
@@ -246,7 +244,6 @@ export default function PaymentForm({
           </div>
         ) : null}
 
-
         {/* Transaction + Date */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {paymentMethod !== "bank" && paymentMethod !== "cash" && (
@@ -256,7 +253,6 @@ export default function PaymentForm({
               label="Transaction ID"
             />
           )}
-
 
           <InputField
             value={
@@ -283,18 +279,14 @@ export default function PaymentForm({
         </div>
 
         {/* Submit */}
-        <button
-          disabled={isPending}
-          onClick={submitHandler}
-          className="__btn"
-        >
+        <button disabled={isPending} onClick={submitHandler} className="__btn">
           {mode === "create"
             ? isPending
               ? "Adding..."
               : "Add"
             : isPending
-            ? "Updating..."
-            : "Update"}
+              ? "Updating..."
+              : "Update"}
         </button>
       </div>
     </Modal>

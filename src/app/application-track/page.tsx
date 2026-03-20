@@ -62,7 +62,7 @@ export default async function ApplicationTrack({ searchParams }: { searchParams:
 
     return (
         <div className="mx-auto max-w-[1000px] text-center p-3">
-            <div className="h-full font-bold mb-3 flex flex-col gap-0.5 p-6 rounded-lg border-[2px]">
+            <div className="h-full font-bold mb-3 flex flex-col gap-0.5 p-6 rounded-md border-[2px]">
                 <div className="text-xl">
                     {applicationContents[application.type].title}
                 </div>
@@ -71,7 +71,7 @@ export default async function ApplicationTrack({ searchParams }: { searchParams:
                 <div className="text-sm">হেড অফিস : {contactDetails.headOffice}</div>
                 <p className="text-sm font-normal mt-2 text-gray-500">{applicationContents[application.type].subtitle}</p>
             </div>
-            <div className="bg-white shadow-sm rounded-xl border-2 border-gray-200">
+            <div className="bg-white shadow-sm rounded-md border-2 border-gray-200">
                 {application.staff &&
                     <div className="bg-gradient-to-b from-gray-50 to-white py-6 px-4">
                         <div className="size-36 lg:size-44 rounded-full overflow-hidden border-4 border-white shadow-md mx-auto">
@@ -81,7 +81,7 @@ export default async function ApplicationTrack({ searchParams }: { searchParams:
                 }
 
                 <div className="px-4 py-6 pt-0 space-y-4">
-                    <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="bg-gray-50 rounded-md p-4">
                         <div className="flex justify-between items-center py-3 border-b border-gray-200">
                             <span className="text-primary md:text-base">Applicant Name</span>
                             <span className="font-medium md:text-base">
@@ -104,7 +104,7 @@ export default async function ApplicationTrack({ searchParams }: { searchParams:
                         </div>
                     </div>
 
-                    <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mt-4">
+                    <div className="bg-blue-50 border border-blue-100 rounded-md p-4 mt-4">
                         <p className="text-gray-700 md:text-base leading-relaxed">
                             {renderText(applicationContents[application.type].statusMessages[application.status], {
                                 name: application.staff?.name,

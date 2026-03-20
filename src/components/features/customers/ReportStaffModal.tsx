@@ -34,7 +34,7 @@ export default function ReportStaffModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl animate-in fade-in zoom-in duration-200">
+      <div className="bg-white rounded-md p-6 w-full max-w-md shadow-xl animate-in fade-in zoom-in duration-200">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-gray-900 text-center">
             Report Issue with Staff
@@ -60,7 +60,7 @@ export default function ReportStaffModal({
           </button>
         </div>
 
-        <div className="bg-red-50 p-4 rounded-xl mb-6">
+        <div className="bg-red-50 p-4 rounded-md mb-6">
           <p className="text-sm text-red-700 font-semibold mb-1">
             Reporting Staff:
           </p>
@@ -90,7 +90,7 @@ export default function ReportStaffModal({
               onChange={(e) => setSubject(e.target.value)}
               placeholder="e.g. Unprofessional behavior"
               required
-              className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none"
+              className="w-full px-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-red-500 outline-none"
             />
           </div>
 
@@ -104,7 +104,7 @@ export default function ReportStaffModal({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Provide details about your experience..."
               required
-              className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none h-32 resize-none"
+              className="w-full px-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-red-500 outline-none h-32 resize-none"
             />
           </div>
 
@@ -112,14 +112,14 @@ export default function ReportStaffModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-gray-50 active:scale-95 transition-all"
+              className="flex-1 px-4 py-2 border border-gray-200 rounded-md text-gray-600 font-bold hover:bg-gray-50 active:scale-95 transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="flex-1 px-4 py-2 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 active:scale-95 transition-all disabled:bg-red-300"
+              className="flex-1 px-4 py-2 bg-red-600 text-white rounded-md font-bold hover:bg-red-700 active:scale-95 transition-all disabled:bg-red-300"
             >
               {isPending ? "Submitting..." : "Submit Report"}
             </button>

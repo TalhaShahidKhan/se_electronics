@@ -66,12 +66,12 @@ export default async function TechniciansPage({
                 name="search"
                 defaultValue={searchQuery || ""}
                 placeholder="Search by name, phone, or skills..."
-                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input type="hidden" name="role" value={roleFilter || ""} />
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+                className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
               >
                 Search
               </button>
@@ -80,19 +80,19 @@ export default async function TechniciansPage({
           <div className="flex gap-2">
             <Link
               href="/technicians"
-              className={`px-4 py-2 rounded-lg ${!roleFilter ? "bg-blue-600 text-white" : "bg-white border"}`}
+              className={`px-4 py-2 rounded-md ${!roleFilter ? "bg-blue-600 text-white" : "bg-white border"}`}
             >
               All
             </Link>
             <Link
               href="/technicians?role=technician"
-              className={`px-4 py-2 rounded-lg ${roleFilter === "technician" ? "bg-blue-600 text-white" : "bg-white border"}`}
+              className={`px-4 py-2 rounded-md ${roleFilter === "technician" ? "bg-blue-600 text-white" : "bg-white border"}`}
             >
               Technicians
             </Link>
             <Link
               href="/technicians?role=electrician"
-              className={`px-4 py-2 rounded-lg ${roleFilter === "electrician" ? "bg-blue-600 text-white" : "bg-white border"}`}
+              className={`px-4 py-2 rounded-md ${roleFilter === "electrician" ? "bg-blue-600 text-white" : "bg-white border"}`}
             >
               Electricians
             </Link>
@@ -109,7 +109,7 @@ export default async function TechniciansPage({
             {staffs.map((staff: any) => (
               <div
                 key={staff.staffId}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+                className="bg-white rounded-md shadow-md overflow-hidden hover:shadow-xl transition-shadow"
               >
                 <div className="relative h-48 bg-gradient-to-br from-blue-100 to-purple-100">
                   {staff.photoUrl && (
@@ -185,7 +185,7 @@ export default async function TechniciansPage({
                   <div className="mt-4">
                     <Link
                       href={`/get-service?staffId=${staff.staffId}`}
-                      className="block w-full text-center bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
+                      className="block w-full text-center bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
                     >
                       Request This Technician
                     </Link>

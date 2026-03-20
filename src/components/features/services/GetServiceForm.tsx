@@ -137,7 +137,7 @@ export default function GetServiceForm({
 
   if (showToC) {
     return (
-      <div className="max-w-4xl mx-auto bg-white p-3 md:p-6 rounded-2xl shadow-sm border border-gray-100">
+      <div className="max-w-4xl mx-auto bg-white p-3 rounded-md shadow-sm border border-gray-100">
         <div className="mb-6">
           <h2 className="text-2xl sm:text-3xl text-center font-extrabold text-brand mb-4 leading-tight">
             এস ই ইলেকট্রনিকস: অনলাইন সার্ভিসিং-এর শর্তাবলী ও নির্দেশিকা
@@ -152,15 +152,15 @@ export default function GetServiceForm({
             {requirementsList.map((item, index) => (
               <div
                 key={index}
-                className="text-sm sm:text-base p-4 sm:p-6 rounded-xl border border-gray-100 relative"
+                className="text-sm sm:text-base  rounded-md relative"
               >
                 {/* vertical dotted line */}
                 {index !== requirementsList.length - 1 && (
-                  <div className="absolute left-[26px] top-7 md:left-9 md:top-10 h-full border-l-2 border-dotted border-brand mt-2"></div>
+                  <div className="absolute left-[11px] top-4 md:left-10 md:top-10 h-full border-l-[3px] border-dashed border-brand/40 mt-2"></div>
                 )}
 
                 <div className="flex items-start gap-3 mb-2">
-                  <span className="bg-brand text-white rounded-full flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-sm sm:text-sm font-bold z-10 ">
+                  <span className="bg-brand/85 text-white rounded-full flex items-center justify-center min-w-6 min-h-6 w-6 h-6 shrink-0 text-sm sm:text-sm font-bold z-10 ">
                     {index + 1}
                   </span>
 
@@ -174,8 +174,8 @@ export default function GetServiceForm({
             ))}
           </div>
         </div>
-        <div className="mb-8 p-4 sm:p-6 bg-brand/5 rounded-xl border border-brand/10">
-          <label className="flex items-start gap-3 cursor-pointer">
+        <div className="mb-8 p-4 sm:p-6 bg-gray-100  rounded-md">
+          <label className="flex items-start  gap-3 cursor-pointer">
             <input
               type="checkbox"
               className="w-5 h-5 mt-0.5 border-brand/30 rounded-md text-brand focus:ring-brand"
@@ -191,7 +191,7 @@ export default function GetServiceForm({
         </div>
 
         <button
-          className="w-full py-4 sm:py-5 bg-brand text-white rounded-2xl font-black text-lg sm:text-xl hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50 disabled:grayscale"
+          className="w-full py-4 sm:py-5 bg-brand text-white rounded-md font-black text-lg sm:text-xl hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50 disabled:grayscale"
           disabled={!agreed}
           onClick={() => setShowToC(false)}
         >
@@ -205,7 +205,7 @@ export default function GetServiceForm({
   }
   return (
     <div className="mx-auto max-w-[1000px] text-center p-2 sm:p-4">
-      <div className="font-bold mb-4 flex flex-col gap-1 bg-white p-4 sm:p-8 rounded-2xl border border-gray-100 shadow-sm">
+      <div className="font-bold mb-4 flex flex-col gap-1 bg-white p-4 sm:p-8 rounded-md border border-gray-100 shadow-sm">
         <div className="text-2xl sm:text-3xl text-brand font-black">
           এস ই ইলেকট্রনিকস প্রডাক্ট অনলাইন সার্ভিসিং সেন্টার
         </div>
@@ -223,31 +223,31 @@ export default function GetServiceForm({
           হেড অফিস : {contactDetails.headOffice}
         </div>
 
-        <div className="border-2 border-brand/20 bg-brand/5 p-4 sm:p-6 rounded-2xl mt-6">
+        <div className="border-2 border-brand/20 bg-brand/5 p-4 sm:p-6 rounded-md mt-6">
           <p className="font-black text-gray-700 mb-4 text-base sm:text-lg">
             যে কোন সহযোগীতা ও তথ্যের জন্য আমাদের সাথে আলাপ করুন
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             <Link
-              className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black"
+              className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-md hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black"
               href={`sms:${contactDetails.sms}`}
             >
               এস এম এস
             </Link>
             <Link
-              className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black"
+              className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-md hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black"
               href={`tel:${contactDetails.phone}`}
             >
               ফোন কল
             </Link>
             <Link
-              className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black"
+              className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-md hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black"
               href={`tel:${contactDetails.customerCare}`}
             >
               কাস্টমার কেয়ার
             </Link>
             <Link
-              className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-xl hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black"
+              className="flex items-center justify-center h-12 bg-white border-2 border-brand/20 text-brand rounded-md hover:bg-brand hover:text-white transition-all text-sm sm:text-base font-black"
               href={`https://wa.me/${contactDetails.whatsApp}`}
             >
               ওয়াসআপ
@@ -255,8 +255,8 @@ export default function GetServiceForm({
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-6 bg-white p-4 sm:p-10 rounded-2xl border border-gray-100 shadow-sm">
-        <p className="text-center font-black text-gray-800 bg-brand/5 p-4 sm:p-6 rounded-2xl border border-brand/10 text-base sm:text-lg leading-relaxed">
+      <div className="flex flex-col gap-6 bg-white p-4 sm:p-10 rounded-md border border-gray-100 shadow-sm">
+        <p className="text-center font-black text-gray-800 bg-brand/5 p-4 sm:p-6 rounded-md border border-brand/10 text-base sm:text-lg leading-relaxed">
           আপনার পণ্যের সার্ভিসং এর জন্য নিচের বক্স গুলা পূরণ করে আপনার পণ্যের
           সাভিসিং করার জন্য আমাদের SEIPSBD সার্ভিসং টিমকে সঠিক তথ্য দিয়ে
           সহযোগিতা করুন
@@ -295,7 +295,7 @@ export default function GetServiceForm({
                   name="customerAddressDistrict"
                   value={selectedDistrict}
                   onChange={(e) => setSelectedDistrict(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                 >
                   <option value="">নির্বাচন করুন</option>
                   {districts.map((district) => (
@@ -317,7 +317,7 @@ export default function GetServiceForm({
                 <select
                   required
                   name="customerAddressPoliceStation"
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                   defaultValue={customerData?.policeStation || ""}
                 >
                   <option value="">নির্বাচন করুন</option>
@@ -346,7 +346,7 @@ export default function GetServiceForm({
                 <select
                   required
                   name="productType"
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                   value={selectedProductType}
                   onChange={(e) => setSelectedProductType(e.target.value)}
                 >
@@ -372,7 +372,7 @@ export default function GetServiceForm({
                   <select
                     required
                     name="ipsBrand"
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                   >
                     <option value="">নির্বাচন করুন</option>
                     {ipsBrands.map((model, i) => (
@@ -403,7 +403,7 @@ export default function GetServiceForm({
                     <select
                       required
                       name="productModel"
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                     >
                       <option value="">নির্বাচন করুন</option>
                       {(selectedProductType === "stabilizer"
@@ -433,7 +433,7 @@ export default function GetServiceForm({
                     </span>
                     <select
                       name="powerRating"
-                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                     >
                       <option value="">নির্বাচন করুন</option>
                       {(selectedProductType === "stabilizer"
@@ -460,7 +460,7 @@ export default function GetServiceForm({
                   required
                   name="reportedIssue"
                   placeholder="পন্যের সমস্যা বিস্তারিত বর্ণনা করুন..."
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none min-h-[120px]"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-md text-sm transition-all focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none min-h-[120px]"
                 ></textarea>
               </label>
             </div>
@@ -486,7 +486,7 @@ export default function GetServiceForm({
           </div>
           <button
             disabled={isPending}
-            className="w-full py-4 bg-brand text-white rounded-2xl font-bold text-lg hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50 mt-4"
+            className="w-full py-4 bg-brand text-white rounded-md font-bold text-lg hover:bg-brand-800 active:scale-[0.98] transition-all shadow-lg shadow-brand/20 disabled:opacity-50 mt-4"
           >
             {isPending ? "Submitting..." : "Submit Request"}
           </button>

@@ -29,7 +29,7 @@ export default function StaffLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200 p-4">
-      <div className="w-full max-w-sm overflow-hidden rounded-2xl shadow-2xl">
+      <div className="w-full max-w-sm overflow-hidden rounded-md shadow-2xl">
         {/* Dark Navy Header Section */}
         <div className="bg-brand px-6 pt-10 pb-16 text-center relative">
           <div className="flex justify-center mb-3">
@@ -52,7 +52,7 @@ export default function StaffLoginPage() {
         {/* White Form Section with curved top */}
         <div className="bg-white -mt-8 rounded-t-2xl relative z-10 px-6 pt-2 pb-8">
           {/* Light blue label bar */}
-          <div className="bg-gradient-to-r from-sky-100 to-blue-100 rounded-xl py-3 px-4 mb-6 mt-4 border border-sky-200">
+          <div className="bg-gradient-to-r from-sky-100 to-blue-100 rounded-md py-3 px-4 mb-6 mt-4 border border-sky-200">
             <h2 className="text-center text-[13px] font-extrabold text-brand tracking-wider uppercase">
               Staff Portal Login
             </h2>
@@ -69,7 +69,7 @@ export default function StaffLoginPage() {
                 name="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm text-gray-700 placeholder:text-gray-400 placeholder:font-medium placeholder:uppercase placeholder:text-[11px] placeholder:tracking-wider focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-md text-sm text-gray-700 placeholder:text-gray-400 placeholder:font-medium placeholder:uppercase placeholder:text-[11px] placeholder:tracking-wider focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
                 placeholder="Your Username"
                 required
               />
@@ -79,14 +79,14 @@ export default function StaffLoginPage() {
               <input
                 type="password"
                 name="password"
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-sm text-gray-700 placeholder:text-gray-400 placeholder:font-medium placeholder:uppercase placeholder:text-[11px] placeholder:tracking-wider focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-md text-sm text-gray-700 placeholder:text-gray-400 placeholder:font-medium placeholder:uppercase placeholder:text-[11px] placeholder:tracking-wider focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
                 placeholder="Your Password"
                 required
               />
             </div>
 
             {state && !state.success && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-xl text-sm font-semibold text-center">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-md text-sm font-semibold text-center">
                 {state.message}
               </div>
             )}
@@ -94,7 +94,7 @@ export default function StaffLoginPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full bg-brand text-white font-bold py-3.5 px-4 rounded-xl text-sm uppercase tracking-[0.15em] hover:bg-brand-800 disabled:bg-brand/50 transition-all transform active:scale-[0.98] mt-2"
+              className="w-full bg-brand text-white font-bold py-3.5 px-4 rounded-md text-sm uppercase tracking-[0.15em] hover:bg-brand-800 disabled:bg-brand/50 transition-all transform active:scale-[0.98] mt-2"
             >
               {isPending ? "Logging in..." : "Login"}
             </button>
@@ -118,30 +118,35 @@ export default function StaffLoginPage() {
           <div className="size-20 bg-red-50 rounded-full flex items-center justify-center mb-6 animate-bounce">
             <ShieldAlert size={40} className="text-red-500" />
           </div>
-          
+
           <h2 className="text-2xl font-black text-gray-900 mb-3 uppercase tracking-tight">
             অ্যাক্সেস সংরক্ষিত
           </h2>
-          
+
           <p className="text-gray-600 font-medium leading-relaxed mb-8 px-4">
-            আপনার অ্যাকাউন্টটি বর্তমানে ব্লক করা আছে। পুনরায় সক্রিয় করতে আমাদের এডমিন প্যানেলের সাথে যোগাযোগ করুন।
+            আপনার অ্যাকাউন্টটি বর্তমানে ব্লক করা আছে। পুনরায় সক্রিয় করতে আমাদের
+            এডমিন প্যানেলের সাথে যোগাযোগ করুন।
           </p>
 
           <div className="w-full space-y-3">
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">
               Contact Administrator
             </p>
-            
-            <a 
+
+            <a
               href={`tel:${contactDetails.customerCare}`}
-              className="flex items-center justify-center gap-4 w-full bg-brand text-white font-black py-5 px-6 rounded-2xl shadow-xl shadow-brand/20 hover:shadow-2xl hover:bg-brand-700 transition-all active:scale-[0.98] group"
+              className="flex items-center justify-center gap-4 w-full bg-brand text-white font-black py-5 px-6 rounded-md shadow-xl shadow-brand/20 hover:shadow-2xl hover:bg-brand-700 transition-all active:scale-[0.98] group"
             >
-              <div className="bg-white/20 p-2 rounded-lg group-hover:rotate-12 transition-transform">
+              <div className="bg-white/20 p-2 rounded-md group-hover:rotate-12 transition-transform">
                 <PhoneCall size={20} />
               </div>
               <div className="text-left">
-                <p className="text-[10px] uppercase opacity-70 leading-none mb-1">Call Admin Now</p>
-                <p className="text-lg leading-none">{contactDetails.customerCare}</p>
+                <p className="text-[10px] uppercase opacity-70 leading-none mb-1">
+                  Call Admin Now
+                </p>
+                <p className="text-lg leading-none">
+                  {contactDetails.customerCare}
+                </p>
               </div>
             </a>
 

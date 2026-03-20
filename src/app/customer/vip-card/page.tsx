@@ -25,7 +25,7 @@ export default async function VipCardPage() {
           </h2>
           <Link
             href="/customer/login"
-            className="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-blue-600 text-white font-bold py-3 px-6 rounded-md hover:bg-blue-700 transition-colors"
           >
             Login
           </Link>
@@ -58,12 +58,12 @@ export default async function VipCardPage() {
         <div className="flex items-center gap-4 mb-8">
           <Link
             href="/customer/profile"
-            className="p-3 bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 hover:shadow-md transition-all active:scale-95"
+            className="p-3 bg-white rounded-md shadow-sm border border-gray-100 hover:bg-gray-50 hover:shadow-md transition-all active:scale-95"
           >
             <ArrowLeft size={24} className="text-gray-600" />
           </Link>
           <h1 className="text-3xl font-extrabold text-gray-900 flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-xl">
+            <div className="p-2 bg-blue-100 rounded-md">
               <Crown className="text-blue-600" size={28} />
             </div>
             VIP Membership
@@ -109,7 +109,7 @@ export default async function VipCardPage() {
                     {customer.name}
                   </p>
                 </div>
-                <div className="text-blue-100 font-black italic tracking-widest text-sm bg-white/10 px-3 py-1 rounded-lg">
+                <div className="text-blue-100 font-black italic tracking-widest text-sm bg-white/10 px-3 py-1 rounded-md">
                   ELITE
                 </div>
               </div>
@@ -138,25 +138,25 @@ export default async function VipCardPage() {
               </p>
 
               {vipStatus === "pending" || vipStatus === "processing" ? (
-                <div className="flex items-center gap-3 text-brand font-black uppercase tracking-widest text-sm bg-brand/5 p-4 rounded-2xl border border-brand/10">
+                <div className="flex items-center gap-3 text-brand font-black uppercase tracking-widest text-sm bg-brand/5 p-4 rounded-md border border-brand/10">
                   <Clock className="animate-pulse" size={20} />
                   Status: {vipStatus.toUpperCase()}
                 </div>
               ) : vipStatus === "rejected" ? (
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-red-600 font-black uppercase tracking-widest text-sm bg-red-50 p-4 rounded-2xl border border-red-100">
+                  <div className="flex items-center gap-3 text-red-600 font-black uppercase tracking-widest text-sm bg-red-50 p-4 rounded-md border border-red-100">
                     <CheckCircle2 size={20} />
                     Status: Rejected
                   </div>
                   <form action={handleApply}>
-                    <button className="w-full bg-brand text-white font-black py-5 px-8 rounded-2xl shadow-xl shadow-brand/20 hover:shadow-2xl hover:bg-brand-700 transition-all active:scale-[0.98] uppercase tracking-widest text-sm">
+                    <button className="w-full bg-brand text-white font-black py-5 px-8 rounded-md shadow-xl shadow-brand/20 hover:shadow-2xl hover:bg-brand-700 transition-all active:scale-[0.98] uppercase tracking-widest text-sm">
                       Apply Again
                     </button>
                   </form>
                 </div>
               ) : (
                 <form action={handleApply}>
-                  <button className="w-full bg-brand text-white font-black py-5 px-8 rounded-2xl shadow-xl shadow-brand/20 hover:shadow-2xl hover:bg-brand-700 transition-all active:scale-[0.98] uppercase tracking-widest text-sm flex items-center justify-center gap-3">
+                  <button className="w-full bg-brand text-white font-black py-5 px-8 rounded-md shadow-xl shadow-brand/20 hover:shadow-2xl hover:bg-brand-700 transition-all active:scale-[0.98] uppercase tracking-widest text-sm flex items-center justify-center gap-3">
                     <Crown size={20} />
                     Apply for VIP Card
                   </button>
@@ -175,7 +175,7 @@ export default async function VipCardPage() {
             {benefits.map((benefit, i) => (
               <li
                 key={i}
-                className="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100"
+                className="flex items-start gap-4 p-4 rounded-md hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100"
               >
                 <div className="mt-1 bg-blue-100 rounded-full p-1.5 border border-blue-200">
                   <CheckCircle2 size={16} className="text-blue-600" />
@@ -198,7 +198,7 @@ export default async function VipCardPage() {
               href={`https://wa.me/${contactDetails.whatsApp.replace(/\+/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-black py-4 px-6 rounded-2xl shadow-lg transition-all active:scale-95 text-sm uppercase tracking-widest"
+              className="flex items-center justify-center gap-3 w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-black py-4 px-6 rounded-md shadow-lg transition-all active:scale-95 text-sm uppercase tracking-widest"
             >
               <MessageCircle size={20} />
               Contact Support via WhatsApp

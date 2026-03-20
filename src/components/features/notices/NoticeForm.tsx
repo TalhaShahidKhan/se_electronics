@@ -129,7 +129,7 @@ export default function NoticeForm({
               setFormData((prev) => ({ ...prev, title: e.target.value }))
             }
             placeholder="e.g., Policy Update, Emergency Meeting"
-            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all outline-none font-bold"
+            className="w-full px-4 py-3 rounded-md border-2 border-gray-100 focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all outline-none font-bold"
           />
         </div>
 
@@ -149,7 +149,7 @@ export default function NoticeForm({
                       setFormData((prev) => ({ ...prev, priority: p }))
                     }
                     className={clsx(
-                      "flex-1 py-2 px-3 rounded-xl text-sm font-black uppercase tracking-tight transition-all border-2",
+                      "flex-1 py-2 px-3 rounded-md text-sm font-black uppercase tracking-tight transition-all border-2",
                       formData.priority === p
                         ? {
                             "bg-blue-50 border-blue-200 text-blue-700":
@@ -184,7 +184,7 @@ export default function NoticeForm({
                     setFormData((prev) => ({ ...prev, targetType: t }))
                   }
                   className={clsx(
-                    "flex-1 py-2 px-3 rounded-xl text-sm font-black uppercase tracking-tight transition-all border-2",
+                    "flex-1 py-2 px-3 rounded-md text-sm font-black uppercase tracking-tight transition-all border-2",
                     formData.targetType === t
                       ? "bg-brand/5 border-brand/20 text-brand"
                       : "bg-white border-gray-100 text-gray-400 hover:border-gray-200",
@@ -203,7 +203,7 @@ export default function NoticeForm({
 
         {/* Recipient Selection (if multiple/single) */}
         {formData.targetType !== "all" && (
-          <div className="space-y-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+          <div className="space-y-4 p-4 bg-gray-50 rounded-md border border-gray-100">
             <div className="flex justify-between items-center">
               <label className="text-sm font-bold text-gray-700">
                 Select Recipients ({formData.recipientIds.length})
@@ -217,7 +217,7 @@ export default function NoticeForm({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search staff..."
-                  className="w-full pl-9 pr-3 py-1.5 text-sm rounded-lg border border-gray-200 outline-none focus:border-brand"
+                  className="w-full pl-9 pr-3 py-1.5 text-sm rounded-md border border-gray-200 outline-none focus:border-brand"
                 />
               </div>
             </div>
@@ -228,7 +228,7 @@ export default function NoticeForm({
                   type="button"
                   onClick={() => toggleRecipient(staff.staffId)}
                   className={clsx(
-                    "flex items-center gap-2 p-2 rounded-lg border transition-all text-left",
+                    "flex items-center gap-2 p-2 rounded-md border transition-all text-left",
                     formData.recipientIds.includes(staff.staffId)
                       ? "bg-brand/10 border-brand/30"
                       : "bg-white border-gray-100 hover:border-brand/20",
@@ -273,7 +273,7 @@ export default function NoticeForm({
                   scheduledAt: e.target.value,
                 }))
               }
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-brand transition-all outline-none text-sm font-medium"
+              className="w-full px-4 py-3 rounded-md border-2 border-gray-100 focus:border-brand transition-all outline-none text-sm font-medium"
             />
           </div>
           <div className="space-y-2">
@@ -287,7 +287,7 @@ export default function NoticeForm({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, expiresAt: e.target.value }))
               }
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-brand transition-all outline-none text-sm font-medium"
+              className="w-full px-4 py-3 rounded-md border-2 border-gray-100 focus:border-brand transition-all outline-none text-sm font-medium"
             />
           </div>
         </div>
@@ -297,14 +297,14 @@ export default function NoticeForm({
           <label className="text-sm font-bold text-gray-700">
             Notice Content
           </label>
-          <div className="border-2 border-gray-100 rounded-2xl overflow-hidden focus-within:border-brand transition-all">
+          <div className="border-2 border-gray-100 rounded-md overflow-hidden focus-within:border-brand transition-all">
             <div className="bg-gray-50 border-b border-gray-100 p-2 flex gap-1">
               {/* Basic rich text toolbar simulation */}
               {["B", "I", "U", "•"].map((tool) => (
                 <button
                   key={tool}
                   type="button"
-                  className="size-8 rounded-lg hover:bg-white hover:shadow-sm text-sm font-bold text-gray-600 transition-all"
+                  className="size-8 rounded-md hover:bg-white hover:shadow-sm text-sm font-bold text-gray-600 transition-all"
                 >
                   {tool}
                 </button>
@@ -328,7 +328,7 @@ export default function NoticeForm({
             type="button"
             disabled={isPending}
             onClick={(e) => handleSubmit(e, true)}
-            className="flex-1 py-4 px-6 rounded-2xl bg-gray-100 text-gray-600 font-black uppercase tracking-widest text-sm hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
+            className="flex-1 py-4 px-6 rounded-md bg-gray-100 text-gray-600 font-black uppercase tracking-widest text-sm hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
           >
             {isPending ? <Spinner message="" /> : <Save size={18} />}
             Save Draft
@@ -337,7 +337,7 @@ export default function NoticeForm({
             type="button"
             disabled={isPending}
             onClick={(e) => handleSubmit(e, false)}
-            className="flex-[2] py-4 px-6 rounded-2xl bg-brand text-white font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-lg shadow-brand/20 flex items-center justify-center gap-2"
+            className="flex-[2] py-4 px-6 rounded-md bg-brand text-white font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-lg shadow-brand/20 flex items-center justify-center gap-2"
           >
             {isPending ? <Spinner message="" /> : <Send size={18} />}
             {initialData ? "Update & Dispatch" : "Send Notice"}

@@ -42,7 +42,7 @@ export default function NoticeBanner({
       )}
     >
       <div className="flex items-center gap-4 min-w-0">
-        <div className="size-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+        <div className="size-10 rounded-md bg-white/20 flex items-center justify-center shrink-0">
           {currentNotice.notice?.priority === "urgent" ? (
             <Zap size={20} />
           ) : (
@@ -62,14 +62,14 @@ export default function NoticeBanner({
       <div className="flex items-center gap-3 shrink-0">
         <Link
           href="/staff/notifications"
-          className="px-4 py-2 bg-white text-gray-900 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-gray-100 transition-all flex items-center gap-2"
+          className="px-4 py-2 bg-white text-gray-900 rounded-md text-sm font-black uppercase tracking-widest hover:bg-gray-100 transition-all flex items-center gap-2"
         >
           View Notice
           <ChevronRight size={14} />
         </Link>
         <button
           onClick={() => setCurrentNotice(null)}
-          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+          className="p-2 hover:bg-white/10 rounded-md transition-colors"
         >
           <X size={18} />
         </button>

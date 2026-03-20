@@ -49,7 +49,7 @@ export default function SMSSettingsForm({ initialData }: SMSSettingsFormProps) {
       <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
         {/* Section Header */}
         <div className="p-8 border-b border-gray-50 flex items-center gap-4 bg-gray-50/50">
-          <div className="size-12 rounded-2xl bg-brand/5 flex items-center justify-center">
+          <div className="size-12 rounded-md bg-brand/5 flex items-center justify-center">
             <Smartphone size={24} className="text-brand" />
           </div>
           <div>
@@ -62,7 +62,7 @@ export default function SMSSettingsForm({ initialData }: SMSSettingsFormProps) {
           {/* Main Toggle */}
           <div className="flex items-center justify-between p-6 rounded-3xl bg-gray-50 border border-gray-100 group transition-all hover:bg-white hover:border-brand/20">
             <div className="flex items-center gap-4">
-              <div className="size-10 rounded-xl bg-white flex items-center justify-center text-brand shadow-sm">
+              <div className="size-10 rounded-md bg-white flex items-center justify-center text-brand shadow-sm">
                 <Bell size={20} />
               </div>
               <div>
@@ -87,7 +87,7 @@ export default function SMSSettingsForm({ initialData }: SMSSettingsFormProps) {
             !formData.smsNotificationEnabled ? "opacity-50 pointer-events-none" : "hover:bg-white hover:border-brand/20"
           )}>
             <div className="flex items-center gap-4">
-              <div className="size-10 rounded-xl bg-white flex items-center justify-center text-brand shadow-sm">
+              <div className="size-10 rounded-md bg-white flex items-center justify-center text-brand shadow-sm">
                 <Clock size={20} />
               </div>
               <div>
@@ -147,7 +147,7 @@ export default function SMSSettingsForm({ initialData }: SMSSettingsFormProps) {
 
           {/* Opt-out Warning */}
           <div className="p-6 rounded-3xl bg-rose-50 border border-rose-100 flex items-start gap-4 mt-8">
-            <div className="size-10 rounded-xl bg-white flex items-center justify-center text-rose-500 shadow-sm shrink-0">
+            <div className="size-10 rounded-md bg-white flex items-center justify-center text-rose-500 shadow-sm shrink-0">
               <AlertCircle size={20} />
             </div>
             <div>

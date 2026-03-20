@@ -23,7 +23,7 @@ export default async function ComplaintHistoryPage() {
           </h2>
           <Link
             href="/customer/login"
-            className="bg-brand text-white font-bold py-3 px-6 rounded-lg"
+            className="bg-brand text-white font-bold py-3 px-6 rounded-md"
           >
             Login
           </Link>
@@ -36,17 +36,17 @@ export default async function ComplaintHistoryPage() {
   const complaints = res.success ? res.data || [] : [];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-50 py-6 px-3">
+      <div className="max-w-5xl mx-auto">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               href="/customer/profile"
-              className="p-2 bg-white rounded-xl shadow-sm border border-gray-100 hover:bg-gray-50 transition-all"
+              className="p-1 bg-white rounded-md shadow-sm border border-gray-100 hover:bg-gray-50 transition-all"
             >
               <ArrowLeft size={24} className="text-gray-600" />
             </Link>
-            <h1 className="text-2xl font-black text-gray-900 flex items-center gap-2">
+            <h1 className="text-xl font-black text-gray-900 flex items-center gap-2">
               My Complaints
               <span className="text-sm font-bold bg-rose-100 text-rose-600 px-2 py-0.5 rounded-full uppercase tracking-widest">
                 {complaints.length}
@@ -55,7 +55,7 @@ export default async function ComplaintHistoryPage() {
           </div>
           <Link
             href="/customer/complain"
-            className="bg-brand text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-brand/20 hover:scale-105 transition-all"
+            className="bg-brand text-white text-xs px-3 py-2 rounded-md font-bold  shadow-md shadow-brand/20 hover:scale-105 transition-all"
           >
             File New Complaint
           </Link>
@@ -78,7 +78,7 @@ export default async function ComplaintHistoryPage() {
             complaints.map((c: any) => (
               <div
                 key={c.id}
-                className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 group hover:shadow-md hover:border-brand/20 transition-all"
+                className="bg-white rounded-md p-5 sm:p-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 group hover:shadow-md hover:border-brand/20 transition-all"
               >
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-3">
@@ -112,14 +112,14 @@ export default async function ComplaintHistoryPage() {
                 <div className="w-full sm:w-auto flex gap-2">
                   <Link
                     href={`/customer/complain/doc/${c.complaintId}`}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white text-gray-800 px-5 py-3 rounded-xl font-bold text-sm border border-gray-200 hover:bg-gray-50 transition-all"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white text-gray-800 px-5 py-3 rounded-md font-bold text-sm border border-gray-200 hover:bg-gray-50 transition-all"
                   >
                     <ExternalLink size={18} />
                     View Doc
                   </Link>
                   <Link
                     href={`/pdf/download?type=complaint&id=${c.complaintId}`}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white px-5 py-3 rounded-xl font-bold text-sm hover:bg-black transition-all shadow-lg shadow-gray-200"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white px-5 py-3 rounded-md font-bold text-sm hover:bg-black transition-all shadow-lg shadow-gray-200"
                   >
                     <Download size={18} />
                     Download PDF

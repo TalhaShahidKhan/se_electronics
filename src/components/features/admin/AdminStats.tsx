@@ -61,7 +61,7 @@ export default async function AdminStats() {
       {cards.map((card, index) => (
         <div
           key={index}
-          className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+          className="bg-white rounded-md p-4 sm:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
         >
           <div className="flex items-center justify-between">
             <div className="flex-1 min-w-0 mr-4">
@@ -70,7 +70,7 @@ export default async function AdminStats() {
                 {card.value}
               </h3>
             </div>
-            <div className={`${card.color} p-2.5 sm:p-3 rounded-xl sm:rounded-2xl text-white shrink-0`}>
+            <div className={`${card.color} p-2.5 sm:p-3 rounded-md sm:rounded-md text-white shrink-0`}>
               <card.icon size={24} className="sm:w-7 sm:h-7" /> 
             </div>
           </div>

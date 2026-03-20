@@ -22,7 +22,7 @@ export default async function ComplainDashboardPage() {
           </h2>
           <Link
             href="/customer/login"
-            className="bg-brand text-white font-bold py-3 px-6 rounded-lg hover:bg-brand/90 transition-colors"
+            className="bg-brand text-white font-bold py-3 px-6 rounded-md hover:bg-brand/90 transition-colors"
           >
             Login
           </Link>
@@ -36,8 +36,8 @@ export default async function ComplainDashboardPage() {
   const lastComplaint = complaints.length > 0 ? complaints[0] : null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gray-50 py-8 px-2">
+      <div className="max-w-6xl mx-auto space-y-4">
         {/* Header Title */}
         <h1 className="text-2xl sm:text-3xl font-black text-brand border-b-2 border-brand/20 pb-4 mb-6">
           Complaint Dashboard
@@ -47,21 +47,21 @@ export default async function ComplainDashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Link
             href="/customer/complain/new"
-            className="flex items-center justify-center gap-2 bg-emerald-100/50 hover:bg-emerald-100 text-emerald-700 font-bold py-5 px-6 rounded-xl border border-emerald-200 transition-all shadow-sm"
+            className="flex items-center justify-center gap-2 bg-emerald-100/50 hover:bg-emerald-100 text-emerald-700 font-bold py-5 px-6 rounded-md border border-emerald-200 transition-all shadow-sm"
           >
             <PlusCircle size={24} className="text-emerald-600" />
             <span className="text-lg">New Complaint</span>
           </Link>
           <Link
             href="/customer/complain/history"
-            className="flex items-center justify-center gap-2 bg-blue-100/50 hover:bg-blue-100 text-blue-700 font-bold py-5 px-6 rounded-xl border border-blue-200 transition-all shadow-sm"
+            className="flex items-center justify-center gap-2 bg-blue-100/50 hover:bg-blue-100 text-blue-700 font-bold py-5 px-6 rounded-md border border-blue-200 transition-all shadow-sm"
           >
             <FileText size={24} className="text-blue-600" />
             <span className="text-lg">Complaint List</span>
           </Link>
           <Link
             href="/customer/profile"
-            className="flex items-center justify-center gap-2 bg-rose-100/50 hover:bg-rose-100 text-rose-700 font-bold py-5 px-6 rounded-xl border border-rose-200 transition-all shadow-sm"
+            className="flex items-center justify-center gap-2 bg-rose-100/50 hover:bg-rose-100 text-rose-700 font-bold py-5 px-6 rounded-md border border-rose-200 transition-all shadow-sm"
           >
             <Home size={24} className="text-rose-600" />
             <span className="text-lg">Dashboard</span>
@@ -70,7 +70,7 @@ export default async function ComplainDashboardPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6">
           {/* Last Complaint Box */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col">
+          <div className="bg-white rounded-md shadow-sm border border-gray-100 p-6 flex flex-col">
             <h2 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-4 mb-6">
               Last Complaint
             </h2>
@@ -89,7 +89,7 @@ export default async function ComplainDashboardPage() {
                       <div className="size-8 rounded-full border-2 border-emerald-500 bg-emerald-50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">
                         <CheckCircle size={16} className="text-emerald-500" />
                       </div>
-                      <div className="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-xl px-3 py-2">
+                      <div className="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-md px-3 py-2">
                         <p className="font-bold text-emerald-800 text-[11px] uppercase tracking-tight">
                           Pending
                         </p>
@@ -114,7 +114,7 @@ export default async function ComplainDashboardPage() {
                         />
                       </div>
                       <div
-                        className={`flex-1 border rounded-xl px-3 py-2 ${lastComplaint.status !== "under_trial" ? "bg-emerald-50/50 border-emerald-100" : "bg-gray-50 border-gray-100 opacity-60"}`}
+                        className={`flex-1 border rounded-md px-3 py-2 ${lastComplaint.status !== "under_trial" ? "bg-emerald-50/50 border-emerald-100" : "bg-gray-50 border-gray-100 opacity-60"}`}
                       >
                         <p
                           className={`font-bold text-[11px] uppercase tracking-tight ${lastComplaint.status !== "under_trial" ? "text-emerald-800" : "text-gray-400"}`}
@@ -147,7 +147,7 @@ export default async function ComplainDashboardPage() {
                         />
                       </div>
                       <div
-                        className={`flex-1 border rounded-xl px-3 py-2 ${lastComplaint.status === "hearing" || lastComplaint.status === "completed" ? "bg-emerald-50/50 border-emerald-100" : "bg-gray-50 border-gray-100 opacity-60"}`}
+                        className={`flex-1 border rounded-md px-3 py-2 ${lastComplaint.status === "hearing" || lastComplaint.status === "completed" ? "bg-emerald-50/50 border-emerald-100" : "bg-gray-50 border-gray-100 opacity-60"}`}
                       >
                         <p
                           className={`font-bold text-[11px] uppercase tracking-tight ${lastComplaint.status === "hearing" || lastComplaint.status === "completed" ? "text-emerald-800" : "text-gray-400"}`}
@@ -180,7 +180,7 @@ export default async function ComplainDashboardPage() {
                         />
                       </div>
                       <div
-                        className={`flex-1 border rounded-xl px-3 py-2 ${lastComplaint.status === "completed" ? "bg-emerald-600 text-white" : "bg-gray-50 border-gray-100 opacity-60"}`}
+                        className={`flex-1 border rounded-md px-3 py-2 ${lastComplaint.status === "completed" ? "bg-emerald-600 text-white" : "bg-gray-50 border-gray-100 opacity-60"}`}
                       >
                         <p
                           className={`font-bold text-[11px] uppercase tracking-tight ${lastComplaint.status === "completed" ? "text-white" : "text-gray-400"}`}
@@ -199,7 +199,7 @@ export default async function ComplainDashboardPage() {
                   </div>
                 </div>
 
-                <div className="space-y-3 flex-1 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <div className="space-y-3 flex-1 bg-gray-50 p-4 rounded-md border border-gray-100">
                   <div className="text-sm">
                     <span className="font-bold text-gray-800">
                       Tracking Number:{" "}
@@ -236,19 +236,19 @@ export default async function ComplainDashboardPage() {
 
                 <div className="flex items-center justify-between pt-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-white bg-amber-500 px-3 py-1.5 rounded-md shadow-sm">
+                    <span className="text-xs font-semibold text-white bg-amber-500 px-1.5 py-2 rounded-md shadow-sm">
                       Application Status
                     </span>
-                    <ArrowRight size={16} className="text-gray-400" />
+                    
                     <span
-                      className={`text-sm font-bold px-3 py-1.5 rounded-md border bg-white shadow-sm capitalize ${lastComplaint.status === "completed" ? "text-emerald-600 border-emerald-200" : "text-amber-600 border-amber-200"}`}
+                      className={`text-xs font-semibold px-1.5 py-2 rounded-md border bg-white shadow-sm capitalize ${lastComplaint.status === "completed" ? "text-emerald-600 border-emerald-200" : "text-amber-600 border-amber-200"}`}
                     >
                       {lastComplaint.status.replace("_", " ")}
                     </span>
                   </div>
                   <Link
                     href={`/customer/complain/doc/${lastComplaint.complaintId}`}
-                    className="bg-emerald-600/90 hover:bg-emerald-600 text-white font-bold py-1.5 px-4 rounded-md transition-all text-sm shadow-sm hover:shadow-md"
+                    className="bg-emerald-600/90 hover:bg-emerald-600 text-white font-semibold py-2 px-1.5 rounded-md transition-all text-sm shadow-sm hover:shadow-md"
                   >
                     Details
                   </Link>
@@ -262,7 +262,7 @@ export default async function ComplainDashboardPage() {
           </div>
 
           {/* Hearing Notice / Recent Summary Table */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col">
+          <div className="bg-white rounded-md shadow-sm border border-gray-100 p-6 flex flex-col">
             <h2 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-4 mb-6">
               Recent Complaint Notices
             </h2>
@@ -272,13 +272,13 @@ export default async function ComplainDashboardPage() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gray-50 border-y border-gray-200">
-                      <th className="py-3 px-4 text-sm font-black text-gray-600 uppercase tracking-wide">
+                      <th className="py-3 px-2 text-sm font-black text-gray-600 uppercase tracking-wide">
                         Accused Staff
                       </th>
-                      <th className="py-3 px-4 text-sm font-black text-gray-600 uppercase tracking-wide">
+                      <th className="py-3 px-2 text-sm font-black text-gray-600 uppercase tracking-wide">
                         Date
                       </th>
-                      <th className="py-3 px-4 text-sm font-black text-gray-600 uppercase tracking-wide">
+                      <th className="py-3 px-2 text-sm font-black text-gray-600 uppercase tracking-wide">
                         Status
                       </th>
                     </tr>
@@ -289,15 +289,15 @@ export default async function ComplainDashboardPage() {
                         key={c.complaintId}
                         className="hover:bg-gray-50 transition-colors"
                       >
-                        <td className="py-3 px-4 text-sm font-bold text-gray-800">
+                        <td className="py-3 px-2 text-sm font-bold text-gray-800">
                           {c.staff?.name}
                         </td>
-                        <td className="py-3 px-4 text-sm text-gray-600">
+                        <td className="py-3 px-2 text-sm text-gray-600">
                           {formatDate(c.createdAt)}
                         </td>
-                        <td className="py-3 px-4">
+                        <td className="py-3 px-2">
                           <span
-                            className={`text-sm font-bold px-2 py-1 rounded-sm uppercase ${c.status === "completed" ? "bg-emerald-100 text-emerald-700" : c.status === "hearing" ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"}`}
+                            className={`text-xs font-bold px-1 py-2 rounded-sm uppercase ${c.status === "completed" ? "bg-emerald-100 text-emerald-700" : c.status === "hearing" ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"}`}
                           >
                             {c.status.replace("_", " ")}
                           </span>

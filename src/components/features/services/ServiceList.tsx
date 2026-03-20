@@ -82,7 +82,7 @@ export default async function ServiceList(
         </p>
       </td>
       <td className="py-4 px-4 whitespace-nowrap">
-        <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-gray-100 text-gray-800 text-sm sm:text-sm font-black uppercase tracking-wider border border-gray-200">
+        <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-gray-800 text-sm sm:text-sm font-black uppercase tracking-wider border border-gray-200">
           {service.productType}-{service.productModel}
         </span>
       </td>

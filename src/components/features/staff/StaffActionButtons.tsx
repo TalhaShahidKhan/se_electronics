@@ -114,7 +114,7 @@ export default function StaffActionButtons({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <button
             onClick={() => setShowPayModal(true)}
-            className="flex flex-col items-center justify-center gap-2 p-4 bg-teal-50 text-teal-600 rounded-2xl hover:bg-teal-100 transition-colors border border-teal-100"
+            className="flex flex-col items-center justify-center gap-2 p-4 bg-teal-50 text-teal-600 rounded-md hover:bg-teal-100 transition-colors border border-teal-100"
           >
             <CreditCard size={24} />
             <span className="text-[10px] font-black uppercase tracking-widest">
@@ -124,7 +124,7 @@ export default function StaffActionButtons({
 
           <button
             onClick={() => setShowUpdateModal(true)}
-            className="flex flex-col items-center justify-center gap-2 p-4 bg-blue-50 text-blue-600 rounded-2xl hover:bg-blue-100 transition-colors border border-blue-100"
+            className="flex flex-col items-center justify-center gap-2 p-4 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors border border-blue-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +147,7 @@ export default function StaffActionButtons({
 
           <button
             onClick={() => setShowCredentialsModal(true)}
-            className="flex flex-col items-center justify-center gap-2 p-4 bg-indigo-50 text-indigo-600 rounded-2xl hover:bg-indigo-100 transition-colors border border-indigo-100"
+            className="flex flex-col items-center justify-center gap-2 p-4 bg-indigo-50 text-indigo-600 rounded-md hover:bg-indigo-100 transition-colors border border-indigo-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +175,7 @@ export default function StaffActionButtons({
 
           <button
             onClick={sendDownloadLink}
-            className="flex flex-col items-center justify-center gap-2 p-4 bg-orange-50 text-orange-600 rounded-2xl hover:bg-orange-100 transition-colors border border-orange-100"
+            className="flex flex-col items-center justify-center gap-2 p-4 bg-orange-50 text-orange-600 rounded-md hover:bg-orange-100 transition-colors border border-orange-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +199,7 @@ export default function StaffActionButtons({
           <a
             target="_blank"
             href={`/pdf/download?type=id-card&id=${staffData.staffId}`}
-            className="flex flex-col items-center justify-center gap-2 p-4 bg-sky-50 text-sky-600 rounded-2xl hover:bg-sky-100 transition-colors border border-sky-100"
+            className="flex flex-col items-center justify-center gap-2 p-4 bg-sky-50 text-sky-600 rounded-md hover:bg-sky-100 transition-colors border border-sky-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -223,7 +223,7 @@ export default function StaffActionButtons({
           <button
             onClick={handleToggleStatus}
             className={clsx(
-              "flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-colors border",
+              "flex flex-col items-center justify-center gap-2 p-4 rounded-md transition-colors border",
               staffData.isActiveStaff
                 ? "bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100"
                 : "bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100",
@@ -241,7 +241,7 @@ export default function StaffActionButtons({
 
           <button
             onClick={deleteTechnicianHandler}
-            className="flex flex-col items-center justify-center gap-2 p-4 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-100 transition-colors border border-rose-100"
+            className="flex flex-col items-center justify-center gap-2 p-4 bg-rose-50 text-rose-600 rounded-md hover:bg-rose-100 transition-colors border border-rose-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

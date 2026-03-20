@@ -286,7 +286,7 @@ export default function MaintenancePlans() {
 
   return (
     <div className="mx-auto max-w-[1200px] text-center p-3">
-      <div className="h-full font-bold mb-4 flex flex-col gap-0.5 p-6 rounded-lg border-2">
+      <div className="h-full font-bold mb-4 flex flex-col gap-0.5 p-6 rounded-md border-2">
         <div className="text-xl">এস ই ইলেকট্রনিকস কাস্টমার সার্ভিস সেন্টার</div>
         <div className="text-md">হেল্পলাইন : {contactDetails.customerCare}</div>
         <div className="text-md">Email : {contactDetails.email}</div>
@@ -308,7 +308,7 @@ export default function MaintenancePlans() {
                   setSelectedPowerRating("");
                 }
               }}
-              className={`border-2 rounded-lg p-6 cursor-pointer ${
+              className={`border-2 rounded-md p-6 cursor-pointer ${
                 selectedPackage?.type === pkg.type
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-300 bg-white hover:border-blue-300"
@@ -356,8 +356,8 @@ export default function MaintenancePlans() {
 
       {/* Form - Only shown after package selection */}
       {selectedPackage && (
-        <div className="flex flex-col gap-6 border-2 p-6 rounded-lg bg-white">
-          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+        <div className="flex flex-col gap-6 border-2 p-6 rounded-md bg-white">
+          <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
             <p className="font-semibold text-lg">
               নির্বাচিত প্যাকেজ: {selectedPackage.name}
             </p>

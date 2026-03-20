@@ -41,7 +41,7 @@ export default function FormalComplainForm({
 
   if (state?.success && complaintId) {
     return (
-      <div className="bg-white rounded-xl shadow-md border border-gray-200 p-8 sm:p-12 flex flex-col items-center text-center animate-in fade-in zoom-in duration-500 max-w-2xl mx-auto">
+      <div className="bg-white rounded-md shadow-md border border-gray-200 p-8 sm:p-12 flex flex-col items-center text-center animate-in fade-in zoom-in duration-500 max-w-2xl mx-auto">
         <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6 shadow-inner">
           <CheckCircle2 size={40} />
         </div>
@@ -59,14 +59,14 @@ export default function FormalComplainForm({
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
           <Link
             href={`/customer/complain/doc/${complaintId}`}
-            className="flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-50 transition-all"
+            className="flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-800 font-bold py-3 px-6 rounded-md hover:bg-gray-50 transition-all"
           >
             <ExternalLink size={18} />
             View Document
           </Link>
           <Link
             href={`/customer/complain`}
-            className="flex items-center justify-center gap-2 bg-brand text-white font-bold py-3 px-6 rounded-lg hover:bg-brand/90 transition-all shadow-md"
+            className="flex items-center justify-center gap-2 bg-brand text-white font-bold py-3 px-6 rounded-md hover:bg-brand/90 transition-all shadow-md"
           >
             Back to Dashboard
             <ArrowRight size={18} />

@@ -94,7 +94,7 @@ export default function StaffNoticeList() {
       {/* Header Info */}
       <div className="flex justify-between items-center bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="size-12 rounded-2xl bg-brand/5 flex items-center justify-center">
+          <div className="size-12 rounded-md bg-brand/5 flex items-center justify-center">
             <Bell size={24} className="text-brand" />
           </div>
           <div>
@@ -122,7 +122,7 @@ export default function StaffNoticeList() {
             {/* Priority Indicator */}
             <div
               className={clsx(
-                "shrink-0 size-14 rounded-2xl flex items-center justify-center text-white shadow-lg",
+                "shrink-0 size-14 rounded-md flex items-center justify-center text-white shadow-lg",
                 {
                   "bg-blue-500 shadow-blue-200":
                     notification.notice?.priority === "low",
@@ -176,7 +176,7 @@ export default function StaffNoticeList() {
               </div>
             </div>
 
-            <div className="shrink-0 size-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all">
+            <div className="shrink-0 size-10 rounded-md bg-gray-50 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all">
               <ChevronRight size={18} />
             </div>
           </button>
@@ -241,13 +241,13 @@ export default function StaffNoticeList() {
               {!selectedNotification.isAcknowledged ? (
                 <button
                   onClick={() => handleAcknowledge(selectedNotification.id)}
-                  className="w-full py-5 bg-brand text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-xl shadow-brand/20 flex items-center justify-center gap-3"
+                  className="w-full py-5 bg-brand text-white rounded-md font-black uppercase tracking-widest text-sm hover:bg-brand-800 transition-all shadow-xl shadow-brand/20 flex items-center justify-center gap-3"
                 >
                   <CheckCircle2 size={20} />
                   Acknowledge Notice
                 </button>
               ) : (
-                <div className="w-full py-5 bg-emerald-50 text-emerald-700 rounded-2xl font-black uppercase tracking-widest text-sm border-2 border-emerald-100 flex items-center justify-center gap-3">
+                <div className="w-full py-5 bg-emerald-50 text-emerald-700 rounded-md font-black uppercase tracking-widest text-sm border-2 border-emerald-100 flex items-center justify-center gap-3">
                   <CheckCircle2 size={20} />
                   Already Acknowledged
                 </div>

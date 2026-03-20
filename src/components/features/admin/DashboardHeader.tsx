@@ -5,7 +5,6 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import NotificationBell from "./NotificationBell";
 
-
 export default function DashboardHeader() {
   const { openSideNav } = useSideNavContext();
 
@@ -15,7 +14,7 @@ export default function DashboardHeader() {
         <button
           title="Show Sidebar"
           onClick={openSideNav}
-          className="xl:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="xl:hidden p-2 hover:bg-gray-100 rounded-md transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +40,7 @@ export default function DashboardHeader() {
         <NotificationBell />
         <Link
           href="/services/add"
-          className="flex items-center gap-2 px-3 sm:px-5 py-2 sm:py-2.5 bg-brand text-white rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base hover:bg-brand-800 active:scale-95 transition-all shadow-md shadow-brand-100"
+          className="flex items-center gap-2 px-3 sm:px-5 py-2 sm:py-2.5 bg-brand text-white rounded-md sm:rounded-md font-bold text-sm sm:text-base hover:bg-brand-800 active:scale-95 transition-all shadow-md shadow-brand-100"
         >
           <Plus size={20} className="sm:w-6 sm:h-6" />
           <span className="hidden sm:inline">Add New Service</span>
@@ -51,4 +50,3 @@ export default function DashboardHeader() {
     </header>
   );
 }
-

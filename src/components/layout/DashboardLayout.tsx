@@ -109,7 +109,7 @@ export default function DashboardLayout({
               alt="SE Electronics"
               width={32}
               height={32}
-              className="rounded-lg border border-white/20 sm:w-9 sm:h-9"
+              className="rounded-md border border-white/20 sm:w-9 sm:h-9"
             />
             <div className="flex-1 min-w-0">
               <h1 className="font-bold text-md sm:text-base truncate">
@@ -123,7 +123,7 @@ export default function DashboardLayout({
               <button
                 title="Close Sidebar"
                 onClick={() => setShowSideNav(false)}
-                className="p-1.5 rounded-lg hover:bg-white/10 transition-colors xl:hidden"
+                className="p-1.5 rounded-md hover:bg-white/10 transition-colors xl:hidden"
               >
                 <X size={20} />
               </button>
@@ -132,7 +132,7 @@ export default function DashboardLayout({
 
           {/* SMS Balance */}
           <div className="mx-3 sm:mx-4 mt-4 mb-2">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 border border-white/10">
+            <div className="bg-white/10 backdrop-blur-sm rounded-md px-2.5 sm:px-3 py-2 sm:py-2.5 border border-white/10">
               {smsBalance ? (
                 <div className="flex items-center justify-between">
                   <span className="text-[12px] sm:text-sm text-blue-200 font-medium">
@@ -161,7 +161,7 @@ export default function DashboardLayout({
                   onClick={() => setShowSideNav(false)}
                   href={link.href}
                   className={clsx(
-                    "flex items-center  gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-xl text-[15px]  font-medium transition-all duration-200",
+                    "flex items-center  gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-md text-[15px]  font-medium transition-all duration-200",
                     isActive
                       ? "bg-white text-brand shadow-sm"
                       : "text-blue-100 hover:bg-white/10 hover:text-white",
@@ -185,7 +185,7 @@ export default function DashboardLayout({
                 logout();
               }}
               disabled={isLogginOut}
-              className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-red-500/80 text-white font-semibold text-sm sm:text-base py-2 sm:py-2.5 rounded-xl transition-all disabled:opacity-50 border border-white/10"
+              className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-red-500/80 text-white font-semibold text-sm sm:text-base py-2 sm:py-2.5 rounded-md transition-all disabled:opacity-50 border border-white/10"
             >
               {!isLogginOut && <LogOut size={16} />}
               <span>{isLogginOut ? "Logging out..." : "Logout"}</span>
