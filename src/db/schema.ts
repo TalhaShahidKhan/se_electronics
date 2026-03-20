@@ -41,6 +41,7 @@ export const applicationStatusEnum = pgEnum("applicationStatus", [
   "processing",
   "approved",
   "rejected",
+  "expired",
 ]);
 
 export const applicationTypesEnum = pgEnum("applicationTypes", [
@@ -146,6 +147,7 @@ export const customers = pgTable(
     profileCompleted: boolean().default(false).notNull(),
     vipCardNumber: varchar({ length: 16 }).unique(),
     vipStatus: applicationStatusEnum().default("pending"),
+    vipExpiryDate: timestamp({ withTimezone: true }),
     createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp({ withTimezone: true })
       .defaultNow()

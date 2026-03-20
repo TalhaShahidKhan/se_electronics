@@ -113,6 +113,7 @@ export async function verifyCustomerSession() {
         address: customers.address,
         vipCardNumber: customers.vipCardNumber,
         vipStatus: customers.vipStatus,
+        vipExpiryDate: customers.vipExpiryDate,
       })
       .from(customers)
       .where(eq(customers.customerId, session.userId as string))
@@ -121,6 +122,11 @@ export async function verifyCustomerSession() {
 
     if (!customer) {
       return { isAuth: false };
+    }
+
+    // Process VIP status for expiration
+    if (customer.vipStatus === 'approved' && customer.vipExpiryDate && new Date(customer.vipExpiryDate) < new Date()) {
+       (customer as any).vipStatus = 'expired';
     }
 
     return {
@@ -469,10 +475,12 @@ export const applyForVipCard = async () => {
     // Check if customer already has a VIP card or an active application
     const customer = await db.query.customers.findFirst({
         where: eq(customers.customerId, session.userId as string),
-        columns: { vipStatus: true, name: true, phone: true }
+        columns: { vipStatus: true, name: true, phone: true, vipExpiryDate: true }
     });
 
-    if (customer?.vipStatus === 'approved') {
+    const isExpired = customer?.vipStatus === 'approved' && customer?.vipExpiryDate && new Date(customer.vipExpiryDate) < new Date();
+
+    if (customer?.vipStatus === 'approved' && !isExpired) {
         return { success: false, message: "You already have a VIP card" };
     }
 
@@ -575,11 +583,20 @@ export const updateCustomerVipStatus = async (
       }
     }
 
+    const expiryDate = new Date();
+    expiryDate.setFullYear(expiryDate.getFullYear() + 2);
+
     await db.update(customers)
       .set({ 
         vipStatus: status,
-        ...(status === "approved" ? { vipCardNumber: finalCardNumber } : {}),
-        ...(status === "rejected" ? { vipCardNumber: null } : {})
+        ...(status === "approved" ? { 
+            vipCardNumber: finalCardNumber,
+            vipExpiryDate: expiryDate 
+        } : {}),
+        ...(status === "rejected" ? { 
+            vipCardNumber: null,
+            vipExpiryDate: null 
+        } : {})
       })
       .where(eq(customers.customerId, customerId));
 
@@ -591,7 +608,11 @@ export const updateCustomerVipStatus = async (
 
     if (customer && status === "approved") {
       const { sendSMS } = await import("@/lib/sms");
-      const message = `Congratulations ${customer.name}! Your VIP Card has been approved. Card Number: ${finalCardNumber}. Enjoy exclusive benefits at SE Electronics.`;
+      const formattedExpiry = new Intl.DateTimeFormat("en-US", {
+          month: "2-digit",
+          year: "2-digit",
+      }).format(expiryDate);
+      const message = `Congratulations ${customer.name}! Your VIP Card has been approved. Card Number: ${finalCardNumber}. Valid until: ${formattedExpiry}. Enjoy exclusive benefits at SE Electronics.`;
       await sendSMS(customer.phone, message);
     }
 
